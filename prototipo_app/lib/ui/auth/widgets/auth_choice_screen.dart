@@ -31,13 +31,15 @@ class AuthChoiceScreen extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: OutlinedButton(
-                onPressed: () => Navigator.pushNamed(context, AppRoutes.register),
+                onPressed: () =>
+                    Navigator.pushNamed(context, AppRoutes.register),
                 child: const Text('Registrati'),
               ),
             ),
             const SizedBox(height: 12),
             TextButton(
-              onPressed: () => Navigator.pushReplacementNamed(context, AppRoutes.home),
+              onPressed: () =>
+                  Navigator.pushReplacementNamed(context, AppRoutes.home),
               child: const Text('Continua come guest'),
             ),
           ],

@@ -5,18 +5,21 @@ class OnboardingViewModel extends ChangeNotifier {
     OnboardingItem(
       imagePath: 'assets/onboarding/onboarding_1.png',
       title: 'Trova la tua Fermata',
-      description: 'Individua la fermata più vicina usando il gps e pianifica il tuo percorso in pochi secondi.',
+      description:
+          'Individua la fermata più vicina usando il gps e pianifica il tuo percorso in pochi secondi.',
     ),
     OnboardingItem(
       imagePath: 'assets/onboarding/onboarding_2.png',
       title: 'Orari a portata di mano',
-      description: 'Consulta rapidamente linee, fermate e partenze.'
-                   'Gli orari disponibili sono indicativi e possono subire variazioni.',
+      description:
+    'Consulta rapidamente linee, fermate e partenze. '
+    '\nGli orari disponibili sono indicativi e possono subire variazioni.',
     ),
     OnboardingItem(
       imagePath: 'assets/onboarding/onboarding_3.png',
       title: 'Viaggia con più semplicità',
-      description: 'Salva le tue linee preferite e ricevi notifiche utili durante il viaggio.',
+      description:
+          'Salva le tue linee preferite e ricevi notifiche utili durante il viaggio.',
     ),
   ];
 

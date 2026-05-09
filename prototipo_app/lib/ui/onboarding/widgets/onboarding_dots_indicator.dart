@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+//mostra i pallini di avanzamento dell'onboarding
 class OnboardingDotsIndicator extends StatelessWidget {
   const OnboardingDotsIndicator({
     super.key,
@@ -12,8 +13,7 @@ class OnboardingDotsIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final activeColor = Theme.of(context).colorScheme.primary;
-    final inactiveColor = Theme.of(context).colorScheme.outlineVariant;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -24,12 +24,14 @@ class OnboardingDotsIndicator extends StatelessWidget {
 
           return AnimatedContainer(
             duration: const Duration(milliseconds: 250),
-            curve: Curves.easeOut,
-            margin: const EdgeInsets.symmetric(horizontal: 4),
-            width: isActive ? 22 : 8,
-            height: 8,
+            curve: Curves.easeOutCubic,
+            margin: const EdgeInsets.symmetric(horizontal: 5),
+            width: isActive ? 26 : 9,
+            height: 9,
             decoration: BoxDecoration(
-              color: isActive ? activeColor : inactiveColor,
+              color: isActive
+                  ? colorScheme.primary
+                  : colorScheme.outlineVariant,
               borderRadius: BorderRadius.circular(99),
             ),
           );
