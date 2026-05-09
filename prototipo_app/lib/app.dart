@@ -1,0 +1,30 @@
+import 'package:flutter/material.dart';
+
+import 'routing/app_routes.dart';
+import 'ui/core/themes/app_theme.dart';
+import 'ui/onboarding/widgets/onboarding_screen.dart';
+import 'ui/auth/widgets/auth_choice_screen.dart';
+import 'ui/auth/widgets/login_screen.dart';
+import 'ui/auth/widgets/register_screen.dart';
+import 'ui/home/widgets/home_placeholder_screen.dart';
+
+class WayLineApp extends StatelessWidget {
+  const WayLineApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'WayLine',
+      debugShowCheckedModeBanner: false,
+      theme: AppTheme.lightTheme,
+      initialRoute: AppRoutes.onboarding,
+      routes: {
+        AppRoutes.onboarding: (_) => const OnboardingScreen(),
+        AppRoutes.authChoice: (_) => const AuthChoiceScreen(),
+        AppRoutes.login: (_) => const LoginScreen(),
+        AppRoutes.register: (_) => const RegisterScreen(),
+        AppRoutes.home: (_) => const HomePlaceholderScreen(),
+      },
+    );
+  }
+}

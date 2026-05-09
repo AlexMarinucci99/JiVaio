@@ -1,5 +1,5 @@
-name: prototipo_app
-description: "A new Flutter project."
+name: wayline_app
+description: "Progetto Applicazioni per Dispositivi Mobili - Wayline"
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -45,12 +45,15 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^6.0.0
+  flutter_native_splash: ^2.4.7
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter packages.
 flutter:
+  assets:
+    - assets/onboarding/
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
@@ -87,3 +90,14 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+flutter_native_splash:
+  color: "#061A3A"
+  image: assets/logo_splash/wayline_logo.png
+
+  android: true
+  ios: true
+  web: false
+
+  android_12:
+    color: "#061A3A"
+    image: assets/logo_splash/wayline_splash_android12.png

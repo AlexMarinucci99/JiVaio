@@ -1,4 +1,4 @@
-package com.example.prototipo_app
+package com.example.wayline_app
 
 import io.flutter.embedding.android.FlutterActivity
 
