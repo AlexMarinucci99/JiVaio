@@ -70,28 +70,27 @@ class OnboardingSlideCard extends StatelessWidget {
                   ),
 
                   // Icona superiore destra, mostrata solo se presente.
-                  if (icon != null)
-                    Positioned(
-                      top: 18,
-                      right: 18,
-                      child: Container(
-                        width: 58,
-                        height: 58,
+if (icon != null)
+  Positioned(
+    top: 18,
+    right: 18,
+    child: Container(
+      width: 58,
+      height: 58,
+      decoration: BoxDecoration(
+        // Cerchio bianco opaco dietro l'icona.
+        shape: BoxShape.circle,
+        color: Colors.white.withValues(alpha: 0.88),
+      ),
+      child: Icon(
+        icon,
 
-                        // Cerchio colorato dietro l'icona.
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: effectiveAccentColor,
-                        ),
-
-                        // Icona dentro il cerchio.
-                        child: Icon(
-                          icon,
-                          color: Colors.white,
-                          size: 28,
-                        ),
-                      ),
-                    ),
+        // Icona centrale colorata.
+        color: effectiveAccentColor,
+        size: 28,
+      ),
+    ),
+  ),
                 ],
               ),
             ),

@@ -93,7 +93,8 @@ flutter:
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
 flutter_native_splash:
-  color: "#061A3A"
+  color: "#191970"
+  color_dark: "#191970"
   image: assets/logo_splash/wayline_logo.png
 
   android: true
@@ -101,7 +102,8 @@ flutter_native_splash:
   web: false
 
   android_12:
-    color: "#061A3A"
+    color: "#191970"
+    color_dark: "#191970"
     image: assets/logo_splash/wayline_splash_android12.png
 
 flutter_launcher_icons:

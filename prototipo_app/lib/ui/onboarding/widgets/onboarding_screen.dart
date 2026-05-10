@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 
+import '../../../data/services/onboarding_preferences_service.dart';
 import '../../../routing/app_routes.dart';
-import '../../core/ui/primary_button.dart';
 import '../view_model/onboarding_view_model.dart';
 import 'hide_onboarding_preference.dart';
-import 'onboarding_dots_indicator.dart';
+import 'onboarding_bottom_controls.dart';
 import 'onboarding_slide_card.dart';
-import '../../../data/services/onboarding_preferences_service.dart';
 
 // StatefulWidget: schermata principale che contiene le 3 pagine di onboarding.
 class OnboardingScreen extends StatefulWidget {
@@ -18,7 +17,8 @@ class OnboardingScreen extends StatefulWidget {
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
   final OnboardingPreferencesService _onboardingPreferencesService =
-    OnboardingPreferencesService();
+      OnboardingPreferencesService();
+
   final PageController _pageController = PageController();
   final OnboardingViewModel _viewModel = OnboardingViewModel();
 
@@ -36,29 +36,31 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     ),
     _OnboardingVisualData(
       icon: Icons.favorite_rounded,
-      accentColor: Color.fromARGB(255, 255, 0, 0),
+      accentColor: Color(0xFFE53935),
       imageAlignment: Alignment.topCenter,
     ),
   ];
-//next
+
+  // Bottone "Avanti" / "Inizia".
   Future<void> _goNext() async {
-  if (_viewModel.isLastPage) {
-    await _onboardingPreferencesService.setSkipOnboarding(
-      _hideOnboardingNextTime,
+    if (_viewModel.isLastPage) {
+      await _onboardingPreferencesService.setSkipOnboarding(
+        _hideOnboardingNextTime,
+      );
+
+      if (!mounted) return;
+
+      Navigator.pushReplacementNamed(context, AppRoutes.authChoice);
+      return;
+    }
+
+    await _pageController.nextPage(
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeOutCubic,
     );
-
-    if (!mounted) return;
-
-    Navigator.pushReplacementNamed(context, AppRoutes.authChoice);
-    return;
   }
 
-  await _pageController.nextPage(
-    duration: const Duration(milliseconds: 300),
-    curve: Curves.easeOutCubic,
-  );
-}
-
+  // Bottone "Indietro".
   void _goBack() {
     if (_viewModel.currentPage == 0) return;
 
@@ -68,17 +70,25 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
   }
 
+  // Bottone "Salta" superiore.
   Future<void> _skip() async {
-  if (_viewModel.isLastPage) {
-    await _onboardingPreferencesService.setSkipOnboarding(
-      _hideOnboardingNextTime,
-    );
+    if (_viewModel.isLastPage) {
+      await _onboardingPreferencesService.setSkipOnboarding(
+        _hideOnboardingNextTime,
+      );
+    }
+
+    if (!mounted) return;
+
+    Navigator.pushReplacementNamed(context, AppRoutes.authChoice);
   }
 
-  if (!mounted) return;
-
-  Navigator.pushReplacementNamed(context, AppRoutes.authChoice);
-}
+  @override
+  void dispose() {
+    _pageController.dispose();
+    _viewModel.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -124,7 +134,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   ),
                 ),
 
-                // Area inferiore: checkbox opzionale + dots + bottoni.
+                // Area inferiore: box opzionale + controlli finali.
                 Padding(
                   padding: const EdgeInsets.fromLTRB(28, 12, 28, 32),
                   child: Column(
@@ -156,58 +166,16 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               ),
                       ),
 
-                      // Spazio tra box e riga finale.
+                      // Spazio tra box e controlli inferiori.
                       if (_viewModel.isLastPage) const SizedBox(height: 16),
 
-                      // Riga finale: indietro, dots, avanti/inizia.
-                      SizedBox(
-                        height: 52,
-                        child: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            // Dots centrati.
-                            Center(
-                              child: OnboardingDotsIndicator(
-                                currentIndex: _viewModel.currentPage,
-                                itemCount: _viewModel.items.length,
-                              ),
-                            ),
-
-                            // Bottone/testo "Indietro", visibile dalla seconda pagina.
-                            if (_viewModel.currentPage > 0)
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: TextButton.icon(
-                                  onPressed: _goBack,
-                                  icon: const Icon(
-                                    Icons.chevron_left_rounded,
-                                    size: 18,
-                                  ),
-                                  label: const Text('Indietro'),
-                                  style: TextButton.styleFrom(
-                                    padding: EdgeInsets.zero,
-                                    minimumSize: const Size(0, 44),
-                                    tapTargetSize:
-                                        MaterialTapTargetSize.shrinkWrap,
-                                  ),
-                                ),
-                              ),
-
-                            // Bottone inferiore destro.
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: SizedBox(
-                                width: 112,
-                                child: PrimaryButton(
-                                  label: _viewModel.isLastPage
-                                      ? 'Inizia'
-                                      : 'Avanti',
-                                  onPressed: _goNext,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                      // Riga inferiore: indietro, dots, avanti/inizia.
+                      OnboardingBottomControls(
+                        currentIndex: _viewModel.currentPage,
+                        itemCount: _viewModel.items.length,
+                        isLastPage: _viewModel.isLastPage,
+                        onBack: _goBack,
+                        onNext: _goNext,
                       ),
                     ],
                   ),
