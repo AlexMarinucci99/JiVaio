@@ -6,6 +6,7 @@ import '../view_model/onboarding_view_model.dart';
 import 'hide_onboarding_preference.dart';
 import 'onboarding_dots_indicator.dart';
 import 'onboarding_slide_card.dart';
+import '../../../data/services/onboarding_preferences_service.dart';
 
 // StatefulWidget: schermata principale che contiene le 3 pagine di onboarding.
 class OnboardingScreen extends StatefulWidget {
@@ -16,6 +17,8 @@ class OnboardingScreen extends StatefulWidget {
 }
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
+  final OnboardingPreferencesService _onboardingPreferencesService =
+    OnboardingPreferencesService();
   final PageController _pageController = PageController();
   final OnboardingViewModel _viewModel = OnboardingViewModel();
 
@@ -37,19 +40,24 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       imageAlignment: Alignment.topCenter,
     ),
   ];
-
-  void _goNext() {
-    if (_viewModel.isLastPage) {
-      // Più avanti qui salveremo _hideOnboardingNextTime.
-      Navigator.pushReplacementNamed(context, AppRoutes.authChoice);
-      return;
-    }
-
-    _pageController.nextPage(
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeOutCubic,
+//next
+  Future<void> _goNext() async {
+  if (_viewModel.isLastPage) {
+    await _onboardingPreferencesService.setSkipOnboarding(
+      _hideOnboardingNextTime,
     );
+
+    if (!mounted) return;
+
+    Navigator.pushReplacementNamed(context, AppRoutes.authChoice);
+    return;
   }
+
+  await _pageController.nextPage(
+    duration: const Duration(milliseconds: 300),
+    curve: Curves.easeOutCubic,
+  );
+}
 
   void _goBack() {
     if (_viewModel.currentPage == 0) return;
@@ -60,16 +68,17 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
   }
 
-  void _skip() {
-    Navigator.pushReplacementNamed(context, AppRoutes.authChoice);
+  Future<void> _skip() async {
+  if (_viewModel.isLastPage) {
+    await _onboardingPreferencesService.setSkipOnboarding(
+      _hideOnboardingNextTime,
+    );
   }
 
-  @override
-  void dispose() {
-    _pageController.dispose();
-    _viewModel.dispose();
-    super.dispose();
-  }
+  if (!mounted) return;
+
+  Navigator.pushReplacementNamed(context, AppRoutes.authChoice);
+}
 
   @override
   Widget build(BuildContext context) {

@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
 
 import 'routing/app_routes.dart';
-import 'ui/core/themes/app_theme.dart';
-import 'ui/onboarding/widgets/onboarding_screen.dart';
 import 'ui/auth/widgets/auth_choice_screen.dart';
 import 'ui/auth/widgets/login_screen.dart';
 import 'ui/auth/widgets/register_screen.dart';
+import 'ui/core/themes/app_theme.dart';
 import 'ui/home/widgets/home_placeholder_screen.dart';
+import 'ui/onboarding/widgets/onboarding_screen.dart';
 
 class WayLineApp extends StatelessWidget {
-  const WayLineApp({super.key});
+  const WayLineApp({
+    super.key,
+    required this.showOnboarding,
+  });
+
+  // true = mostra onboarding
+  // false = vai direttamente a login/registrazione
+  final bool showOnboarding;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +24,12 @@ class WayLineApp extends StatelessWidget {
       title: 'WayLine',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
-      initialRoute: AppRoutes.onboarding,
+
+      // Rotta iniziale scelta in base alla preferenza salvata.
+      initialRoute: showOnboarding
+          ? AppRoutes.onboarding
+          : AppRoutes.authChoice,
+
       routes: {
         AppRoutes.onboarding: (_) => const OnboardingScreen(),
         AppRoutes.authChoice: (_) => const AuthChoiceScreen(),
