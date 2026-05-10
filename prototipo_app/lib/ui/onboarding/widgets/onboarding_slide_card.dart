@@ -11,86 +11,84 @@ class OnboardingSlideCard extends StatelessWidget {
     this.icon,
     this.accentColor,
     this.imageAlignment = Alignment.center,
-  });
+  }); 
 
+  
   final String imagePath;
   final String title;
   final String description;
+
+  
   final IconData? icon;
   final Color? accentColor;
   final Alignment imageAlignment;
 
   @override
   Widget build(BuildContext context) {
+    
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
 
+    // Colore usato per l'icona circolare.
     final effectiveAccentColor = accentColor ?? colorScheme.primary;
 
     return Padding(
+      // Margine laterale dell'intera slide.
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: 12),
+          // Spazio superiore.
+          const SizedBox(height: 8),
 
-          Expanded(
-            flex: 5,
+          // Box immagine con proporzioni fisse.
+          AspectRatio(
+            aspectRatio: 1.55,
             child: Container(
               width: double.infinity,
+
+              // Sfondo bianco e angoli arrotondati della box.
               decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    effectiveAccentColor.withValues(alpha: 0.14),
-                    effectiveAccentColor.withValues(alpha: 0.05),
-                  ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
+                color: Colors.white,
                 borderRadius: BorderRadius.circular(28),
-                boxShadow: [
-                  BoxShadow(
-                    color: effectiveAccentColor.withValues(alpha: 0.12),
-                    blurRadius: 24,
-                    offset: const Offset(0, 12),
-                  ),
-                ],
               ),
+
+              // Mantiene l'immagine dentro gli angoli arrotondati.
               clipBehavior: Clip.antiAlias,
+
+              // Stack: immagine sotto, icona sopra a destra.
               child: Stack(
                 children: [
+                  // Immagine principale della slide.
                   Positioned.fill(
-                    child: Padding(
-                      padding: const EdgeInsets.all(18),
-                      child: Image.asset(
-                        imagePath,
-                        fit: BoxFit.contain,
-                        alignment: imageAlignment,
-                      ),
+                    child: Image.asset(
+                      imagePath,
+                      fit: BoxFit.cover,
+                      alignment: imageAlignment,
+                      filterQuality: FilterQuality.high,
                     ),
                   ),
 
+                  // Icona superiore destra, mostrata solo se presente.
                   if (icon != null)
                     Positioned(
-                      top: 16,
-                      right: 16,
+                      top: 18,
+                      right: 18,
                       child: Container(
-                        width: 48,
-                        height: 48,
+                        width: 58,
+                        height: 58,
+
+                        // Cerchio colorato dietro l'icona.
                         decoration: BoxDecoration(
-                          color: Colors.white.withValues(alpha: 0.88),
                           shape: BoxShape.circle,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withValues(alpha: 0.08),
-                              blurRadius: 14,
-                              offset: const Offset(0, 6),
-                            ),
-                          ],
+                          color: effectiveAccentColor,
                         ),
+
+                        // Icona dentro il cerchio.
                         child: Icon(
                           icon,
-                          color: effectiveAccentColor,
-                          size: 24,
+                          color: Colors.white,
+                          size: 28,
                         ),
                       ),
                     ),
@@ -99,33 +97,31 @@ class OnboardingSlideCard extends StatelessWidget {
             ),
           ),
 
-          const SizedBox(height: 32),
+          // Spazio tra box immagine e titolo.
+          const SizedBox(height: 34),
 
-          Expanded(
-            flex: 3,
-            child: Column(
-              children: [
-                Text(
-                  title,
-                  textAlign: TextAlign.center,
-                  style: textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.w800,
-                    height: 1.15,
-                    color: colorScheme.onSurface,
-                  ),
-                ),
+          // Titolo della slide.
+          Text(
+            title,
+            textAlign: TextAlign.left,
+            style: textTheme.headlineSmall?.copyWith(
+              fontWeight: FontWeight.w800,
+              height: 1.12,
+              color: const Color(0xFF101828),
+            ),
+          ),
 
-                const SizedBox(height: 14),
+          // Spazio tra titolo e descrizione.
+          const SizedBox(height: 10),
 
-                Text(
-                  description,
-                  textAlign: TextAlign.center,
-                  style: textTheme.bodyMedium?.copyWith(
-                    height: 1.5,
-                    color: colorScheme.onSurfaceVariant,
-                  ),
-                ),
-              ],
+          // Descrizione della slide.
+          Text(
+            description,
+            textAlign: TextAlign.left,
+            style: textTheme.bodyLarge?.copyWith(
+              height: 1.65,
+              color: const Color(0xFF667085),
+              fontWeight: FontWeight.w400,
             ),
           ),
         ],

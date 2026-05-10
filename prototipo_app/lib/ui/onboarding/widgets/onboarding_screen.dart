@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
 import '../../../routing/app_routes.dart';
+import '../../core/ui/primary_button.dart';
 import '../view_model/onboarding_view_model.dart';
+import 'hide_onboarding_preference.dart';
 import 'onboarding_dots_indicator.dart';
 import 'onboarding_slide_card.dart';
 
-//Statefulwidget ,come è la scherma principale e contine le 3 pagine di onboarding
+// StatefulWidget: schermata principale che contiene le 3 pagine di onboarding.
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
 
@@ -17,6 +19,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   final PageController _pageController = PageController();
   final OnboardingViewModel _viewModel = OnboardingViewModel();
 
+  // Stato della checkbox "Non mostrarla più".
+  bool _hideOnboardingNextTime = false;
+
   static const List<_OnboardingVisualData> _visuals = [
     _OnboardingVisualData(
       icon: Icons.place_rounded,
@@ -27,19 +32,29 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       accentColor: Color(0xFF2563EB),
     ),
     _OnboardingVisualData(
-      icon: Icons.directions_bus_rounded,
-      accentColor: Color(0xFFFFB020),
+      icon: Icons.favorite_rounded,
+      accentColor: Color.fromARGB(255, 255, 0, 0),
       imageAlignment: Alignment.topCenter,
     ),
   ];
 
   void _goNext() {
     if (_viewModel.isLastPage) {
+      // Più avanti qui salveremo _hideOnboardingNextTime.
       Navigator.pushReplacementNamed(context, AppRoutes.authChoice);
       return;
     }
 
     _pageController.nextPage(
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeOutCubic,
+    );
+  }
+
+  void _goBack() {
+    if (_viewModel.currentPage == 0) return;
+
+    _pageController.previousPage(
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeOutCubic,
     );
@@ -66,6 +81,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           body: SafeArea(
             child: Column(
               children: [
+                // Bottone "Salta" superiore destro.
                 Padding(
                   padding: const EdgeInsets.fromLTRB(20, 12, 20, 4),
                   child: Align(
@@ -77,6 +93,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   ),
                 ),
 
+                // PageView con le 3 slide onboarding.
                 Expanded(
                   child: PageView.builder(
                     controller: _pageController,
@@ -98,35 +115,92 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   ),
                 ),
 
-                OnboardingDotsIndicator(
-                  currentIndex: _viewModel.currentPage,
-                  itemCount: _viewModel.items.length,
-                ),
-
-                const SizedBox(height: 24),
-
+                // Area inferiore: checkbox opzionale + dots + bottoni.
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
-                  child: SizedBox(
-                    width: double.infinity,
-                    height: 52,
-                    child: ElevatedButton(
-                      onPressed: _goNext,
-                      style: ElevatedButton.styleFrom(
-                        
-                        foregroundColor: Colors.white,
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
+                  padding: const EdgeInsets.fromLTRB(28, 12, 28, 32),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // Box "Non mostrarla più".
+                      // Compare solo nella terza schermata di onboarding.
+                      AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 180),
+                        switchInCurve: Curves.easeOutCubic,
+                        switchOutCurve: Curves.easeOutCubic,
+                        child: _viewModel.isLastPage
+                            ? HideOnboardingPreference(
+                                key: const ValueKey(
+                                  'hide_onboarding_preference',
+                                ),
+                                value: _hideOnboardingNextTime,
+                                onChanged: () {
+                                  setState(() {
+                                    _hideOnboardingNextTime =
+                                        !_hideOnboardingNextTime;
+                                  });
+                                },
+                              )
+                            : const SizedBox.shrink(
+                                key: ValueKey(
+                                  'empty_onboarding_preference',
+                                ),
+                              ),
+                      ),
+
+                      // Spazio tra box e riga finale.
+                      if (_viewModel.isLastPage) const SizedBox(height: 16),
+
+                      // Riga finale: indietro, dots, avanti/inizia.
+                      SizedBox(
+                        height: 52,
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            // Dots centrati.
+                            Center(
+                              child: OnboardingDotsIndicator(
+                                currentIndex: _viewModel.currentPage,
+                                itemCount: _viewModel.items.length,
+                              ),
+                            ),
+
+                            // Bottone/testo "Indietro", visibile dalla seconda pagina.
+                            if (_viewModel.currentPage > 0)
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: TextButton.icon(
+                                  onPressed: _goBack,
+                                  icon: const Icon(
+                                    Icons.chevron_left_rounded,
+                                    size: 18,
+                                  ),
+                                  label: const Text('Indietro'),
+                                  style: TextButton.styleFrom(
+                                    padding: EdgeInsets.zero,
+                                    minimumSize: const Size(0, 44),
+                                    tapTargetSize:
+                                        MaterialTapTargetSize.shrinkWrap,
+                                  ),
+                                ),
+                              ),
+
+                            // Bottone inferiore destro.
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: SizedBox(
+                                width: 112,
+                                child: PrimaryButton(
+                                  label: _viewModel.isLastPage
+                                      ? 'Inizia'
+                                      : 'Avanti',
+                                  onPressed: _goNext,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      child: Text(
-                        _viewModel.isLastPage ? 'Inizia' : 'Avanti',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ),
+                    ],
                   ),
                 ),
               ],
