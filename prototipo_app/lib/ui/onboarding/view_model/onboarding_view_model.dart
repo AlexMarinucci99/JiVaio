@@ -12,8 +12,8 @@ class OnboardingViewModel extends ChangeNotifier {
       imagePath: 'assets/onboarding/onboarding_2.png',
       title: 'Orari a portata di mano',
       description:
-    'Consulta rapidamente linee, fermate e partenze. '
-    '\nGli orari disponibili sono indicativi e possono subire variazioni.',
+          'Consulta rapidamente linee, fermate e partenze. '
+          '\nGli orari disponibili sono indicativi e possono subire variazioni.',
     ),
     OnboardingItem(
       imagePath: 'assets/onboarding/onboarding_3.png',

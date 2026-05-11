@@ -6,9 +6,7 @@ void main() {
     WidgetTester tester,
   ) async {
     // Avvio dell'app forzando la visualizzazione dell'onboarding.
-    await tester.pumpWidget(
-      const WayLineApp(showOnboarding: true),
-    );
+    await tester.pumpWidget(const WayLineApp(showOnboarding: true));
 
     // Lascia completare il primo rendering della UI.
     await tester.pump();

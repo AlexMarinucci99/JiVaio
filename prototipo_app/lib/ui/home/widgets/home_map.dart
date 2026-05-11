@@ -3,14 +3,13 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
 //Widget della mappa principale della Home.
-//Mostra OpenStreetMap 
+//Mostra OpenStreetMap
 class HomeMap extends StatelessWidget {
   const HomeMap({super.key});
 
   //centrato sull'aquiala
   static const LatLng _initialCenter = LatLng(42.3498, 13.3995);
 
-  
   static final LatLngBounds _worldBounds = LatLngBounds(
     const LatLng(-85.05112878, -180),
     const LatLng(85.05112878, 180),
@@ -27,11 +26,9 @@ class HomeMap extends StatelessWidget {
             constraints.maxHeight > 0;
 
         //Evita di costruire FlutterMap se il widget non ha ancora dimensioni valide.
-        
+
         if (!hasValidSize) {
-          return const ColoredBox(
-            color: Color(0xFFF7F9FC),
-          );
+          return const ColoredBox(color: Color(0xFFF7F9FC));
         }
 
         return FlutterMap(
@@ -44,15 +41,13 @@ class HomeMap extends StatelessWidget {
             minZoom: 5,
             maxZoom: 19,
 
-         
-            cameraConstraint: CameraConstraint.contain(
-              bounds: _worldBounds,
-            ),
+            cameraConstraint: CameraConstraint.contain(bounds: _worldBounds),
 
             // Gesture abilitate.
             // Evitiamo rotazione e gesture inutili per ora.
             interactionOptions: const InteractionOptions(
-              flags: InteractiveFlag.drag |
+              flags:
+                  InteractiveFlag.drag |
                   InteractiveFlag.pinchZoom |
                   InteractiveFlag.doubleTapZoom,
             ),

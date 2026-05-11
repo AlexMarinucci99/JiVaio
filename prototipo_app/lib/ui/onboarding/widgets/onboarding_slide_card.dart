@@ -11,21 +11,18 @@ class OnboardingSlideCard extends StatelessWidget {
     this.icon,
     this.accentColor,
     this.imageAlignment = Alignment.center,
-  }); 
+  });
 
-  
   final String imagePath;
   final String title;
   final String description;
 
-  
   final IconData? icon;
   final Color? accentColor;
   final Alignment imageAlignment;
 
   @override
   Widget build(BuildContext context) {
-    
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
 
@@ -70,27 +67,27 @@ class OnboardingSlideCard extends StatelessWidget {
                   ),
 
                   // Icona superiore destra, mostrata solo se presente.
-if (icon != null)
-  Positioned(
-    top: 18,
-    right: 18,
-    child: Container(
-      width: 58,
-      height: 58,
-      decoration: BoxDecoration(
-        // Cerchio bianco opaco dietro l'icona.
-        shape: BoxShape.circle,
-        color: Colors.white.withValues(alpha: 0.88),
-      ),
-      child: Icon(
-        icon,
+                  if (icon != null)
+                    Positioned(
+                      top: 18,
+                      right: 18,
+                      child: Container(
+                        width: 58,
+                        height: 58,
+                        decoration: BoxDecoration(
+                          // Cerchio bianco opaco dietro l'icona.
+                          shape: BoxShape.circle,
+                          color: Colors.white.withValues(alpha: 0.88),
+                        ),
+                        child: Icon(
+                          icon,
 
-        // Icona centrale colorata.
-        color: effectiveAccentColor,
-        size: 28,
-      ),
-    ),
-  ),
+                          // Icona centrale colorata.
+                          color: effectiveAccentColor,
+                          size: 28,
+                        ),
+                      ),
+                    ),
                 ],
               ),
             ),

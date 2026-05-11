@@ -11,12 +11,8 @@ Future<void> main() async {
   final onboardingPreferencesService = OnboardingPreferencesService();
 
   // true = l'utente in passato ha scelto di non vedere più l'onboarding.
-  final shouldSkipOnboarding =
-      await onboardingPreferencesService.shouldSkipOnboarding();
+  final shouldSkipOnboarding = await onboardingPreferencesService
+      .shouldSkipOnboarding();
 
-  runApp(
-    WayLineApp(
-      showOnboarding: !shouldSkipOnboarding,
-    ),
-  );
+  runApp(WayLineApp(showOnboarding: !shouldSkipOnboarding));
 }

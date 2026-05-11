@@ -5,14 +5,11 @@ import 'ui/auth/widgets/auth_choice_screen.dart';
 import 'ui/auth/widgets/login_screen.dart';
 import 'ui/auth/widgets/register_screen.dart';
 import 'ui/core/themes/app_theme.dart';
-import 'ui/home/widgets/home_placeholder_screen.dart';
 import 'ui/onboarding/widgets/onboarding_screen.dart';
+import 'ui/main_shell/widgets/main_shell_screen.dart';
 
 class WayLineApp extends StatelessWidget {
-  const WayLineApp({
-    super.key,
-    required this.showOnboarding,
-  });
+  const WayLineApp({super.key, required this.showOnboarding});
 
   // true = mostra onboarding
   // false = vai direttamente a login/registrazione
@@ -35,7 +32,7 @@ class WayLineApp extends StatelessWidget {
         AppRoutes.authChoice: (_) => const AuthChoiceScreen(),
         AppRoutes.login: (_) => const LoginScreen(),
         AppRoutes.register: (_) => const RegisterScreen(),
-        AppRoutes.home: (_) => const HomePlaceholderScreen(),
+        AppRoutes.home: (_) => const MainShellScreen(),
       },
     );
   }

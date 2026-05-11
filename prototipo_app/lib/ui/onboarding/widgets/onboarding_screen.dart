@@ -160,9 +160,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                 },
                               )
                             : const SizedBox.shrink(
-                                key: ValueKey(
-                                  'empty_onboarding_preference',
-                                ),
+                                key: ValueKey('empty_onboarding_preference'),
                               ),
                       ),
 

@@ -17,26 +17,21 @@ class OnboardingDotsIndicator extends StatelessWidget {
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: List.generate(
-        itemCount,
-        (index) {
-          final isActive = index == currentIndex;
+      children: List.generate(itemCount, (index) {
+        final isActive = index == currentIndex;
 
-          return AnimatedContainer(
-            duration: const Duration(milliseconds: 250),
-            curve: Curves.easeOutCubic,
-            margin: const EdgeInsets.symmetric(horizontal: 5),
-            width: isActive ? 26 : 9,
-            height: 9,
-            decoration: BoxDecoration(
-              color: isActive
-                  ? colorScheme.primary
-                  : colorScheme.outlineVariant,
-              borderRadius: BorderRadius.circular(99),
-            ),
-          );
-        },
-      ),
+        return AnimatedContainer(
+          duration: const Duration(milliseconds: 250),
+          curve: Curves.easeOutCubic,
+          margin: const EdgeInsets.symmetric(horizontal: 5),
+          width: isActive ? 26 : 9,
+          height: 9,
+          decoration: BoxDecoration(
+            color: isActive ? colorScheme.primary : colorScheme.outlineVariant,
+            borderRadius: BorderRadius.circular(99),
+          ),
+        );
+      }),
     );
   }
 }

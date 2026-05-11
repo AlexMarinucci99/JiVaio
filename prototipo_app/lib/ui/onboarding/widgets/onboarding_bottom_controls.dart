@@ -51,10 +51,7 @@ class OnboardingBottomControls extends StatelessWidget {
               alignment: Alignment.centerLeft,
               child: TextButton.icon(
                 onPressed: onBack,
-                icon: const Icon(
-                  Icons.chevron_left_rounded,
-                  size: 18,
-                ),
+                icon: const Icon(Icons.chevron_left_rounded, size: 18),
                 label: const Text('Indietro'),
                 style: TextButton.styleFrom(
                   padding: EdgeInsets.zero,

@@ -9,10 +9,6 @@ class HomePlaceholderScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: SizedBox.expand(
-        child: HomeMap(),
-      ),
-    );
+    return const Scaffold(body: SizedBox.expand(child: HomeMap()));
   }
 }

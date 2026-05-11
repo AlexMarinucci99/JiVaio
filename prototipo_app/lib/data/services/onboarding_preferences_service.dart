@@ -2,7 +2,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class OnboardingPreferencesService {
   static const String _skipOnboardingKey = 'skip_onboarding';
-//questservizio legge se l'onboarding va saltato e salva la scelta dell'utente
+  //questservizio legge se l'onboarding va saltato e salva la scelta dell'utente
   final SharedPreferencesAsync _preferences = SharedPreferencesAsync();
 
   Future<bool> shouldSkipOnboarding() async {
