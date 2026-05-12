@@ -10,6 +10,7 @@ class SettingsScreen extends StatelessWidget {
     return const Scaffold(
       backgroundColor: Color(0xFFF7F9FC),
       body: SizedBox.expand(),
+        
     );
   }
 }
