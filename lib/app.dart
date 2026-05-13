@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'ui/auth/widgets/reset_password_screen.dart';
 import 'routing/app_routes.dart';
 import 'ui/auth/widgets/auth_choice_screen.dart';
 import 'ui/auth/widgets/login_screen.dart';
@@ -35,6 +35,7 @@ class WayLineApp extends StatelessWidget {
 
         // Schermata principale con navbar inferiore.
         AppRoutes.home: (_) => const MainShellScreen(),
+        AppRoutes.resetPassword: (_) => const ResetPasswordScreen(),
       },
     );
   }
