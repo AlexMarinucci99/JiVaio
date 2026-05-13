@@ -98,11 +98,7 @@ class _BottomNavTile extends StatelessWidget {
                     : Colors.transparent,
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: Icon(
-                item.icon,
-                color: effectiveColor,
-                size: 24,
-              ),
+              child: Icon(item.icon, color: effectiveColor, size: 24),
             ),
 
             const SizedBox(height: 2),

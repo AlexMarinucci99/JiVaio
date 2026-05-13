@@ -32,6 +32,8 @@ class WayLineApp extends StatelessWidget {
         AppRoutes.authChoice: (_) => const AuthChoiceScreen(),
         AppRoutes.login: (_) => const LoginScreen(),
         AppRoutes.register: (_) => const RegisterScreen(),
+
+        // Schermata principale con navbar inferiore.
         AppRoutes.home: (_) => const MainShellScreen(),
       },
     );

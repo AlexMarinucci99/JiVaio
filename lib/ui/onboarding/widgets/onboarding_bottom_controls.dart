@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../core/ui/primary_button.dart';
+import '../../core/widgets/primary_button.dart';
 import 'onboarding_dots_indicator.dart';
 
 // Widget inferiore dell'onboarding.
