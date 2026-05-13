@@ -19,7 +19,7 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
   // Stato dello switch Accedi / Registrati
   AuthMode _selectedMode = AuthMode.login;
 
-  // Controller campi
+  // Controller dei campi del form
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -53,7 +53,7 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
     });
   }
 
-  // Azione fittizia del bottone principale
+  // Azione del bottone principale
   void _submit() {
     final name = _nameController.text.trim();
     final email = _emailController.text.trim();
@@ -106,25 +106,26 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
   @override
   Widget build(BuildContext context) {
     const Color primaryColor = Color(0xFF191970);
+    const Color buttonBackgroundColor = Color(0xFFF7F9FC);
+    const Color fieldBackgroundColor = Color(0xFFF1F4FA);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('WayLine'),
-      ),
+      // Tolto l'AppBar: sparisce il blocco in alto con "WayLine"
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24),
+          padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const SizedBox(height: 40),
+              const SizedBox(height: 28),
 
               // Titolo schermata
               const Text(
                 'Come vuoi continuare?',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 26,
+                  fontSize: 28,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -136,10 +137,10 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
                 selectedValue: _selectedMode,
                 onChanged: _onAuthModeChanged,
                 selectedColor: Colors.white,
-                backgroundColor: const Color(0xFFF1F4FA),
-                borderColor: const Color(0xFFE1E7F0),
+                backgroundColor: fieldBackgroundColor,
+                borderColor: Color(0xFFE1E7F0),
                 selectedTextColor: primaryColor,
-                unselectedTextColor: const Color(0xFF4B5563),
+                unselectedTextColor: Color(0xFF4B5563),
                 items: const [
                   AppSegmentedControlItem(
                     value: AuthMode.login,
@@ -152,32 +153,34 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
                 ],
               ),
 
-              const SizedBox(height: 32),
+              const SizedBox(height: 36),
 
-              // Titolo form
+              // Titolo form centrato
               Text(
                 _isLogin ? 'Bentornato!' : 'Crea account',
+                textAlign: TextAlign.center,
                 style: const TextStyle(
-                  fontSize: 28,
+                  fontSize: 30,
                   fontWeight: FontWeight.bold,
                   color: primaryColor,
                 ),
               ),
 
-              const SizedBox(height: 8),
+              const SizedBox(height: 10),
 
-              // Sottotitolo form
+              // Sottotitolo form centrato
               Text(
                 _isLogin
                     ? 'Accedi per salvare linee e ricevere notifiche.'
                     : 'Registrati per personalizzare la tua esperienza.',
+                textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.grey.shade700,
                   fontSize: 15,
                 ),
               ),
 
-              const SizedBox(height: 28),
+              const SizedBox(height: 30),
 
               // Campo nome solo per registrazione
               if (!_isLogin) ...[
@@ -256,18 +259,33 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
                   ),
                 ),
 
-              const SizedBox(height: 16),
+              const SizedBox(height: 18),
 
-              // Bottone principale
+              // Bottone principale Accedi / Registrati
               SizedBox(
-                height: 54,
+                height: 58,
                 child: ElevatedButton(
                   onPressed: _submit,
-                  child: Text(_primaryButtonText),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: buttonBackgroundColor,
+                    foregroundColor: primaryColor,
+                    elevation: 3,
+                    shadowColor: Colors.black26,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(28),
+                    ),
+                  ),
+                  child: Text(
+                    _primaryButtonText,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
                 ),
               ),
 
-              const SizedBox(height: 28),
+              const SizedBox(height: 30),
 
               // Separatore
               Row(
@@ -286,13 +304,19 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
 
               const SizedBox(height: 20),
 
-              // Bottoni social fittizi
+              // Bottoni social
               Row(
                 children: [
                   Expanded(
                     child: _socialButton(
                       label: 'Google',
-                      icon: Icons.g_mobiledata_rounded,
+                      iconWidget: const Text(
+                        'G',
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                       onPressed: () => _fakeSocialLogin('Google'),
                     ),
                   ),
@@ -300,7 +324,10 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
                   Expanded(
                     child: _socialButton(
                       label: 'Apple',
-                      icon: Icons.apple_rounded,
+                      iconWidget: const Icon(
+                        Icons.apple_rounded,
+                        size: 18,
+                      ),
                       onPressed: () => _fakeSocialLogin('Apple'),
                     ),
                   ),
@@ -308,20 +335,41 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
                   Expanded(
                     child: _socialButton(
                       label: 'Facebook',
-                      icon: Icons.facebook_rounded,
+                      iconWidget: const Icon(
+                        Icons.facebook_rounded,
+                        size: 18,
+                      ),
                       onPressed: () => _fakeSocialLogin('Facebook'),
                     ),
                   ),
                 ],
               ),
 
-              const SizedBox(height: 28),
+              const SizedBox(height: 26),
 
-              // Accesso ospite
-              TextButton(
-                onPressed: _continueAsGuest,
-                child: const Text('Continua come guest'),
+              // Bottone guest più grande con background
+              SizedBox(
+                height: 54,
+                child: TextButton(
+                  onPressed: _continueAsGuest,
+                  style: TextButton.styleFrom(
+                    backgroundColor: buttonBackgroundColor,
+                    foregroundColor: primaryColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(26),
+                    ),
+                  ),
+                  child: const Text(
+                    'Continua come guest',
+                    style: TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
               ),
+
+              const SizedBox(height: 10),
 
               Text(
                 'Senza salvataggi e notifiche personalizzate',
@@ -331,6 +379,8 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
                   fontSize: 13,
                 ),
               ),
+
+              const SizedBox(height: 24),
             ],
           ),
         ),
@@ -365,18 +415,43 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
     );
   }
 
-  // Bottone social fittizio
+  // Bottone social riutilizzabile
   Widget _socialButton({
     required String label,
-    required IconData icon,
+    required Widget iconWidget,
     required VoidCallback onPressed,
   }) {
-    return OutlinedButton.icon(
-      onPressed: onPressed,
-      icon: Icon(icon),
-      label: Text(
-        label,
-        overflow: TextOverflow.ellipsis,
+    return SizedBox(
+      height: 48,
+      child: OutlinedButton(
+        onPressed: onPressed,
+        style: OutlinedButton.styleFrom(
+          foregroundColor: const Color(0xFF191970),
+          side: const BorderSide(
+            color: Color(0xFF9CA3AF),
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(24),
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            iconWidget,
+            const SizedBox(width: 6),
+            Flexible(
+              child: Text(
+                label,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
