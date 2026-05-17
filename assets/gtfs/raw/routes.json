@@ -1,0 +1,134 @@
+[
+  {
+    "route_id": "10",
+    "agency_id": "1",
+    "route_short_name": "1",
+    "route_long_name": "Terminal-L'aquilone",
+    "route_desc": "",
+    "route_type": "3",
+    "route_url": "",
+    "route_color": "",
+    "route_text_color": ""
+  },
+  {
+    "route_id": "12",
+    "agency_id": "1",
+    "route_short_name": "2U",
+    "route_long_name": "Terminal-C.C.L'aquilone/Globo",
+    "route_desc": "",
+    "route_type": "3",
+    "route_url": "",
+    "route_color": "",
+    "route_text_color": ""
+  },
+  {
+    "route_id": "14",
+    "agency_id": "1",
+    "route_short_name": "NC",
+    "route_long_name": "NAVETTA CENTRO Storico-Terminal-Collemaggio",
+    "route_desc": "Gratis",
+    "route_type": "3",
+    "route_url": "",
+    "route_color": "",
+    "route_text_color": ""
+  },
+  {
+    "route_id": "20",
+    "agency_id": "1",
+    "route_short_name": "15",
+    "route_long_name": "Terminal-Arischia",
+    "route_desc": "",
+    "route_type": "3",
+    "route_url": "",
+    "route_color": "",
+    "route_text_color": ""
+  },
+  {
+    "route_id": "23",
+    "agency_id": "1",
+    "route_short_name": "6D",
+    "route_long_name": "Paganica-Terminal-L'aquilone",
+    "route_desc": "",
+    "route_type": "3",
+    "route_url": "",
+    "route_color": "",
+    "route_text_color": ""
+  },
+  {
+    "route_id": "24",
+    "agency_id": "1",
+    "route_short_name": "6S",
+    "route_long_name": "Paganica-Terminal-L'aquilone",
+    "route_desc": "",
+    "route_type": "3",
+    "route_url": "",
+    "route_color": "",
+    "route_text_color": ""
+  },
+  {
+    "route_id": "26",
+    "agency_id": "1",
+    "route_short_name": "EST",
+    "route_long_name": "NAVETTA EST-Terminal-Hotel MySuite",
+    "route_desc": "",
+    "route_type": "3",
+    "route_url": "",
+    "route_color": "",
+    "route_text_color": ""
+  },
+  {
+    "route_id": "28",
+    "agency_id": "1",
+    "route_short_name": "OVEST",
+    "route_long_name": "NAVETTA OVEST-Terminal-Hotel MySuite",
+    "route_desc": "",
+    "route_type": "3",
+    "route_url": "",
+    "route_color": "",
+    "route_text_color": ""
+  },
+  {
+    "route_id": "31",
+    "agency_id": "1",
+    "route_short_name": "NB",
+    "route_long_name": "Navetta Notturna",
+    "route_desc": "",
+    "route_type": "3",
+    "route_url": "",
+    "route_color": "14213D",
+    "route_text_color": "FFFFFF"
+  },
+  {
+    "route_id": "M2UF",
+    "agency_id": "1",
+    "route_short_name": "M2UF",
+    "route_long_name": "M2UF-Festivo",
+    "route_desc": "",
+    "route_type": "3",
+    "route_url": "",
+    "route_color": "",
+    "route_text_color": ""
+  },
+  {
+    "route_id": "1T",
+    "agency_id": "1",
+    "route_short_name": "1T",
+    "route_long_name": "Satzione FS-Terminal",
+    "route_desc": "",
+    "route_type": "3",
+    "route_url": "",
+    "route_color": "",
+    "route_text_color": ""
+  },
+  {
+    "route_id": "2UT",
+    "agency_id": "1",
+    "route_short_name": "2UT",
+    "route_long_name": "Terminal-C.C.L'aquilone/Globo",
+    "route_desc": "",
+    "route_type": "3",
+    "route_url": "",
+    "route_color": "",
+    "route_text_color": ""
+  }
+]
