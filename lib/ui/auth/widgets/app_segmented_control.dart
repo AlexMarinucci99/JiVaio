@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AppSegmentedControlItem<T> {
-  const AppSegmentedControlItem({
-    required this.value,
-    required this.label,
-  });
+  const AppSegmentedControlItem({required this.value, required this.label});
 
   // Valore logico dell'opzione.
   // Esempio: LinesScope.all, LinesScope.saved, oppure una String.
@@ -22,12 +19,12 @@ class AppSegmentedControl<T> extends StatelessWidget {
     required this.selectedValue,
     required this.onChanged,
     this.backgroundColor = const Color(0xFFEAF0FA),
-    this.selectedColor = const Color(0xFF20268F),
+    this.selectedColor = const Color(0xFF061A3A),
     this.borderColor = const Color(0xFFDCE5F2),
     this.selectedTextColor = Colors.white,
     this.unselectedTextColor = const Color(0xFF5D6675),
-  })  : assert(items.length >= 2),
-        assert(items.length <= 4);
+  }) : assert(items.length >= 2),
+       assert(items.length <= 4);
 
   // Lista delle opzioni da mostrare.
   final List<AppSegmentedControlItem<T>> items;
@@ -66,42 +63,46 @@ class AppSegmentedControl<T> extends StatelessWidget {
 
       // Riga orizzontale dei segmenti.
       child: Row(
-        children: items.map((item) {
-          final isSelected = item.value == selectedValue;
+        children: items
+            .map((item) {
+              final isSelected = item.value == selectedValue;
 
-          return Expanded(
-            child: TextButton(
-              onPressed: () {
-                if (isSelected) {
-                  return;
-                }
+              return Expanded(
+                child: TextButton(
+                  onPressed: () {
+                    if (isSelected) {
+                      return;
+                    }
 
-                onChanged(item.value);
-              },
-              style: TextButton.styleFrom(
-                backgroundColor:
-                    isSelected ? selectedColor : Colors.transparent,
-                foregroundColor:
-                    isSelected ? selectedTextColor : unselectedTextColor,
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(11),
-                ),
-              ),
-              child: Text(
-                item.label,
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    onChanged(item.value);
+                  },
+                  style: TextButton.styleFrom(
+                    backgroundColor: isSelected
+                        ? selectedColor
+                        : Colors.transparent,
+                    foregroundColor: isSelected
+                        ? selectedTextColor
+                        : unselectedTextColor,
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(11),
+                    ),
+                  ),
+                  child: Text(
+                    item.label,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       color: isSelected
                           ? selectedTextColor
                           : unselectedTextColor,
                       fontSize: 13,
                       fontWeight: FontWeight.w700,
                     ),
-              ),
-            ),
-          );
-        }).toList(growable: false),
+                  ),
+                ),
+              );
+            })
+            .toList(growable: false),
       ),
     );
   }

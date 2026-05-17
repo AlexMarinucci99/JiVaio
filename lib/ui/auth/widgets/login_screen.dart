@@ -37,9 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     if (email.isEmpty || password.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Inserisci email e password'),
-        ),
+        const SnackBar(content: Text('Inserisci email e password')),
       );
       return;
     }
@@ -100,10 +98,7 @@ class _LoginScreenState extends State<LoginScreen> {
               Text(
                 'Accedi per continuare a usare WayLine',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 15,
-                  color: Colors.grey.shade700,
-                ),
+                style: TextStyle(fontSize: 15, color: Colors.grey.shade700),
               ),
 
               const SizedBox(height: 40),
@@ -183,10 +178,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   child: const Text(
                     'Accedi',
-                    style: TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
                   ),
                 ),
               ),

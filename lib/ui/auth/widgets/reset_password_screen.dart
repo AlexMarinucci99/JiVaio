@@ -32,9 +32,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   }
 
   void _showMessage(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(message)));
   }
 
   @override
@@ -119,10 +119,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   ),
                   child: const Text(
                     'Invia link di recupero',
-                    style: TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
@@ -137,10 +134,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 icon: const Icon(Icons.arrow_back),
                 label: const Text(
                   'Torna ad Accedi',
-                  style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
                 ),
               ),
             ],

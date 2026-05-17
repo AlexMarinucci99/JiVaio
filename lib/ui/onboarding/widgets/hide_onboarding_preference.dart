@@ -22,7 +22,7 @@ class HideOnboardingPreference extends StatelessWidget {
     // - casellina selezionata
     // - bordo del box selezionato
     // - sfondo leggero del box selezionato
-    const selectedColor = Color.fromARGB(255, 36, 1, 161);
+    const selectedColor = Color(0xFF061A3A);
 
     // Colori dello stato non selezionato.
     const unselectedBackgroundColor = Color(0xFFFAFBFF);

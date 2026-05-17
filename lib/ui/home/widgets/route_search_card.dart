@@ -163,10 +163,7 @@ class _RouteSearchCardState extends State<RouteSearchCard> {
               child: Row(
                 children: [
                   Expanded(
-                    child: Divider(
-                      height: 28 * scale,
-                      color: lineColor,
-                    ),
+                    child: Divider(height: 28 * scale, color: lineColor),
                   ),
 
                   // Bottone per invertire partenza e destinazione.
@@ -228,10 +225,10 @@ class _RouteSearchCardState extends State<RouteSearchCard> {
                 label: Text(
                   'Cerca percorso',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontSize: 14 * scale,
-                        fontWeight: FontWeight.w700,
-                        color: _canSearch ? Colors.white : inactiveTextColor,
-                      ),
+                    fontSize: 14 * scale,
+                    fontWeight: FontWeight.w700,
+                    color: _canSearch ? Colors.white : inactiveTextColor,
+                  ),
                 ),
               ),
             ),
@@ -275,11 +272,7 @@ class _SearchTextField extends StatelessWidget {
             color: Color(0xFFF0F1F6),
             shape: BoxShape.circle,
           ),
-          child: Icon(
-            icon,
-            size: 14 * scale,
-            color: const Color(0xFF59609A),
-          ),
+          child: Icon(icon, size: 14 * scale, color: const Color(0xFF59609A)),
         ),
 
         SizedBox(width: 14 * scale),
@@ -295,27 +288,27 @@ class _SearchTextField extends StatelessWidget {
               Text(
                 label,
                 style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                      color: labelColor,
-                      fontSize: 12 * scale,
-                      fontWeight: FontWeight.w700,
-                    ),
+                  color: labelColor,
+                  fontSize: 12 * scale,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
 
               // Campo testuale.
               TextField(
                 controller: controller,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: textColor,
-                      fontSize: 16 * scale,
-                      fontWeight: FontWeight.w500,
-                    ),
+                  color: textColor,
+                  fontSize: 16 * scale,
+                  fontWeight: FontWeight.w500,
+                ),
                 decoration: InputDecoration(
                   hintText: hintText,
                   hintStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: const Color(0xFF777986),
-                        fontSize: 16 * scale,
-                        fontWeight: FontWeight.w400,
-                      ),
+                    color: const Color(0xFF777986),
+                    fontSize: 16 * scale,
+                    fontWeight: FontWeight.w400,
+                  ),
                   border: InputBorder.none,
                   isDense: true,
                   contentPadding: EdgeInsets.zero,

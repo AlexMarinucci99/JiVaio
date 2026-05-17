@@ -3,10 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../routing/app_routes.dart';
 import '../../core/widgets/app_segmented_control.dart';
 
-enum AuthMode {
-  login,
-  register,
-}
+enum AuthMode { login, register }
 
 class AuthChoiceScreen extends StatefulWidget {
   const AuthChoiceScreen({super.key});
@@ -98,9 +95,9 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
 
   // Messaggio rapido
   void _showMessage(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(message)));
   }
 
   @override
@@ -124,10 +121,7 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
               const Text(
                 'Come vuoi continuare?',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
               ),
 
               const SizedBox(height: 32),
@@ -174,10 +168,7 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
                     ? 'Accedi per salvare linee e ricevere notifiche.'
                     : 'Registrati per personalizzare la tua esperienza.',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.grey.shade700,
-                  fontSize: 15,
-                ),
+                style: TextStyle(color: Colors.grey.shade700, fontSize: 15),
               ),
 
               const SizedBox(height: 30),
@@ -324,10 +315,7 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
                   Expanded(
                     child: _socialButton(
                       label: 'Apple',
-                      iconWidget: const Icon(
-                        Icons.apple_rounded,
-                        size: 18,
-                      ),
+                      iconWidget: const Icon(Icons.apple_rounded, size: 18),
                       onPressed: () => _fakeSocialLogin('Apple'),
                     ),
                   ),
@@ -335,10 +323,7 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
                   Expanded(
                     child: _socialButton(
                       label: 'Facebook',
-                      iconWidget: const Icon(
-                        Icons.facebook_rounded,
-                        size: 18,
-                      ),
+                      iconWidget: const Icon(Icons.facebook_rounded, size: 18),
                       onPressed: () => _fakeSocialLogin('Facebook'),
                     ),
                   ),
@@ -361,10 +346,7 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
                   ),
                   child: const Text(
                     'Continua come guest',
-                    style: TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
                   ),
                 ),
               ),
@@ -374,10 +356,7 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
               Text(
                 'Senza salvataggi e notifiche personalizzate',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.grey.shade500,
-                  fontSize: 13,
-                ),
+                style: TextStyle(color: Colors.grey.shade500, fontSize: 13),
               ),
 
               const SizedBox(height: 24),
@@ -427,9 +406,7 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
         onPressed: onPressed,
         style: OutlinedButton.styleFrom(
           foregroundColor: const Color(0xFF191970),
-          side: const BorderSide(
-            color: Color(0xFF9CA3AF),
-          ),
+          side: const BorderSide(color: Color(0xFF9CA3AF)),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(24),
           ),
