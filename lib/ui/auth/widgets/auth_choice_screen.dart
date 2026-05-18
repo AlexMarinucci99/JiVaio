@@ -151,7 +151,7 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
 
               // Titolo form centrato
               Text(
-                _isLogin ? 'Bentornato!' : 'Crea account',
+                _isLogin ? 'Bentornato' : 'Crea account',
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   fontSize: 30,
@@ -220,7 +220,7 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
                 _authTextField(
                   controller: _confirmPasswordController,
                   label: 'Conferma password',
-                  icon: Icons.lock_reset_outlined,
+                  icon: Icons.lock_outline,
                   obscureText: _obscureConfirmPassword,
                   suffixIcon: IconButton(
                     icon: Icon(
@@ -253,30 +253,28 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
               const SizedBox(height: 18),
 
               // Bottone principale Accedi / Registrati
-              SizedBox(
-                height: 58,
-                child: ElevatedButton(
-                  onPressed: _submit,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: buttonBackgroundColor,
-                    foregroundColor: primaryColor,
-                    elevation: 3,
-                    shadowColor: Colors.black26,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(28),
-                    ),
-                  ),
-                  child: Text(
-                    _primaryButtonText,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-              ),
+SizedBox(
+  height: 58,
+  child: TextButton(
+    onPressed: _submit,
+    style: TextButton.styleFrom(
+      backgroundColor: buttonBackgroundColor,
+      foregroundColor: primaryColor,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(28),
+      ),
+    ),
+    child: Text(
+      _primaryButtonText,
+      style: const TextStyle(
+        fontSize: 18,
+        fontWeight: FontWeight.w600,
+      ),
+    ),
+  ),
+),
 
-              const SizedBox(height: 30),
+const SizedBox(height: 30),
 
               // Separatore
               Row(
