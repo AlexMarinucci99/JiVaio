@@ -4,7 +4,7 @@ import '../../../domain/models/transit_line.dart';
 import '../../core/widgets/app_segmented_control.dart';
 import '../view_model/lines_view_model.dart';
 import 'line_card/line_card.dart';
-import 'line_detail_screen.dart';
+import 'line_detail/line_detail_screen.dart';
 
 class LinesScreen extends StatefulWidget {
   const LinesScreen({super.key});
@@ -23,13 +23,13 @@ class _LinesScreenState extends State<LinesScreen> {
   }
 
   // Placeholder per apertura dettagli linea.
-  void _openLineDetails(TransitLine line) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (_) => LineDetailScreen(lineName: line.displayName),
-      ),
-    );
-  }
+void _openLineDetails(TransitLine line) {
+  Navigator.of(context).push(
+    MaterialPageRoute(
+      builder: (_) => LineDetailScreen(line: line),
+    ),
+  );
+}
 
   @override
   Widget build(BuildContext context) {
