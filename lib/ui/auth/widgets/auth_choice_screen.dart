@@ -13,17 +13,17 @@ class AuthChoiceScreen extends StatefulWidget {
 }
 
 class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
-  // Stato dello switch Accedi / Registrati
+  // Stato dello switch Accedi / Registrati.
   AuthMode _selectedMode = AuthMode.login;
 
-  // Controller dei campi del form
+  // Controller dei campi del form.
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
 
-  // Stato visibilità password
+  // Stato visibilità password.
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
 
@@ -35,7 +35,7 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
 
   @override
   void dispose() {
-    // Pulizia controller
+    // Pulizia controller.
     _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
@@ -43,14 +43,14 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
     super.dispose();
   }
 
-  // Cambio modalità Accedi / Registrati
+  // Cambio modalità Accedi / Registrati.
   void _onAuthModeChanged(AuthMode mode) {
     setState(() {
       _selectedMode = mode;
     });
   }
 
-  // Azione del bottone principale
+  // Azione del bottone principale.
   void _submit() {
     final name = _nameController.text.trim();
     final email = _emailController.text.trim();
@@ -83,17 +83,17 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
     Navigator.pushReplacementNamed(context, AppRoutes.home);
   }
 
-  // Accesso come guest
+  // Accesso come guest.
   void _continueAsGuest() {
     Navigator.pushReplacementNamed(context, AppRoutes.home);
   }
 
-  // Social login fittizio
+  // Social login fittizio.
   void _fakeSocialLogin(String provider) {
     _showMessage('Accesso con $provider non ancora implementato');
   }
 
-  // Messaggio rapido
+  // Messaggio rapido.
   void _showMessage(String message) {
     ScaffoldMessenger.of(
       context,
@@ -107,7 +107,7 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
     const Color fieldBackgroundColor = Color(0xFFF1F4FA);
 
     return Scaffold(
-      // Tolto l'AppBar: sparisce il blocco in alto con "WayLine"
+      // Tolto l'AppBar: sparisce il blocco in alto con "WayLine".
       backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
@@ -117,7 +117,7 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
             children: [
               const SizedBox(height: 28),
 
-              // Titolo schermata
+              // Titolo schermata.
               const Text(
                 'Come vuoi continuare?',
                 textAlign: TextAlign.center,
@@ -126,15 +126,22 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
 
               const SizedBox(height: 32),
 
-              // Switch Accedi / Registrati
+              // Switch Accedi / Registrati.
+              // Usa una palette propria della schermata auth.
               AppSegmentedControl<AuthMode>(
                 selectedValue: _selectedMode,
                 onChanged: _onAuthModeChanged,
-                selectedColor: Colors.white,
-                backgroundColor: fieldBackgroundColor,
-                borderColor: Color(0xFFE1E7F0),
-                selectedTextColor: primaryColor,
-                unselectedTextColor: Color(0xFF4B5563),
+                colors: const AppSegmentedControlColors(
+                  backgroundColor: fieldBackgroundColor,
+                  selectedColor: Colors.white,
+                  borderColor: Color(0xFFE1E7F0),
+                  selectedTextColor: primaryColor,
+                  unselectedTextColor: Color(0xFF4B5563),
+                  badgeBackgroundColor: Color(0xFFE8EAFF),
+                  badgeTextColor: primaryColor,
+                  selectedBadgeBackgroundColor: Color(0x2EFFFFFF),
+                  selectedBadgeTextColor: primaryColor,
+                ),
                 items: const [
                   AppSegmentedControlItem(
                     value: AuthMode.login,
@@ -149,7 +156,7 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
 
               const SizedBox(height: 36),
 
-              // Titolo form centrato
+              // Titolo form centrato.
               Text(
                 _isLogin ? 'Bentornato' : 'Crea account',
                 textAlign: TextAlign.center,
@@ -162,7 +169,7 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
 
               const SizedBox(height: 10),
 
-              // Sottotitolo form centrato
+              // Sottotitolo form centrato.
               Text(
                 _isLogin
                     ? 'Accedi per salvare linee e ricevere notifiche.'
@@ -173,7 +180,7 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
 
               const SizedBox(height: 30),
 
-              // Campo nome solo per registrazione
+              // Campo nome solo per registrazione.
               if (!_isLogin) ...[
                 _authTextField(
                   controller: _nameController,
@@ -183,7 +190,7 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
                 const SizedBox(height: 16),
               ],
 
-              // Campo email
+              // Campo email.
               _authTextField(
                 controller: _emailController,
                 label: 'Email',
@@ -193,7 +200,7 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
 
               const SizedBox(height: 16),
 
-              // Campo password
+              // Campo password.
               _authTextField(
                 controller: _passwordController,
                 label: 'Password',
@@ -215,7 +222,7 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
 
               const SizedBox(height: 16),
 
-              // Conferma password solo per registrazione
+              // Conferma password solo per registrazione.
               if (!_isLogin) ...[
                 _authTextField(
                   controller: _confirmPasswordController,
@@ -238,7 +245,7 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
                 const SizedBox(height: 16),
               ],
 
-              // Password dimenticata solo per login
+              // Password dimenticata solo per login.
               if (_isLogin)
                 Align(
                   alignment: Alignment.centerRight,
@@ -252,31 +259,31 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
 
               const SizedBox(height: 18),
 
-              // Bottone principale Accedi / Registrati
-SizedBox(
-  height: 58,
-  child: TextButton(
-    onPressed: _submit,
-    style: TextButton.styleFrom(
-      backgroundColor: buttonBackgroundColor,
-      foregroundColor: primaryColor,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(28),
-      ),
-    ),
-    child: Text(
-      _primaryButtonText,
-      style: const TextStyle(
-        fontSize: 18,
-        fontWeight: FontWeight.w600,
-      ),
-    ),
-  ),
-),
+              // Bottone principale Accedi / Registrati.
+              SizedBox(
+                height: 58,
+                child: TextButton(
+                  onPressed: _submit,
+                  style: TextButton.styleFrom(
+                    backgroundColor: buttonBackgroundColor,
+                    foregroundColor: primaryColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(28),
+                    ),
+                  ),
+                  child: Text(
+                    _primaryButtonText,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
 
-const SizedBox(height: 30),
+              const SizedBox(height: 30),
 
-              // Separatore
+              // Separatore.
               Row(
                 children: [
                   Expanded(child: Divider(color: Colors.grey.shade300)),
@@ -293,7 +300,7 @@ const SizedBox(height: 30),
 
               const SizedBox(height: 20),
 
-              // Bottoni social
+              // Bottoni social.
               Row(
                 children: [
                   Expanded(
@@ -330,7 +337,7 @@ const SizedBox(height: 30),
 
               const SizedBox(height: 26),
 
-              // Bottone guest più grande con background
+              // Bottone guest più grande con background.
               SizedBox(
                 height: 54,
                 child: TextButton(
@@ -365,7 +372,7 @@ const SizedBox(height: 30),
     );
   }
 
-  // Campo input riutilizzabile
+  // Campo input riutilizzabile.
   Widget _authTextField({
     required TextEditingController controller,
     required String label,
@@ -392,7 +399,7 @@ const SizedBox(height: 30),
     );
   }
 
-  // Bottone social riutilizzabile
+  // Bottone social riutilizzabile.
   Widget _socialButton({
     required String label,
     required Widget iconWidget,

@@ -22,14 +22,14 @@ class _LinesScreenState extends State<LinesScreen> {
     super.dispose();
   }
 
-  // Placeholder per apertura dettagli linea.
-void _openLineDetails(TransitLine line) {
-  Navigator.of(context).push(
-    MaterialPageRoute(
-      builder: (_) => LineDetailScreen(line: line),
-    ),
-  );
-}
+  // Apertura schermata dettaglio linea.
+  void _openLineDetails(TransitLine line) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => LineDetailScreen(line: line),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -84,9 +84,21 @@ void _openLineDetails(TransitLine line) {
                         const SizedBox(height: 18),
 
                         // Switch Tutte / Salvate.
+                        // Usa una palette propria della schermata linee.
                         AppSegmentedControl<LinesScope>(
                           selectedValue: _viewModel.scope,
                           onChanged: _viewModel.setScope,
+                          colors: const AppSegmentedControlColors(
+                            backgroundColor: Color(0xFFEAF0FA),
+                            selectedColor: Color(0xFF061A3A),
+                            borderColor: Color(0xFFDCE5F2),
+                            selectedTextColor: Colors.white,
+                            unselectedTextColor: Color(0xFF5D6675),
+                            badgeBackgroundColor: Color(0xFFDCEBFF),
+                            badgeTextColor: Color(0xFF061A3A),
+                            selectedBadgeBackgroundColor: Color(0x2EFFFFFF),
+                            selectedBadgeTextColor: Colors.white,
+                          ),
                           items: [
                             const AppSegmentedControlItem(
                               value: LinesScope.all,
