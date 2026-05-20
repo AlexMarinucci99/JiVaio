@@ -6,7 +6,7 @@ import 'ui/auth/widgets/login_screen.dart';
 import 'ui/auth/widgets/register_screen.dart';
 import 'ui/core/themes/app_theme.dart';
 import 'ui/onboarding/widgets/onboarding_screen.dart';
-import 'ui/main_shell/widgets/main_shell_screen.dart';
+import 'ui/main_shell/widgets/main_navigation_screen.dart';
 
 class WayLineApp extends StatelessWidget {
   const WayLineApp({super.key, required this.showOnboarding});
@@ -34,7 +34,7 @@ class WayLineApp extends StatelessWidget {
         AppRoutes.register: (_) => const RegisterScreen(),
 
         // Schermata principale con navbar inferiore.
-        AppRoutes.home: (_) => const MainShellScreen(),
+        AppRoutes.home: (_) => const MainNavigationScreen(),
         AppRoutes.resetPassword: (_) => const ResetPasswordScreen(),
       },
     );

@@ -1,11 +1,53 @@
 import 'package:flutter/material.dart';
 
+class HideOnboardingPreferenceColors {
+  const HideOnboardingPreferenceColors({
+    this.selectedColor = const Color(0xFF061A3A),
+    this.selectedBackgroundColor = const Color(0x14061A3A),
+    this.selectedBorderColor = const Color(0x6B061A3A),
+    this.unselectedBackgroundColor = const Color(0xFFFAFBFF),
+    this.unselectedBorderColor = const Color(0xFFE4E9F2),
+    this.unselectedCheckBorderColor = const Color(0xFFC5CCD8),
+    this.checkIconColor = Colors.white,
+    this.titleColor = const Color(0xFF101828),
+    this.subtitleColor = const Color(0xFF667085),
+  });
+
+  // Colore principale usato quando il box è selezionato.
+  final Color selectedColor;
+
+  // Sfondo del box quando è selezionato.
+  final Color selectedBackgroundColor;
+
+  // Bordo del box quando è selezionato.
+  final Color selectedBorderColor;
+
+  // Sfondo del box quando non è selezionato.
+  final Color unselectedBackgroundColor;
+
+  // Bordo del box quando non è selezionato.
+  final Color unselectedBorderColor;
+
+  // Bordo della casellina quando non è selezionata.
+  final Color unselectedCheckBorderColor;
+
+  // Colore dell'icona check.
+  final Color checkIconColor;
+
+  // Colore del titolo.
+  final Color titleColor;
+
+  // Colore del sottotitolo.
+  final Color subtitleColor;
+}
+
 // Box cliccabile per scegliere se non mostrare più l'onboarding.
 class HideOnboardingPreference extends StatelessWidget {
   const HideOnboardingPreference({
     super.key,
     required this.value,
     required this.onChanged,
+    this.colors = const HideOnboardingPreferenceColors(),
   });
 
   // Stato della casellina: false = non selezionata, true = selezionata.
@@ -14,20 +56,12 @@ class HideOnboardingPreference extends StatelessWidget {
   // Callback chiamata quando l'utente clicca sul box.
   final VoidCallback onChanged;
 
+  // Palette colori propria del widget.
+  final HideOnboardingPreferenceColors colors;
+
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-
-    // Questo colore controlla:
-    // - casellina selezionata
-    // - bordo del box selezionato
-    // - sfondo leggero del box selezionato
-    const selectedColor = Color(0xFF061A3A);
-
-    // Colori dello stato non selezionato.
-    const unselectedBackgroundColor = Color(0xFFFAFBFF);
-    const unselectedBorderColor = Color(0xFFE4E9F2);
-    const unselectedCheckBorderColor = Color(0xFFC5CCD8);
 
     return InkWell(
       // Click su tutto il box.
@@ -42,13 +76,13 @@ class HideOnboardingPreference extends StatelessWidget {
         // Box esterno.
         decoration: BoxDecoration(
           color: value
-              ? selectedColor.withValues(alpha: 0.08)
-              : unselectedBackgroundColor,
+              ? colors.selectedBackgroundColor
+              : colors.unselectedBackgroundColor,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
             color: value
-                ? selectedColor.withValues(alpha: 0.42)
-                : unselectedBorderColor,
+                ? colors.selectedBorderColor
+                : colors.unselectedBorderColor,
             width: 1.4,
           ),
         ),
@@ -62,10 +96,12 @@ class HideOnboardingPreference extends StatelessWidget {
               width: 26,
               height: 26,
               decoration: BoxDecoration(
-                color: value ? selectedColor : Colors.transparent,
+                color: value ? colors.selectedColor : Colors.transparent,
                 borderRadius: BorderRadius.circular(7),
                 border: Border.all(
-                  color: value ? selectedColor : unselectedCheckBorderColor,
+                  color: value
+                      ? colors.selectedColor
+                      : colors.unselectedCheckBorderColor,
                   width: 2,
                 ),
               ),
@@ -73,10 +109,10 @@ class HideOnboardingPreference extends StatelessWidget {
 
               // Icona check dentro la casellina.
               child: value
-                  ? const Icon(
+                  ? Icon(
                       Icons.check_rounded,
                       size: 17,
-                      color: Colors.white,
+                      color: colors.checkIconColor,
                     )
                   : null,
             ),
@@ -94,7 +130,7 @@ class HideOnboardingPreference extends StatelessWidget {
                     style: textTheme.titleMedium?.copyWith(
                       fontSize: 15,
                       fontWeight: FontWeight.w800,
-                      color: const Color(0xFF101828),
+                      color: colors.titleColor,
                     ),
                   ),
 
@@ -106,7 +142,7 @@ class HideOnboardingPreference extends StatelessWidget {
                     style: textTheme.bodySmall?.copyWith(
                       fontSize: 12,
                       height: 1.2,
-                      color: const Color(0xFF667085),
+                      color: colors.subtitleColor,
                       fontWeight: FontWeight.w500,
                     ),
                   ),

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../../core/widgets/primary_button.dart';
+import 'onboarding_action_button.dart';
 import 'onboarding_dots_indicator.dart';
 
 // Widget inferiore dell'onboarding.
-// Gestisce solo: bottone indietro, dots centrali e bottone avanti/inizia.
+// Coordina tre elementi: bottone indietro, dots centrali e bottone avanti/inizia.
 class OnboardingBottomControls extends StatelessWidget {
   const OnboardingBottomControls({
     super.key,
@@ -13,6 +13,9 @@ class OnboardingBottomControls extends StatelessWidget {
     required this.isLastPage,
     required this.onBack,
     required this.onNext,
+    this.actionButtonColors = const OnboardingActionButtonColors(),
+    this.dotsColors = const OnboardingDotsIndicatorColors(),
+    this.backButtonColor = const Color(0xFF191970),
   });
 
   // Pagina attuale dell'onboarding.
@@ -30,6 +33,15 @@ class OnboardingBottomControls extends StatelessWidget {
   // Azione bottone "Avanti" / "Inizia".
   final VoidCallback onNext;
 
+  // Colori del bottone principale dell'onboarding.
+  final OnboardingActionButtonColors actionButtonColors;
+
+  // Colori dei pallini centrali.
+  final OnboardingDotsIndicatorColors dotsColors;
+
+  // Colore del bottone testuale "Indietro".
+  final Color backButtonColor;
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -42,22 +54,17 @@ class OnboardingBottomControls extends StatelessWidget {
             child: OnboardingDotsIndicator(
               currentIndex: currentIndex,
               itemCount: itemCount,
+              colors: dotsColors,
             ),
           ),
 
-          // Bottone/testo "Indietro", visibile dalla seconda pagina.
+          // Bottone "Indietro", visibile dalla seconda pagina.
           if (currentIndex > 0)
             Align(
               alignment: Alignment.centerLeft,
-              child: TextButton.icon(
+              child: _OnboardingBackButton(
                 onPressed: onBack,
-                icon: const Icon(Icons.chevron_left_rounded, size: 18),
-                label: const Text('Indietro'),
-                style: TextButton.styleFrom(
-                  padding: EdgeInsets.zero,
-                  minimumSize: const Size(0, 44),
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                ),
+                color: backButtonColor,
               ),
             ),
 
@@ -66,13 +73,41 @@ class OnboardingBottomControls extends StatelessWidget {
             alignment: Alignment.centerRight,
             child: SizedBox(
               width: 112,
-              child: PrimaryButton(
+              child: OnboardingActionButton(
                 label: isLastPage ? 'Inizia' : 'Avanti',
                 onPressed: onNext,
+                colors: actionButtonColors,
               ),
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+// Widget privato per il bottone "Indietro".
+// Rimane nello stesso file perché per ora non viene riutilizzato altrove.
+class _OnboardingBackButton extends StatelessWidget {
+  const _OnboardingBackButton({
+    required this.onPressed,
+    required this.color,
+  });
+
+  final VoidCallback onPressed;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton.icon(
+      onPressed: onPressed,
+      icon: const Icon(Icons.chevron_left_rounded, size: 18),
+      label: const Text('Indietro'),
+      style: TextButton.styleFrom(
+        foregroundColor: color,
+        padding: EdgeInsets.zero,
+        minimumSize: const Size(0, 44),
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
       ),
     );
   }

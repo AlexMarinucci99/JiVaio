@@ -1,20 +1,35 @@
 import 'package:flutter/material.dart';
 
-//mostra i pallini di avanzamento dell'onboarding
+class OnboardingDotsIndicatorColors {
+  const OnboardingDotsIndicatorColors({
+    this.activeColor = const Color.fromARGB(255, 180, 154, 5),
+    this.inactiveColor = const Color(0xFFE1E7F0),
+  });
+
+  // Colore del pallino della pagina attiva.
+  final Color activeColor;
+
+  // Colore dei pallini delle pagine non attive.
+  final Color inactiveColor;
+}
+
+// Mostra i pallini di avanzamento dell'onboarding.
 class OnboardingDotsIndicator extends StatelessWidget {
   const OnboardingDotsIndicator({
     super.key,
     required this.currentIndex,
     required this.itemCount,
+    this.colors = const OnboardingDotsIndicatorColors(),
   });
 
   final int currentIndex;
   final int itemCount;
 
+  // Palette colori propria dei dots.
+  final OnboardingDotsIndicatorColors colors;
+
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: List.generate(itemCount, (index) {
@@ -27,7 +42,7 @@ class OnboardingDotsIndicator extends StatelessWidget {
           width: isActive ? 26 : 9,
           height: 9,
           decoration: BoxDecoration(
-            color: isActive ? colorScheme.primary : colorScheme.outlineVariant,
+            color: isActive ? colors.activeColor : colors.inactiveColor,
             borderRadius: BorderRadius.circular(99),
           ),
         );

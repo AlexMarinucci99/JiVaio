@@ -1,5 +1,38 @@
 import 'package:flutter/material.dart';
 
+class BottomNavBarColors {
+  const BottomNavBarColors({
+    this.backgroundColor = Colors.white,
+    this.shadowColor = const Color(0x29000000),
+    this.selectedColor = const Color(0xFF102A6B),
+    this.unselectedColor = const Color(0xFF9AA3AD),
+    this.selectedBackgroundColor = const Color(0xFFEAF2FF),
+    this.splashColor = const Color(0x14102A6B),
+    this.highlightColor = const Color(0x0A102A6B),
+  });
+
+  // Sfondo generale della navbar.
+  final Color backgroundColor;
+
+  // Colore dell'ombra sotto la navbar.
+  final Color shadowColor;
+
+  // Colore icona/testo del tab selezionato.
+  final Color selectedColor;
+
+  // Colore icona/testo dei tab non selezionati.
+  final Color unselectedColor;
+
+  // Sfondo della pill dell'icona selezionata.
+  final Color selectedBackgroundColor;
+
+  // Colore effetto tap.
+  final Color splashColor;
+
+  // Colore effetto pressione.
+  final Color highlightColor;
+}
+
 // Navbar inferiore condivisa dell'app.
 // Riceve il tab selezionato e comunica alla schermata padre il cambio tab.
 class BottomNavBar extends StatelessWidget {
@@ -7,6 +40,7 @@ class BottomNavBar extends StatelessWidget {
     super.key,
     required this.selectedIndex,
     required this.onItemSelected,
+    this.colors = const BottomNavBarColors(),
   });
 
   // Indice del tab attualmente selezionato.
@@ -14,6 +48,9 @@ class BottomNavBar extends StatelessWidget {
 
   // Callback chiamata quando l'utente seleziona un tab.
   final ValueChanged<int> onItemSelected;
+
+  // Palette colori propria della navbar.
+  final BottomNavBarColors colors;
 
   static const List<_BottomNavItem> _items = [
     _BottomNavItem(label: 'Cerca', icon: Icons.search_rounded),
@@ -27,11 +64,11 @@ class BottomNavBar extends StatelessWidget {
       height: 80,
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: colors.backgroundColor,
         borderRadius: BorderRadius.circular(30),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.16),
+            color: colors.shadowColor,
             blurRadius: 22,
             offset: const Offset(0, 8),
           ),
@@ -46,6 +83,7 @@ class BottomNavBar extends StatelessWidget {
             child: _BottomNavTile(
               item: item,
               isSelected: isSelected,
+              colors: colors,
               onTap: () => onItemSelected(index),
             ),
           );
@@ -60,20 +98,20 @@ class _BottomNavTile extends StatelessWidget {
   const _BottomNavTile({
     required this.item,
     required this.isSelected,
+    required this.colors,
     required this.onTap,
   });
 
   final _BottomNavItem item;
   final bool isSelected;
+  final BottomNavBarColors colors;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    const selectedColor = Color(0xFF102A6B);
-    const unselectedColor = Color(0xFF9AA3AD);
-    const selectedBackgroundColor = Color(0xFFEAF2FF);
-
-    final effectiveColor = isSelected ? selectedColor : unselectedColor;
+    final effectiveColor = isSelected
+        ? colors.selectedColor
+        : colors.unselectedColor;
 
     return Semantics(
       button: true,
@@ -81,6 +119,8 @@ class _BottomNavTile extends StatelessWidget {
       label: item.label,
       child: InkWell(
         borderRadius: BorderRadius.circular(24),
+        splashColor: colors.splashColor,
+        highlightColor: colors.highlightColor,
         onTap: onTap,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -94,7 +134,7 @@ class _BottomNavTile extends StatelessWidget {
               height: 34,
               decoration: BoxDecoration(
                 color: isSelected
-                    ? selectedBackgroundColor
+                    ? colors.selectedBackgroundColor
                     : Colors.transparent,
                 borderRadius: BorderRadius.circular(20),
               ),

@@ -1,7 +1,32 @@
 import 'package:flutter/material.dart';
 
-//StatelessWidget riceve e si limita a mostrare
+class OnboardingSlideCardColors {
+  const OnboardingSlideCardColors({
+    this.imageCardBackgroundColor = Colors.white,
+    this.iconBackgroundColor = const Color(0xE0FFFFFF),
+    this.accentColor = const Color(0xFF191970),
+    this.titleColor = const Color(0xFF101828),
+    this.descriptionColor = const Color(0xFF667085),
+  });
 
+  // Colore dello sfondo della card immagine.
+  final Color imageCardBackgroundColor;
+
+  // Colore del cerchio dietro l'icona.
+  final Color iconBackgroundColor;
+
+  // Colore principale usato per l'icona.
+  final Color accentColor;
+
+  // Colore del titolo.
+  final Color titleColor;
+
+  // Colore della descrizione.
+  final Color descriptionColor;
+}
+
+// StatelessWidget: riceve i dati della singola slide e li mostra.
+// Non gestisce stato, pagine o navigazione.
 class OnboardingSlideCard extends StatelessWidget {
   const OnboardingSlideCard({
     super.key,
@@ -11,6 +36,7 @@ class OnboardingSlideCard extends StatelessWidget {
     this.icon,
     this.accentColor,
     this.imageAlignment = Alignment.center,
+    this.colors = const OnboardingSlideCardColors(),
   });
 
   final String imagePath;
@@ -18,16 +44,22 @@ class OnboardingSlideCard extends StatelessWidget {
   final String description;
 
   final IconData? icon;
+
+  // Mantenuto per compatibilità con il codice già scritto.
+  // Se viene passato, sovrascrive colors.accentColor.
   final Color? accentColor;
+
   final Alignment imageAlignment;
+
+  // Palette colori propria della slide.
+  final OnboardingSlideCardColors colors;
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
 
-    // Colore usato per l'icona circolare.
-    final effectiveAccentColor = accentColor ?? colorScheme.primary;
+    // Colore effettivo dell'icona.
+    final effectiveAccentColor = accentColor ?? colors.accentColor;
 
     return Padding(
       // Margine laterale dell'intera slide.
@@ -44,9 +76,9 @@ class OnboardingSlideCard extends StatelessWidget {
             child: Container(
               width: double.infinity,
 
-              // Sfondo bianco e angoli arrotondati della box.
+              // Sfondo e angoli arrotondati della box immagine.
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: colors.imageCardBackgroundColor,
                 borderRadius: BorderRadius.circular(28),
               ),
 
@@ -75,14 +107,12 @@ class OnboardingSlideCard extends StatelessWidget {
                         width: 58,
                         height: 58,
                         decoration: BoxDecoration(
-                          // Cerchio bianco opaco dietro l'icona.
+                          // Cerchio dietro l'icona.
                           shape: BoxShape.circle,
-                          color: Colors.white.withValues(alpha: 0.88),
+                          color: colors.iconBackgroundColor,
                         ),
                         child: Icon(
                           icon,
-
-                          // Icona centrale colorata.
                           color: effectiveAccentColor,
                           size: 28,
                         ),
@@ -103,7 +133,7 @@ class OnboardingSlideCard extends StatelessWidget {
             style: textTheme.headlineSmall?.copyWith(
               fontWeight: FontWeight.w800,
               height: 1.12,
-              color: const Color(0xFF101828),
+              color: colors.titleColor,
             ),
           ),
 
@@ -116,7 +146,7 @@ class OnboardingSlideCard extends StatelessWidget {
             textAlign: TextAlign.left,
             style: textTheme.bodyLarge?.copyWith(
               height: 1.65,
-              color: const Color(0xFF667085),
+              color: colors.descriptionColor,
               fontWeight: FontWeight.w400,
             ),
           ),

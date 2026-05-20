@@ -1,11 +1,69 @@
 import 'package:flutter/material.dart';
 
+class RouteSearchCardColors {
+  const RouteSearchCardColors({
+    this.cardColor = Colors.white,
+    this.textColor = const Color(0xFF20232D),
+    this.labelColor = const Color(0xFF5C5F6D),
+    this.dividerColor = const Color(0xFFE7E8EE),
+    this.activeButtonColor = const Color(0xFF17226B),
+    this.activeButtonTextColor = Colors.white,
+    this.inactiveButtonColor = const Color(0xFFE9E7F0),
+    this.inactiveTextColor = const Color(0xFF4F4D59),
+    this.iconBackgroundColor = const Color(0xFFF0F1F6),
+    this.iconColor = const Color(0xFF59609A),
+    this.swapIconColor = const Color(0xFF59609A),
+    this.hintColor = const Color(0xFF777986),
+    this.shadowColor = const Color(0x1F000000),
+  });
+
+  // Colore sfondo della card.
+  final Color cardColor;
+
+  // Colore del testo principale dei campi.
+  final Color textColor;
+
+  // Colore delle label "Da" e "A".
+  final Color labelColor;
+
+  // Colore del divisore centrale.
+  final Color dividerColor;
+
+  // Colore del bottone attivo.
+  final Color activeButtonColor;
+
+  // Colore testo/icona del bottone attivo.
+  final Color activeButtonTextColor;
+
+  // Colore del bottone disattivato.
+  final Color inactiveButtonColor;
+
+  // Colore testo/icona del bottone disattivato.
+  final Color inactiveTextColor;
+
+  // Colore sfondo cerchio icona dei campi.
+  final Color iconBackgroundColor;
+
+  // Colore icona dei campi.
+  final Color iconColor;
+
+  // Colore icona per invertire partenza/destinazione.
+  final Color swapIconColor;
+
+  // Colore placeholder dei campi.
+  final Color hintColor;
+
+  // Colore ombra della card.
+  final Color shadowColor;
+}
+
 class RouteSearchCard extends StatefulWidget {
   const RouteSearchCard({
     super.key,
     this.width,
     this.contentScale = 0.90,
     this.onSearch,
+    this.colors = const RouteSearchCardColors(),
   }) : assert(contentScale > 0);
 
   // Larghezza esterna della card.
@@ -14,12 +72,15 @@ class RouteSearchCard extends StatefulWidget {
 
   // Scala generale del contenuto interno.
   // 1.0 = dimensione normale
-  // 0.90 = contenuto più piccolo
+  // 0.90 = contenuto più piccolo.
   final double contentScale;
 
   // Funzione chiamata quando l'utente preme il bottone Cerca percorso.
   // Per ora non contiene logica di routing: serve solo come aggancio futuro.
   final void Function(String from, String to)? onSearch;
+
+  // Palette colori propria della card.
+  final RouteSearchCardColors colors;
 
   @override
   State<RouteSearchCard> createState() => _RouteSearchCardState();
@@ -94,17 +155,7 @@ class _RouteSearchCardState extends State<RouteSearchCard> {
     // =========================
     // Cambiando contentScale, ridimensioni il contenuto interno della card.
     final scale = widget.contentScale;
-
-    // =========================
-    // COLORI PRINCIPALI
-    // =========================
-    const cardColor = Colors.white;
-    const textColor = Color(0xFF20232D);
-    const labelColor = Color(0xFF5C5F6D);
-    const lineColor = Color(0xFFE7E8EE);
-    const activeButtonColor = Color(0xFF17226B);
-    const inactiveButtonColor = Color(0xFFE9E7F0);
-    const inactiveTextColor = Color(0xFF4F4D59);
+    final colors = widget.colors;
 
     return SizedBox(
       // Qui cambi la larghezza esterna della card.
@@ -123,11 +174,11 @@ class _RouteSearchCardState extends State<RouteSearchCard> {
         ),
 
         decoration: BoxDecoration(
-          color: cardColor,
+          color: colors.cardColor,
           borderRadius: BorderRadius.circular(22 * scale),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.12),
+              color: colors.shadowColor,
               blurRadius: 24 * scale,
               offset: Offset(0, 10 * scale),
             ),
@@ -146,10 +197,9 @@ class _RouteSearchCardState extends State<RouteSearchCard> {
                 label: 'Da',
                 controller: _fromController,
                 icon: Icons.navigation_rounded,
-                textColor: textColor,
-                labelColor: labelColor,
                 hintText: 'Posizione attuale',
                 scale: scale,
+                colors: colors,
               ),
             ),
 
@@ -163,7 +213,10 @@ class _RouteSearchCardState extends State<RouteSearchCard> {
               child: Row(
                 children: [
                   Expanded(
-                    child: Divider(height: 28 * scale, color: lineColor),
+                    child: Divider(
+                      height: 28 * scale,
+                      color: colors.dividerColor,
+                    ),
                   ),
 
                   // Bottone per invertire partenza e destinazione.
@@ -177,7 +230,7 @@ class _RouteSearchCardState extends State<RouteSearchCard> {
                     icon: Icon(
                       Icons.swap_vert_rounded,
                       size: 20 * scale,
-                      color: const Color(0xFF59609A),
+                      color: colors.swapIconColor,
                     ),
                   ),
                 ],
@@ -191,10 +244,9 @@ class _RouteSearchCardState extends State<RouteSearchCard> {
               label: 'A',
               controller: _toController,
               icon: Icons.place_rounded,
-              textColor: textColor,
-              labelColor: labelColor,
               hintText: 'Dove vuoi andare?',
               scale: scale,
+              colors: colors,
             ),
 
             SizedBox(height: 12 * scale),
@@ -208,9 +260,10 @@ class _RouteSearchCardState extends State<RouteSearchCard> {
               child: FilledButton.icon(
                 onPressed: _canSearch ? _searchRoute : null,
                 style: FilledButton.styleFrom(
-                  backgroundColor: activeButtonColor,
-                  disabledBackgroundColor: inactiveButtonColor,
-                  disabledForegroundColor: inactiveTextColor,
+                  backgroundColor: colors.activeButtonColor,
+                  foregroundColor: colors.activeButtonTextColor,
+                  disabledBackgroundColor: colors.inactiveButtonColor,
+                  disabledForegroundColor: colors.inactiveTextColor,
                   tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   visualDensity: VisualDensity.compact,
                   shape: RoundedRectangleBorder(
@@ -220,14 +273,18 @@ class _RouteSearchCardState extends State<RouteSearchCard> {
                 icon: Icon(
                   Icons.navigation_rounded,
                   size: 18 * scale,
-                  color: _canSearch ? Colors.white : inactiveTextColor,
+                  color: _canSearch
+                      ? colors.activeButtonTextColor
+                      : colors.inactiveTextColor,
                 ),
                 label: Text(
                   'Cerca percorso',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontSize: 14 * scale,
                     fontWeight: FontWeight.w700,
-                    color: _canSearch ? Colors.white : inactiveTextColor,
+                    color: _canSearch
+                        ? colors.activeButtonTextColor
+                        : colors.inactiveTextColor,
                   ),
                 ),
               ),
@@ -244,19 +301,19 @@ class _SearchTextField extends StatelessWidget {
     required this.label,
     required this.controller,
     required this.icon,
-    required this.textColor,
-    required this.labelColor,
     required this.hintText,
     required this.scale,
+    required this.colors,
   });
 
   final String label;
   final TextEditingController controller;
   final IconData icon;
-  final Color textColor;
-  final Color labelColor;
   final String hintText;
   final double scale;
+
+  // Usa la stessa palette della RouteSearchCard.
+  final RouteSearchCardColors colors;
 
   @override
   Widget build(BuildContext context) {
@@ -268,11 +325,15 @@ class _SearchTextField extends StatelessWidget {
         Container(
           width: 46 * scale,
           height: 46 * scale,
-          decoration: const BoxDecoration(
-            color: Color(0xFFF0F1F6),
+          decoration: BoxDecoration(
+            color: colors.iconBackgroundColor,
             shape: BoxShape.circle,
           ),
-          child: Icon(icon, size: 14 * scale, color: const Color(0xFF59609A)),
+          child: Icon(
+            icon,
+            size: 14 * scale,
+            color: colors.iconColor,
+          ),
         ),
 
         SizedBox(width: 14 * scale),
@@ -288,7 +349,7 @@ class _SearchTextField extends StatelessWidget {
               Text(
                 label,
                 style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                  color: labelColor,
+                  color: colors.labelColor,
                   fontSize: 12 * scale,
                   fontWeight: FontWeight.w700,
                 ),
@@ -298,14 +359,14 @@ class _SearchTextField extends StatelessWidget {
               TextField(
                 controller: controller,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: textColor,
+                  color: colors.textColor,
                   fontSize: 16 * scale,
                   fontWeight: FontWeight.w500,
                 ),
                 decoration: InputDecoration(
                   hintText: hintText,
                   hintStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: const Color(0xFF777986),
+                    color: colors.hintColor,
                     fontSize: 16 * scale,
                     fontWeight: FontWeight.w400,
                   ),

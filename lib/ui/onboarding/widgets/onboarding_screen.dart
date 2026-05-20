@@ -4,7 +4,9 @@ import '../../../data/services/onboarding_preferences_service.dart';
 import '../../../routing/app_routes.dart';
 import '../view_model/onboarding_view_model.dart';
 import 'hide_onboarding_preference.dart';
+import 'onboarding_action_button.dart';
 import 'onboarding_bottom_controls.dart';
+import 'onboarding_dots_indicator.dart';
 import 'onboarding_slide_card.dart';
 
 // StatefulWidget: schermata principale che contiene le 3 pagine di onboarding.
@@ -24,6 +26,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   // Stato della checkbox "Non mostrarla più".
   bool _hideOnboardingNextTime = false;
+
+  // Colori propri della schermata onboarding.
+  static const _OnboardingScreenColors _colors = _OnboardingScreenColors();
 
   static const List<_OnboardingVisualData> _visuals = [
     _OnboardingVisualData(
@@ -96,7 +101,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       animation: _viewModel,
       builder: (context, _) {
         return Scaffold(
-          backgroundColor: const Color(0xFFF7F9FC),
+          backgroundColor: _colors.backgroundColor,
           body: SafeArea(
             child: Column(
               children: [
@@ -107,6 +112,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     alignment: Alignment.centerRight,
                     child: TextButton(
                       onPressed: _skip,
+                      style: TextButton.styleFrom(
+                        foregroundColor: _colors.skipButtonColor,
+                      ),
                       child: const Text('Salta'),
                     ),
                   ),
@@ -129,6 +137,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         icon: visual.icon,
                         accentColor: visual.accentColor,
                         imageAlignment: visual.imageAlignment,
+                        colors: _colors.slideCardColors,
                       );
                     },
                   ),
@@ -152,6 +161,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                   'hide_onboarding_preference',
                                 ),
                                 value: _hideOnboardingNextTime,
+                                colors: _colors.hidePreferenceColors,
                                 onChanged: () {
                                   setState(() {
                                     _hideOnboardingNextTime =
@@ -174,6 +184,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         isLastPage: _viewModel.isLastPage,
                         onBack: _goBack,
                         onNext: _goNext,
+                        actionButtonColors: _colors.actionButtonColors,
+                        dotsColors: _colors.dotsColors,
+                        backButtonColor: _colors.backButtonColor,
                       ),
                     ],
                   ),
@@ -197,4 +210,59 @@ class _OnboardingVisualData {
   final IconData icon;
   final Color accentColor;
   final Alignment imageAlignment;
+}
+
+// Palette privata della schermata onboarding.
+// Serve a non lasciare colori sparsi direttamente nel build.
+class _OnboardingScreenColors {
+  const _OnboardingScreenColors();
+
+  // Sfondo generale della schermata.
+  final Color backgroundColor = const Color(0xFFF7F9FC);
+
+  // Colore del bottone "Salta".
+  final Color skipButtonColor = const Color(0xFF191970);
+
+  // Colore del bottone "Indietro".
+  final Color backButtonColor = const Color(0xFF191970);
+
+  // Colori condivisi delle slide.
+  final OnboardingSlideCardColors slideCardColors =
+      const OnboardingSlideCardColors(
+        imageCardBackgroundColor: Colors.white,
+        iconBackgroundColor: Color(0xE0FFFFFF),
+        accentColor: Color(0xFF191970),
+        titleColor: Color(0xFF101828),
+        descriptionColor: Color(0xFF667085),
+      );
+
+  // Colori del bottone "Avanti / Inizia".
+  final OnboardingActionButtonColors actionButtonColors =
+      const OnboardingActionButtonColors(
+        backgroundColor: Color(0xFF191970),
+        foregroundColor: Colors.white,
+        disabledBackgroundColor: Color(0xFFE5E7EB),
+        disabledForegroundColor: Color(0xFF9CA3AF),
+      );
+
+  // Colori dei dots centrali.
+  final OnboardingDotsIndicatorColors dotsColors =
+      const OnboardingDotsIndicatorColors(
+        activeColor: Color(0xFF191970),
+        inactiveColor: Color(0xFFE1E7F0),
+      );
+
+  // Colori del box "Non mostrarla più".
+  final HideOnboardingPreferenceColors hidePreferenceColors =
+      const HideOnboardingPreferenceColors(
+        selectedColor: Color(0xFF061A3A),
+        selectedBackgroundColor: Color(0x14061A3A),
+        selectedBorderColor: Color(0x6B061A3A),
+        unselectedBackgroundColor: Color(0xFFFAFBFF),
+        unselectedBorderColor: Color(0xFFE4E9F2),
+        unselectedCheckBorderColor: Color(0xFFC5CCD8),
+        checkIconColor: Colors.white,
+        titleColor: Color(0xFF101828),
+        subtitleColor: Color(0xFF667085),
+      );
 }

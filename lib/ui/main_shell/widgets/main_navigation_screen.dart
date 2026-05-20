@@ -7,16 +7,19 @@ import '../../settings/widgets/settings_screen.dart';
 
 // Schermata principale dopo login/registrazione.
 // Contiene le tre sezioni principali dell'app e la navbar inferiore.
-class MainShellScreen extends StatefulWidget {
-  const MainShellScreen({super.key});
+class MainNavigationScreen extends StatefulWidget{
+  const MainNavigationScreen({super.key});
 
   @override
-  State<MainShellScreen> createState() => _MainShellScreenState();
+  State<MainNavigationScreen> createState() => _MainNavigationScreenState();
 }
 
-class _MainShellScreenState extends State<MainShellScreen> {
+class _MainNavigationScreenState extends State<MainNavigationScreen> {
   // Stato locale della navbar.
   int _selectedIndex = 0;
+
+  // Colori propri della main shell.
+  static const _MainShellColors _colors = _MainShellColors();
 
   // Schermate principali dell'app.
   // IndexedStack mantiene vive le schermate quando cambi tab.
@@ -50,8 +53,25 @@ class _MainShellScreenState extends State<MainShellScreen> {
         child: BottomNavBar(
           selectedIndex: _selectedIndex,
           onItemSelected: _onItemSelected,
+          colors: _colors.bottomNavBarColors,
         ),
       ),
     );
   }
+}
+
+// Palette privata della shell principale.
+// Qui si decide l'aspetto della navbar dentro la schermata principale.
+class _MainShellColors {
+  const _MainShellColors();
+
+  final BottomNavBarColors bottomNavBarColors = const BottomNavBarColors(
+    backgroundColor: Colors.white,
+    shadowColor: Color(0x29000000),
+    selectedColor: Color(0xFF102A6B),
+    unselectedColor: Color(0xFF9AA3AD),
+    selectedBackgroundColor: Color(0xFFEAF2FF),
+    splashColor: Color(0x14102A6B),
+    highlightColor: Color(0x0A102A6B),
+  );
 }
