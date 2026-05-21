@@ -6,7 +6,7 @@ import 'ui/auth/widgets/login_screen.dart';
 import 'ui/auth/widgets/register_screen.dart';
 import 'ui/core/themes/app_theme.dart';
 import 'ui/onboarding/widgets/onboarding_screen.dart';
-import 'ui/main_shell/widgets/main_navigation_screen.dart';
+import 'ui/main_navigation/widgets/main_navigation_screen.dart';
 
 class JiVaioApp extends StatelessWidget {
   const JiVaioApp({super.key, required this.showOnboarding});
