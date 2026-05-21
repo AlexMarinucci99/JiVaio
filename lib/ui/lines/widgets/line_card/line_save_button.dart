@@ -7,10 +7,14 @@ class LineSaveButton extends StatelessWidget {
     super.key,
     required this.isSaved,
     required this.onPressed,
+    this.colors = LineCardColors.defaultPalette,
   });
 
   final bool isSaved;
   final VoidCallback onPressed;
+
+  // Palette propria del bottone salva.
+  final LineCardPalette colors;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +22,7 @@ class LineSaveButton extends StatelessWidget {
       onPressed: onPressed,
       icon: Icon(
         isSaved ? Icons.favorite_rounded : Icons.favorite_border_rounded,
-        color: isSaved ? LineCardColors.savedHeart : LineCardColors.mutedText,
+        color: isSaved ? colors.savedHeart : colors.mutedText,
       ),
       tooltip: isSaved ? 'Rimuovi dai salvati' : 'Salva linea',
     );

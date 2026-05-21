@@ -14,6 +14,7 @@ class LineCardHeader extends StatelessWidget {
     required this.lineColor,
     required this.isSaved,
     required this.onToggleSaved,
+    this.colors = LineCardColors.defaultPalette,
   });
 
   final TransitLine line;
@@ -22,9 +23,16 @@ class LineCardHeader extends StatelessWidget {
   final bool isSaved;
   final VoidCallback onToggleSaved;
 
+  // Palette propria dell'header della card.
+  final LineCardPalette colors;
+
   @override
   Widget build(BuildContext context) {
-    final badgeTextColor = LineCardColors.textOn(lineColor);
+    // Il badge continua a usare il colore reale della linea.
+    final badgeTextColor = LineCardColors.textOn(
+      lineColor,
+      colors: colors,
+    );
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -34,7 +42,9 @@ class LineCardHeader extends StatelessWidget {
           backgroundColor: lineColor,
           textColor: badgeTextColor,
         ),
+
         const SizedBox(width: 12),
+
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -45,11 +55,12 @@ class LineCardHeader extends StatelessWidget {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: LineCardColors.primaryText,
+                  color: colors.primaryText,
                   fontSize: 14.5,
                   fontWeight: FontWeight.w800,
                 ),
               ),
+
               const SizedBox(height: 4),
 
               // Descrizione linea.
@@ -58,23 +69,29 @@ class LineCardHeader extends StatelessWidget {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: LineCardColors.secondaryText,
+                  color: colors.secondaryText,
                   fontSize: 11.5,
                 ),
               ),
+
               const SizedBox(height: 10),
 
               // Pill numero fermate.
               LineInfoPill(
                 icon: Icons.place_rounded,
                 label: _stopCountLabel(direction.stopCount),
+                colors: colors,
               ),
             ],
           ),
         ),
 
         // Bottone salva linea.
-        LineSaveButton(isSaved: isSaved, onPressed: onToggleSaved),
+        LineSaveButton(
+          isSaved: isSaved,
+          onPressed: onToggleSaved,
+          colors: colors,
+        ),
       ],
     );
   }

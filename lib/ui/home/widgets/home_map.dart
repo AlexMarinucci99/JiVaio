@@ -2,12 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
-//Widget della mappa principale della Home.
-//Mostra OpenStreetMap
-class HomeMap extends StatelessWidget {
-  const HomeMap({super.key});
+class HomeMapColors {
+  const HomeMapColors({
+    this.fallbackBackgroundColor = const Color(0xFFF7F9FC),
+  });
 
-  //centrato sull'aquiala
+  // Colore mostrato se la mappa non ha ancora dimensioni valide.
+  final Color fallbackBackgroundColor;
+}
+
+// Widget della mappa principale della Home.
+// Mostra OpenStreetMap.
+class HomeMap extends StatelessWidget {
+  const HomeMap({
+    super.key,
+    this.colors = const HomeMapColors(),
+  });
+
+  // Palette colori propria della mappa.
+  final HomeMapColors colors;
+
+  // Centrato sull'Aquila.
   static const LatLng _initialCenter = LatLng(42.3498, 13.3995);
 
   static final LatLngBounds _worldBounds = LatLngBounds(
@@ -25,10 +40,9 @@ class HomeMap extends StatelessWidget {
             constraints.maxWidth > 0 &&
             constraints.maxHeight > 0;
 
-        //Evita di costruire FlutterMap se il widget non ha ancora dimensioni valide.
-
+        // Evita di costruire FlutterMap se il widget non ha ancora dimensioni valide.
         if (!hasValidSize) {
-          return const ColoredBox(color: Color(0xFFF7F9FC));
+          return ColoredBox(color: colors.fallbackBackgroundColor);
         }
 
         return FlutterMap(

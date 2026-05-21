@@ -12,6 +12,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
   bool _hasEmail = false;
 
+  // Palette privata della schermata reset password.
+  static const _ResetPasswordColors _colors = _ResetPasswordColors();
+
   @override
   void dispose() {
     _emailController.dispose();
@@ -32,18 +35,25 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   }
 
   void _showMessage(String message) {
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text(message)));
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: _colors.snackBarBackgroundColor,
+        content: Text(
+          message,
+          style: const TextStyle(color: Colors.white),
+        ),
+      ),
+    );
+  }
+
+  void _goBack() {
+    Navigator.pop(context);
   }
 
   @override
   Widget build(BuildContext context) {
-    const Color primaryColor = Color(0xFF191970);
-    const Color fieldColor = Color(0xFFF1F4FA);
-
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: _colors.backgroundColor,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -52,20 +62,20 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
             children: [
               const SizedBox(height: 70),
 
-              // Titolo schermata
-              const Text(
+              // Titolo schermata.
+              Text(
                 'Password dimenticata?',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.bold,
-                  color: primaryColor,
+                  color: _colors.primaryColor,
                 ),
               ),
 
               const SizedBox(height: 16),
 
-              // Descrizione
+              // Descrizione.
               Text(
                 'Inserisci l’email associata al tuo account. '
                 'Ti invieremo un link per reimpostare la password.',
@@ -73,17 +83,18 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 style: TextStyle(
                   fontSize: 16,
                   height: 1.5,
-                  color: Colors.grey.shade700,
+                  color: _colors.descriptionColor,
                 ),
               ),
 
               const SizedBox(height: 40),
 
-              // Campo email
+              // Campo email.
               TextField(
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
                 textInputAction: TextInputAction.done,
+                cursorColor: _colors.primaryColor,
                 onChanged: (value) {
                   setState(() {
                     _hasEmail = value.trim().isNotEmpty;
@@ -91,50 +102,69 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 },
                 decoration: InputDecoration(
                   labelText: 'La tua email',
-                  prefixIcon: const Icon(Icons.email_outlined),
+                  labelStyle: TextStyle(color: _colors.fieldLabelColor),
+                  prefixIcon: Icon(
+                    Icons.email_outlined,
+                    color: _colors.fieldIconColor,
+                  ),
                   filled: true,
-                  fillColor: fieldColor,
+                  fillColor: _colors.fieldBackgroundColor,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(18),
                     borderSide: BorderSide.none,
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(18),
+                    borderSide: BorderSide(
+                      color: _colors.primaryColor,
+                      width: 1.2,
+                    ),
                   ),
                 ),
               ),
 
               const SizedBox(height: 24),
 
-              // Bottone invio link
+              // Bottone invio link.
               SizedBox(
                 height: 56,
                 child: ElevatedButton(
                   onPressed: _hasEmail ? _sendResetLink : null,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: primaryColor,
-                    foregroundColor: Colors.white,
-                    disabledBackgroundColor: Colors.grey.shade300,
-                    disabledForegroundColor: Colors.white,
+                    backgroundColor: _colors.primaryColor,
+                    foregroundColor: _colors.buttonTextColor,
+                    disabledBackgroundColor: _colors.disabledButtonColor,
+                    disabledForegroundColor: _colors.disabledButtonTextColor,
+                    elevation: 0,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(18),
                     ),
                   ),
                   child: const Text(
                     'Invia link di recupero',
-                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
 
               const SizedBox(height: 32),
 
-              // Ritorno alla schermata precedente
+              // Ritorno alla schermata precedente.
               TextButton.icon(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
+                onPressed: _goBack,
+                style: TextButton.styleFrom(
+                  foregroundColor: _colors.primaryColor,
+                ),
                 icon: const Icon(Icons.arrow_back),
                 label: const Text(
                   'Torna ad Accedi',
-                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
+                  style: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
             ],
@@ -143,4 +173,30 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       ),
     );
   }
+}
+
+// Palette privata della schermata reset password.
+// Tiene separati i colori della feature auth dal tema globale.
+class _ResetPasswordColors {
+  const _ResetPasswordColors();
+
+  final Color backgroundColor = Colors.white;
+
+  final Color primaryColor = const Color(0xFF191970);
+
+  final Color descriptionColor = const Color(0xFF4B5563);
+
+  final Color fieldBackgroundColor = const Color(0xFFF1F4FA);
+
+  final Color fieldLabelColor = const Color(0xFF4B5563);
+
+  final Color fieldIconColor = const Color(0xFF5D6675);
+
+  final Color buttonTextColor = Colors.white;
+
+  final Color disabledButtonColor = const Color(0xFFE5E7EB);
+
+  final Color disabledButtonTextColor = Colors.white;
+
+  final Color snackBarBackgroundColor = const Color(0xFF061A3A);
 }

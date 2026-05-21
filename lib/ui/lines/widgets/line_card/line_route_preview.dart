@@ -4,7 +4,6 @@ import '../../../../domain/models/transit_line.dart';
 import 'line_card_colors.dart';
 import 'line_central_label.dart';
 
-
 class LineRoutePreview extends StatelessWidget {
   const LineRoutePreview({
     super.key,
@@ -14,6 +13,7 @@ class LineRoutePreview extends StatelessWidget {
     required this.canSwapDirection,
     required this.onSwapDirection,
     required this.onOpenDetails,
+    this.colors = LineCardColors.defaultPalette,
   });
 
   final TransitLine line;
@@ -23,9 +23,16 @@ class LineRoutePreview extends StatelessWidget {
   final VoidCallback onSwapDirection;
   final VoidCallback onOpenDetails;
 
+  // Palette propria della preview percorso.
+  final LineCardPalette colors;
+
   @override
   Widget build(BuildContext context) {
-    final textColor = LineCardColors.textOn(lineColor);
+    final textColor = LineCardColors.textOn(
+      lineColor,
+      colors: colors,
+    );
+
     final supportsDirectionSwap = canSwapDirection && !line.isUnidirectional;
     final showsOneWayDirection = line.isUnidirectional;
 
@@ -36,9 +43,9 @@ class LineRoutePreview extends StatelessWidget {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 9),
           decoration: BoxDecoration(
-            color: LineCardColors.surface,
+            color: colors.surface,
             borderRadius: BorderRadius.circular(14),
-            border: Border.all(color: LineCardColors.border),
+            border: Border.all(color: colors.border),
           ),
           child: Row(
             children: [
@@ -47,6 +54,7 @@ class LineRoutePreview extends StatelessWidget {
                   caption: 'Partenza',
                   value: direction.originName,
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  colors: colors,
                 ),
               ),
 
@@ -63,7 +71,7 @@ class LineRoutePreview extends StatelessWidget {
                         : Icons.swap_horiz_rounded,
                     color: supportsDirectionSwap || showsOneWayDirection
                         ? lineColor
-                        : LineCardColors.mutedText,
+                        : colors.mutedText,
                     size: 18,
                   ),
                   tooltip: supportsDirectionSwap
@@ -77,6 +85,7 @@ class LineRoutePreview extends StatelessWidget {
                   caption: 'Capolinea',
                   value: direction.destinationName,
                   crossAxisAlignment: CrossAxisAlignment.end,
+                  colors: colors,
                 ),
               ),
             ],
@@ -89,11 +98,11 @@ class LineRoutePreview extends StatelessWidget {
         Text(
           'Prossime partenze',
           style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                color: LineCardColors.mutedText,
-                letterSpacing: 0.6,
-                fontSize: 10.5,
-                fontWeight: FontWeight.w700,
-              ),
+            color: colors.mutedText,
+            letterSpacing: 0.6,
+            fontSize: 10.5,
+            fontWeight: FontWeight.w700,
+          ),
         ),
 
         const SizedBox(height: 8),
@@ -117,10 +126,10 @@ class LineRoutePreview extends StatelessWidget {
                     child: Text(
                       departure,
                       style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                            color: textColor,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w700,
-                          ),
+                        color: textColor,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                   );
                 })
@@ -138,37 +147,37 @@ class LineRoutePreview extends StatelessWidget {
             child: Text(
               direction.emptyStateMessage,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    fontSize: 11.5,
-                    color: LineCardColors.secondaryText,
-                  ),
+                fontSize: 11.5,
+                color: colors.secondaryText,
+              ),
             ),
           ),
 
         const SizedBox(height: 14),
 
         // Bottone apertura schermata interna della linea.
-      FilledButton(
-  onPressed: onOpenDetails,
-  style: FilledButton.styleFrom(
-    minimumSize: const Size.fromHeight(48),
-    backgroundColor: lineColor.withValues(alpha: 0.96),
-    foregroundColor: textColor,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(14),
-    ),
-  ),
-  child: const Row(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      Icon(Icons.open_in_new_rounded, size: 18),
-      SizedBox(width: 8),
-      Text(
-        'Apri linea completa',
-        style: TextStyle(fontWeight: FontWeight.w800),
-      ),
-    ],
-  ),
-),
+        FilledButton(
+          onPressed: onOpenDetails,
+          style: FilledButton.styleFrom(
+            minimumSize: const Size.fromHeight(48),
+            backgroundColor: lineColor.withValues(alpha: 0.96),
+            foregroundColor: textColor,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(14),
+            ),
+          ),
+          child: const Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.open_in_new_rounded, size: 18),
+              SizedBox(width: 8),
+              Text(
+                'Apri linea completa',
+                style: TextStyle(fontWeight: FontWeight.w800),
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }

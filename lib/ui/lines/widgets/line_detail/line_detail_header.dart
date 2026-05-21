@@ -17,6 +17,7 @@ class LineDetailHeader extends StatelessWidget {
     required this.canSwapDirection,
     required this.onSwapDirection,
     required this.onClose,
+    this.colors = LineCardColors.defaultPalette,
   });
 
   final TransitLine line;
@@ -26,28 +27,23 @@ class LineDetailHeader extends StatelessWidget {
   final VoidCallback onSwapDirection;
   final VoidCallback onClose;
 
+  // Palette condivisa della feature linee.
+  // Non controlla il colore del badge: il badge continua a usare lineColor.
+  final LineCardPalette colors;
+
   @override
   Widget build(BuildContext context) {
-    // Riutilizzo di LineCardColors: calcola il colore del testo leggibile
-    // in base al colore della linea.
-    final textColor = LineCardColors.textOn(lineColor);
+    // Calcola il colore del testo leggibile sopra il colore reale della linea.
+    final textColor = LineCardColors.textOn(
+      lineColor,
+      colors: colors,
+    );
+
     final selectedDirection = direction;
 
     return Container(
       margin: const EdgeInsets.fromLTRB(16, 12, 16, 0),
-      decoration: BoxDecoration(
-        // Riutilizzo di LineCardColors: colori condivisi tra card e dettaglio.
-        color: LineCardColors.surface,
-        borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: LineCardColors.border),
-        boxShadow: [
-          BoxShadow(
-            color: LineCardColors.shadowBase.withValues(alpha: 0.06),
-            blurRadius: 28,
-            offset: const Offset(0, 10),
-          ),
-        ],
-      ),
+      decoration: LineCardColors.cardDecoration(colors: colors),
       child: Column(
         children: [
           Padding(
@@ -57,12 +53,12 @@ class LineDetailHeader extends StatelessWidget {
               children: [
                 // Bottone freccia per tornare alla schermata elenco linee.
                 Material(
-                  color: LineCardColors.pillBackground,
+                  color: colors.pillBackground,
                   shape: const CircleBorder(),
                   child: IconButton(
                     tooltip: 'Torna alle linee',
                     icon: const Icon(Icons.arrow_back_rounded, size: 20),
-                    color: LineCardColors.primaryText,
+                    color: colors.primaryText,
                     onPressed: onClose,
                   ),
                 ),
@@ -70,6 +66,7 @@ class LineDetailHeader extends StatelessWidget {
                 const SizedBox(width: 10),
 
                 // Riutilizzo di LineBadge: stesso badge linea già usato nelle card.
+                // Il colore resta quello della linea, non della palette.
                 LineBadge(
                   shortName: line.shortName,
                   backgroundColor: lineColor,
@@ -89,7 +86,7 @@ class LineDetailHeader extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context).textTheme.titleLarge
                             ?.copyWith(
-                              color: LineCardColors.primaryText,
+                              color: colors.primaryText,
                               fontSize: 16,
                               fontWeight: FontWeight.w800,
                               height: 1.15,
@@ -103,7 +100,7 @@ class LineDetailHeader extends StatelessWidget {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: LineCardColors.secondaryText,
+                              color: colors.secondaryText,
                               fontSize: 11.5,
                             ),
                       ),
@@ -115,6 +112,7 @@ class LineDetailHeader extends StatelessWidget {
                         LineInfoPill(
                           icon: Icons.place_rounded,
                           label: _stopCountLabel(selectedDirection.stopCount),
+                          colors: colors,
                         ),
                       ],
                     ],
@@ -125,18 +123,19 @@ class LineDetailHeader extends StatelessWidget {
           ),
 
           // Separatore interno dell'header.
-          Container(height: 1, color: LineCardColors.border),
+          Container(height: 1, color: colors.border),
 
           Padding(
             padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
             child: selectedDirection == null
-                ? const _DirectionUnavailableBox()
+                ? _DirectionUnavailableBox(colors: colors)
                 : _DirectionSwitcherBox(
                     direction: selectedDirection,
                     lineColor: lineColor,
                     isUnidirectional: line.isUnidirectional,
                     canSwapDirection: canSwapDirection,
                     onSwapDirection: onSwapDirection,
+                    colors: colors,
                   ),
           ),
         ],
@@ -160,6 +159,7 @@ class _DirectionSwitcherBox extends StatelessWidget {
     required this.isUnidirectional,
     required this.canSwapDirection,
     required this.onSwapDirection,
+    required this.colors,
   });
 
   final TransitLineDirection direction;
@@ -167,6 +167,7 @@ class _DirectionSwitcherBox extends StatelessWidget {
   final bool isUnidirectional;
   final bool canSwapDirection;
   final VoidCallback onSwapDirection;
+  final LineCardPalette colors;
 
   @override
   Widget build(BuildContext context) {
@@ -188,6 +189,7 @@ class _DirectionSwitcherBox extends StatelessWidget {
               caption: 'Partenza',
               value: direction.originName,
               crossAxisAlignment: CrossAxisAlignment.start,
+              colors: colors,
             ),
           ),
 
@@ -204,7 +206,7 @@ class _DirectionSwitcherBox extends StatelessWidget {
                     : Icons.swap_horiz_rounded,
                 color: supportsDirectionSwap || showsOneWayDirection
                     ? lineColor
-                    : LineCardColors.mutedText,
+                    : colors.mutedText,
                 size: 20,
               ),
               tooltip: supportsDirectionSwap
@@ -219,6 +221,7 @@ class _DirectionSwitcherBox extends StatelessWidget {
               caption: 'Capolinea',
               value: direction.destinationName,
               crossAxisAlignment: CrossAxisAlignment.end,
+              colors: colors,
             ),
           ),
         ],
@@ -228,7 +231,11 @@ class _DirectionSwitcherBox extends StatelessWidget {
 }
 
 class _DirectionUnavailableBox extends StatelessWidget {
-  const _DirectionUnavailableBox();
+  const _DirectionUnavailableBox({
+    required this.colors,
+  });
+
+  final LineCardPalette colors;
 
   @override
   Widget build(BuildContext context) {
@@ -236,15 +243,15 @@ class _DirectionUnavailableBox extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
       decoration: BoxDecoration(
-        color: LineCardColors.pillBackground,
+        color: colors.pillBackground,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: LineCardColors.border),
+        border: Border.all(color: colors.border),
       ),
       child: Text(
         'Direzione non disponibile',
         style: Theme.of(context).textTheme.bodySmall?.copyWith(
               fontSize: 12,
-              color: LineCardColors.secondaryText,
+              color: colors.secondaryText,
             ),
       ),
     );

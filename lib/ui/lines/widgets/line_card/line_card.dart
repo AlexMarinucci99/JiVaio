@@ -12,12 +12,16 @@ class LineCard extends StatefulWidget {
     required this.isSaved,
     required this.onToggleSaved,
     required this.onOpenDetails,
+    this.colors = LineCardColors.defaultPalette,
   });
 
   final TransitLine line;
   final bool isSaved;
   final VoidCallback onToggleSaved;
   final VoidCallback onOpenDetails;
+
+  // Palette propria della card linea.
+  final LineCardPalette colors;
 
   @override
   State<LineCard> createState() => _LineCardState();
@@ -56,11 +60,15 @@ class _LineCardState extends State<LineCard> {
 
   @override
   Widget build(BuildContext context) {
-    final lineColor = LineCardColors.parseLineColor(widget.line.routeColor);
+    final lineColor = LineCardColors.parseLineColor(
+      widget.line.routeColor,
+      colors: widget.colors,
+    );
+
     final direction = _selectedDirection;
 
     return Container(
-      decoration: LineCardColors.cardDecoration(),
+      decoration: LineCardColors.cardDecoration(colors: widget.colors),
       child: Padding(
         padding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
         child: Column(
@@ -71,6 +79,7 @@ class _LineCardState extends State<LineCard> {
               lineColor: lineColor,
               isSaved: widget.isSaved,
               onToggleSaved: widget.onToggleSaved,
+              colors: widget.colors,
             ),
 
             const SizedBox(height: 14),
@@ -82,6 +91,7 @@ class _LineCardState extends State<LineCard> {
               canSwapDirection: widget.line.directions.length > 1,
               onSwapDirection: _toggleDirection,
               onOpenDetails: widget.onOpenDetails,
+              colors: widget.colors,
             ),
           ],
         ),
