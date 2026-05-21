@@ -14,5 +14,5 @@ Future<void> main() async {
   final shouldSkipOnboarding = await onboardingPreferencesService
       .shouldSkipOnboarding();
 
-  runApp(WayLineApp(showOnboarding: !shouldSkipOnboarding));
+  runApp(JiVaioApp(showOnboarding: !shouldSkipOnboarding));
 }

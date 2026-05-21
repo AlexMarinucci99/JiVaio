@@ -96,7 +96,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
               // Sottotitolo
               Text(
-                'Accedi per continuare a usare WayLine',
+                'Accedi per continuare a usare JiVaio',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 15, color: Colors.grey.shade700),
               ),

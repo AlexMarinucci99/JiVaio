@@ -8,8 +8,8 @@ import 'ui/core/themes/app_theme.dart';
 import 'ui/onboarding/widgets/onboarding_screen.dart';
 import 'ui/main_shell/widgets/main_navigation_screen.dart';
 
-class WayLineApp extends StatelessWidget {
-  const WayLineApp({super.key, required this.showOnboarding});
+class JiVaioApp extends StatelessWidget {
+  const JiVaioApp({super.key, required this.showOnboarding});
 
   // true = mostra onboarding
   // false = vai direttamente a login/registrazione
@@ -18,7 +18,7 @@ class WayLineApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'WayLine',
+      title: 'JiVaio',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
 

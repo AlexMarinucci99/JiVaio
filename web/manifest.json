@@ -1,6 +1,6 @@
 {
-    "name": "wayline_app",
-    "short_name": "wayline_app",
+    "name": "jivaio_app",
+    "short_name": "jivaio_app",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

@@ -1,4 +1,4 @@
-package com.example.wayline_app
+package com.example.jivaio_app
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -70,7 +70,7 @@ class HomeMap extends StatelessWidget {
             // Layer base OpenStreetMap.
             TileLayer(
               urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-              userAgentPackageName: 'com.example.wayline_app',
+              userAgentPackageName: 'com.example.jivaio_app',
             ),
           ],
         );
