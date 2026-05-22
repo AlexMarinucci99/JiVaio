@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'ui/auth/widgets/reset_password_screen.dart';
 import 'routing/app_routes.dart';
 import 'ui/auth/widgets/auth_choice_screen.dart';
-import 'ui/auth/widgets/login_screen.dart';
-import 'ui/auth/widgets/register_screen.dart';
 import 'ui/core/themes/app_theme.dart';
 import 'ui/onboarding/widgets/onboarding_screen.dart';
 import 'ui/main_navigation/widgets/main_navigation_screen.dart';
@@ -30,10 +28,8 @@ class JiVaioApp extends StatelessWidget {
       routes: {
         AppRoutes.onboarding: (_) => const OnboardingScreen(),
         AppRoutes.authChoice: (_) => const AuthChoiceScreen(),
-        AppRoutes.login: (_) => const LoginScreen(),
-        AppRoutes.register: (_) => const RegisterScreen(),
-
-        // Schermata principale con navbar inferiore.
+        
+         // Schermata principale con navbar inferiore.
         AppRoutes.home: (_) => const MainNavigationScreen(),
         AppRoutes.resetPassword: (_) => const ResetPasswordScreen(),
       },

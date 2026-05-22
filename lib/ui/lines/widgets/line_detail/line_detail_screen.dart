@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../domain/models/transit_line.dart';
+import '../../view_model/line_detail_view_model.dart';
 import '../line_card/line_card_colors.dart';
 import 'line_detail_header.dart';
 
@@ -17,79 +18,76 @@ class LineDetailScreen extends StatefulWidget {
 }
 
 class _LineDetailScreenState extends State<LineDetailScreen> {
-  int _selectedDirectionIndex = 0;
+  late final LineDetailViewModel _viewModel;
 
   // Palette privata della schermata dettaglio linea.
   static const _LineDetailScreenColors _colors = _LineDetailScreenColors();
 
-  TransitLineDirection? get _selectedDirection {
-    if (widget.line.directions.isEmpty) {
-      return null;
-    }
+  @override
+  void initState() {
+    super.initState();
 
-    if (_selectedDirectionIndex >= widget.line.directions.length) {
-      return widget.line.directions.first;
-    }
-
-    return widget.line.directions[_selectedDirectionIndex];
+    _viewModel = LineDetailViewModel(
+      line: widget.line,
+      colors: _colors.linePalette,
+    );
   }
 
-  void _toggleDirection() {
-    if (widget.line.directions.length < 2 || widget.line.isUnidirectional) {
-      return;
-    }
+  @override
+  void dispose() {
+    _viewModel.dispose();
+    super.dispose();
+  }
 
-    setState(() {
-      _selectedDirectionIndex =
-          (_selectedDirectionIndex + 1) % widget.line.directions.length;
-    });
+  void _closeDetail() {
+    Navigator.of(context).pop();
   }
 
   @override
   Widget build(BuildContext context) {
-    final lineColor = LineCardColors.parseLineColor(
-      widget.line.routeColor,
-      colors: _colors.linePalette,
-    );
-
-    return Scaffold(
-      backgroundColor: _colors.backgroundColor,
-      body: DecoratedBox(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color(0xFFF6FAFF),
-              Color(0xFFF2F6FC),
-            ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
-        child: SafeArea(
-          bottom: false,
-          child: Column(
-            children: [
-              // Header fisso superiore.
-              LineDetailHeader(
-                line: widget.line,
-                direction: _selectedDirection,
-                lineColor: lineColor,
-                canSwapDirection: widget.line.directions.length > 1,
-                onSwapDirection: _toggleDirection,
-                onClose: () => Navigator.of(context).pop(),
-                colors: _colors.linePalette,
+    return AnimatedBuilder(
+      animation: _viewModel,
+      builder: (context, child) {
+        return Scaffold(
+          backgroundColor: _colors.backgroundColor,
+          body: DecoratedBox(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Color(0xFFF6FAFF),
+                  Color(0xFFF2F6FC),
+                ],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
               ),
+            ),
+            child: SafeArea(
+              bottom: false,
+              child: Column(
+                children: [
+                  // Header fisso superiore.
+                  LineDetailHeader(
+                    line: _viewModel.line,
+                    direction: _viewModel.selectedDirection,
+                    lineColor: _viewModel.lineColor,
+                    canSwapDirection: _viewModel.canSwapDirection,
+                    onSwapDirection: _viewModel.toggleDirection,
+                    onClose: _closeDetail,
+                    colors: _viewModel.colors,
+                  ),
 
-              const SizedBox(height: 12),
+                  const SizedBox(height: 12),
 
-              // Per ora il corpo rimane vuoto.
-              const Expanded(
-                child: SizedBox.expand(),
+                  // Per ora il corpo rimane vuoto.
+                  const Expanded(
+                    child: SizedBox.expand(),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }
