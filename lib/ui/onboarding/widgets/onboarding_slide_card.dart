@@ -4,9 +4,9 @@ class OnboardingSlideCardColors {
   const OnboardingSlideCardColors({
     this.imageCardBackgroundColor = Colors.white,
     this.iconBackgroundColor = const Color(0xE0FFFFFF),
-    this.accentColor = const Color(0xFF191970),
-    this.titleColor = const Color(0xFF101828),
-    this.descriptionColor = const Color(0xFF667085),
+    this.accentColor = const Color.fromARGB(255, 224, 224, 230),
+    this.titleColor = const Color.fromARGB(255, 210, 214, 223),
+    this.descriptionColor = const Color.fromARGB(255, 219, 222, 228),
   });
 
   // Colore dello sfondo della card immagine.

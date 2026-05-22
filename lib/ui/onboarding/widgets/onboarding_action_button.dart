@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class OnboardingActionButtonColors {
   const OnboardingActionButtonColors({
-    this.backgroundColor = const Color(0xFF191970),
+    this.backgroundColor = const Color.fromARGB(19, 167, 2, 106),
     this.foregroundColor = Colors.white,
     this.disabledBackgroundColor = const Color(0xFFE5E7EB),
     this.disabledForegroundColor = const Color(0xFF9CA3AF),

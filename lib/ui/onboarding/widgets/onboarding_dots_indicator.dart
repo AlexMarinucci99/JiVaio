@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class OnboardingDotsIndicatorColors {
   const OnboardingDotsIndicatorColors({
-    this.activeColor = const Color.fromARGB(255, 180, 154, 5),
+    this.activeColor = const Color(0x14061A3A),
     this.inactiveColor = const Color(0xFFE1E7F0),
   });
 
