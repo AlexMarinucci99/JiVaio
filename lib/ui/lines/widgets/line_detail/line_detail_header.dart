@@ -177,19 +177,19 @@ class _DirectionSwitcherBox extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       decoration: BoxDecoration(
-        color: lineColor.withValues(alpha: 0.08),
+        // Sfondo bianco del box Partenza / Capolinea.
+        color: Colors.white,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: lineColor.withValues(alpha: 0.18)),
       ),
       child: Row(
         children: [
           Expanded(
-            // Riutilizzo di LineCentralLabel: stessa label centrale usata nella preview card.
+            // Riutilizzo di LineCentralLabel: label già usata anche nella card linea.
             child: LineCentralLabel(
               caption: 'Partenza',
               value: direction.originName,
               crossAxisAlignment: CrossAxisAlignment.start,
-              colors: colors,
             ),
           ),
 
@@ -216,12 +216,11 @@ class _DirectionSwitcherBox extends StatelessWidget {
           ),
 
           Expanded(
-            // Riutilizzo di LineCentralLabel: stessa struttura anche per il capolinea.
+            // Riutilizzo di LineCentralLabel: stessa struttura per il capolinea.
             child: LineCentralLabel(
               caption: 'Capolinea',
               value: direction.destinationName,
               crossAxisAlignment: CrossAxisAlignment.end,
-              colors: colors,
             ),
           ),
         ],
