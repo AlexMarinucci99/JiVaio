@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/images/brand/jivaio_logo_name.png" alt="JiVaio logo" width="320">
+  <img src="assets/brandlogoname/jivaio_logo_name.png" alt="JiVaio logo" width="320">
 </p>
 
 <p align="center">
