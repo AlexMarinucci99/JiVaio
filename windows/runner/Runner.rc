@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "wayline_app" "\0"
+            VALUE "FileDescription", "jivaio_app" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "wayline_app" "\0"
+            VALUE "InternalName", "jivaio_app" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2026 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "wayline_app.exe" "\0"
-            VALUE "ProductName", "wayline_app" "\0"
+            VALUE "OriginalFilename", "jivaio_app.exe" "\0"
+            VALUE "ProductName", "jivaio_app" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END
