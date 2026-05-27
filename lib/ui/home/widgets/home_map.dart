@@ -82,14 +82,15 @@ class HomeMap extends StatelessWidget {
             ),
 
             // Attribuzione obbligatoria per dati e tile.
-            RichAttributionWidget(
+            //Da rimuovere in fase di produzione
+           /* RichAttributionWidget(
               attributions: [
                 TextSourceAttribution(
                   '© OpenStreetMap contributors © CARTO',
                   onTap: () {},
                 ),
               ],
-            ),
+            ),*/
           ],
         );
       },

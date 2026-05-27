@@ -1,47 +1,109 @@
 import 'package:flutter/material.dart';
 
 import '../line_card/line_card_colors.dart';
+import 'line_detail_colors.dart';
 
-Future<void> showLineDetailTimeFilterSheet(
+class LineDetailTimeSelection {
+  const LineDetailTimeSelection.automatic()
+      : isAutomatic = true,
+        hour = null;
+
+  const LineDetailTimeSelection.manual(this.hour) : isAutomatic = false;
+
+  final bool isAutomatic;
+  final int? hour;
+}
+
+Future<LineDetailTimeSelection?> showLineDetailTimeFilterSheet(
   BuildContext context, {
+  required String currentRangeLabel,
+  required bool isAutomaticSelected,
+  required int? selectedManualHour,
+  required List<int> manualHours,
   LineCardPalette colors = LineCardColors.defaultPalette,
 }) {
-  return showModalBottomSheet<void>(
+  return showModalBottomSheet<LineDetailTimeSelection>(
     context: context,
     isScrollControlled: true,
     backgroundColor: Colors.transparent,
     builder: (_) {
-      return LineDetailTimeFilterSheet(colors: colors);
+      return LineDetailTimeFilterSheet(
+        colors: colors,
+        currentRangeLabel: currentRangeLabel,
+        isAutomaticSelected: isAutomaticSelected,
+        selectedManualHour: selectedManualHour,
+        manualHours: manualHours,
+      );
     },
   );
 }
 
-class LineDetailTimeFilterSheet extends StatelessWidget {
+class LineDetailTimeFilterSheet extends StatefulWidget {
   const LineDetailTimeFilterSheet({
     super.key,
+    required this.currentRangeLabel,
+    required this.isAutomaticSelected,
+    required this.selectedManualHour,
+    required this.manualHours,
     this.colors = LineCardColors.defaultPalette,
   });
 
+  final String currentRangeLabel;
+  final bool isAutomaticSelected;
+  final int? selectedManualHour;
+  final List<int> manualHours;
   final LineCardPalette colors;
 
-  static const String _currentRangeLabel = '17:00 - 18:00';
-  static const String _selectedManualRange = '08:00 - 09:00';
+  @override
+  State<LineDetailTimeFilterSheet> createState() =>
+      _LineDetailTimeFilterSheetState();
+}
 
-  static const List<String> _manualRanges = [
-    '08:00 - 09:00',
-    '09:00 - 10:00',
-    '10:00 - 11:00',
-    '11:00 - 12:00',
-    '12:00 - 13:00',
-    '13:00 - 14:00',
-    '14:00 - 15:00',
-    '15:00 - 16:00',
-    '16:00 - 17:00',
-    '17:00 - 18:00',
-  ];
+class _LineDetailTimeFilterSheetState extends State<LineDetailTimeFilterSheet> {
+  late bool _isAutomaticSelected;
+  late int? _selectedManualHour;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _isAutomaticSelected = widget.isAutomaticSelected;
+    _selectedManualHour = widget.selectedManualHour;
+  }
+
+  void _selectAutomatic() {
+    setState(() {
+      _isAutomaticSelected = true;
+      _selectedManualHour = null;
+    });
+  }
+
+  void _selectManualHour(int hour) {
+    setState(() {
+      _isAutomaticSelected = false;
+      _selectedManualHour = hour;
+    });
+  }
+
+  void _confirm() {
+    if (_isAutomaticSelected) {
+      Navigator.of(context).pop(const LineDetailTimeSelection.automatic());
+      return;
+    }
+
+    final selectedHour = _selectedManualHour;
+
+    if (selectedHour == null) {
+      return;
+    }
+
+    Navigator.of(context).pop(LineDetailTimeSelection.manual(selectedHour));
+  }
 
   @override
   Widget build(BuildContext context) {
+    final colors = widget.colors;
+
     return SafeArea(
       top: false,
       child: Container(
@@ -55,7 +117,6 @@ class LineDetailTimeFilterSheet extends StatelessWidget {
         child: Column(
           children: [
             const SizedBox(height: 10),
-
             Container(
               width: 52,
               height: 5,
@@ -64,7 +125,6 @@ class LineDetailTimeFilterSheet extends StatelessWidget {
                 borderRadius: BorderRadius.circular(999),
               ),
             ),
-
             Expanded(
               child: ListView(
                 padding: const EdgeInsets.fromLTRB(26, 26, 26, 18),
@@ -77,9 +137,7 @@ class LineDetailTimeFilterSheet extends StatelessWidget {
                           fontWeight: FontWeight.w800,
                         ),
                   ),
-
                   const SizedBox(height: 8),
-
                   Text(
                     "Scegli Automatico per usare l'ora locale del dispositivo "
                     'oppure seleziona una fascia manualmente.',
@@ -90,16 +148,14 @@ class LineDetailTimeFilterSheet extends StatelessWidget {
                           fontWeight: FontWeight.w500,
                         ),
                   ),
-
                   const SizedBox(height: 24),
-
                   _AutomaticTimeOption(
                     colors: colors,
-                    currentRangeLabel: _currentRangeLabel,
+                    currentRangeLabel: widget.currentRangeLabel,
+                    isSelected: _isAutomaticSelected,
+                    onTap: _selectAutomatic,
                   ),
-
                   const SizedBox(height: 22),
-
                   Text(
                     'Selezione manuale',
                     style: Theme.of(context).textTheme.labelLarge?.copyWith(
@@ -109,17 +165,17 @@ class LineDetailTimeFilterSheet extends StatelessWidget {
                           letterSpacing: 0.5,
                         ),
                   ),
-
                   const SizedBox(height: 10),
-
-                  ..._manualRanges.map(
-                    (range) {
+                  ...widget.manualHours.map(
+                    (hour) {
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 10),
                         child: _ManualTimeOption(
                           colors: colors,
-                          label: range,
-                          isSelected: range == _selectedManualRange,
+                          label: _rangeLabelFromHour(hour),
+                          isSelected: !_isAutomaticSelected &&
+                              _selectedManualHour == hour,
+                          onTap: () => _selectManualHour(hour),
                         ),
                       );
                     },
@@ -127,12 +183,22 @@ class LineDetailTimeFilterSheet extends StatelessWidget {
                 ],
               ),
             ),
-
-            _SheetActionBar(colors: colors),
+            _SheetActionBar(
+              colors: colors,
+              onCancel: () => Navigator.of(context).pop(),
+              onConfirm: _confirm,
+            ),
           ],
         ),
       ),
     );
+  }
+
+  String _rangeLabelFromHour(int hour) {
+    final endHour = hour + 1;
+
+    return '${hour.toString().padLeft(2, '0')}:00 - '
+        '${endHour.toString().padLeft(2, '0')}:00';
   }
 }
 
@@ -140,68 +206,76 @@ class _AutomaticTimeOption extends StatelessWidget {
   const _AutomaticTimeOption({
     required this.colors,
     required this.currentRangeLabel,
+    required this.isSelected,
+    required this.onTap,
   });
 
   final LineCardPalette colors;
   final String currentRangeLabel;
+  final bool isSelected;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
-      decoration: BoxDecoration(
-        color: const Color(0xFFF3F6FB),
+    const accentColor = Color(0xFF2F7DF6);
+
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
         borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: colors.border),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Automatico',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: colors.primaryText,
-                        fontSize: 13.5,
-                        fontWeight: FontWeight.w800,
-                      ),
-                ),
-
-                const SizedBox(height: 4),
-
-                Text(
-                  "Usa l'ora locale del dispositivo. "
-                  'Fascia attuale: $currentRangeLabel',
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: colors.secondaryText,
-                        fontSize: 12,
-                        height: 1.4,
-                        fontWeight: FontWeight.w500,
-                      ),
-                ),
-              ],
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 160),
+          padding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
+          decoration: BoxDecoration(
+            color: isSelected
+                ? accentColor.withValues(alpha: 0.08)
+                : LineDetailColors.softSurface,
+            borderRadius: BorderRadius.circular(18),
+            border: Border.all(
+              color:
+                  isSelected ? accentColor.withValues(alpha: 0.3) : colors.border,
+              width: isSelected ? 1.4 : 1,
             ),
           ),
-
-          const SizedBox(width: 10),
-
-          AnimatedContainer(
-            duration: const Duration(milliseconds: 160),
-            width: 24,
-            height: 24,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.transparent,
-              border: Border.all(
-                color: colors.mutedText.withValues(alpha: 0.45),
-                width: 1.6,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Automatico',
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            color: colors.primaryText,
+                            fontSize: 13.5,
+                            fontWeight: FontWeight.w800,
+                          ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      "Usa l'ora locale del dispositivo. "
+                      'Fascia attuale: $currentRangeLabel',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: colors.secondaryText,
+                            fontSize: 12,
+                            height: 1.4,
+                            fontWeight: FontWeight.w500,
+                          ),
+                    ),
+                  ],
+                ),
               ),
-            ),
+              const SizedBox(width: 10),
+              _SelectionIndicator(
+                isSelected: isSelected,
+                selectedColor: accentColor,
+                colors: colors,
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -212,29 +286,30 @@ class _ManualTimeOption extends StatelessWidget {
     required this.colors,
     required this.label,
     required this.isSelected,
+    required this.onTap,
   });
 
   final LineCardPalette colors;
   final String label;
   final bool isSelected;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     const accentColor = Color(0xFF2F7DF6);
 
-    final borderColor = isSelected
-        ? accentColor.withValues(alpha: 0.3)
-        : colors.border;
+    final borderColor =
+        isSelected ? accentColor.withValues(alpha: 0.3) : colors.border;
 
     final backgroundColor = isSelected
         ? accentColor.withValues(alpha: 0.08)
-        : const Color(0xFFF3F6FB);
+        : LineDetailColors.softSurface;
 
     return Material(
       color: Colors.transparent,
       child: InkWell(
         borderRadius: BorderRadius.circular(18),
-        onTap: () {},
+        onTap: onTap,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 160),
           curve: Curves.easeOutCubic,
@@ -248,7 +323,7 @@ class _ManualTimeOption extends StatelessWidget {
             ),
           ),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
                 width: 38,
@@ -266,9 +341,7 @@ class _ManualTimeOption extends StatelessWidget {
                   size: 18,
                 ),
               ),
-
               const SizedBox(width: 12),
-
               Expanded(
                 child: Text(
                   label,
@@ -280,31 +353,11 @@ class _ManualTimeOption extends StatelessWidget {
                       ),
                 ),
               ),
-
               const SizedBox(width: 10),
-
-              AnimatedContainer(
-                duration: const Duration(milliseconds: 160),
-                width: 24,
-                height: 24,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: isSelected ? accentColor : Colors.transparent,
-                  border: Border.all(
-                    color: isSelected
-                        ? accentColor
-                        : colors.mutedText.withValues(alpha: 0.45),
-                    width: isSelected ? 0 : 1.6,
-                  ),
-                ),
-                alignment: Alignment.center,
-                child: isSelected
-                    ? const Icon(
-                        Icons.check_rounded,
-                        size: 16,
-                        color: Colors.white,
-                      )
-                    : null,
+              _SelectionIndicator(
+                isSelected: isSelected,
+                selectedColor: accentColor,
+                colors: colors,
               ),
             ],
           ),
@@ -314,12 +367,55 @@ class _ManualTimeOption extends StatelessWidget {
   }
 }
 
-class _SheetActionBar extends StatelessWidget {
-  const _SheetActionBar({
+class _SelectionIndicator extends StatelessWidget {
+  const _SelectionIndicator({
+    required this.isSelected,
+    required this.selectedColor,
     required this.colors,
   });
 
+  final bool isSelected;
+  final Color selectedColor;
   final LineCardPalette colors;
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 160),
+      width: 24,
+      height: 24,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: isSelected ? selectedColor : Colors.transparent,
+        border: Border.all(
+          color: isSelected
+              ? selectedColor
+              : colors.mutedText.withValues(alpha: 0.45),
+          width: isSelected ? 0 : 1.6,
+        ),
+      ),
+      alignment: Alignment.center,
+      child: isSelected
+          ? const Icon(
+              Icons.check_rounded,
+              size: 16,
+              color: Colors.white,
+            )
+          : null,
+    );
+  }
+}
+
+class _SheetActionBar extends StatelessWidget {
+  const _SheetActionBar({
+    required this.colors,
+    required this.onCancel,
+    required this.onConfirm,
+  });
+
+  final LineCardPalette colors;
+  final VoidCallback onCancel;
+  final VoidCallback onConfirm;
 
   @override
   Widget build(BuildContext context) {
@@ -333,7 +429,7 @@ class _SheetActionBar extends StatelessWidget {
         children: [
           Expanded(
             child: OutlinedButton(
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: onCancel,
               style: OutlinedButton.styleFrom(
                 minimumSize: const Size.fromHeight(56),
                 foregroundColor: colors.secondaryText,
@@ -348,12 +444,10 @@ class _SheetActionBar extends StatelessWidget {
               ),
             ),
           ),
-
           const SizedBox(width: 16),
-
           Expanded(
             child: FilledButton(
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: onConfirm,
               style: FilledButton.styleFrom(
                 minimumSize: const Size.fromHeight(56),
                 backgroundColor: const Color(0xFF2F7DF6),

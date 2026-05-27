@@ -40,14 +40,16 @@ class _LinesScreenState extends State<LinesScreen> {
     super.dispose();
   }
 
-  void _openLineDetails(TransitLine line) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (_) => LineDetailScreen(line: line),
+ void _openLineDetails(TransitLine line) {
+  Navigator.of(context).push(
+    MaterialPageRoute(
+      builder: (_) => LineDetailScreen(
+        line: line,
+        repository: _repository,
       ),
-    );
-  }
-
+    ),
+  );
+}
   // Gestione salvataggio linea.
   // Se l'utente è guest, non modifichiamo lo stato dei preferiti.
   void _toggleSavedLine(String routeId) {
