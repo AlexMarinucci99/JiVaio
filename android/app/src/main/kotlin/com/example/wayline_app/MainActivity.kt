@@ -1,4 +1,4 @@
-package com.example.jivaio_app
+package com.progetto.jivaio_app
 
 import io.flutter.embedding.android.FlutterActivity
 

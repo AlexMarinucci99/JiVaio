@@ -15,5 +15,5 @@ class MapConfig {
 
   static const List<String> cartoSubdomains = ['a', 'b', 'c', 'd'];
 
-  static const String userAgentPackageName = 'com.example.jivaio_app';
+  static const String userAgentPackageName = 'com.progetto.jivaio_app';
 }
