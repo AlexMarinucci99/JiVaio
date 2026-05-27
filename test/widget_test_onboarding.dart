@@ -6,7 +6,7 @@ void main() {
     WidgetTester tester,
   ) async {
     // Avvio dell'app forzando la visualizzazione dell'onboarding.
-    await tester.pumpWidget(const JiVaioApp(showOnboarding: true));
+    await tester.pumpWidget(JiVaioApp(showOnboarding: true));
 
     // Lascia completare il primo rendering della UI.
     await tester.pump();

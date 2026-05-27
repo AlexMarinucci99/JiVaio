@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "982072526552",
+    "project_id": "jivaio",
+    "storage_bucket": "jivaio.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:982072526552:android:b12e1c12b72ac9147f79ad",
+        "android_client_info": {
+          "package_name": "com.example.jivaio_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCsf40eRXWCo39bcFzr9kQ9CiESycx0kZM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

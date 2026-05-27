@@ -7,7 +7,14 @@ import 'line_card/line_card.dart';
 import 'line_detail/line_detail_screen.dart';
 
 class LinesScreen extends StatefulWidget {
-  const LinesScreen({super.key});
+  const LinesScreen({
+    super.key,
+    required this.isGuest,
+  });
+
+  // true = utente ospite: può consultare le linee, ma non salvarle.
+  // false = utente registrato: può salvare/rimuovere linee preferite.
+  final bool isGuest;
 
   @override
   State<LinesScreen> createState() => _LinesScreenState();
@@ -27,6 +34,25 @@ class _LinesScreenState extends State<LinesScreen> {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (_) => LineDetailScreen(line: line),
+      ),
+    );
+  }
+
+  // Gestione salvataggio linea.
+  // Se l'utente è guest, non modifichiamo lo stato dei preferiti.
+  void _toggleSavedLine(String routeId) {
+    if (widget.isGuest) {
+      _showGuestSaveMessage();
+      return;
+    }
+
+    _viewModel.toggleSavedLine(routeId);
+  }
+
+  void _showGuestSaveMessage() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Accedi per salvare le linee preferite.'),
       ),
     );
   }
@@ -132,7 +158,7 @@ class _LinesScreenState extends State<LinesScreen> {
     final lines = _viewModel.visibleLines;
 
     if (lines.isEmpty) {
-      return const _SavedLinesEmptyArea();
+      return _SavedLinesEmptyArea(isGuest: widget.isGuest);
     }
 
     return ListView.separated(
@@ -147,7 +173,7 @@ class _LinesScreenState extends State<LinesScreen> {
           key: ValueKey(line.routeId),
           line: line,
           isSaved: _viewModel.isLineSaved(line.routeId),
-          onToggleSaved: () => _viewModel.toggleSavedLine(line.routeId),
+          onToggleSaved: () => _toggleSavedLine(line.routeId),
           onOpenDetails: () => _openLineDetails(line),
         );
       },
@@ -156,18 +182,25 @@ class _LinesScreenState extends State<LinesScreen> {
 }
 
 class _SavedLinesEmptyArea extends StatelessWidget {
-  const _SavedLinesEmptyArea();
+  const _SavedLinesEmptyArea({
+    required this.isGuest,
+  });
+
+  final bool isGuest;
 
   @override
   Widget build(BuildContext context) {
     return ListView(
       physics: const AlwaysScrollableScrollPhysics(),
       padding: const EdgeInsets.fromLTRB(22, 32, 22, 120),
-      children: const [
+      children: [
         _MessageCard(
-          title: 'Nessuna linea salvata',
-          body:
-              'Tocca il cuore su una linea nella tab Tutte per ritrovarla qui.',
+          title: isGuest
+              ? 'Preferiti disponibili dopo l’accesso'
+              : 'Nessuna linea salvata',
+          body: isGuest
+              ? 'Accedi o registrati per salvare le linee che usi più spesso.'
+              : 'Tocca il cuore su una linea nella tab Tutte per ritrovarla qui.',
         ),
       ],
     );

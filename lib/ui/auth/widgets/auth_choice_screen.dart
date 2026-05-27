@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../data/repositories/auth_repository.dart';
 import '../../../routing/app_routes.dart';
 import '../../core/widgets/app_segmented_control.dart';
 import '../view_model/auth_view_model.dart';
@@ -10,14 +11,21 @@ import 'auth_social_buttons.dart';
 import 'auth_text_field.dart';
 
 class AuthChoiceScreen extends StatefulWidget {
-  const AuthChoiceScreen({super.key});
+  const AuthChoiceScreen({
+    super.key,
+    required this.authRepository,
+    required this.onContinueAsGuest,
+  });
+
+  final AuthRepository authRepository;
+  final VoidCallback onContinueAsGuest;
 
   @override
   State<AuthChoiceScreen> createState() => _AuthChoiceScreenState();
 }
 
 class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
-  final AuthViewModel _viewModel = AuthViewModel();
+  late final AuthViewModel _viewModel;
 
   // Controller dei campi del form.
   // Restano nella View perché sono risorse UI con lifecycle.
@@ -28,6 +36,12 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
       TextEditingController();
 
   static const _AuthChoiceColors _colors = _AuthChoiceColors();
+
+  @override
+  void initState() {
+    super.initState();
+    _viewModel = AuthViewModel(widget.authRepository);
+  }
 
   @override
   void dispose() {
@@ -43,24 +57,45 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
     Navigator.pushNamed(context, AppRoutes.resetPassword);
   }
 
-  void _submit() {
-    final result = _viewModel.validateSubmit(
+  Future<void> _submit() async {
+    if (_viewModel.isSubmitting) {
+      return;
+    }
+
+    final result = await _viewModel.submit(
       name: _nameController.text.trim(),
       email: _emailController.text.trim(),
       password: _passwordController.text.trim(),
       confirmPassword: _confirmPasswordController.text.trim(),
     );
 
-    if (!result.isValid) {
-      _showMessage(result.message ?? 'Dati non validi');
+    if (!mounted) {
       return;
     }
 
-    Navigator.pushReplacementNamed(context, AppRoutes.home);
+    if (!result.isValid) {
+      _showMessage(result.message ?? 'Dati non validi');
+    }
+
+    // Non navighiamo alla Home qui.
+    // Se login/registrazione vanno a buon fine,
+    // Firebase aggiorna authStateChanges() e sarà AuthGate a mostrare la Home.
   }
 
   void _continueAsGuest() {
-    Navigator.pushReplacementNamed(context, AppRoutes.home);
+    if (_viewModel.isSubmitting) {
+      return;
+    }
+
+    widget.onContinueAsGuest();
+  }
+
+  void _setMode(AuthMode mode) {
+    if (_viewModel.isSubmitting) {
+      return;
+    }
+
+    _viewModel.setMode(mode);
   }
 
   void _fakeSocialLogin(String provider) {
@@ -104,7 +139,7 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
                   // Switch Accedi / Registrati.
                   AppSegmentedControl<AuthMode>(
                     selectedValue: _viewModel.selectedMode,
-                    onChanged: _viewModel.setMode,
+                    onChanged: _setMode,
                     colors: AppSegmentedControlColors(
                       backgroundColor: _colors.fieldBackgroundColor,
                       selectedColor: _colors.segmentedSelectedColor,
@@ -225,7 +260,7 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
 
                   // Bottone guest.
                   AuthActionButton(
-                    label: 'Continua come guest',
+                    label: 'Continua come ospite',
                     onPressed: _continueAsGuest,
                     height: 54,
                     fontSize: 17,

@@ -5,10 +5,23 @@ import '../../home/widgets/home_placeholder_screen.dart';
 import '../../lines/widgets/lines_screen.dart';
 import '../../settings/widgets/settings_screen.dart';
 
-// Schermata principale dopo login/registrazione.
-// Contiene le tre sezioni principali dell'app e la navbar inferiore.
-class MainNavigationScreen extends StatefulWidget{
-  const MainNavigationScreen({super.key});
+// Schermata principale dopo login/registrazione oppure accesso guest.
+// Contiene le sezioni principali dell'app e la navbar inferiore.
+class MainNavigationScreen extends StatefulWidget {
+  const MainNavigationScreen({
+    super.key,
+    required this.isGuest,
+    required this.onLogout,
+  });
+
+  // true = utente ospite
+  // false = utente autenticato con Firebase
+  final bool isGuest;
+
+  // Azione eseguita dalla schermata impostazioni.
+  // Per utente registrato: logout Firebase.
+  // Per guest: uscita dalla modalità ospite.
+  final Future<void> Function() onLogout;
 
   @override
   State<MainNavigationScreen> createState() => _MainNavigationScreenState();
@@ -22,12 +35,24 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   static const _MainShellColors _colors = _MainShellColors();
 
   // Schermate principali dell'app.
-  // IndexedStack mantiene vive le schermate quando cambi tab.
-  static const List<Widget> _pages = [
-    HomePlaceholderScreen(key: PageStorageKey<String>('home-search-screen')),
-    LinesScreen(key: PageStorageKey<String>('lines-screen')),
-    SettingsScreen(key: PageStorageKey<String>('settings-screen')),
-  ];
+  // Non è static const perché LinesScreen e SettingsScreen
+  // devono ricevere dati dinamici legati allo stato utente.
+  List<Widget> get _pages {
+    return [
+      const HomePlaceholderScreen(
+        key: PageStorageKey<String>('home-search-screen'),
+      ),
+      LinesScreen(
+        key: const PageStorageKey<String>('lines-screen'),
+        isGuest: widget.isGuest,
+      ),
+      SettingsScreen(
+        key: const PageStorageKey<String>('settings-screen'),
+        isGuest: widget.isGuest,
+        onLogout: widget.onLogout,
+      ),
+    ];
+  }
 
   // Cambio tab navbar.
   void _onItemSelected(int index) {
@@ -45,7 +70,10 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
       extendBody: true,
 
       // Cambia schermata in base al tab selezionato.
-      body: IndexedStack(index: _selectedIndex, children: _pages),
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: _pages,
+      ),
 
       // Navbar inferiore.
       bottomNavigationBar: SafeArea(
