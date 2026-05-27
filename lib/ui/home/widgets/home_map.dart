@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
+import '../../../config/map_config.dart';
+
 class HomeMapColors {
   const HomeMapColors({
     this.fallbackBackgroundColor = const Color(0xFFF7F9FC),
@@ -12,7 +14,7 @@ class HomeMapColors {
 }
 
 // Widget della mappa principale della Home.
-// Mostra OpenStreetMap.
+// Mostra una base map minimal per ridurre il rumore visivo.
 class HomeMap extends StatelessWidget {
   const HomeMap({
     super.key,
@@ -23,7 +25,10 @@ class HomeMap extends StatelessWidget {
   final HomeMapColors colors;
 
   // Centrato sull'Aquila.
-  static const LatLng _initialCenter = LatLng(42.3498, 13.3995);
+  static const LatLng _initialCenter = LatLng(
+    MapConfig.initialLatitude,
+    MapConfig.initialLongitude,
+  );
 
   static final LatLngBounds _worldBounds = LatLngBounds(
     const LatLng(-85.05112878, -180),
@@ -49,11 +54,11 @@ class HomeMap extends StatelessWidget {
           options: MapOptions(
             // Posizione iniziale della mappa.
             initialCenter: _initialCenter,
-            initialZoom: 14,
+            initialZoom: MapConfig.initialZoom,
 
             // Limiti di zoom.
-            minZoom: 5,
-            maxZoom: 19,
+            minZoom: MapConfig.minZoom,
+            maxZoom: MapConfig.maxZoom,
 
             cameraConstraint: CameraConstraint.contain(bounds: _worldBounds),
 
@@ -67,10 +72,23 @@ class HomeMap extends StatelessWidget {
             ),
           ),
           children: [
-            // Layer base OpenStreetMap.
+            // Layer base minimal.
+            // È più pulito della tile standard di OpenStreetMap e lascia più spazio
+            // ai futuri marker personalizzati di JiVaio.
             TileLayer(
-              urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-              userAgentPackageName: 'com.example.jivaio_app',
+              urlTemplate: MapConfig.lightTileUrl,
+              subdomains: MapConfig.cartoSubdomains,
+              userAgentPackageName: MapConfig.userAgentPackageName,
+            ),
+
+            // Attribuzione obbligatoria per dati e tile.
+            RichAttributionWidget(
+              attributions: [
+                TextSourceAttribution(
+                  '© OpenStreetMap contributors © CARTO',
+                  onTap: () {},
+                ),
+              ],
             ),
           ],
         );
