@@ -10,16 +10,11 @@ import 'ui/main_navigation/widgets/main_navigation_screen.dart';
 import 'ui/onboarding/widgets/onboarding_screen.dart';
 
 class JiVaioApp extends StatelessWidget {
-  JiVaioApp({
-    super.key,
-    required this.showOnboarding,
-  });
+  JiVaioApp({super.key, required this.showOnboarding});
 
   final bool showOnboarding;
 
-  final AuthRepository _authRepository = AuthRepository(
-    AuthService(),
-  );
+  final AuthRepository _authRepository = AuthRepository(AuthService());
 
   @override
   Widget build(BuildContext context) {
@@ -33,16 +28,12 @@ class JiVaioApp extends StatelessWidget {
       routes: {
         AppRoutes.onboarding: (_) => const OnboardingScreen(),
 
-        AppRoutes.authChoice: (_) => AuthGate(
-          authRepository: _authRepository,
-        ),
+        AppRoutes.authChoice: (_) => AuthGate(authRepository: _authRepository),
 
         // Route mantenuta per compatibilità.
         // Il flusso principale passa da AuthGate.
-        AppRoutes.home: (_) => MainNavigationScreen(
-          isGuest: false,
-          onLogout: () async {},
-        ),
+        AppRoutes.home: (_) =>
+            MainNavigationScreen(isGuest: false, onLogout: () async {}),
 
         AppRoutes.resetPassword: (_) => const ResetPasswordScreen(),
       },

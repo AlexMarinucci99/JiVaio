@@ -34,10 +34,10 @@ class LineDetailRouteSection extends StatelessWidget {
           Text(
             'Percorso completo',
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: colors.primaryText,
-                  fontSize: 13,
-                  fontWeight: FontWeight.w800,
-                ),
+              color: colors.primaryText,
+              fontSize: 13,
+              fontWeight: FontWeight.w800,
+            ),
           ),
           const SizedBox(height: 5),
           Text(
@@ -45,11 +45,11 @@ class LineDetailRouteSection extends StatelessWidget {
                 ? 'Seleziona la fermata da cui vuoi inviare la segnalazione.'
                 : 'Fermate ordinate della direzione selezionata.',
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: colors.secondaryText,
-                  fontSize: 12,
-                  height: 1.35,
-                  fontWeight: FontWeight.w500,
-                ),
+              color: colors.secondaryText,
+              fontSize: 12,
+              height: 1.35,
+              fontWeight: FontWeight.w500,
+            ),
           ),
           const SizedBox(height: 14),
           if (stops.isEmpty)
@@ -78,9 +78,7 @@ class LineDetailRouteSection extends StatelessWidget {
 }
 
 class _EmptyRouteBox extends StatelessWidget {
-  const _EmptyRouteBox({
-    required this.colors,
-  });
+  const _EmptyRouteBox({required this.colors});
 
   final LineCardPalette colors;
 
@@ -96,11 +94,11 @@ class _EmptyRouteBox extends StatelessWidget {
       child: Text(
         'Fermate non disponibili per questa direzione.',
         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: LineDetailColors.warningText,
-              fontSize: 12,
-              height: 1.35,
-              fontWeight: FontWeight.w600,
-            ),
+          color: LineDetailColors.warningText,
+          fontSize: 12,
+          height: 1.35,
+          fontWeight: FontWeight.w600,
+        ),
       ),
     );
   }

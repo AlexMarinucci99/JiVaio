@@ -126,8 +126,7 @@ class AppSegmentedControl<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     // Colori effettivi usati dal widget.
     // Prima controllano gli override singoli, poi usano la palette colors.
-    final effectiveBackgroundColor =
-        backgroundColor ?? colors.backgroundColor;
+    final effectiveBackgroundColor = backgroundColor ?? colors.backgroundColor;
     final effectiveSelectedColor = selectedColor ?? colors.selectedColor;
     final effectiveBorderColor = borderColor ?? colors.borderColor;
     final effectiveSelectedTextColor =

@@ -329,11 +329,7 @@ class _SearchTextField extends StatelessWidget {
             color: colors.iconBackgroundColor,
             shape: BoxShape.circle,
           ),
-          child: Icon(
-            icon,
-            size: 14 * scale,
-            color: colors.iconColor,
-          ),
+          child: Icon(icon, size: 14 * scale, color: colors.iconColor),
         ),
 
         SizedBox(width: 14 * scale),

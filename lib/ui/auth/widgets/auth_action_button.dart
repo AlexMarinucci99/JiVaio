@@ -51,10 +51,7 @@ class AuthActionButton extends StatelessWidget {
         ),
         child: Text(
           label,
-          style: TextStyle(
-            fontSize: fontSize,
-            fontWeight: FontWeight.w600,
-          ),
+          style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.w600),
         ),
       ),
     );

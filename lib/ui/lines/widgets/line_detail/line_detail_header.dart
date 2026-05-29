@@ -34,10 +34,7 @@ class LineDetailHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Calcola il colore del testo leggibile sopra il colore reale della linea.
-    final textColor = LineCardColors.textOn(
-      lineColor,
-      colors: colors,
-    );
+    final textColor = LineCardColors.textOn(lineColor, colors: colors);
 
     final selectedDirection = direction;
 
@@ -84,13 +81,12 @@ class LineDetailHeader extends StatelessWidget {
                         line.displayName,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.titleLarge
-                            ?.copyWith(
-                              color: colors.primaryText,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w800,
-                              height: 1.15,
-                            ),
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          color: colors.primaryText,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w800,
+                          height: 1.15,
+                        ),
                       ),
 
                       const SizedBox(height: 5),
@@ -100,9 +96,9 @@ class LineDetailHeader extends StatelessWidget {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: colors.secondaryText,
-                              fontSize: 11.5,
-                            ),
+                          color: colors.secondaryText,
+                          fontSize: 11.5,
+                        ),
                       ),
 
                       if (selectedDirection != null) ...[
@@ -180,7 +176,7 @@ class _DirectionSwitcherBox extends StatelessWidget {
         // Sfondo bianco del box Partenza / Capolinea.
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: lineColor.withValues(alpha: 0.18)),
+        border: Border.all(color: colors.border),
       ),
       child: Row(
         children: [
@@ -230,9 +226,7 @@ class _DirectionSwitcherBox extends StatelessWidget {
 }
 
 class _DirectionUnavailableBox extends StatelessWidget {
-  const _DirectionUnavailableBox({
-    required this.colors,
-  });
+  const _DirectionUnavailableBox({required this.colors});
 
   final LineCardPalette colors;
 
@@ -249,9 +243,9 @@ class _DirectionUnavailableBox extends StatelessWidget {
       child: Text(
         'Direzione non disponibile',
         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              fontSize: 12,
-              color: colors.secondaryText,
-            ),
+          fontSize: 12,
+          color: colors.secondaryText,
+        ),
       ),
     );
   }

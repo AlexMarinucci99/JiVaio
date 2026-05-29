@@ -89,10 +89,7 @@ class OnboardingBottomControls extends StatelessWidget {
 // Widget privato per il bottone "Indietro".
 // Rimane nello stesso file perché per ora non viene riutilizzato altrove.
 class _OnboardingBackButton extends StatelessWidget {
-  const _OnboardingBackButton({
-    required this.onPressed,
-    required this.color,
-  });
+  const _OnboardingBackButton({required this.onPressed, required this.color});
 
   final VoidCallback onPressed;
   final Color color;

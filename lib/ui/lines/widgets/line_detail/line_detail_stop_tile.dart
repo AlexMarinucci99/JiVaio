@@ -119,8 +119,8 @@ class _StopHeader extends StatelessWidget {
     final badgeLabel = isFirst
         ? 'Partenza'
         : isLast
-            ? 'Capolinea'
-            : null;
+        ? 'Capolinea'
+        : null;
 
     return Wrap(
       spacing: 6,
@@ -130,13 +130,11 @@ class _StopHeader extends StatelessWidget {
         Text(
           stopName,
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                color: colors.primaryText,
-                fontSize: 13.5,
-                fontWeight: isFirst || isLast
-                    ? FontWeight.w800
-                    : FontWeight.w700,
-                height: 1.2,
-              ),
+            color: colors.primaryText,
+            fontSize: 13.5,
+            fontWeight: isFirst || isLast ? FontWeight.w800 : FontWeight.w700,
+            height: 1.2,
+          ),
         ),
         if (badgeLabel != null)
           _StopBadge(
@@ -156,10 +154,7 @@ class _StopHeader extends StatelessWidget {
 }
 
 class _OfficialTimeLine extends StatelessWidget {
-  const _OfficialTimeLine({
-    required this.officialTime,
-    required this.colors,
-  });
+  const _OfficialTimeLine({required this.officialTime, required this.colors});
 
   final String? officialTime;
   final LineCardPalette colors;
@@ -167,28 +162,23 @@ class _OfficialTimeLine extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final labelStyle = Theme.of(context).textTheme.bodySmall?.copyWith(
-          fontSize: 10.6,
-          color: colors.secondaryText,
-          height: 1.25,
-          fontWeight: FontWeight.w500,
-        );
+      fontSize: 10.6,
+      color: colors.secondaryText,
+      height: 1.25,
+      fontWeight: FontWeight.w500,
+    );
 
     final valueStyle = Theme.of(context).textTheme.titleMedium?.copyWith(
-          fontSize: 12.6,
-          color: colors.primaryText,
-          height: 1.2,
-          fontWeight: FontWeight.w700,
-        );
+      fontSize: 12.6,
+      color: colors.primaryText,
+      height: 1.2,
+      fontWeight: FontWeight.w700,
+    );
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Expanded(
-          child: Text(
-            'Orario ufficiale',
-            style: labelStyle,
-          ),
-        ),
+        Expanded(child: Text('Orario ufficiale', style: labelStyle)),
         const SizedBox(width: 12),
         Text(
           _displayOfficialTime,
@@ -211,9 +201,7 @@ class _OfficialTimeLine extends StatelessWidget {
 }
 
 class _EstimatedTimeUnavailable extends StatelessWidget {
-  const _EstimatedTimeUnavailable({
-    required this.colors,
-  });
+  const _EstimatedTimeUnavailable({required this.colors});
 
   final LineCardPalette colors;
 
@@ -222,11 +210,11 @@ class _EstimatedTimeUnavailable extends StatelessWidget {
     return Text(
       'Orario stimato non disponibile',
       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-            fontSize: 10.6,
-            color: colors.secondaryText,
-            height: 1.35,
-            fontWeight: FontWeight.w500,
-          ),
+        fontSize: 10.6,
+        color: colors.secondaryText,
+        height: 1.35,
+        fontWeight: FontWeight.w500,
+      ),
     );
   }
 }
@@ -253,11 +241,11 @@ class _StopBadge extends StatelessWidget {
       child: Text(
         label,
         style: Theme.of(context).textTheme.labelMedium?.copyWith(
-              fontSize: 9.5,
-              color: textColor,
-              fontWeight: FontWeight.w800,
-              height: 1.1,
-            ),
+          fontSize: 9.5,
+          color: textColor,
+          fontWeight: FontWeight.w800,
+          height: 1.1,
+        ),
       ),
     );
   }

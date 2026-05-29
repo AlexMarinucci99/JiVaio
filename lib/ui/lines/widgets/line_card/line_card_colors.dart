@@ -62,10 +62,7 @@ class LineCardColors {
   static const Color labelAccent = Color(0xFF2F80ED);
   static const Color shadowBase = Color(0xFF0F172A);
 
-  static Color parseLineColor(
-    String value, {
-    LineCardPalette? colors,
-  }) {
+  static Color parseLineColor(String value, {LineCardPalette? colors}) {
     final palette = colors ?? defaultPalette;
     final normalized = value.replaceAll('#', '').trim();
 
@@ -80,10 +77,7 @@ class LineCardColors {
     }
   }
 
-  static Color textOn(
-    Color backgroundColor, {
-    LineCardPalette? colors,
-  }) {
+  static Color textOn(Color backgroundColor, {LineCardPalette? colors}) {
     final palette = colors ?? defaultPalette;
 
     return backgroundColor.computeLuminance() > 0.58
@@ -91,9 +85,7 @@ class LineCardColors {
         : Colors.white;
   }
 
-  static BoxDecoration cardDecoration({
-    LineCardPalette? colors,
-  }) {
+  static BoxDecoration cardDecoration({LineCardPalette? colors}) {
     final palette = colors ?? defaultPalette;
 
     return BoxDecoration(

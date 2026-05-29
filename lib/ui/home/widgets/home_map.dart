@@ -5,9 +5,7 @@ import 'package:latlong2/latlong.dart';
 import '../../../config/map_config.dart';
 
 class HomeMapColors {
-  const HomeMapColors({
-    this.fallbackBackgroundColor = const Color(0xFFF7F9FC),
-  });
+  const HomeMapColors({this.fallbackBackgroundColor = const Color(0xFFF7F9FC)});
 
   // Colore mostrato se la mappa non ha ancora dimensioni valide.
   final Color fallbackBackgroundColor;
@@ -16,10 +14,7 @@ class HomeMapColors {
 // Widget della mappa principale della Home.
 // Mostra una base map minimal per ridurre il rumore visivo.
 class HomeMap extends StatelessWidget {
-  const HomeMap({
-    super.key,
-    this.colors = const HomeMapColors(),
-  });
+  const HomeMap({super.key, this.colors = const HomeMapColors()});
 
   // Palette colori propria della mappa.
   final HomeMapColors colors;
@@ -83,7 +78,7 @@ class HomeMap extends StatelessWidget {
 
             // Attribuzione obbligatoria per dati e tile.
             //Da rimuovere in fase di produzione
-           /* RichAttributionWidget(
+            /* RichAttributionWidget(
               attributions: [
                 TextSourceAttribution(
                   '© OpenStreetMap contributors © CARTO',

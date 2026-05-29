@@ -28,10 +28,7 @@ class LineRoutePreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textColor = LineCardColors.textOn(
-      lineColor,
-      colors: colors,
-    );
+    final textColor = LineCardColors.textOn(lineColor, colors: colors);
 
     final supportsDirectionSwap = canSwapDirection && !line.isUnidirectional;
     final showsOneWayDirection = line.isUnidirectional;

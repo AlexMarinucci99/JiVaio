@@ -8,10 +8,7 @@ import 'line_card/line_card.dart';
 import 'line_detail/line_detail_screen.dart';
 
 class LinesScreen extends StatefulWidget {
-  const LinesScreen({
-    super.key,
-    required this.isGuest,
-  });
+  const LinesScreen({super.key, required this.isGuest});
 
   // true = utente ospite: può consultare le linee, ma non salvarle.
   // false = utente registrato: può salvare/rimuovere linee preferite.
@@ -40,16 +37,14 @@ class _LinesScreenState extends State<LinesScreen> {
     super.dispose();
   }
 
- void _openLineDetails(TransitLine line) {
-  Navigator.of(context).push(
-    MaterialPageRoute(
-      builder: (_) => LineDetailScreen(
-        line: line,
-        repository: _repository,
+  void _openLineDetails(TransitLine line) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => LineDetailScreen(line: line, repository: _repository),
       ),
-    ),
-  );
-}
+    );
+  }
+
   // Gestione salvataggio linea.
   // Se l'utente è guest, non modifichiamo lo stato dei preferiti.
   void _toggleSavedLine(String routeId) {
@@ -63,9 +58,7 @@ class _LinesScreenState extends State<LinesScreen> {
 
   void _showGuestSaveMessage() {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Accedi per salvare le linee preferite.'),
-      ),
+      const SnackBar(content: Text('Accedi per salvare le linee preferite.')),
     );
   }
 
@@ -157,9 +150,7 @@ class _LinesScreenState extends State<LinesScreen> {
 
   Widget _buildSelectedContent() {
     if (_viewModel.isLoading && _viewModel.allLines.isEmpty) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
+      return const Center(child: CircularProgressIndicator());
     }
 
     if (_viewModel.errorMessage != null && _viewModel.allLines.isEmpty) {
@@ -196,10 +187,7 @@ class _LinesScreenState extends State<LinesScreen> {
 }
 
 class _ErrorLinesArea extends StatelessWidget {
-  const _ErrorLinesArea({
-    required this.message,
-    required this.onRetry,
-  });
+  const _ErrorLinesArea({required this.message, required this.onRetry});
 
   final String message;
   final Future<void> Function() onRetry;
@@ -230,25 +218,22 @@ class _ErrorLinesArea extends StatelessWidget {
               Text(
                 'Errore caricamento linee',
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: const Color(0xFF111827),
-                      fontSize: 14,
-                      fontWeight: FontWeight.w800,
-                    ),
+                  color: const Color(0xFF111827),
+                  fontSize: 14,
+                  fontWeight: FontWeight.w800,
+                ),
               ),
               const SizedBox(height: 8),
               Text(
                 message,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: const Color(0xFF5D6675),
-                      fontSize: 12.5,
-                      height: 1.5,
-                    ),
+                  color: const Color(0xFF5D6675),
+                  fontSize: 12.5,
+                  height: 1.5,
+                ),
               ),
               const SizedBox(height: 14),
-              FilledButton(
-                onPressed: onRetry,
-                child: const Text('Riprova'),
-              ),
+              FilledButton(onPressed: onRetry, child: const Text('Riprova')),
             ],
           ),
         ),
@@ -258,9 +243,7 @@ class _ErrorLinesArea extends StatelessWidget {
 }
 
 class _SavedLinesEmptyArea extends StatelessWidget {
-  const _SavedLinesEmptyArea({
-    required this.isGuest,
-  });
+  const _SavedLinesEmptyArea({required this.isGuest});
 
   final bool isGuest;
 
@@ -284,10 +267,7 @@ class _SavedLinesEmptyArea extends StatelessWidget {
 }
 
 class _MessageCard extends StatelessWidget {
-  const _MessageCard({
-    required this.title,
-    required this.body,
-  });
+  const _MessageCard({required this.title, required this.body});
 
   final String title;
   final String body;
@@ -314,19 +294,19 @@ class _MessageCard extends StatelessWidget {
           Text(
             title,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: const Color(0xFF111827),
-                  fontSize: 14,
-                  fontWeight: FontWeight.w800,
-                ),
+              color: const Color(0xFF111827),
+              fontSize: 14,
+              fontWeight: FontWeight.w800,
+            ),
           ),
           const SizedBox(height: 8),
           Text(
             body,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: const Color(0xFF5D6675),
-                  fontSize: 12.5,
-                  height: 1.5,
-                ),
+              color: const Color(0xFF5D6675),
+              fontSize: 12.5,
+              height: 1.5,
+            ),
           ),
         ],
       ),

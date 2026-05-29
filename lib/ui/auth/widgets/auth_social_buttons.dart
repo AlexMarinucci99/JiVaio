@@ -34,10 +34,7 @@ class AuthSocialButtons extends StatelessWidget {
             label: 'Google',
             iconWidget: const Text(
               'G',
-              style: TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
             ),
             colors: colors,
             onPressed: onGooglePressed,

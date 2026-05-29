@@ -6,10 +6,7 @@ import '../../../data/repositories/auth_repository.dart';
 enum AuthMode { login, register }
 
 class AuthSubmitResult {
-  const AuthSubmitResult._({
-    required this.isValid,
-    this.message,
-  });
+  const AuthSubmitResult._({required this.isValid, this.message});
 
   final bool isValid;
   final String? message;
@@ -99,10 +96,7 @@ class AuthViewModel extends ChangeNotifier {
 
     try {
       if (isLogin) {
-        await _authRepository.login(
-          email: email,
-          password: password,
-        );
+        await _authRepository.login(email: email, password: password);
       } else {
         await _authRepository.register(
           name: name,
@@ -113,9 +107,7 @@ class AuthViewModel extends ChangeNotifier {
 
       return const AuthSubmitResult.valid();
     } on FirebaseAuthException catch (error) {
-      return AuthSubmitResult.invalid(
-        _mapFirebaseAuthError(error.code),
-      );
+      return AuthSubmitResult.invalid(_mapFirebaseAuthError(error.code));
     } catch (_) {
       return const AuthSubmitResult.invalid(
         'Si è verificato un errore imprevisto. Riprova.',
@@ -133,10 +125,7 @@ class AuthViewModel extends ChangeNotifier {
     required String confirmPassword,
   }) {
     if (isLogin) {
-      return _validateLogin(
-        email: email,
-        password: password,
-      );
+      return _validateLogin(email: email, password: password);
     }
 
     return _validateRegister(
@@ -160,7 +149,9 @@ class AuthViewModel extends ChangeNotifier {
     }
 
     if (!_isValidEmail(email)) {
-      return const AuthSubmitResult.invalid('Inserisci un indirizzo email valido');
+      return const AuthSubmitResult.invalid(
+        'Inserisci un indirizzo email valido',
+      );
     }
 
     return const AuthSubmitResult.valid();
@@ -180,7 +171,9 @@ class AuthViewModel extends ChangeNotifier {
     }
 
     if (!_isValidEmail(email)) {
-      return const AuthSubmitResult.invalid('Inserisci un indirizzo email valido');
+      return const AuthSubmitResult.invalid(
+        'Inserisci un indirizzo email valido',
+      );
     }
 
     if (password.length < 6) {

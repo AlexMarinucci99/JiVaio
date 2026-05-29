@@ -13,8 +13,8 @@ class LineDetailViewModel extends ChangeNotifier {
     required TransitLine line,
     TransitRepository? repository,
     this.colors = LineCardColors.defaultPalette,
-  })  : _line = line,
-        _repository = repository ?? TransitRepository();
+  }) : _line = line,
+       _repository = repository ?? TransitRepository();
 
   final TransitLine _line;
   final TransitRepository _repository;
@@ -57,18 +57,11 @@ class LineDetailViewModel extends ChangeNotifier {
   String? get lastReportMessage => _lastReportMessage;
 
   List<int> get manualHours {
-    return List<int>.generate(
-      18,
-      (index) => index + 5,
-      growable: false,
-    );
+    return List<int>.generate(18, (index) => index + 5, growable: false);
   }
 
   Color get lineColor {
-    return LineCardColors.parseLineColor(
-      _line.routeColor,
-      colors: colors,
-    );
+    return LineCardColors.parseLineColor(_line.routeColor, colors: colors);
   }
 
   bool get hasDirections {
@@ -255,11 +248,10 @@ class LineDetailViewModel extends ChangeNotifier {
 
     if (_reportLocation == LineDetailReportLocation.onBus) {
       _lastReportMessage =
-          '$reportLabel registrato in modalità demo per la linea ${line.shortName}.';
+          '$reportLabel registrato per la linea ${line.shortName}.';
     } else {
       final stopName = selectedReportStopName ?? 'fermata selezionata';
-      _lastReportMessage =
-          '$reportLabel registrato in modalità demo dalla fermata "$stopName".';
+      _lastReportMessage = '$reportLabel registrato dalla fermata "$stopName".';
     }
 
     notifyListeners();
@@ -274,12 +266,7 @@ class LineDetailViewModel extends ChangeNotifier {
 
     final selectedHour = _selectedManualHour ?? now.hour;
 
-    return DateTime(
-      now.year,
-      now.month,
-      now.day,
-      selectedHour,
-    );
+    return DateTime(now.year, now.month, now.day, selectedHour);
   }
 
   String _formatHourRange(DateTime hourStart) {

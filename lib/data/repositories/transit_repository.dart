@@ -6,17 +6,14 @@ import '../services/transit_raw_service.dart';
 typedef _RawMap = Map<String, dynamic>;
 
 class TransitRepository {
-  TransitRepository({
-    TransitRawService rawService = const TransitRawService(),
-  }) : _rawService = rawService;
+  TransitRepository({TransitRawService rawService = const TransitRawService()})
+    : _rawService = rawService;
 
   final TransitRawService _rawService;
 
   TransitRawBundle? _cachedBundle;
 
-  Future<List<TransitLine>> getLines({
-    DateTime? moment,
-  }) async {
+  Future<List<TransitLine>> getLines({DateTime? moment}) async {
     final bundle = await _loadBundle();
     final now = moment ?? DateTime.now();
 
@@ -66,9 +63,9 @@ class TransitRepository {
     }
 
     lines.sort((a, b) {
-      final byNumber = _naturalLineOrder(a.shortName).compareTo(
-        _naturalLineOrder(b.shortName),
-      );
+      final byNumber = _naturalLineOrder(
+        a.shortName,
+      ).compareTo(_naturalLineOrder(b.shortName));
 
       if (byNumber != 0) {
         return byNumber;
@@ -91,18 +88,18 @@ class TransitRepository {
     final stopTimesByTrip = _groupStopTimesByTrip(bundle.stopTimes);
     final stopsById = _mapById(bundle.stops, 'stop_id');
 
-    final routeTrips = bundle.trips.where((trip) {
-      return _stringValue(trip, 'route_id') == line.routeId &&
-          _directionKeyOf(trip) == direction.key;
-    }).toList(growable: false);
+    final routeTrips = bundle.trips
+        .where((trip) {
+          return _stringValue(trip, 'route_id') == line.routeId &&
+              _directionKeyOf(trip) == direction.key;
+        })
+        .toList(growable: false);
 
-    final activeTrips = routeTrips.where((trip) {
-      return _isTripActiveOnDate(
-        trip: trip,
-        bundle: bundle,
-        date: now,
-      );
-    }).toList(growable: false);
+    final activeTrips = routeTrips
+        .where((trip) {
+          return _isTripActiveOnDate(trip: trip, bundle: bundle, date: now);
+        })
+        .toList(growable: false);
 
     final hourStart = DateTime(now.year, now.month, now.day, now.hour);
     final rangeStartMinutes = now.hour * 60;
@@ -163,26 +160,27 @@ class TransitRepository {
     required Map<String, _RawMap> stopsById,
     required DateTime moment,
   }) {
-    final directionKeys = routeTrips
-        .map(_directionKeyOf)
-        .toSet()
-        .toList(growable: false)
-      ..sort();
+    final directionKeys =
+        routeTrips.map(_directionKeyOf).toSet().toList(growable: false)..sort();
 
     final directions = <TransitLineDirection>[];
 
     for (final directionKey in directionKeys) {
-      final allDirectionTrips = routeTrips.where((trip) {
-        return _directionKeyOf(trip) == directionKey;
-      }).toList(growable: false);
+      final allDirectionTrips = routeTrips
+          .where((trip) {
+            return _directionKeyOf(trip) == directionKey;
+          })
+          .toList(growable: false);
 
-      final activeDirectionTrips = allDirectionTrips.where((trip) {
-        return _isTripActiveOnDate(
-          trip: trip,
-          bundle: bundle,
-          date: moment,
-        );
-      }).toList(growable: false);
+      final activeDirectionTrips = allDirectionTrips
+          .where((trip) {
+            return _isTripActiveOnDate(
+              trip: trip,
+              bundle: bundle,
+              date: moment,
+            );
+          })
+          .toList(growable: false);
 
       final representativeTrip = _firstTripWithStops(
         activeDirectionTrips.isNotEmpty
@@ -196,8 +194,8 @@ class TransitRepository {
       }
 
       final representativeStopTimes =
-    stopTimesByTrip[_stringValue(representativeTrip, 'trip_id')] ??
-        const <_RawMap>[];
+          stopTimesByTrip[_stringValue(representativeTrip, 'trip_id')] ??
+          const <_RawMap>[];
 
       if (representativeStopTimes.isEmpty) {
         continue;
@@ -251,8 +249,7 @@ class TransitRepository {
       final departureTime = _stringValue(stopTimes.first, 'departure_time');
       final departureMinutes = _timeToMinutes(departureTime);
 
-      if (departureMinutes >= startMinutes &&
-          departureMinutes < endMinutes) {
+      if (departureMinutes >= startMinutes && departureMinutes < endMinutes) {
         departures.add(
           TransitLineDeparture(
             tripId: tripId,
@@ -263,9 +260,9 @@ class TransitRepository {
     }
 
     departures.sort((a, b) {
-      return _timeToMinutes(a.departureTime).compareTo(
-        _timeToMinutes(b.departureTime),
-      );
+      return _timeToMinutes(
+        a.departureTime,
+      ).compareTo(_timeToMinutes(b.departureTime));
     });
 
     return departures;
@@ -280,19 +277,21 @@ class TransitRepository {
     final tripId = _stringValue(trip, 'trip_id');
     final stopTimes = stopTimesByTrip[tripId] ?? const <_RawMap>[];
 
-    return stopTimes.map((stopTime) {
-      final stopId = _stringValue(stopTime, 'stop_id');
-      final stop = stopsById[stopId];
+    return stopTimes
+        .map((stopTime) {
+          final stopId = _stringValue(stopTime, 'stop_id');
+          final stop = stopsById[stopId];
 
-      return TransitLineStop(
-        stopId: stopId,
-        name: _stopName(stop),
-        sequence: _intValue(stopTime, 'stop_sequence'),
-        officialTime: includeOfficialTimes
-            ? _formatGtfsTime(_stringValue(stopTime, 'arrival_time'))
-            : null,
-      );
-    }).toList(growable: false);
+          return TransitLineStop(
+            stopId: stopId,
+            name: _stopName(stop),
+            sequence: _intValue(stopTime, 'stop_sequence'),
+            officialTime: includeOfficialTimes
+                ? _formatGtfsTime(_stringValue(stopTime, 'arrival_time'))
+                : null,
+          );
+        })
+        .toList(growable: false);
   }
 
   _RawMap? _findRepresentativeTrip({
@@ -448,9 +447,10 @@ class TransitRepository {
 
     for (final entry in grouped.entries) {
       entry.value.sort((a, b) {
-        return _intValue(a, 'stop_sequence').compareTo(
-          _intValue(b, 'stop_sequence'),
-        );
+        return _intValue(
+          a,
+          'stop_sequence',
+        ).compareTo(_intValue(b, 'stop_sequence'));
       });
     }
 
@@ -574,13 +574,17 @@ class TransitRepository {
       return value;
     }
 
-    return lower.split(' ').where((part) => part.trim().isNotEmpty).map((part) {
-      if (part.length == 1) {
-        return part.toUpperCase();
-      }
+    return lower
+        .split(' ')
+        .where((part) => part.trim().isNotEmpty)
+        .map((part) {
+          if (part.length == 1) {
+            return part.toUpperCase();
+          }
 
-      return part[0].toUpperCase() + part.substring(1);
-    }).join(' ');
+          return part[0].toUpperCase() + part.substring(1);
+        })
+        .join(' ');
   }
 
   String _stringValue(_RawMap row, String key) {

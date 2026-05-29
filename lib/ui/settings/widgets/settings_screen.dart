@@ -29,23 +29,16 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final actionLabel = isGuest ? 'Accedi o registrati' : 'Logout';
 
-    final actionIcon = isGuest
-        ? Icons.login_rounded
-        : Icons.logout_rounded;
+    final actionIcon = isGuest ? Icons.login_rounded : Icons.logout_rounded;
 
-    final actionColor = isGuest
-        ? _colors.primaryColor
-        : _colors.logoutColor;
+    final actionColor = isGuest ? _colors.primaryColor : _colors.logoutColor;
 
     return Scaffold(
       backgroundColor: _colors.backgroundColor,
       body: DecoratedBox(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [
-              Color(0xFFF6FAFF),
-              Color(0xFFF2F6FC),
-            ],
+            colors: [Color(0xFFF6FAFF), Color(0xFFF2F6FC)],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -72,11 +65,7 @@ class SettingsScreen extends StatelessWidget {
                 // Azione principale della schermata.
                 TextButton.icon(
                   onPressed: _handleLogout,
-                  icon: Icon(
-                    actionIcon,
-                    size: 24,
-                    color: actionColor,
-                  ),
+                  icon: Icon(actionIcon, size: 24, color: actionColor),
                   label: Text(
                     actionLabel,
                     style: TextStyle(

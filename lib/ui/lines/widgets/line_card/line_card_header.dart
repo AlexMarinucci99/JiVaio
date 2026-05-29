@@ -29,10 +29,7 @@ class LineCardHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Il badge continua a usare il colore reale della linea.
-    final badgeTextColor = LineCardColors.textOn(
-      lineColor,
-      colors: colors,
-    );
+    final badgeTextColor = LineCardColors.textOn(lineColor, colors: colors);
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,

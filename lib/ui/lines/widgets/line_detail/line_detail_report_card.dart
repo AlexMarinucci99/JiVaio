@@ -39,30 +39,30 @@ class LineDetailReportCard extends StatelessWidget {
           Text(
             'Segnalazioni',
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: colors.primaryText,
-                  fontSize: 13,
-                  fontWeight: FontWeight.w800,
-                ),
+              color: colors.primaryText,
+              fontSize: 13,
+              fontWeight: FontWeight.w800,
+            ),
           ),
           const SizedBox(height: 5),
           Text(
             'Aiutaci a capire lo stato della corsa. Per ora la funzione è in modalità demo.',
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: colors.secondaryText,
-                  fontSize: 12,
-                  height: 1.35,
-                  fontWeight: FontWeight.w500,
-                ),
+              color: colors.secondaryText,
+              fontSize: 12,
+              height: 1.35,
+              fontWeight: FontWeight.w500,
+            ),
           ),
           const SizedBox(height: 14),
           Text(
             'Sei sulla navetta?',
             style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                  color: colors.mutedText,
-                  fontSize: 10.5,
-                  fontWeight: FontWeight.w800,
-                  letterSpacing: 0.45,
-                ),
+              color: colors.mutedText,
+              fontSize: 10.5,
+              fontWeight: FontWeight.w800,
+              letterSpacing: 0.45,
+            ),
           ),
           const SizedBox(height: 8),
           Row(
@@ -71,13 +71,11 @@ class LineDetailReportCard extends StatelessWidget {
                 child: _LocationChoiceButton(
                   label: 'Sì',
                   icon: Icons.directions_bus_rounded,
-                  isSelected:
-                      reportLocation == LineDetailReportLocation.onBus,
+                  isSelected: reportLocation == LineDetailReportLocation.onBus,
                   lineColor: lineColor,
                   colors: colors,
-                  onTap: () => onLocationChanged(
-                    LineDetailReportLocation.onBus,
-                  ),
+                  onTap: () =>
+                      onLocationChanged(LineDetailReportLocation.onBus),
                 ),
               ),
               const SizedBox(width: 10),
@@ -85,13 +83,11 @@ class LineDetailReportCard extends StatelessWidget {
                 child: _LocationChoiceButton(
                   label: 'No',
                   icon: Icons.location_on_rounded,
-                  isSelected:
-                      reportLocation == LineDetailReportLocation.atStop,
+                  isSelected: reportLocation == LineDetailReportLocation.atStop,
                   lineColor: lineColor,
                   colors: colors,
-                  onTap: () => onLocationChanged(
-                    LineDetailReportLocation.atStop,
-                  ),
+                  onTap: () =>
+                      onLocationChanged(LineDetailReportLocation.atStop),
                 ),
               ),
             ],
@@ -131,10 +127,7 @@ class LineDetailReportCard extends StatelessWidget {
           ),
           if (lastReportMessage != null) ...[
             const SizedBox(height: 12),
-            _ReportFeedbackBox(
-              message: lastReportMessage!,
-              colors: colors,
-            ),
+            _ReportFeedbackBox(message: lastReportMessage!, colors: colors),
           ],
         ],
       ),
@@ -161,11 +154,13 @@ class _LocationChoiceButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final backgroundColor =
-        isSelected ? lineColor.withValues(alpha: 0.1) : LineDetailColors.softSurface;
+    final backgroundColor = isSelected
+        ? lineColor.withValues(alpha: 0.1)
+        : LineDetailColors.softSurface;
 
-    final borderColor =
-        isSelected ? lineColor.withValues(alpha: 0.42) : colors.border;
+    final borderColor = isSelected
+        ? lineColor.withValues(alpha: 0.42)
+        : colors.border;
 
     final foregroundColor = isSelected ? lineColor : colors.secondaryText;
 
@@ -190,10 +185,10 @@ class _LocationChoiceButton extends StatelessWidget {
               Text(
                 label,
                 style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                      color: foregroundColor,
-                      fontSize: 12.5,
-                      fontWeight: FontWeight.w800,
-                    ),
+                  color: foregroundColor,
+                  fontSize: 12.5,
+                  fontWeight: FontWeight.w800,
+                ),
               ),
             ],
           ),
@@ -232,13 +227,13 @@ class _ReportInstructionBox extends StatelessWidget {
       child: Text(
         message,
         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: canSendReport
-                  ? LineDetailColors.successText
-                  : LineDetailColors.warningText,
-              fontSize: 11.8,
-              height: 1.35,
-              fontWeight: FontWeight.w700,
-            ),
+          color: canSendReport
+              ? LineDetailColors.successText
+              : LineDetailColors.warningText,
+          fontSize: 11.8,
+          height: 1.35,
+          fontWeight: FontWeight.w700,
+        ),
       ),
     );
   }
@@ -253,7 +248,7 @@ class _ReportInstructionBox extends StatelessWidget {
     }
 
     if (canSendReport) {
-      return 'Puoi inviare una segnalazione riferita alla corsa corrente.';
+      return 'Puoi inviare una segnalazione riferita alla corsa corrente selezionando la fermata dove si è nel percorso completo ';
     }
 
     return 'Seleziona Sì o No per continuare.';
@@ -279,11 +274,13 @@ class _ReportActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final backgroundColor =
-        isEnabled ? lineColor : LineDetailColors.disabledSurface;
+    final backgroundColor = isEnabled
+        ? lineColor
+        : LineDetailColors.disabledSurface;
 
-    final foregroundColor =
-        isEnabled ? LineCardColors.textOn(lineColor, colors: colors) : LineDetailColors.disabledText;
+    final foregroundColor = isEnabled
+        ? LineCardColors.textOn(lineColor, colors: colors)
+        : LineDetailColors.disabledText;
 
     return FilledButton.icon(
       onPressed: isEnabled ? onTap : null,
@@ -293,29 +290,21 @@ class _ReportActionButton extends StatelessWidget {
         disabledBackgroundColor: LineDetailColors.disabledSurface,
         foregroundColor: foregroundColor,
         disabledForegroundColor: LineDetailColors.disabledText,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       ),
       icon: Icon(icon, size: 17),
       label: Text(
         label,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
-        style: const TextStyle(
-          fontSize: 11.5,
-          fontWeight: FontWeight.w800,
-        ),
+        style: const TextStyle(fontSize: 11.5, fontWeight: FontWeight.w800),
       ),
     );
   }
 }
 
 class _ReportFeedbackBox extends StatelessWidget {
-  const _ReportFeedbackBox({
-    required this.message,
-    required this.colors,
-  });
+  const _ReportFeedbackBox({required this.message, required this.colors});
 
   final String message;
   final LineCardPalette colors;
@@ -332,11 +321,11 @@ class _ReportFeedbackBox extends StatelessWidget {
       child: Text(
         message,
         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: LineDetailColors.successText,
-              fontSize: 11.8,
-              height: 1.35,
-              fontWeight: FontWeight.w700,
-            ),
+          color: LineDetailColors.successText,
+          fontSize: 11.8,
+          height: 1.35,
+          fontWeight: FontWeight.w700,
+        ),
       ),
     );
   }

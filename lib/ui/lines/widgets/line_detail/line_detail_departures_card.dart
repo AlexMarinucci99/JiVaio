@@ -28,10 +28,7 @@ class LineDetailDeparturesCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textOnLineColor = LineCardColors.textOn(
-      lineColor,
-      colors: colors,
-    );
+    final textOnLineColor = LineCardColors.textOn(lineColor, colors: colors);
 
     return Container(
       decoration: LineCardColors.cardDecoration(colors: colors),
@@ -42,20 +39,20 @@ class LineDetailDeparturesCard extends StatelessWidget {
           Text(
             'Prossime partenze',
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: colors.primaryText,
-                  fontSize: 13,
-                  fontWeight: FontWeight.w800,
-                ),
+              color: colors.primaryText,
+              fontSize: 13,
+              fontWeight: FontWeight.w800,
+            ),
           ),
           const SizedBox(height: 12),
           Text(
             'Fascia oraria',
             style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                  color: colors.mutedText,
-                  fontSize: 10.2,
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: 0.5,
-                ),
+              color: colors.mutedText,
+              fontSize: 10.2,
+              fontWeight: FontWeight.w700,
+              letterSpacing: 0.5,
+            ),
           ),
           const SizedBox(height: 6),
           _TimeRangeSelector(
@@ -67,38 +64,37 @@ class LineDetailDeparturesCard extends StatelessWidget {
           Text(
             'Corse disponibili',
             style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                  color: colors.mutedText,
-                  fontSize: 10.2,
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: 0.5,
-                ),
+              color: colors.mutedText,
+              fontSize: 10.2,
+              fontWeight: FontWeight.w700,
+              letterSpacing: 0.5,
+            ),
           ),
           const SizedBox(height: 8),
           if (isLoading)
             const _DeparturesLoadingBox()
           else if (departures.isEmpty)
-            _EmptyDeparturesBox(
-              message: emptyMessage,
-              colors: colors,
-            )
+            _EmptyDeparturesBox(message: emptyMessage, colors: colors)
           else
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
-                children: departures.map((departure) {
-                  final isSelected = departure.tripId == selectedTripId;
+                children: departures
+                    .map((departure) {
+                      final isSelected = departure.tripId == selectedTripId;
 
-                  return Padding(
-                    padding: const EdgeInsets.only(right: 8),
-                    child: _DepartureChip(
-                      label: departure.departureTime,
-                      isSelected: isSelected,
-                      lineColor: lineColor,
-                      selectedTextColor: textOnLineColor,
-                      colors: colors,
-                    ),
-                  );
-                }).toList(growable: false),
+                      return Padding(
+                        padding: const EdgeInsets.only(right: 8),
+                        child: _DepartureChip(
+                          label: departure.departureTime,
+                          isSelected: isSelected,
+                          lineColor: lineColor,
+                          selectedTextColor: textOnLineColor,
+                          colors: colors,
+                        ),
+                      );
+                    })
+                    .toList(growable: false),
               ),
             ),
         ],
@@ -145,10 +141,10 @@ class _TimeRangeSelector extends StatelessWidget {
                 child: Text(
                   selectedTimeRange,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: colors.primaryText,
-                        fontSize: 13,
-                        fontWeight: FontWeight.w800,
-                      ),
+                    color: colors.primaryText,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w800,
+                  ),
                 ),
               ),
               Icon(
@@ -181,11 +177,13 @@ class _DepartureChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final backgroundColor =
-        isSelected ? lineColor : lineColor.withValues(alpha: 0.08);
+    final backgroundColor = isSelected
+        ? lineColor
+        : lineColor.withValues(alpha: 0.08);
 
-    final borderColor =
-        isSelected ? lineColor : lineColor.withValues(alpha: 0.18);
+    final borderColor = isSelected
+        ? lineColor
+        : lineColor.withValues(alpha: 0.18);
 
     final textColor = isSelected ? selectedTextColor : lineColor;
 
@@ -199,10 +197,10 @@ class _DepartureChip extends StatelessWidget {
       child: Text(
         label,
         style: Theme.of(context).textTheme.labelMedium?.copyWith(
-              color: textColor,
-              fontSize: 12.5,
-              fontWeight: FontWeight.w800,
-            ),
+          color: textColor,
+          fontSize: 12.5,
+          fontWeight: FontWeight.w800,
+        ),
       ),
     );
   }
@@ -228,10 +226,7 @@ class _DeparturesLoadingBox extends StatelessWidget {
 }
 
 class _EmptyDeparturesBox extends StatelessWidget {
-  const _EmptyDeparturesBox({
-    required this.message,
-    required this.colors,
-  });
+  const _EmptyDeparturesBox({required this.message, required this.colors});
 
   final String message;
   final LineCardPalette colors;
@@ -248,11 +243,11 @@ class _EmptyDeparturesBox extends StatelessWidget {
       child: Text(
         message,
         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: LineDetailColors.warningText,
-              fontSize: 12,
-              height: 1.35,
-              fontWeight: FontWeight.w600,
-            ),
+          color: LineDetailColors.warningText,
+          fontSize: 12,
+          height: 1.35,
+          fontWeight: FontWeight.w600,
+        ),
       ),
     );
   }

@@ -4,9 +4,7 @@ import '../line_card/line_card_colors.dart';
 import 'line_detail_colors.dart';
 
 class LineDetailTimeSelection {
-  const LineDetailTimeSelection.automatic()
-      : isAutomatic = true,
-        hour = null;
+  const LineDetailTimeSelection.automatic() : isAutomatic = true, hour = null;
 
   const LineDetailTimeSelection.manual(this.hour) : isAutomatic = false;
 
@@ -132,21 +130,21 @@ class _LineDetailTimeFilterSheetState extends State<LineDetailTimeFilterSheet> {
                   Text(
                     'Seleziona fascia oraria',
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          color: colors.primaryText,
-                          fontSize: 21,
-                          fontWeight: FontWeight.w800,
-                        ),
+                      color: colors.primaryText,
+                      fontSize: 21,
+                      fontWeight: FontWeight.w800,
+                    ),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     "Scegli Automatico per usare l'ora locale del dispositivo "
                     'oppure seleziona una fascia manualmente.',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: colors.secondaryText,
-                          fontSize: 14,
-                          height: 1.45,
-                          fontWeight: FontWeight.w500,
-                        ),
+                      color: colors.secondaryText,
+                      fontSize: 14,
+                      height: 1.45,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                   const SizedBox(height: 24),
                   _AutomaticTimeOption(
@@ -159,27 +157,26 @@ class _LineDetailTimeFilterSheetState extends State<LineDetailTimeFilterSheet> {
                   Text(
                     'Selezione manuale',
                     style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                          color: colors.mutedText,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: 0.5,
-                        ),
+                      color: colors.mutedText,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 0.5,
+                    ),
                   ),
                   const SizedBox(height: 10),
-                  ...widget.manualHours.map(
-                    (hour) {
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 10),
-                        child: _ManualTimeOption(
-                          colors: colors,
-                          label: _rangeLabelFromHour(hour),
-                          isSelected: !_isAutomaticSelected &&
-                              _selectedManualHour == hour,
-                          onTap: () => _selectManualHour(hour),
-                        ),
-                      );
-                    },
-                  ),
+                  ...widget.manualHours.map((hour) {
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 10),
+                      child: _ManualTimeOption(
+                        colors: colors,
+                        label: _rangeLabelFromHour(hour),
+                        isSelected:
+                            !_isAutomaticSelected &&
+                            _selectedManualHour == hour,
+                        onTap: () => _selectManualHour(hour),
+                      ),
+                    );
+                  }),
                 ],
               ),
             ),
@@ -233,8 +230,9 @@ class _AutomaticTimeOption extends StatelessWidget {
                 : LineDetailColors.softSurface,
             borderRadius: BorderRadius.circular(18),
             border: Border.all(
-              color:
-                  isSelected ? accentColor.withValues(alpha: 0.3) : colors.border,
+              color: isSelected
+                  ? accentColor.withValues(alpha: 0.3)
+                  : colors.border,
               width: isSelected ? 1.4 : 1,
             ),
           ),
@@ -248,21 +246,21 @@ class _AutomaticTimeOption extends StatelessWidget {
                     Text(
                       'Automatico',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            color: colors.primaryText,
-                            fontSize: 13.5,
-                            fontWeight: FontWeight.w800,
-                          ),
+                        color: colors.primaryText,
+                        fontSize: 13.5,
+                        fontWeight: FontWeight.w800,
+                      ),
                     ),
                     const SizedBox(height: 4),
                     Text(
                       "Usa l'ora locale del dispositivo. "
                       'Fascia attuale: $currentRangeLabel',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: colors.secondaryText,
-                            fontSize: 12,
-                            height: 1.4,
-                            fontWeight: FontWeight.w500,
-                          ),
+                        color: colors.secondaryText,
+                        fontSize: 12,
+                        height: 1.4,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ],
                 ),
@@ -298,8 +296,9 @@ class _ManualTimeOption extends StatelessWidget {
   Widget build(BuildContext context) {
     const accentColor = Color(0xFF2F7DF6);
 
-    final borderColor =
-        isSelected ? accentColor.withValues(alpha: 0.3) : colors.border;
+    final borderColor = isSelected
+        ? accentColor.withValues(alpha: 0.3)
+        : colors.border;
 
     final backgroundColor = isSelected
         ? accentColor.withValues(alpha: 0.08)
@@ -317,10 +316,7 @@ class _ManualTimeOption extends StatelessWidget {
           decoration: BoxDecoration(
             color: backgroundColor,
             borderRadius: BorderRadius.circular(18),
-            border: Border.all(
-              color: borderColor,
-              width: isSelected ? 1.4 : 1,
-            ),
+            border: Border.all(color: borderColor, width: isSelected ? 1.4 : 1),
           ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -346,11 +342,10 @@ class _ManualTimeOption extends StatelessWidget {
                 child: Text(
                   label,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: colors.primaryText,
-                        fontSize: 13.5,
-                        fontWeight:
-                            isSelected ? FontWeight.w800 : FontWeight.w700,
-                      ),
+                    color: colors.primaryText,
+                    fontSize: 13.5,
+                    fontWeight: isSelected ? FontWeight.w800 : FontWeight.w700,
+                  ),
                 ),
               ),
               const SizedBox(width: 10),
@@ -396,11 +391,7 @@ class _SelectionIndicator extends StatelessWidget {
       ),
       alignment: Alignment.center,
       child: isSelected
-          ? const Icon(
-              Icons.check_rounded,
-              size: 16,
-              color: Colors.white,
-            )
+          ? const Icon(Icons.check_rounded, size: 16, color: Colors.white)
           : null,
     );
   }

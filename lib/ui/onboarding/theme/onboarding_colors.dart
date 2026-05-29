@@ -18,17 +18,17 @@ class OnboardingColors {
       descriptionColor: Color(0xFF667085),
     ),
     this.actionButtonColors = const OnboardingActionButtonColors(
-      backgroundColor: Color.fromARGB(255, 26, 26, 58),
+      backgroundColor: Color(0xFF191970),
       foregroundColor: Colors.white,
       disabledBackgroundColor: Color(0xFFE5E7EB),
       disabledForegroundColor: Color(0xFF9CA3AF),
     ),
     this.dotsColors = const OnboardingDotsIndicatorColors(
-      activeColor: Color.fromARGB(255, 26, 26, 58),
+      activeColor: Color(0xFF191970),
       inactiveColor: Color(0xFFE1E7F0),
     ),
     this.hidePreferenceColors = const HideOnboardingPreferenceColors(
-      selectedColor: Color.fromARGB(255, 9, 85, 206),
+      selectedColor: Color(0xFF191970),
       selectedBackgroundColor: Color(0x14061A3A),
       selectedBorderColor: Color(0x6B061A3A),
       unselectedBackgroundColor: Color(0xFFFAFBFF),

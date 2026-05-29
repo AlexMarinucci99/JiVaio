@@ -6,10 +6,7 @@ import '../ui/auth/widgets/auth_choice_screen.dart';
 import '../ui/main_navigation/widgets/main_navigation_screen.dart';
 
 class AuthGate extends StatefulWidget {
-  const AuthGate({
-    super.key,
-    required this.authRepository,
-  });
+  const AuthGate({super.key, required this.authRepository});
 
   final AuthRepository authRepository;
 
@@ -39,10 +36,7 @@ class _AuthGateState extends State<AuthGate> {
   @override
   Widget build(BuildContext context) {
     if (_isGuest) {
-      return MainNavigationScreen(
-        isGuest: true,
-        onLogout: _exitGuestMode,
-      );
+      return MainNavigationScreen(isGuest: true, onLogout: _exitGuestMode);
     }
 
     return StreamBuilder<User?>(
@@ -52,10 +46,7 @@ class _AuthGateState extends State<AuthGate> {
         final user = snapshot.data;
 
         if (user != null) {
-          return MainNavigationScreen(
-            isGuest: false,
-            onLogout: _logout,
-          );
+          return MainNavigationScreen(isGuest: false, onLogout: _logout);
         }
 
         return AuthChoiceScreen(

@@ -1,20 +1,27 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 class BottomNavBarColors {
   const BottomNavBarColors({
-    this.backgroundColor = Colors.white,
-    this.shadowColor = const Color(0x29000000),
+    this.backgroundColor = const Color(0xCCFFFFFF),
+    this.borderColor = const Color(0x80FFFFFF),
+    this.shadowColor = const Color(0x22000000),
     this.selectedColor = const Color(0xFF102A6B),
-    this.unselectedColor = const Color(0xFF9AA3AD),
+    this.unselectedColor = const Color(0xFF7D8794),
     this.selectedBackgroundColor = const Color(0xFFEAF2FF),
+    this.selectedGlowColor = const Color(0x33102A6B),
     this.splashColor = const Color(0x14102A6B),
     this.highlightColor = const Color(0x0A102A6B),
   });
 
-  // Sfondo generale della navbar.
+  // Sfondo glass della navbar.
   final Color backgroundColor;
 
-  // Colore dell'ombra sotto la navbar.
+  // Bordo chiaro del contenitore glass.
+  final Color borderColor;
+
+  // Ombra esterna della navbar.
   final Color shadowColor;
 
   // Colore icona/testo del tab selezionato.
@@ -23,8 +30,11 @@ class BottomNavBarColors {
   // Colore icona/testo dei tab non selezionati.
   final Color unselectedColor;
 
-  // Sfondo della pill dell'icona selezionata.
+  // Sfondo dell'indicatore attivo.
   final Color selectedBackgroundColor;
+
+  // Bagliore morbido sotto l'indicatore attivo.
+  final Color selectedGlowColor;
 
   // Colore effetto tap.
   final Color splashColor;
@@ -60,36 +70,85 @@ class BottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 80,
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      decoration: BoxDecoration(
-        color: colors.backgroundColor,
-        borderRadius: BorderRadius.circular(30),
-        boxShadow: [
-          BoxShadow(
-            color: colors.shadowColor,
-            blurRadius: 22,
-            offset: const Offset(0, 8),
-          ),
-        ],
-      ),
-      child: Row(
-        children: List.generate(_items.length, (index) {
-          final item = _items[index];
-          final isSelected = selectedIndex == index;
+    final activeIndex = _safeSelectedIndex(selectedIndex);
 
-          return Expanded(
-            child: _BottomNavTile(
-              item: item,
-              isSelected: isSelected,
-              colors: colors,
-              onTap: () => onItemSelected(index),
-            ),
-          );
-        }),
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(20),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
+        child: Container(
+          height: 70,
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: colors.backgroundColor,
+            borderRadius: BorderRadius.circular(28),
+            border: Border.all(color: colors.borderColor),
+            boxShadow: [
+              BoxShadow(
+                color: colors.shadowColor,
+                blurRadius: 28,
+                offset: const Offset(0, 10),
+              ),
+            ],
+          ),
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final itemWidth = constraints.maxWidth / _items.length;
+
+              return Stack(
+                children: [
+                  AnimatedPositioned(
+                    duration: const Duration(milliseconds: 260),
+                    curve: Curves.easeOutCubic,
+                    left: itemWidth * activeIndex,
+                    top: 0,
+                    bottom: 0,
+                    width: itemWidth,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 4),
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: colors.selectedBackgroundColor,
+                          borderRadius: BorderRadius.circular(26),
+                          boxShadow: [
+                            BoxShadow(
+                              color: colors.selectedGlowColor,
+                              blurRadius: 18,
+                              offset: const Offset(0, 6),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  Row(
+                    children: List.generate(_items.length, (index) {
+                      final item = _items[index];
+                      final isSelected = activeIndex == index;
+
+                      return Expanded(
+                        child: _BottomNavTile(
+                          item: item,
+                          isSelected: isSelected,
+                          colors: colors,
+                          onTap: () => onItemSelected(index),
+                        ),
+                      );
+                    }),
+                  ),
+                ],
+              );
+            },
+          ),
+        ),
       ),
     );
+  }
+
+  int _safeSelectedIndex(int index) {
+    if (index < 0) return 0;
+    if (index >= _items.length) return _items.length - 1;
+    return index;
   }
 }
 
@@ -117,46 +176,53 @@ class _BottomNavTile extends StatelessWidget {
       button: true,
       selected: isSelected,
       label: item.label,
-      child: InkWell(
-        borderRadius: BorderRadius.circular(24),
-        splashColor: colors.splashColor,
-        highlightColor: colors.highlightColor,
-        onTap: onTap,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // Box superiore dell'icona.
-            AnimatedContainer(
-              duration: const Duration(milliseconds: 180),
-              curve: Curves.easeOut,
-              width: 72,
-              height: 34,
-              decoration: BoxDecoration(
-                color: isSelected
-                    ? colors.selectedBackgroundColor
-                    : Colors.transparent,
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Icon(item.icon, color: effectiveColor, size: 24),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(26),
+          splashColor: colors.splashColor,
+          highlightColor: colors.highlightColor,
+          onTap: onTap,
+          child: AnimatedOpacity(
+            duration: const Duration(milliseconds: 180),
+            curve: Curves.easeOut,
+            opacity: isSelected ? 1 : 0.72,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                AnimatedScale(
+                  duration: const Duration(milliseconds: 180),
+                  curve: Curves.easeOut,
+                  scale: isSelected ? 1.08 : 1.0,
+                  child: Icon(
+                    item.icon,
+                    color: effectiveColor,
+                    size: isSelected ? 25 : 23,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                AnimatedDefaultTextStyle(
+                  duration: const Duration(milliseconds: 180),
+                  curve: Curves.easeOut,
+                  style: TextStyle(
+                    color: effectiveColor,
+                    fontSize: isSelected ? 12 : 11.5,
+                    height: 1.0,
+                    fontWeight: isSelected
+                        ? FontWeight.w800
+                        : FontWeight.w600,
+                    letterSpacing: 0.15,
+                  ),
+                  child: Text(
+                    item.label,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
             ),
-
-            const SizedBox(height: 2),
-
-            // Testo sotto l'icona.
-            Text(
-              item.label,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                color: effectiveColor,
-                fontSize: 12,
-                height: 1.0,
-                fontWeight: isSelected ? FontWeight.w700 : FontWeight.w600,
-                letterSpacing: 0.2,
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );
@@ -165,7 +231,10 @@ class _BottomNavTile extends StatelessWidget {
 
 // Modello interno di un tab della navbar.
 class _BottomNavItem {
-  const _BottomNavItem({required this.label, required this.icon});
+  const _BottomNavItem({
+    required this.label,
+    required this.icon,
+  });
 
   final String label;
   final IconData icon;

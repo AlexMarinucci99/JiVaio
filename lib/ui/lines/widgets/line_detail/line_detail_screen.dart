@@ -12,11 +12,7 @@ import 'line_detail_route_section.dart';
 import 'line_detail_time_filter.dart';
 
 class LineDetailScreen extends StatefulWidget {
-  const LineDetailScreen({
-    super.key,
-    required this.line,
-    this.repository,
-  });
+  const LineDetailScreen({super.key, required this.line, this.repository});
 
   final TransitLine line;
   final TransitRepository? repository;
@@ -119,8 +115,7 @@ class _LineDetailScreenState extends State<LineDetailScreen> {
                       LineDetailReportCard(
                         lineColor: _viewModel.lineColor,
                         reportLocation: _viewModel.reportLocation,
-                        requiresStopSelection:
-                            _viewModel.requiresStopSelection,
+                        requiresStopSelection: _viewModel.requiresStopSelection,
                         canSendReport: _viewModel.canSendReport,
                         selectedStopName: _viewModel.selectedReportStopName,
                         lastReportMessage: _viewModel.lastReportMessage,
@@ -172,26 +167,23 @@ class _LineDetailErrorCard extends StatelessWidget {
           Text(
             'Errore caricamento dettaglio',
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: colors.primaryText,
-                  fontSize: 13,
-                  fontWeight: FontWeight.w800,
-                ),
+              color: colors.primaryText,
+              fontSize: 13,
+              fontWeight: FontWeight.w800,
+            ),
           ),
           const SizedBox(height: 6),
           Text(
             message,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: colors.secondaryText,
-                  fontSize: 12,
-                  height: 1.35,
-                  fontWeight: FontWeight.w500,
-                ),
+              color: colors.secondaryText,
+              fontSize: 12,
+              height: 1.35,
+              fontWeight: FontWeight.w500,
+            ),
           ),
           const SizedBox(height: 12),
-          FilledButton(
-            onPressed: onRetry,
-            child: const Text('Riprova'),
-          ),
+          FilledButton(onPressed: onRetry, child: const Text('Riprova')),
         ],
       ),
     );

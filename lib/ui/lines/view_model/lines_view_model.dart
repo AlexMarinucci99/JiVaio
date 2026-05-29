@@ -6,9 +6,8 @@ import '../../../domain/models/transit_line.dart';
 enum LinesScope { all, saved }
 
 class LinesViewModel extends ChangeNotifier {
-  LinesViewModel({
-    TransitRepository? repository,
-  }) : _repository = repository ?? TransitRepository();
+  LinesViewModel({TransitRepository? repository})
+    : _repository = repository ?? TransitRepository();
 
   final TransitRepository _repository;
 

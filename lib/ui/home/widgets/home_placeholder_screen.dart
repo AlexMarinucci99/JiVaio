@@ -14,9 +14,7 @@ class HomePlaceholderScreen extends StatelessWidget {
     return Stack(
       children: [
         // Mappa a tutto schermo.
-        Positioned.fill(
-          child: HomeMap(colors: _colors.mapColors),
-        ),
+        Positioned.fill(child: HomeMap(colors: _colors.mapColors)),
 
         // Sfumatura superiore per rendere leggibile la card.
         Positioned.fill(
@@ -53,9 +51,7 @@ class HomePlaceholderScreen extends StatelessWidget {
                       backgroundColor: _colors.snackBarBackgroundColor,
                       content: Text(
                         'Ricerca UI: $origin → $destination. Logica percorso non collegata.',
-                        style: TextStyle(
-                          color: _colors.snackBarTextColor,
-                        ),
+                        style: TextStyle(color: _colors.snackBarTextColor),
                       ),
                     ),
                   );
@@ -89,19 +85,20 @@ class _HomePlaceholderColors {
   );
 
   // Colori della card ricerca percorso nella Home.
-  final RouteSearchCardColors routeSearchCardColors = const RouteSearchCardColors(
-    cardColor: Colors.white,
-    textColor: Color(0xFF20232D),
-    labelColor: Color(0xFF5C5F6D),
-    dividerColor: Color(0xFFE7E8EE),
-    activeButtonColor: Color(0xFF17226B),
-    activeButtonTextColor: Colors.white,
-    inactiveButtonColor: Color(0xFFE9E7F0),
-    inactiveTextColor: Color(0xFF4F4D59),
-    iconBackgroundColor: Color(0xFFF0F1F6),
-    iconColor: Color(0xFF59609A),
-    swapIconColor: Color(0xFF59609A),
-    hintColor: Color(0xFF777986),
-    shadowColor: Color(0x1F000000),
-  );
+  final RouteSearchCardColors routeSearchCardColors =
+      const RouteSearchCardColors(
+        cardColor: Colors.white,
+        textColor: Color(0xFF20232D),
+        labelColor: Color(0xFF5C5F6D),
+        dividerColor: Color(0xFFE7E8EE),
+        activeButtonColor: Color(0xFF17226B),
+        activeButtonTextColor: Colors.white,
+        inactiveButtonColor: Color(0xFFE9E7F0),
+        inactiveTextColor: Color(0xFF4F4D59),
+        iconBackgroundColor: Color(0xFFF0F1F6),
+        iconColor: Color(0xFF59609A),
+        swapIconColor: Color(0xFF59609A),
+        hintColor: Color(0xFF777986),
+        shadowColor: Color(0x1F000000),
+      );
 }

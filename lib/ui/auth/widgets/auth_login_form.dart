@@ -58,9 +58,7 @@ class AuthLoginForm extends StatelessWidget {
           alignment: Alignment.centerRight,
           child: TextButton(
             onPressed: onForgotPassword,
-            style: TextButton.styleFrom(
-              foregroundColor: linkColor,
-            ),
+            style: TextButton.styleFrom(foregroundColor: linkColor),
             child: const Text('Password dimenticata?'),
           ),
         ),

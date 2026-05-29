@@ -41,9 +41,7 @@ class ResetPasswordViewModel extends ChangeNotifier {
 
   Future<ResetPasswordSubmitResult> sendResetLink() async {
     if (_email.isEmpty) {
-      return const ResetPasswordSubmitResult.failure(
-        'Inserisci la tua email',
-      );
+      return const ResetPasswordSubmitResult.failure('Inserisci la tua email');
     }
 
     if (!_isValidEmail(_email)) {

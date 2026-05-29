@@ -211,8 +211,7 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
                       passwordController: _passwordController,
                       confirmPasswordController: _confirmPasswordController,
                       obscurePassword: _viewModel.obscurePassword,
-                      obscureConfirmPassword:
-                          _viewModel.obscureConfirmPassword,
+                      obscureConfirmPassword: _viewModel.obscureConfirmPassword,
                       onTogglePasswordVisibility:
                           _viewModel.togglePasswordVisibility,
                       onToggleConfirmPasswordVisibility:
@@ -327,12 +326,13 @@ class _AuthChoiceColors {
     iconColor: Color(0xFF5D6675),
   );
 
-  final AuthActionButtonColors actionButtonColors = const AuthActionButtonColors(
-    backgroundColor: Color(0xFFF7F9FC),
-    foregroundColor: Color(0xFF191970),
-    disabledBackgroundColor: Color(0xFFE5E7EB),
-    disabledForegroundColor: Color(0xFF9CA3AF),
-  );
+  final AuthActionButtonColors actionButtonColors =
+      const AuthActionButtonColors(
+        backgroundColor: Color(0xFFF7F9FC),
+        foregroundColor: Color(0xFF191970),
+        disabledBackgroundColor: Color(0xFFE5E7EB),
+        disabledForegroundColor: Color(0xFF9CA3AF),
+      );
 
   final AuthSocialButtonsColors socialButtonsColors =
       const AuthSocialButtonsColors(

@@ -70,10 +70,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
       extendBody: true,
 
       // Cambia schermata in base al tab selezionato.
-      body: IndexedStack(
-        index: _selectedIndex,
-        children: _pages,
-      ),
+      body: IndexedStack(index: _selectedIndex, children: _pages),
 
       // Navbar inferiore.
       bottomNavigationBar: SafeArea(

@@ -10,9 +10,7 @@ Future<void> main() async {
   // e inizializziamo plugin come Firebase.
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   final onboardingPreferencesService = OnboardingPreferencesService();
 

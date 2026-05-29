@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/services.dart' show rootBundle;
+
 //si occupa di leggere i file jso raw
 class TransitRawBundle {
   const TransitRawBundle({
@@ -53,12 +54,14 @@ class TransitRawService {
       throw FormatException('Il file $path non contiene una lista JSON.');
     }
 
-    return decoded.map<Map<String, dynamic>>((item) {
-      if (item is! Map) {
-        throw FormatException('Elemento non valido nel file $path.');
-      }
+    return decoded
+        .map<Map<String, dynamic>>((item) {
+          if (item is! Map) {
+            throw FormatException('Elemento non valido nel file $path.');
+          }
 
-      return Map<String, dynamic>.from(item);
-    }).toList(growable: false);
+          return Map<String, dynamic>.from(item);
+        })
+        .toList(growable: false);
   }
 }
