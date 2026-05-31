@@ -1,21 +1,40 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 
+import '../../../data/repositories/saved_lines_repository.dart';
 import '../../../data/repositories/transit_repository.dart';
 import '../../../domain/models/transit_line.dart';
 
 enum LinesScope { all, saved }
 
 class LinesViewModel extends ChangeNotifier {
-  LinesViewModel({TransitRepository? repository})
-    : _repository = repository ?? TransitRepository();
+  LinesViewModel({
+    required TransitRepository transitRepository,
+    required SavedLinesRepository savedLinesRepository,
+    required this.userId,
+  }) : _transitRepository = transitRepository,
+       _savedLinesRepository = savedLinesRepository {
+    _listenToSavedLines();
+  }
 
-  final TransitRepository _repository;
+  final TransitRepository _transitRepository;
+  final SavedLinesRepository _savedLinesRepository;
+
+  /// Null soltanto in modalità guest.
+  final String? userId;
 
   LinesScope _scope = LinesScope.all;
 
-  final Set<String> _savedLineIds = <String>{};
+  Set<String> _savedLineIds = <String>{};
+
+  /// Impedisce pressioni multiple sul cuore mentre Firestore
+  /// sta elaborando la richiesta relativa alla stessa linea.
+  final Set<String> _pendingSavedLineIds = <String>{};
 
   List<TransitLine> _lines = const [];
+
+  StreamSubscription<Set<String>>? _savedLinesSubscription;
 
   bool _isLoading = false;
   String? _errorMessage;
@@ -76,7 +95,7 @@ class LinesViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
-      _lines = await _repository.getLines();
+      _lines = await _transitRepository.getLines();
     } catch (_) {
       _errorMessage = 'Impossibile caricare i dati delle linee.';
     } finally {
@@ -94,13 +113,80 @@ class LinesViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void toggleSavedLine(String routeId) {
-    if (_savedLineIds.contains(routeId)) {
-      _savedLineIds.remove(routeId);
-    } else {
-      _savedLineIds.add(routeId);
+  /// Aggiornamento ottimistico:
+  /// il cuore cambia subito.
+  /// Se Firestore restituisce un errore, lo stato precedente viene ripristinato.
+  Future<bool> toggleSavedLine(String routeId) async {
+    final currentUserId = userId;
+
+    if (currentUserId == null) {
+      return false;
     }
 
+    if (_pendingSavedLineIds.contains(routeId)) {
+      return true;
+    }
+
+    final wasSaved = _savedLineIds.contains(routeId);
+    final shouldSave = !wasSaved;
+
+    _pendingSavedLineIds.add(routeId);
+    _setSavedLocally(routeId: routeId, isSaved: shouldSave);
     notifyListeners();
+
+    try {
+      await _savedLinesRepository.setLineSaved(
+        userId: currentUserId,
+        routeId: routeId,
+        isSaved: shouldSave,
+      );
+
+      return true;
+    } catch (_) {
+      _setSavedLocally(routeId: routeId, isSaved: wasSaved);
+      return false;
+    } finally {
+      _pendingSavedLineIds.remove(routeId);
+      notifyListeners();
+    }
+  }
+
+  void _listenToSavedLines() {
+    final currentUserId = userId;
+
+    if (currentUserId == null) {
+      return;
+    }
+
+    _savedLinesSubscription = _savedLinesRepository
+        .watchSavedLineIds(userId: currentUserId)
+        .listen(
+          (savedLineIds) {
+            _savedLineIds = savedLineIds;
+            notifyListeners();
+          },
+          onError: (_) {
+            // Le linee restano consultabili anche se Firestore
+            // non è temporaneamente raggiungibile.
+          },
+        );
+  }
+
+  void _setSavedLocally({
+    required String routeId,
+    required bool isSaved,
+  }) {
+    if (isSaved) {
+      _savedLineIds.add(routeId);
+      return;
+    }
+
+    _savedLineIds.remove(routeId);
+  }
+
+  @override
+  void dispose() {
+    _savedLinesSubscription?.cancel();
+    super.dispose();
   }
 }

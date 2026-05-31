@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../../../data/repositories/transit_repository.dart';
 import '../../core/widgets/bottom_nav_bar.dart';
 import '../../home/widgets/home_placeholder_screen.dart';
 import '../../lines/widgets/lines_screen.dart';
 import '../../settings/widgets/settings_screen.dart';
-import '../../../data/repositories/transit_repository.dart';
 
 // Schermata principale dopo login/registrazione oppure accesso guest.
 // Contiene le sezioni principali dell'app e la navbar inferiore.
@@ -12,12 +12,17 @@ class MainNavigationScreen extends StatefulWidget {
   const MainNavigationScreen({
     super.key,
     required this.isGuest,
+    required this.userId,
     required this.onLogout,
-  });
+  }) : assert(isGuest || userId != null);
 
   // true = utente ospite
   // false = utente autenticato con Firebase
   final bool isGuest;
+
+  // UID Firebase dell'utente autenticato.
+  // È null soltanto in modalità guest.
+  final String? userId;
 
   // Azione eseguita dalla schermata impostazioni.
   // Per utente registrato: logout Firebase.
@@ -40,24 +45,25 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   // Schermate principali dell'app.
   // Non è static const perché LinesScreen e SettingsScreen
   // devono ricevere dati dinamici legati allo stato utente.
-List<Widget> get _pages {
-  return [
-    HomePlaceholderScreen(
-      key: const PageStorageKey<String>('home-search-screen'),
-      repository: _transitRepository,
-    ),
-    LinesScreen(
-      key: const PageStorageKey<String>('lines-screen'),
-      isGuest: widget.isGuest,
-      repository: _transitRepository,
-    ),
-    SettingsScreen(
-      key: const PageStorageKey<String>('settings-screen'),
-      isGuest: widget.isGuest,
-      onLogout: widget.onLogout,
-    ),
-  ];
-}
+  List<Widget> get _pages {
+    return [
+      HomePlaceholderScreen(
+        key: const PageStorageKey<String>('home-search-screen'),
+        repository: _transitRepository,
+      ),
+      LinesScreen(
+        key: const PageStorageKey<String>('lines-screen'),
+        isGuest: widget.isGuest,
+        userId: widget.userId,
+        repository: _transitRepository,
+      ),
+      SettingsScreen(
+        key: const PageStorageKey<String>('settings-screen'),
+        isGuest: widget.isGuest,
+        onLogout: widget.onLogout,
+      ),
+    ];
+  }
 
   // Cambio tab navbar.
   void _onItemSelected(int index) {

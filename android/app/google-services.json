@@ -9,6 +9,28 @@
       "client_info": {
         "mobilesdk_app_id": "1:982072526552:android:b12e1c12b72ac9147f79ad",
         "android_client_info": {
+          "package_name": "com.example.jivaio_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCsf40eRXWCo39bcFzr9kQ9CiESycx0kZM"
+        },
+        {
+          "current_key": "AIzaSyDQtPe1j59nOY6gKODIm6LNGpT-EcSdgKQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:982072526552:android:3def70b7b402b8937f79ad",
+        "android_client_info": {
           "package_name": "com.progetto.jivaio_app"
         }
       },
@@ -16,6 +38,9 @@
       "api_key": [
         {
           "current_key": "AIzaSyCsf40eRXWCo39bcFzr9kQ9CiESycx0kZM"
+        },
+        {
+          "current_key": "AIzaSyDQtPe1j59nOY6gKODIm6LNGpT-EcSdgKQ"
         }
       ],
       "services": {

@@ -35,8 +35,12 @@ class _AuthGateState extends State<AuthGate> {
 
   @override
   Widget build(BuildContext context) {
-    if (_isGuest) {
-      return MainNavigationScreen(isGuest: true, onLogout: _exitGuestMode);
+        if (_isGuest) {
+      return MainNavigationScreen(
+        isGuest: true,
+        userId: null,
+        onLogout: _exitGuestMode,
+      );
     }
 
     return StreamBuilder<User?>(
@@ -45,8 +49,12 @@ class _AuthGateState extends State<AuthGate> {
       builder: (context, snapshot) {
         final user = snapshot.data;
 
-        if (user != null) {
-          return MainNavigationScreen(isGuest: false, onLogout: _logout);
+         if (user != null) {
+          return MainNavigationScreen(
+            isGuest: false,
+            userId: user.uid,
+            onLogout: _logout,
+          );
         }
 
         return AuthChoiceScreen(

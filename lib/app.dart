@@ -6,7 +6,6 @@ import 'routing/app_routes.dart';
 import 'routing/auth_gate.dart';
 import 'ui/auth/widgets/reset_password_screen.dart';
 import 'ui/core/themes/app_theme.dart';
-import 'ui/main_navigation/widgets/main_navigation_screen.dart';
 import 'ui/onboarding/widgets/onboarding_screen.dart';
 
 class JiVaioApp extends StatelessWidget {
@@ -32,8 +31,8 @@ class JiVaioApp extends StatelessWidget {
 
         // Route mantenuta per compatibilità.
         // Il flusso principale passa da AuthGate.
-        AppRoutes.home: (_) =>
-            MainNavigationScreen(isGuest: false, onLogout: () async {}),
+                AppRoutes.home: (_) =>
+            AuthGate(authRepository: _authRepository),
 
         AppRoutes.resetPassword: (_) => const ResetPasswordScreen(),
       },

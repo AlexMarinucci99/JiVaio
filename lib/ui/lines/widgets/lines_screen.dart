@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+import '../../../data/repositories/saved_lines_repository.dart';
+import '../../../data/services/saved_lines_service.dart';
 import '../../../data/repositories/transit_repository.dart';
 import '../../../domain/models/transit_line.dart';
 import '../../core/widgets/app_segmented_control.dart';
@@ -11,12 +12,17 @@ class LinesScreen extends StatefulWidget {
   const LinesScreen({
     super.key,
     required this.isGuest,
+    required this.userId,
     required this.repository,
-  });
+  }) : assert(isGuest || userId != null);
 
   // true = utente ospite: può consultare le linee, ma non salvarle.
   // false = utente registrato: può salvare/rimuovere linee preferite.
   final bool isGuest;
+
+  // UID Firebase dell'utente autenticato.
+  // È null soltanto per il guest.
+  final String? userId;
 
   final TransitRepository repository;
 
@@ -26,14 +32,25 @@ class LinesScreen extends StatefulWidget {
 
 class _LinesScreenState extends State<LinesScreen> {
   late final TransitRepository _repository;
+  late final SavedLinesRepository _savedLinesRepository;
   late final LinesViewModel _viewModel;
 
-  @override
+    @override
   void initState() {
     super.initState();
 
     _repository = widget.repository;
-    _viewModel = LinesViewModel(repository: _repository);
+
+    _savedLinesRepository = SavedLinesRepository(
+      SavedLinesService(),
+    );
+
+    _viewModel = LinesViewModel(
+      transitRepository: _repository,
+      savedLinesRepository: _savedLinesRepository,
+      userId: widget.userId,
+    );
+
     _viewModel.loadLines();
   }
 
@@ -53,13 +70,23 @@ class _LinesScreenState extends State<LinesScreen> {
 
   // Gestione salvataggio linea.
   // Se l'utente è guest, non modifichiamo lo stato dei preferiti.
-  void _toggleSavedLine(String routeId) {
+    Future<void> _toggleSavedLine(String routeId) async {
     if (widget.isGuest) {
       _showGuestSaveMessage();
       return;
     }
 
-    _viewModel.toggleSavedLine(routeId);
+    final success = await _viewModel.toggleSavedLine(routeId);
+
+    if (!success && mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Impossibile aggiornare le linee salvate. Riprova.',
+          ),
+        ),
+      );
+    }
   }
 
   void _showGuestSaveMessage() {
