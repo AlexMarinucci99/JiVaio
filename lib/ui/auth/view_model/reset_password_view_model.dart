@@ -1,4 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
+
+import '../../../data/repositories/auth_repository.dart';
 
 class ResetPasswordSubmitResult {
   const ResetPasswordSubmitResult._({
@@ -10,13 +13,17 @@ class ResetPasswordSubmitResult {
   final String message;
 
   const ResetPasswordSubmitResult.success(String message)
-    : this._(isSuccess: true, message: message);
+      : this._(isSuccess: true, message: message);
 
   const ResetPasswordSubmitResult.failure(String message)
-    : this._(isSuccess: false, message: message);
+      : this._(isSuccess: false, message: message);
 }
 
 class ResetPasswordViewModel extends ChangeNotifier {
+  ResetPasswordViewModel(this._authRepository);
+
+  final AuthRepository _authRepository;
+
   String _email = '';
   bool _isSubmitting = false;
 
@@ -54,10 +61,16 @@ class ResetPasswordViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
-      // Simulazione provvisoria.
-      // Quando collegheremo Firebase, qui passeremo da AuthRepository.
+      await _authRepository.sendPasswordResetEmail(email: _email);
+
       return ResetPasswordSubmitResult.success(
-        'Link di recupero inviato a $_email',
+        'Se l’email è associata a un account JiVaio, riceverai un link per reimpostare la password.',
+      );
+    } on FirebaseAuthException catch (error) {
+      return ResetPasswordSubmitResult.failure(_mapFirebaseAuthError(error));
+    } catch (_) {
+      return const ResetPasswordSubmitResult.failure(
+        'Si è verificato un errore imprevisto. Riprova.',
       );
     } finally {
       _isSubmitting = false;
@@ -66,6 +79,22 @@ class ResetPasswordViewModel extends ChangeNotifier {
   }
 
   bool _isValidEmail(String value) {
-    return value.contains('@') && value.contains('.');
+    final email = value.trim();
+    return email.contains('@') && email.contains('.');
+  }
+
+  String _mapFirebaseAuthError(FirebaseAuthException error) {
+    switch (error.code) {
+      case 'invalid-email':
+        return 'Inserisci un indirizzo email valido.';
+      case 'network-request-failed':
+        return 'Controlla la connessione e riprova.';
+      case 'too-many-requests':
+        return 'Troppe richieste in poco tempo. Riprova più tardi.';
+      case 'user-not-found':
+        return 'Se l’email è associata a un account JiVaio, riceverai un link per reimpostare la password.';
+      default:
+        return 'Non è stato possibile inviare il link di recupero. Riprova.';
+    }
   }
 }

@@ -3,27 +3,36 @@ import 'package:flutter/material.dart';
 import '../view_model/reset_password_view_model.dart';
 import 'auth_action_button.dart';
 import 'auth_text_field.dart';
+import '../../../data/repositories/auth_repository.dart';
+
 
 class ResetPasswordScreen extends StatefulWidget {
-  const ResetPasswordScreen({super.key});
+  const ResetPasswordScreen({
+    super.key,
+    required this.authRepository,
+  });
+
+  final AuthRepository authRepository;
 
   @override
   State<ResetPasswordScreen> createState() => _ResetPasswordScreenState();
 }
 
 class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
-  final ResetPasswordViewModel _viewModel = ResetPasswordViewModel();
-  final TextEditingController _emailController = TextEditingController();
+  late final ResetPasswordViewModel _viewModel;
+final TextEditingController _emailController = TextEditingController();
 
   static const _ResetPasswordColors _colors = _ResetPasswordColors();
 
   @override
-  void initState() {
-    super.initState();
+void initState() {
+  super.initState();
 
-    // Aggiorna il ViewModel quando cambia il testo del campo email.
-    _emailController.addListener(_onEmailChanged);
-  }
+  _viewModel = ResetPasswordViewModel(widget.authRepository);
+
+  // Aggiorna il ViewModel quando cambia il testo del campo email.
+  _emailController.addListener(_onEmailChanged);
+}
 
   @override
   void dispose() {

@@ -31,10 +31,11 @@ class JiVaioApp extends StatelessWidget {
 
         // Route mantenuta per compatibilità.
         // Il flusso principale passa da AuthGate.
-                AppRoutes.home: (_) =>
-            AuthGate(authRepository: _authRepository),
+        AppRoutes.home: (_) => AuthGate(authRepository: _authRepository),
 
-        AppRoutes.resetPassword: (_) => const ResetPasswordScreen(),
+        AppRoutes.resetPassword: (_) => ResetPasswordScreen(
+         authRepository: _authRepository,
+        ),
       },
     );
   }
