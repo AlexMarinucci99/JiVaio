@@ -27,8 +27,7 @@ class AppSegmentedControlColors {
 
   // Palette standard del segmented control.
   // Usala nelle schermate normali, come LinesScreen.
-  static const AppSegmentedControlColors primary =
-      AppSegmentedControlColors(
+  static const AppSegmentedControlColors primary = AppSegmentedControlColors(
     backgroundColor: AppColors.surfaceMuted,
     selectedColor: Color(0xFF191970),
     borderColor: AppColors.border,
@@ -42,8 +41,7 @@ class AppSegmentedControlColors {
 
   // Palette alternativa per schermate auth
   // il segmento selezionato bianco su sfondo chiaro.
-  static const AppSegmentedControlColors auth =
-      AppSegmentedControlColors(
+  static const AppSegmentedControlColors auth = AppSegmentedControlColors(
     backgroundColor: AppColors.fieldBackground,
     selectedColor: AppColors.surface,
     borderColor: AppColors.borderSoft,

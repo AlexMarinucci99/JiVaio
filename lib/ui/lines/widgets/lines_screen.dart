@@ -35,15 +35,13 @@ class _LinesScreenState extends State<LinesScreen> {
   late final SavedLinesRepository _savedLinesRepository;
   late final LinesViewModel _viewModel;
 
-    @override
+  @override
   void initState() {
     super.initState();
 
     _repository = widget.repository;
 
-    _savedLinesRepository = SavedLinesRepository(
-      SavedLinesService(),
-    );
+    _savedLinesRepository = SavedLinesRepository(SavedLinesService());
 
     _viewModel = LinesViewModel(
       transitRepository: _repository,
@@ -70,7 +68,7 @@ class _LinesScreenState extends State<LinesScreen> {
 
   // Gestione salvataggio linea.
   // Se l'utente è guest, non modifichiamo lo stato dei preferiti.
-    Future<void> _toggleSavedLine(String routeId) async {
+  Future<void> _toggleSavedLine(String routeId) async {
     if (widget.isGuest) {
       _showGuestSaveMessage();
       return;
@@ -81,9 +79,7 @@ class _LinesScreenState extends State<LinesScreen> {
     if (!success && mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text(
-            'Impossibile aggiornare le linee salvate. Riprova.',
-          ),
+          content: Text('Impossibile aggiornare le linee salvate. Riprova.'),
         ),
       );
     }
@@ -143,7 +139,7 @@ class _LinesScreenState extends State<LinesScreen> {
                         AppSegmentedControl<LinesScope>(
                           selectedValue: _viewModel.scope,
                           onChanged: _viewModel.setScope,
-                         
+
                           items: [
                             const AppSegmentedControlItem(
                               value: LinesScope.all,

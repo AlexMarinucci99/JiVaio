@@ -5,6 +5,7 @@ import '../../core/widgets/bottom_nav_bar.dart';
 import '../../home/widgets/home_placeholder_screen.dart';
 import '../../lines/widgets/lines_screen.dart';
 import '../../settings/widgets/settings_screen.dart';
+import '../../../data/repositories/location_repository.dart';
 
 // Schermata principale dopo login/registrazione oppure accesso guest.
 // Contiene le sezioni principali dell'app e la navbar inferiore.
@@ -39,6 +40,8 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
 
   final TransitRepository _transitRepository = TransitRepository();
 
+  final LocationRepository _locationRepository = const LocationRepository();
+
   // Colori propri della main shell.
   static const _MainShellColors _colors = _MainShellColors();
 
@@ -50,6 +53,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
       HomePlaceholderScreen(
         key: const PageStorageKey<String>('home-search-screen'),
         repository: _transitRepository,
+        locationRepository: _locationRepository,
       ),
       LinesScreen(
         key: const PageStorageKey<String>('lines-screen'),

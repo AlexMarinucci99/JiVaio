@@ -209,9 +209,7 @@ class _BottomNavTile extends StatelessWidget {
                     color: effectiveColor,
                     fontSize: isSelected ? 10.8 : 10.35,
                     height: 1.0,
-                    fontWeight: isSelected
-                        ? FontWeight.w800
-                        : FontWeight.w600,
+                    fontWeight: isSelected ? FontWeight.w800 : FontWeight.w600,
                     letterSpacing: 0.135,
                   ),
                   child: Text(
@@ -231,10 +229,7 @@ class _BottomNavTile extends StatelessWidget {
 
 // Modello interno di un tab della navbar.
 class _BottomNavItem {
-  const _BottomNavItem({
-    required this.label,
-    required this.icon,
-  });
+  const _BottomNavItem({required this.label, required this.icon});
 
   final String label;
   final IconData icon;

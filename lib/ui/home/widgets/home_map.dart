@@ -4,22 +4,28 @@ import 'package:latlong2/latlong.dart';
 
 import '../../../config/map_config.dart';
 import '../../../domain/models/transit_stop.dart';
+import '../../../domain/models/user_location.dart';
 
 class HomeMapColors {
   const HomeMapColors({
     this.fallbackBackgroundColor = const Color(0xFFF7F9FC),
     this.stopMarkerColor = const Color(0xFF0B7A55),
     this.stopMarkerBorderColor = Colors.white,
+    this.userLocationHaloColor = const Color(0x332D7FF9),
+    this.userLocationMarkerColor = const Color(0xFF2D7FF9),
+    this.userLocationMarkerBorderColor = Colors.white,
   });
 
-  // Colore mostrato se la mappa non ha ancora dimensioni valide.
   final Color fallbackBackgroundColor;
 
-  // Colore centrale dei pallini delle fermate.
+  // Fermate del trasporto pubblico.
   final Color stopMarkerColor;
-
-  // Bordo chiaro per rendere i marker leggibili sulla base map.
   final Color stopMarkerBorderColor;
+
+  // Posizione dell'utente.
+  final Color userLocationHaloColor;
+  final Color userLocationMarkerColor;
+  final Color userLocationMarkerBorderColor;
 }
 
 // Widget della mappa principale della Home.
@@ -27,13 +33,17 @@ class HomeMapColors {
 class HomeMap extends StatelessWidget {
   const HomeMap({
     super.key,
+    required this.mapController,
     required this.stops,
+    required this.onMapReady,
+    this.userLocation,
     this.colors = const HomeMapColors(),
   });
 
+  final MapController mapController;
   final List<TransitStop> stops;
-
-  // Palette colori propria della mappa.
+  final UserLocation? userLocation;
+  final VoidCallback onMapReady;
   final HomeMapColors colors;
 
   // Centrato sull'Aquila.
@@ -49,6 +59,8 @@ class HomeMap extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final currentUserLocation = userLocation;
+
     return LayoutBuilder(
       builder: (context, constraints) {
         final hasValidSize =
@@ -57,18 +69,18 @@ class HomeMap extends StatelessWidget {
             constraints.maxWidth > 0 &&
             constraints.maxHeight > 0;
 
-        // Evita di costruire FlutterMap se il widget
-        // non ha ancora dimensioni valide.
         if (!hasValidSize) {
           return ColoredBox(color: colors.fallbackBackgroundColor);
         }
 
         return FlutterMap(
+          mapController: mapController,
           options: MapOptions(
             initialCenter: _initialCenter,
             initialZoom: MapConfig.initialZoom,
             minZoom: MapConfig.minZoom,
             maxZoom: MapConfig.maxZoom,
+            onMapReady: onMapReady,
             cameraConstraint: CameraConstraint.contain(bounds: _worldBounds),
             interactionOptions: const InteractionOptions(
               flags:
@@ -98,6 +110,31 @@ class HomeMap extends StatelessWidget {
                       ),
                     )
                     .toList(growable: false),
+              ),
+
+            // Posizione utente: alone esterno + pallino blu centrale.
+            if (currentUserLocation != null)
+              CircleLayer(
+                circles: [
+                  CircleMarker(
+                    point: LatLng(
+                      currentUserLocation.latitude,
+                      currentUserLocation.longitude,
+                    ),
+                    radius: 16,
+                    color: colors.userLocationHaloColor,
+                  ),
+                  CircleMarker(
+                    point: LatLng(
+                      currentUserLocation.latitude,
+                      currentUserLocation.longitude,
+                    ),
+                    radius: 7,
+                    color: colors.userLocationMarkerColor,
+                    borderColor: colors.userLocationMarkerBorderColor,
+                    borderStrokeWidth: 2,
+                  ),
+                ],
               ),
           ],
         );

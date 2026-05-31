@@ -172,10 +172,7 @@ class LinesViewModel extends ChangeNotifier {
         );
   }
 
-  void _setSavedLocally({
-    required String routeId,
-    required bool isSaved,
-  }) {
+  void _setSavedLocally({required String routeId, required bool isSaved}) {
     if (isSaved) {
       _savedLineIds.add(routeId);
       return;

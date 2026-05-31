@@ -76,7 +76,7 @@ class _LineCardState extends State<LineCard> {
             LineCardHeader(
               line: widget.line,
               direction: direction,
-             
+
               isSaved: widget.isSaved,
               onToggleSaved: widget.onToggleSaved,
               colors: widget.colors,

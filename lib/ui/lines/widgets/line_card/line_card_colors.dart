@@ -19,7 +19,7 @@ class LineCardPalette {
   final Color defaultLineColor;
 
   // Colore uniforme degli elementi principali nelle card dell'elenco linee.
-final Color listAccent;
+  final Color listAccent;
 
   // Colore sfondo card.
   final Color surface;

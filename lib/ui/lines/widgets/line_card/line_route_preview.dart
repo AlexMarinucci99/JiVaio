@@ -28,12 +28,9 @@ class LineRoutePreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-  final actionColor = colors.listAccent;
+    final actionColor = colors.listAccent;
 
-final actionTextColor = LineCardColors.textOn(
-  actionColor,
-  colors: colors,
-);
+    final actionTextColor = LineCardColors.textOn(actionColor, colors: colors);
 
     final supportsDirectionSwap = canSwapDirection && !line.isUnidirectional;
     final showsOneWayDirection = line.isUnidirectional;
@@ -163,7 +160,7 @@ final actionTextColor = LineCardColors.textOn(
           style: FilledButton.styleFrom(
             minimumSize: const Size.fromHeight(48),
             backgroundColor: actionColor,
-foregroundColor: actionTextColor,
+            foregroundColor: actionTextColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(14),
             ),

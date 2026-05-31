@@ -35,7 +35,7 @@ class _AuthGateState extends State<AuthGate> {
 
   @override
   Widget build(BuildContext context) {
-        if (_isGuest) {
+    if (_isGuest) {
       return MainNavigationScreen(
         isGuest: true,
         userId: null,
@@ -49,7 +49,7 @@ class _AuthGateState extends State<AuthGate> {
       builder: (context, snapshot) {
         final user = snapshot.data;
 
-         if (user != null) {
+        if (user != null) {
           return MainNavigationScreen(
             isGuest: false,
             userId: user.uid,

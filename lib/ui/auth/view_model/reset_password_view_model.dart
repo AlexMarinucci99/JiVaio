@@ -13,10 +13,10 @@ class ResetPasswordSubmitResult {
   final String message;
 
   const ResetPasswordSubmitResult.success(String message)
-      : this._(isSuccess: true, message: message);
+    : this._(isSuccess: true, message: message);
 
   const ResetPasswordSubmitResult.failure(String message)
-      : this._(isSuccess: false, message: message);
+    : this._(isSuccess: false, message: message);
 }
 
 class ResetPasswordViewModel extends ChangeNotifier {

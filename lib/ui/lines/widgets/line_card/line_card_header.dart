@@ -28,10 +28,7 @@ class LineCardHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final badgeColor = colors.listAccent;
 
-final badgeTextColor = LineCardColors.textOn(
-  badgeColor,
-  colors: colors,
-);
+    final badgeTextColor = LineCardColors.textOn(badgeColor, colors: colors);
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

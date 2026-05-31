@@ -35,10 +35,10 @@ class SavedLinesService {
     required String userId,
     required String routeId,
   }) async {
-    await _savedLineDocument(userId: userId, routeId: routeId).set({
-      'routeId': routeId,
-      'savedAt': FieldValue.serverTimestamp(),
-    });
+    await _savedLineDocument(
+      userId: userId,
+      routeId: routeId,
+    ).set({'routeId': routeId, 'savedAt': FieldValue.serverTimestamp()});
   }
 
   Future<void> removeLine({

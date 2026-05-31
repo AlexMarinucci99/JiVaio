@@ -8,9 +8,7 @@ class AppTheme {
   static ThemeData get lightTheme {
     return ThemeData(
       useMaterial3: true,
-      colorScheme: ColorScheme.fromSeed(
-        seedColor: const Color(0xFF191970),
-      ),
+      colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF191970)),
       scaffoldBackgroundColor: AppColors.background,
     );
   }

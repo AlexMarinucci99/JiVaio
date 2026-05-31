@@ -65,5 +65,4 @@ class DefaultFirebaseOptions {
     storageBucket: 'jivaio.firebasestorage.app',
     iosBundleId: 'com.example.App',
   );
-
 }
