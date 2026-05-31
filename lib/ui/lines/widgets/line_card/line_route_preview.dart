@@ -28,7 +28,12 @@ class LineRoutePreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textColor = LineCardColors.textOn(lineColor, colors: colors);
+  final actionColor = colors.listAccent;
+
+final actionTextColor = LineCardColors.textOn(
+  actionColor,
+  colors: colors,
+);
 
     final supportsDirectionSwap = canSwapDirection && !line.isUnidirectional;
     final showsOneWayDirection = line.isUnidirectional;
@@ -117,13 +122,13 @@ class LineRoutePreview extends StatelessWidget {
                       vertical: 6,
                     ),
                     decoration: BoxDecoration(
-                      color: lineColor,
+                      color: actionColor,
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Text(
                       departure,
                       style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                        color: textColor,
+                        color: actionTextColor,
                         fontSize: 12,
                         fontWeight: FontWeight.w700,
                       ),
@@ -157,8 +162,8 @@ class LineRoutePreview extends StatelessWidget {
           onPressed: onOpenDetails,
           style: FilledButton.styleFrom(
             minimumSize: const Size.fromHeight(48),
-            backgroundColor: lineColor.withValues(alpha: 0.96),
-            foregroundColor: textColor,
+            backgroundColor: actionColor,
+foregroundColor: actionTextColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(14),
             ),

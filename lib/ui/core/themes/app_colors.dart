@@ -1,0 +1,34 @@
+import 'package:flutter/material.dart';
+
+class AppColors {
+  const AppColors._();
+
+  // Brand
+  static const Color primary = Color(0xFF191970);
+  static const Color primaryDark = Color(0xFF061A3A);
+  static const Color secondary = Color(0xFF1FB6A6);
+
+  // Background / surface
+  static const Color background = Color(0xFFF7F9FC);
+  static const Color surface = Color(0xFFFFFFFF);
+  static const Color surfaceMuted = Color(0xFFEAF0FA);
+  static const Color fieldBackground = Color(0xFFF1F4FA);
+
+  // Text
+  static const Color textPrimary = Color(0xFF111827);
+  static const Color textSecondary = Color(0xFF5D6675);
+  static const Color textMuted = Color(0xFF6B7280);
+
+  // Borders
+  static const Color border = Color(0xFFDCE5F2);
+  static const Color borderSoft = Color(0xFFE1E7F0);
+
+  // Badge
+  static const Color badgeBackground = Color(0xFFDCEBFF);
+  static const Color selectedBadgeBackground = Color(0x2EFFFFFF);
+
+  // States
+  static const Color success = Color(0xFF2E7D32);
+  static const Color warning = Color(0xFFF59E0B);
+  static const Color error = Color(0xFFD32F2F);
+}

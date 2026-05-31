@@ -1,47 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'app_segmented_nsave.dart';
+import '../themes/app_segmented_control_colors.dart';
 
-class AppSegmentedControlColors {
-  const AppSegmentedControlColors({
-    this.backgroundColor = const Color(0xFFEAF0FA),
-    this.selectedColor = const Color(0xFF061A3A),
-    this.borderColor = const Color(0xFFDCE5F2),
-    this.selectedTextColor = Colors.white,
-    this.unselectedTextColor = const Color(0xFF5D6675),
-    this.badgeBackgroundColor = const Color(0xFFDCEBFF),
-    this.badgeTextColor = const Color(0xFF061A3A),
-    this.selectedBadgeBackgroundColor = const Color(0x2EFFFFFF),
-    this.selectedBadgeTextColor = Colors.white,
-  });
-
-  // Colore del contenitore esterno dello switch.
-  final Color backgroundColor;
-
-  // Colore del segmento attivo.
-  final Color selectedColor;
-
-  // Colore del bordo esterno.
-  final Color borderColor;
-
-  // Colore testo del segmento attivo.
-  final Color selectedTextColor;
-
-  // Colore testo dei segmenti non attivi.
-  final Color unselectedTextColor;
-
-  // Colore sfondo badge quando il segmento non è selezionato.
-  final Color badgeBackgroundColor;
-
-  // Colore testo badge quando il segmento non è selezionato.
-  final Color badgeTextColor;
-
-  // Colore sfondo badge quando il segmento è selezionato.
-  final Color selectedBadgeBackgroundColor;
-
-  // Colore testo badge quando il segmento è selezionato.
-  final Color selectedBadgeTextColor;
-}
+export '../themes/app_segmented_control_colors.dart';
 
 class AppSegmentedControlItem<T> {
   const AppSegmentedControlItem({
@@ -66,7 +28,7 @@ class AppSegmentedControl<T> extends StatelessWidget {
     required this.items,
     required this.selectedValue,
     required this.onChanged,
-    this.colors = const AppSegmentedControlColors(),
+    this.colors = AppSegmentedControlColors.primary,
 
     // Parametri mantenuti per compatibilità con il codice già scritto.
     // Se vengono passati, sovrascrivono i valori presenti in colors.
@@ -170,7 +132,7 @@ class AppSegmentedControl<T> extends StatelessWidget {
                   style: TextButton.styleFrom(
                     backgroundColor: isSelected
                         ? effectiveSelectedColor
-                        : Colors.transparent,
+                        : const Color(0x00000000),
                     foregroundColor: isSelected
                         ? effectiveSelectedTextColor
                         : effectiveUnselectedTextColor,

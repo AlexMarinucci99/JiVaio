@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import '../../../core/themes/app_colors.dart';
 
 class LineCardPalette {
   const LineCardPalette({
     this.defaultLineColor = const Color(0xFF2F80ED),
+    this.listAccent = AppColors.primary,
     this.surface = Colors.white,
     this.border = const Color(0xFFE5EAF2),
-    this.primaryText = const Color(0xFF111827),
+    this.primaryText = const Color(0xFF191970),
     this.secondaryText = const Color(0xFF5D6675),
     this.mutedText = const Color(0xFF8A94A6),
     this.pillBackground = const Color(0xFFF5F7FB),
@@ -16,6 +18,9 @@ class LineCardPalette {
 
   // Colore linea di fallback quando il valore GTFS non è valido.
   final Color defaultLineColor;
+
+  // Colore uniforme degli elementi principali nelle card dell'elenco linee.
+final Color listAccent;
 
   // Colore sfondo card.
   final Color surface;

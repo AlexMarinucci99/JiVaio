@@ -73,21 +73,21 @@ class BottomNavBar extends StatelessWidget {
     final activeIndex = _safeSelectedIndex(selectedIndex);
 
     return ClipRRect(
-      borderRadius: BorderRadius.circular(20),
+      borderRadius: BorderRadius.circular(25),
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
         child: Container(
-          height: 70,
-          padding: const EdgeInsets.all(8),
+          height: 63,
+          padding: const EdgeInsets.all(7.2),
           decoration: BoxDecoration(
             color: colors.backgroundColor,
-            borderRadius: BorderRadius.circular(28),
+            borderRadius: BorderRadius.circular(25.2),
             border: Border.all(color: colors.borderColor),
             boxShadow: [
               BoxShadow(
                 color: colors.shadowColor,
-                blurRadius: 28,
-                offset: const Offset(0, 10),
+                blurRadius: 25.2,
+                offset: const Offset(0, 9),
               ),
             ],
           ),
@@ -105,16 +105,16 @@ class BottomNavBar extends StatelessWidget {
                     bottom: 0,
                     width: itemWidth,
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 4),
+                      padding: const EdgeInsets.symmetric(horizontal: 3.6),
                       child: DecoratedBox(
                         decoration: BoxDecoration(
                           color: colors.selectedBackgroundColor,
-                          borderRadius: BorderRadius.circular(26),
+                          borderRadius: BorderRadius.circular(23.4),
                           boxShadow: [
                             BoxShadow(
                               color: colors.selectedGlowColor,
-                              blurRadius: 18,
-                              offset: const Offset(0, 6),
+                              blurRadius: 16.2,
+                              offset: const Offset(0, 5.4),
                             ),
                           ],
                         ),
@@ -179,7 +179,7 @@ class _BottomNavTile extends StatelessWidget {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          borderRadius: BorderRadius.circular(26),
+          borderRadius: BorderRadius.circular(23.4),
           splashColor: colors.splashColor,
           highlightColor: colors.highlightColor,
           onTap: onTap,
@@ -198,21 +198,21 @@ class _BottomNavTile extends StatelessWidget {
                   child: Icon(
                     item.icon,
                     color: effectiveColor,
-                    size: isSelected ? 25 : 23,
+                    size: isSelected ? 22.5 : 20.7,
                   ),
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: 3.6),
                 AnimatedDefaultTextStyle(
                   duration: const Duration(milliseconds: 180),
                   curve: Curves.easeOut,
                   style: TextStyle(
                     color: effectiveColor,
-                    fontSize: isSelected ? 12 : 11.5,
+                    fontSize: isSelected ? 10.8 : 10.35,
                     height: 1.0,
                     fontWeight: isSelected
                         ? FontWeight.w800
                         : FontWeight.w600,
-                    letterSpacing: 0.15,
+                    letterSpacing: 0.135,
                   ),
                   child: Text(
                     item.label,

@@ -11,7 +11,6 @@ class LineCardHeader extends StatelessWidget {
     super.key,
     required this.line,
     required this.direction,
-    required this.lineColor,
     required this.isSaved,
     required this.onToggleSaved,
     this.colors = LineCardColors.defaultPalette,
@@ -19,7 +18,6 @@ class LineCardHeader extends StatelessWidget {
 
   final TransitLine line;
   final TransitLineDirection direction;
-  final Color lineColor;
   final bool isSaved;
   final VoidCallback onToggleSaved;
 
@@ -28,15 +26,18 @@ class LineCardHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Il badge continua a usare il colore reale della linea.
-    final badgeTextColor = LineCardColors.textOn(lineColor, colors: colors);
+    final badgeColor = colors.listAccent;
 
+final badgeTextColor = LineCardColors.textOn(
+  badgeColor,
+  colors: colors,
+);
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         LineBadge(
           shortName: line.shortName,
-          backgroundColor: lineColor,
+          backgroundColor: badgeColor,
           textColor: badgeTextColor,
         ),
 

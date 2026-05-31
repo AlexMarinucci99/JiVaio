@@ -110,17 +110,7 @@ class _LinesScreenState extends State<LinesScreen> {
                         AppSegmentedControl<LinesScope>(
                           selectedValue: _viewModel.scope,
                           onChanged: _viewModel.setScope,
-                          colors: const AppSegmentedControlColors(
-                            backgroundColor: Color(0xFFEAF0FA),
-                            selectedColor: Color(0xFF061A3A),
-                            borderColor: Color(0xFFDCE5F2),
-                            selectedTextColor: Colors.white,
-                            unselectedTextColor: Color(0xFF5D6675),
-                            badgeBackgroundColor: Color(0xFFDCEBFF),
-                            badgeTextColor: Color(0xFF061A3A),
-                            selectedBadgeBackgroundColor: Color(0x2EFFFFFF),
-                            selectedBadgeTextColor: Colors.white,
-                          ),
+                         
                           items: [
                             const AppSegmentedControlItem(
                               value: LinesScope.all,
