@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import '../../../core/themes/app_colors.dart';
 
 class LineCardPalette {
   const LineCardPalette({
     this.defaultLineColor = const Color(0xFF2F80ED),
-    this.listAccent = AppColors.primary,
+    this.listAccent = const Color.fromARGB(255, 7, 74, 197),
     this.surface = Colors.white,
     this.border = const Color(0xFFE5EAF2),
     this.primaryText = const Color(0xFF191970),
