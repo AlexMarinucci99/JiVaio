@@ -1,7 +1,8 @@
 import '../../domain/models/transit_line.dart';
+import '../../domain/models/transit_stop.dart';
 import '../services/transit_raw_service.dart';
 
-//traduce i raw i model del dominio
+// Traduce i dati raw nei model del dominio.
 
 typedef _RawMap = Map<String, dynamic>;
 
@@ -12,6 +13,64 @@ class TransitRepository {
   final TransitRawService _rawService;
 
   TransitRawBundle? _cachedBundle;
+  List<TransitStop>? _cachedMapStops;
+
+  Future<List<TransitStop>> getMapStops() async {
+    final cachedStops = _cachedMapStops;
+
+    if (cachedStops != null) {
+      return cachedStops;
+    }
+
+    final bundle = await _loadBundle();
+
+    final addedStopIds = <String>{};
+    final mapStops = <TransitStop>[];
+
+    for (final rawStop in bundle.stops) {
+      final stopId = _stringValue(rawStop, 'stop_id');
+      final latitude = _doubleValue(rawStop, 'stop_lat');
+      final longitude = _doubleValue(rawStop, 'stop_lon');
+
+      // In GTFS location_type = 0 identifica una fermata effettiva.
+      // Se il campo manca o è vuoto, viene considerato 0.
+      final locationType = _intValue(rawStop, 'location_type');
+
+      if (stopId.isEmpty || latitude == null || longitude == null) {
+        continue;
+      }
+
+      if (locationType != 0) {
+        continue;
+      }
+
+      if (latitude < -90 ||
+          latitude > 90 ||
+          longitude < -180 ||
+          longitude > 180) {
+        continue;
+      }
+
+      // Evita marker duplicati se il dataset contiene righe ripetute.
+      if (!addedStopIds.add(stopId)) {
+        continue;
+      }
+
+      mapStops.add(
+        TransitStop(
+          stopId: stopId,
+          name: _stopName(rawStop),
+          latitude: latitude,
+          longitude: longitude,
+        ),
+      );
+    }
+
+    final result = List<TransitStop>.unmodifiable(mapStops);
+    _cachedMapStops = result;
+
+    return result;
+  }
 
   Future<List<TransitLine>> getLines({DateTime? moment}) async {
     final bundle = await _loadBundle();
@@ -595,6 +654,16 @@ class TransitRepository {
     }
 
     return value.toString().trim();
+  }
+
+  double? _doubleValue(_RawMap row, String key) {
+    final value = _stringValue(row, key);
+
+    if (value.isEmpty) {
+      return null;
+    }
+
+    return double.tryParse(value.replaceAll(',', '.'));
   }
 
   int _intValue(_RawMap row, String key) {

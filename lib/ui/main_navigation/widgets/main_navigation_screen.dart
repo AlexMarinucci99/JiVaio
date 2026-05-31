@@ -4,6 +4,7 @@ import '../../core/widgets/bottom_nav_bar.dart';
 import '../../home/widgets/home_placeholder_screen.dart';
 import '../../lines/widgets/lines_screen.dart';
 import '../../settings/widgets/settings_screen.dart';
+import '../../../data/repositories/transit_repository.dart';
 
 // Schermata principale dopo login/registrazione oppure accesso guest.
 // Contiene le sezioni principali dell'app e la navbar inferiore.
@@ -31,28 +32,32 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   // Stato locale della navbar.
   int _selectedIndex = 0;
 
+  final TransitRepository _transitRepository = TransitRepository();
+
   // Colori propri della main shell.
   static const _MainShellColors _colors = _MainShellColors();
 
   // Schermate principali dell'app.
   // Non è static const perché LinesScreen e SettingsScreen
   // devono ricevere dati dinamici legati allo stato utente.
-  List<Widget> get _pages {
-    return [
-      const HomePlaceholderScreen(
-        key: PageStorageKey<String>('home-search-screen'),
-      ),
-      LinesScreen(
-        key: const PageStorageKey<String>('lines-screen'),
-        isGuest: widget.isGuest,
-      ),
-      SettingsScreen(
-        key: const PageStorageKey<String>('settings-screen'),
-        isGuest: widget.isGuest,
-        onLogout: widget.onLogout,
-      ),
-    ];
-  }
+List<Widget> get _pages {
+  return [
+    HomePlaceholderScreen(
+      key: const PageStorageKey<String>('home-search-screen'),
+      repository: _transitRepository,
+    ),
+    LinesScreen(
+      key: const PageStorageKey<String>('lines-screen'),
+      isGuest: widget.isGuest,
+      repository: _transitRepository,
+    ),
+    SettingsScreen(
+      key: const PageStorageKey<String>('settings-screen'),
+      isGuest: widget.isGuest,
+      onLogout: widget.onLogout,
+    ),
+  ];
+}
 
   // Cambio tab navbar.
   void _onItemSelected(int index) {

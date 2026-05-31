@@ -8,11 +8,17 @@ import 'line_card/line_card.dart';
 import 'line_detail/line_detail_screen.dart';
 
 class LinesScreen extends StatefulWidget {
-  const LinesScreen({super.key, required this.isGuest});
+  const LinesScreen({
+    super.key,
+    required this.isGuest,
+    required this.repository,
+  });
 
   // true = utente ospite: può consultare le linee, ma non salvarle.
   // false = utente registrato: può salvare/rimuovere linee preferite.
   final bool isGuest;
+
+  final TransitRepository repository;
 
   @override
   State<LinesScreen> createState() => _LinesScreenState();
@@ -26,7 +32,7 @@ class _LinesScreenState extends State<LinesScreen> {
   void initState() {
     super.initState();
 
-    _repository = TransitRepository();
+    _repository = widget.repository;
     _viewModel = LinesViewModel(repository: _repository);
     _viewModel.loadLines();
   }
