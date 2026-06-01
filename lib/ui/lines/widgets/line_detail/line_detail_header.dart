@@ -34,9 +34,15 @@ class LineDetailHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Calcola il colore del testo leggibile sopra il colore reale della linea.
-    final textColor = LineCardColors.textOn(lineColor, colors: colors);
+   // Il badge del dettaglio usa lo stesso colore uniforme dell'elenco linee.
+final badgeColor = colors.listAccent;
 
-    final selectedDirection = direction;
+final badgeTextColor = LineCardColors.textOn(
+  badgeColor,
+  colors: colors,
+);
+
+final selectedDirection = direction;
 
     return Container(
       margin: const EdgeInsets.fromLTRB(16, 12, 16, 0),
@@ -64,11 +70,12 @@ class LineDetailHeader extends StatelessWidget {
 
                 // Riutilizzo di LineBadge: stesso badge linea già usato nelle card.
                 // Il colore resta quello della linea, non della palette.
-                LineBadge(
-                  shortName: line.shortName,
-                  backgroundColor: lineColor,
-                  textColor: textColor,
-                ),
+               // Riutilizzo di LineBadge con la stessa palette dell'elenco linee.
+LineBadge(
+  shortName: line.shortName,
+  backgroundColor: badgeColor,
+  textColor: badgeTextColor,
+),
 
                 const SizedBox(width: 12),
 

@@ -94,7 +94,7 @@ class _EmptyRouteBox extends StatelessWidget {
       child: Text(
         'Fermate non disponibili per questa direzione.',
         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-          color: LineDetailColors.warningText,
+          color: const Color.fromARGB(255, 4, 11, 117),
           fontSize: 12,
           height: 1.35,
           fontWeight: FontWeight.w600,

@@ -229,7 +229,7 @@ class _ReportInstructionBox extends StatelessWidget {
         style: Theme.of(context).textTheme.bodySmall?.copyWith(
           color: canSendReport
               ? LineDetailColors.successText
-              : LineDetailColors.warningText,
+              : const Color.fromARGB(255, 43, 6, 129),
           fontSize: 11.8,
           height: 1.35,
           fontWeight: FontWeight.w700,
