@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../../../data/repositories/saved_lines_repository.dart';
-import '../../../data/services/saved_lines_service.dart';
 import '../../../data/repositories/transit_repository.dart';
 import '../../../domain/models/transit_line.dart';
 import '../../core/widgets/app_segmented_control.dart';
@@ -14,6 +13,7 @@ class LinesScreen extends StatefulWidget {
     required this.isGuest,
     required this.userId,
     required this.repository,
+    required this.savedLinesRepository,
   }) : assert(isGuest || userId != null);
 
   // true = utente ospite: può consultare le linee, ma non salvarle.
@@ -26,13 +26,14 @@ class LinesScreen extends StatefulWidget {
 
   final TransitRepository repository;
 
+  final SavedLinesRepository savedLinesRepository;
+
   @override
   State<LinesScreen> createState() => _LinesScreenState();
 }
 
 class _LinesScreenState extends State<LinesScreen> {
   late final TransitRepository _repository;
-  late final SavedLinesRepository _savedLinesRepository;
   late final LinesViewModel _viewModel;
 
   @override
@@ -41,11 +42,9 @@ class _LinesScreenState extends State<LinesScreen> {
 
     _repository = widget.repository;
 
-    _savedLinesRepository = SavedLinesRepository(SavedLinesService());
-
     _viewModel = LinesViewModel(
       transitRepository: _repository,
-      savedLinesRepository: _savedLinesRepository,
+      savedLinesRepository: widget.savedLinesRepository,
       userId: widget.userId,
     );
 

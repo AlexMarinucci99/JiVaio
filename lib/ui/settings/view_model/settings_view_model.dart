@@ -1,7 +1,10 @@
-import 'package:flutter/material.dart';
-
 class SettingsViewModel {
-  final BuildContext context;
+  const SettingsViewModel({required this.isGuest});
 
-  SettingsViewModel(this.context);
+  // Indica se l'utente sta utilizzando l'app senza autenticazione.
+  final bool isGuest;
+
+  // Le impostazioni legate all'account saranno disponibili
+  // soltanto per gli utenti autenticati.
+  bool get canManageAccount => !isGuest;
 }

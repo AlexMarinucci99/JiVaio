@@ -1,20 +1,5 @@
 import 'package:flutter/material.dart';
-
-//StatelessWidget perché riceve dall’esterno lo stato di caricamento e la callback. Non conserva internamente stato mutevole.
-
-class LocateUserButtonColors {
-  const LocateUserButtonColors({
-    this.backgroundColor = Colors.white,
-    this.iconColor = const Color(0xFF17226B),
-    this.progressColor = const Color(0xFF17226B),
-    this.shadowColor = const Color(0x26000000),
-  });
-
-  final Color backgroundColor;
-  final Color iconColor;
-  final Color progressColor;
-  final Color shadowColor;
-}
+import '../theme/home_colors.dart';
 
 // Widget riutilizzabile: gestisce soltanto il rendering del pulsante.
 class LocateUserButton extends StatelessWidget {

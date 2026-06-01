@@ -7,7 +7,7 @@ import 'line_detail_colors.dart';
 class LineDetailDeparturesCard extends StatelessWidget {
   const LineDetailDeparturesCard({
     super.key,
-    
+
     required this.selectedTimeRange,
     required this.departures,
     required this.selectedTripId,
@@ -17,7 +17,6 @@ class LineDetailDeparturesCard extends StatelessWidget {
     this.colors = LineCardColors.defaultPalette,
   });
 
-  
   final String selectedTimeRange;
   final List<TransitLineDeparture> departures;
   final String? selectedTripId;
@@ -30,10 +29,10 @@ class LineDetailDeparturesCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final departureAccent = colors.listAccent;
 
-final textOnDepartureAccent = LineCardColors.textOn(
-  departureAccent,
-  colors: colors,
-);
+    final textOnDepartureAccent = LineCardColors.textOn(
+      departureAccent,
+      colors: colors,
+    );
 
     return Container(
       decoration: LineCardColors.cardDecoration(colors: colors),
@@ -91,12 +90,12 @@ final textOnDepartureAccent = LineCardColors.textOn(
                       return Padding(
                         padding: const EdgeInsets.only(right: 8),
                         child: _DepartureChip(
-  label: departure.departureTime,
-  isSelected: isSelected,
-  accentColor: departureAccent,
-  selectedTextColor: textOnDepartureAccent,
-  colors: colors,
-),
+                          label: departure.departureTime,
+                          isSelected: isSelected,
+                          accentColor: departureAccent,
+                          selectedTextColor: textOnDepartureAccent,
+                          colors: colors,
+                        ),
                       );
                     })
                     .toList(growable: false),
@@ -166,31 +165,31 @@ class _TimeRangeSelector extends StatelessWidget {
 }
 
 class _DepartureChip extends StatelessWidget {
-const _DepartureChip({
-  required this.label,
-  required this.isSelected,
-  required this.accentColor,
-  required this.selectedTextColor,
-  required this.colors,
-});
+  const _DepartureChip({
+    required this.label,
+    required this.isSelected,
+    required this.accentColor,
+    required this.selectedTextColor,
+    required this.colors,
+  });
 
   final String label;
   final bool isSelected;
- final Color accentColor;
+  final Color accentColor;
   final Color selectedTextColor;
   final LineCardPalette colors;
 
   @override
   Widget build(BuildContext context) {
     final backgroundColor = isSelected
-    ? accentColor
-    : accentColor.withValues(alpha: 0.08);
+        ? accentColor
+        : accentColor.withValues(alpha: 0.08);
 
-final borderColor = isSelected
-    ? accentColor
-    : accentColor.withValues(alpha: 0.18);
+    final borderColor = isSelected
+        ? accentColor
+        : accentColor.withValues(alpha: 0.18);
 
-final textColor = isSelected ? selectedTextColor : accentColor;
+    final textColor = isSelected ? selectedTextColor : accentColor;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),

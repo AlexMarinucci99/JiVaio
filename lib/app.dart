@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'data/repositories/auth_repository.dart';
-import 'data/services/auth_service.dart';
+import 'config/app_dependencies.dart';
 import 'routing/app_routes.dart';
 import 'routing/auth_gate.dart';
 import 'ui/auth/widgets/reset_password_screen.dart';
@@ -9,11 +8,14 @@ import 'ui/core/themes/app_theme.dart';
 import 'ui/onboarding/widgets/onboarding_screen.dart';
 
 class JiVaioApp extends StatelessWidget {
-  JiVaioApp({super.key, required this.showOnboarding});
+  const JiVaioApp({
+    super.key,
+    required this.showOnboarding,
+    required this.dependencies,
+  });
 
   final bool showOnboarding;
-
-  final AuthRepository _authRepository = AuthRepository(AuthService());
+  final AppDependencies dependencies;
 
   @override
   Widget build(BuildContext context) {
@@ -27,14 +29,14 @@ class JiVaioApp extends StatelessWidget {
       routes: {
         AppRoutes.onboarding: (_) => const OnboardingScreen(),
 
-        AppRoutes.authChoice: (_) => AuthGate(authRepository: _authRepository),
+        AppRoutes.authChoice: (_) => AuthGate(dependencies: dependencies),
 
         // Route mantenuta per compatibilità.
         // Il flusso principale passa da AuthGate.
-        AppRoutes.home: (_) => AuthGate(authRepository: _authRepository),
+        AppRoutes.home: (_) => AuthGate(dependencies: dependencies),
 
         AppRoutes.resetPassword: (_) =>
-            ResetPasswordScreen(authRepository: _authRepository),
+            ResetPasswordScreen(authRepository: dependencies.authRepository),
       },
     );
   }

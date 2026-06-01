@@ -1,6 +1,5 @@
 import 'dart:async';
 
-
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
@@ -11,13 +10,14 @@ import '../../../data/repositories/transit_repository.dart';
 import '../../../domain/models/location_access_result.dart';
 import '../../notifications/view_model/notification_center_view_model.dart';
 import '../../notifications/widgets/notification_center_overlay.dart';
+import '../theme/home_colors.dart';
 import '../view_model/home_map_view_model.dart';
 import 'home_map.dart';
 import 'locate_user_button.dart';
 import 'route_search_card.dart';
 
-class HomePlaceholderScreen extends StatefulWidget {
-  const HomePlaceholderScreen({
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({
     super.key,
     required this.repository,
     required this.locationRepository,
@@ -29,12 +29,11 @@ class HomePlaceholderScreen extends StatefulWidget {
   final NotificationRepository notificationRepository;
 
   @override
-  State<HomePlaceholderScreen> createState() => _HomePlaceholderScreenState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomePlaceholderScreenState extends State<HomePlaceholderScreen>
-    with WidgetsBindingObserver {
-  static const _HomePlaceholderColors _colors = _HomePlaceholderColors();
+class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
+  static const HomeScreenColors _colors = HomeScreenColors();
 
   late final HomeMapViewModel _viewModel;
   late final NotificationCenterViewModel _notificationViewModel;
@@ -341,50 +340,4 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen>
       },
     );
   }
-}
-
-// Palette privata della schermata Home.
-class _HomePlaceholderColors {
-  const _HomePlaceholderColors();
-
-  final Color overlayColorStrong = const Color(0x8F0B0F3A);
-  final Color overlayColorSoft = const Color(0x330B0F3A);
-  final Color overlayColorTransparent = Colors.transparent;
-
-  final Color snackBarBackgroundColor = const Color(0xFF061A3A);
-  final Color snackBarTextColor = Colors.white;
-
-  final HomeMapColors mapColors = const HomeMapColors(
-    fallbackBackgroundColor: Color(0xFFF7F9FC),
-    stopMarkerColor: Color(0xFF0B7A55),
-    stopMarkerBorderColor: Colors.white,
-    userLocationHaloColor: Color(0x332D7FF9),
-    userLocationMarkerColor: Color(0xFF2D7FF9),
-    userLocationMarkerBorderColor: Colors.white,
-  );
-
-  final LocateUserButtonColors locateUserButtonColors =
-      const LocateUserButtonColors(
-        backgroundColor: Colors.white,
-        iconColor: Color(0xFF17226B),
-        progressColor: Color(0xFF17226B),
-        shadowColor: Color(0x26000000),
-      );
-
-  final RouteSearchCardColors routeSearchCardColors =
-      const RouteSearchCardColors(
-        cardColor: Colors.white,
-        textColor: Color(0xFF20232D),
-        labelColor: Color(0xFF5C5F6D),
-        dividerColor: Color(0xFFE7E8EE),
-        activeButtonColor: Color(0xFF17226B),
-        activeButtonTextColor: Colors.white,
-        inactiveButtonColor: Color(0xFFE9E7F0),
-        inactiveTextColor: Color(0xFF4F4D59),
-        iconBackgroundColor: Color(0xFFF0F1F6),
-        iconColor: Color(0xFF59609A),
-        swapIconColor: Color(0xFF59609A),
-        hintColor: Color(0xFF777986),
-        shadowColor: Color(0x1F000000),
-      );
 }

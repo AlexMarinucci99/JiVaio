@@ -102,7 +102,6 @@ class _LineDetailScreenState extends State<LineDetailScreen> {
                         const SizedBox(height: 14),
                       ],
                       LineDetailDeparturesCard(
-                        
                         selectedTimeRange: _viewModel.timeRangeLabel,
                         departures: _viewModel.departures,
                         selectedTripId: _viewModel.selectedTripId,

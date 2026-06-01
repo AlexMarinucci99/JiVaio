@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 
 import '../../../data/repositories/transit_repository.dart';
 import '../../core/widgets/bottom_nav_bar.dart';
-import '../../home/widgets/home_placeholder_screen.dart';
+import '../../home/widgets/home_screen.dart';
 import '../../lines/widgets/lines_screen.dart';
 import '../../settings/widgets/settings_screen.dart';
 import '../../../data/repositories/location_repository.dart';
 import '../../../data/repositories/notification_repository.dart';
+import '../../../data/repositories/saved_lines_repository.dart';
 
 // Schermata principale dopo login/registrazione oppure accesso guest.
 // Contiene le sezioni principali dell'app e la navbar inferiore.
@@ -16,6 +17,10 @@ class MainNavigationScreen extends StatefulWidget {
     required this.isGuest,
     required this.userId,
     required this.onLogout,
+    required this.transitRepository,
+    required this.locationRepository,
+    required this.notificationRepository,
+    required this.savedLinesRepository,
   }) : assert(isGuest || userId != null);
 
   // true = utente ospite
@@ -31,6 +36,11 @@ class MainNavigationScreen extends StatefulWidget {
   // Per guest: uscita dalla modalità ospite.
   final Future<void> Function() onLogout;
 
+  final TransitRepository transitRepository;
+  final LocationRepository locationRepository;
+  final NotificationRepository notificationRepository;
+  final SavedLinesRepository savedLinesRepository;
+
   @override
   State<MainNavigationScreen> createState() => _MainNavigationScreenState();
 }
@@ -38,13 +48,6 @@ class MainNavigationScreen extends StatefulWidget {
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
   // Stato locale della navbar.
   int _selectedIndex = 0;
-
-  final TransitRepository _transitRepository = TransitRepository();
-
-  final LocationRepository _locationRepository = const LocationRepository();
-
-  final NotificationRepository _notificationRepository =
-      const NotificationRepository();
 
   // Colori propri della main shell.
   static const _MainShellColors _colors = _MainShellColors();
@@ -54,17 +57,18 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   // devono ricevere dati dinamici legati allo stato utente.
   List<Widget> get _pages {
     return [
-      HomePlaceholderScreen(
-        key: const PageStorageKey<String>('home-search-screen'),
-        repository: _transitRepository,
-        locationRepository: _locationRepository,
-        notificationRepository: _notificationRepository,
+      HomeScreen(
+        key: const PageStorageKey<String>('home-screen'),
+        repository: widget.transitRepository,
+        locationRepository: widget.locationRepository,
+        notificationRepository: widget.notificationRepository,
       ),
       LinesScreen(
         key: const PageStorageKey<String>('lines-screen'),
         isGuest: widget.isGuest,
         userId: widget.userId,
-        repository: _transitRepository,
+        repository: widget.transitRepository,
+        savedLinesRepository: widget.savedLinesRepository,
       ),
       SettingsScreen(
         key: const PageStorageKey<String>('settings-screen'),

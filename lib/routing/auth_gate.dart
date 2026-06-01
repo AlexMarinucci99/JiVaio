@@ -1,14 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../config/app_dependencies.dart';
 import '../data/repositories/auth_repository.dart';
 import '../ui/auth/widgets/auth_choice_screen.dart';
 import '../ui/main_navigation/widgets/main_navigation_screen.dart';
 
 class AuthGate extends StatefulWidget {
-  const AuthGate({super.key, required this.authRepository});
+  const AuthGate({super.key, required this.dependencies});
 
-  final AuthRepository authRepository;
+  final AppDependencies dependencies;
 
   @override
   State<AuthGate> createState() => _AuthGateState();
@@ -16,6 +17,10 @@ class AuthGate extends StatefulWidget {
 
 class _AuthGateState extends State<AuthGate> {
   bool _isGuest = false;
+
+  AuthRepository get _authRepository {
+    return widget.dependencies.authRepository;
+  }
 
   void _continueAsGuest() {
     setState(() {
@@ -30,7 +35,7 @@ class _AuthGateState extends State<AuthGate> {
   }
 
   Future<void> _logout() async {
-    await widget.authRepository.logout();
+    await _authRepository.logout();
   }
 
   @override
@@ -40,12 +45,16 @@ class _AuthGateState extends State<AuthGate> {
         isGuest: true,
         userId: null,
         onLogout: _exitGuestMode,
+        transitRepository: widget.dependencies.transitRepository,
+        locationRepository: widget.dependencies.locationRepository,
+        notificationRepository: widget.dependencies.notificationRepository,
+        savedLinesRepository: widget.dependencies.savedLinesRepository,
       );
     }
 
     return StreamBuilder<User?>(
-      stream: widget.authRepository.authStateChanges,
-      initialData: widget.authRepository.currentUser,
+      stream: _authRepository.authStateChanges,
+      initialData: _authRepository.currentUser,
       builder: (context, snapshot) {
         final user = snapshot.data;
 
@@ -54,11 +63,15 @@ class _AuthGateState extends State<AuthGate> {
             isGuest: false,
             userId: user.uid,
             onLogout: _logout,
+            transitRepository: widget.dependencies.transitRepository,
+            locationRepository: widget.dependencies.locationRepository,
+            notificationRepository: widget.dependencies.notificationRepository,
+            savedLinesRepository: widget.dependencies.savedLinesRepository,
           );
         }
 
         return AuthChoiceScreen(
-          authRepository: widget.authRepository,
+          authRepository: _authRepository,
           onContinueAsGuest: _continueAsGuest,
         );
       },

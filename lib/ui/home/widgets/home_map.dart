@@ -5,28 +5,7 @@ import 'package:latlong2/latlong.dart';
 import '../../../config/map_config.dart';
 import '../../../domain/models/transit_stop.dart';
 import '../../../domain/models/user_location.dart';
-
-class HomeMapColors {
-  const HomeMapColors({
-    this.fallbackBackgroundColor = const Color(0xFFF7F9FC),
-    this.stopMarkerColor = const Color(0xFF0B7A55),
-    this.stopMarkerBorderColor = Colors.white,
-    this.userLocationHaloColor = const Color(0x332D7FF9),
-    this.userLocationMarkerColor = const Color(0xFF2D7FF9),
-    this.userLocationMarkerBorderColor = Colors.white,
-  });
-
-  final Color fallbackBackgroundColor;
-
-  // Fermate del trasporto pubblico.
-  final Color stopMarkerColor;
-  final Color stopMarkerBorderColor;
-
-  // Posizione dell'utente.
-  final Color userLocationHaloColor;
-  final Color userLocationMarkerColor;
-  final Color userLocationMarkerBorderColor;
-}
+import '../theme/home_colors.dart';
 
 // Widget della mappa principale della Home.
 // Riceve dati già pronti e si occupa esclusivamente del rendering.
