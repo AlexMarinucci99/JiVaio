@@ -70,9 +70,7 @@ class LocationService {
         ),
       );
     } catch (error, stackTrace) {
-      debugPrint(
-        '[LocationService] Provider standard fallito: $error',
-      );
+      debugPrint('[LocationService] Provider standard fallito: $error');
       debugPrintStack(stackTrace: stackTrace);
 
       if (defaultTargetPlatform != TargetPlatform.android) {

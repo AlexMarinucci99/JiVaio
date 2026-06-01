@@ -1,12 +1,16 @@
 import 'dart:async';
 
+
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
 import '../../../data/repositories/location_repository.dart';
+import '../../../data/repositories/notification_repository.dart';
 import '../../../data/repositories/transit_repository.dart';
 import '../../../domain/models/location_access_result.dart';
+import '../../notifications/view_model/notification_center_view_model.dart';
+import '../../notifications/widgets/notification_center_overlay.dart';
 import '../view_model/home_map_view_model.dart';
 import 'home_map.dart';
 import 'locate_user_button.dart';
@@ -17,10 +21,12 @@ class HomePlaceholderScreen extends StatefulWidget {
     super.key,
     required this.repository,
     required this.locationRepository,
+    required this.notificationRepository,
   });
 
   final TransitRepository repository;
   final LocationRepository locationRepository;
+  final NotificationRepository notificationRepository;
 
   @override
   State<HomePlaceholderScreen> createState() => _HomePlaceholderScreenState();
@@ -31,6 +37,11 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen>
   static const _HomePlaceholderColors _colors = _HomePlaceholderColors();
 
   late final HomeMapViewModel _viewModel;
+  late final NotificationCenterViewModel _notificationViewModel;
+
+  // Unifica gli aggiornamenti della mappa e delle notifiche.
+  // La Home viene ricostruita quando cambia almeno uno dei due ViewModel.
+  late final Listenable _screenListenable;
 
   final MapController _mapController = MapController();
 
@@ -51,7 +62,14 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen>
       locationRepository: widget.locationRepository,
     );
 
+    _notificationViewModel = NotificationCenterViewModel(
+      repository: widget.notificationRepository,
+    );
+
+    _screenListenable = Listenable.merge([_viewModel, _notificationViewModel]);
+
     unawaited(_loadStops());
+    unawaited(_notificationViewModel.loadNotifications());
 
     // Il dialog può essere mostrato soltanto dopo il primo frame.
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -218,6 +236,7 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen>
     WidgetsBinding.instance.removeObserver(this);
 
     _mapController.dispose();
+    _notificationViewModel.dispose();
     _viewModel.dispose();
 
     super.dispose();
@@ -226,7 +245,7 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen>
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-      animation: _viewModel,
+      animation: _screenListenable,
       builder: (context, child) {
         return Stack(
           children: [
@@ -297,6 +316,24 @@ class _HomePlaceholderScreenState extends State<HomePlaceholderScreen>
                     unawaited(_locateUser());
                   },
                 ),
+              ),
+            ),
+
+            // Centro notifiche flottante sopra la mappa.
+            //
+            // Il componente è isolato dalla Home:
+            // qui passiamo soltanto lo stato e le callback del ViewModel.
+            Positioned.fill(
+              child: NotificationCenterOverlay(
+                notifications: _notificationViewModel.notifications,
+                unreadCount: _notificationViewModel.unreadCount,
+                isLoading: _notificationViewModel.isLoading,
+                isPanelOpen: _notificationViewModel.isPanelOpen,
+                errorMessage: _notificationViewModel.errorMessage,
+                onTogglePanel: _notificationViewModel.togglePanel,
+                onClosePanel: _notificationViewModel.closePanel,
+                onMarkAllAsRead: _notificationViewModel.markAllAsRead,
+                onNotificationTap: _notificationViewModel.markAsRead,
               ),
             ),
           ],
