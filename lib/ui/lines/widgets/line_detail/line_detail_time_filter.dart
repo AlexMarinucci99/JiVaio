@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../line_card/line_card_colors.dart';
-import 'line_detail_colors.dart';
+import '../../theme/line_card_colors.dart';
+import '../../theme/line_detail_colors.dart';
 
 class LineDetailTimeSelection {
   const LineDetailTimeSelection.automatic() : isAutomatic = true, hour = null;
@@ -214,7 +214,7 @@ class _AutomaticTimeOption extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const accentColor = Color(0xFF2F7DF6);
+    const accentColor = LineDetailColors.accentColor;
 
     return Material(
       color: Colors.transparent,
@@ -294,7 +294,7 @@ class _ManualTimeOption extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const accentColor = Color(0xFF2F7DF6);
+    const accentColor = LineDetailColors.accentColor;
 
     final borderColor = isSelected
         ? accentColor.withValues(alpha: 0.3)
@@ -441,7 +441,7 @@ class _SheetActionBar extends StatelessWidget {
               onPressed: onConfirm,
               style: FilledButton.styleFrom(
                 minimumSize: const Size.fromHeight(56),
-                backgroundColor: const Color(0xFF2F7DF6),
+                backgroundColor: LineDetailColors.accentColor,
                 foregroundColor: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'line_card_colors.dart';
+import '../../theme/line_card_colors.dart';
 
 class LineCentralLabel extends StatelessWidget {
   const LineCentralLabel({

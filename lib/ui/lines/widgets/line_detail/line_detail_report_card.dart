@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../view_model/line_detail_view_model.dart';
-import '../line_card/line_card_colors.dart';
-import 'line_detail_colors.dart';
+import '../../theme/line_card_colors.dart';
+import '../../theme/line_detail_colors.dart';
 
 class LineDetailReportCard extends StatelessWidget {
   const LineDetailReportCard({

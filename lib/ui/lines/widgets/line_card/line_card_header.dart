@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../domain/models/transit_line.dart';
 import 'line_badge.dart';
-import 'line_card_colors.dart';
+import '../../theme/line_card_colors.dart';
 import 'line_info_pill.dart';
 import 'line_save_button.dart';
 

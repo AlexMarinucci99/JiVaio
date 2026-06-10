@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../domain/models/transit_line.dart';
-import '../line_card/line_card_colors.dart';
+import '../../theme/line_card_colors.dart';
 
 class LineDetailStopTile extends StatelessWidget {
   const LineDetailStopTile({
@@ -56,7 +56,7 @@ class LineDetailStopTile extends StatelessWidget {
               ),
               boxShadow: [
                 BoxShadow(
-                  color: const Color(0xFF0F172A).withValues(alpha: 0.045),
+                  color: colors.shadowBase.withValues(alpha: 0.045),
                   blurRadius: 14,
                   offset: const Offset(0, 6),
                 ),

@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import '../../../../data/repositories/transit_repository.dart';
 import '../../../../domain/models/transit_line.dart';
 import '../../view_model/line_detail_view_model.dart';
-import '../line_card/line_card_colors.dart';
-import 'line_detail_colors.dart';
+import '../../theme/line_card_colors.dart';
+import '../../theme/line_detail_colors.dart';
 import 'line_detail_departures_card.dart';
 import 'line_detail_header.dart';
 import 'line_detail_report_card.dart';
@@ -12,16 +12,22 @@ import 'line_detail_route_section.dart';
 import 'line_detail_time_filter.dart';
 
 class LineDetailScreen extends StatefulWidget {
-  const LineDetailScreen({super.key, required this.line, this.repository});
+  const LineDetailScreen({
+    super.key,
+    required this.line,
+    required this.repository,
+  });
 
   final TransitLine line;
-  final TransitRepository? repository;
+  final TransitRepository repository;
 
   @override
   State<LineDetailScreen> createState() => _LineDetailScreenState();
 }
 
 class _LineDetailScreenState extends State<LineDetailScreen> {
+  static const LineCardPalette _colors = LineCardColors.defaultPalette;
+
   late final LineDetailViewModel _viewModel;
 
   @override
@@ -49,7 +55,7 @@ class _LineDetailScreenState extends State<LineDetailScreen> {
       isAutomaticSelected: _viewModel.isAutomaticTime,
       selectedManualHour: _viewModel.selectedManualHour,
       manualHours: _viewModel.manualHours,
-      colors: _viewModel.colors,
+      colors: _colors,
     );
 
     if (!mounted || selection == null) {
@@ -73,6 +79,11 @@ class _LineDetailScreenState extends State<LineDetailScreen> {
     return AnimatedBuilder(
       animation: _viewModel,
       builder: (context, child) {
+        final lineColor = LineCardColors.parseLineColor(
+          _viewModel.line.routeColor,
+          colors: _colors,
+        );
+
         return Scaffold(
           backgroundColor: LineDetailColors.pageBackground,
           body: SafeArea(
@@ -82,11 +93,11 @@ class _LineDetailScreenState extends State<LineDetailScreen> {
                 LineDetailHeader(
                   line: _viewModel.line,
                   direction: _viewModel.selectedDirection,
-                  lineColor: _viewModel.lineColor,
+                  lineColor: lineColor,
                   canSwapDirection: _viewModel.canSwapDirection,
                   onSwapDirection: () => _viewModel.toggleDirection(),
                   onClose: () => Navigator.of(context).pop(),
-                  colors: _viewModel.colors,
+                  colors: _colors,
                 ),
                 const SizedBox(height: 12),
                 Expanded(
@@ -97,7 +108,7 @@ class _LineDetailScreenState extends State<LineDetailScreen> {
                         _LineDetailErrorCard(
                           message: _viewModel.errorMessage!,
                           onRetry: _viewModel.loadSchedule,
-                          colors: _viewModel.colors,
+                          colors: _colors,
                         ),
                         const SizedBox(height: 14),
                       ],
@@ -108,11 +119,11 @@ class _LineDetailScreenState extends State<LineDetailScreen> {
                         isLoading: _viewModel.isLoadingSchedule,
                         emptyMessage: _viewModel.emptyDeparturesMessage,
                         onSelectTimeRange: _openTimeFilterSheet,
-                        colors: _viewModel.colors,
+                        colors: _colors,
                       ),
                       const SizedBox(height: 14),
                       LineDetailReportCard(
-                        lineColor: _viewModel.lineColor,
+                        lineColor: lineColor,
                         reportLocation: _viewModel.reportLocation,
                         requiresStopSelection: _viewModel.requiresStopSelection,
                         canSendReport: _viewModel.canSendReport,
@@ -120,17 +131,17 @@ class _LineDetailScreenState extends State<LineDetailScreen> {
                         lastReportMessage: _viewModel.lastReportMessage,
                         onLocationChanged: _viewModel.selectReportLocation,
                         onReportPressed: _viewModel.sendFakeReport,
-                        colors: _viewModel.colors,
+                        colors: _colors,
                       ),
                       const SizedBox(height: 14),
                       LineDetailRouteSection(
                         stops: _viewModel.stops,
-                        lineColor: _viewModel.lineColor,
+                        lineColor: lineColor,
                         selectedStopId: _viewModel.selectedReportStopId,
                         isStopSelectionEnabled:
                             _viewModel.requiresStopSelection,
                         onStopSelected: _viewModel.selectReportStop,
-                        colors: _viewModel.colors,
+                        colors: _colors,
                       ),
                     ],
                   ),

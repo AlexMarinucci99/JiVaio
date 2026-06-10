@@ -6,6 +6,7 @@ import '../../core/widgets/app_segmented_control.dart';
 import '../view_model/lines_view_model.dart';
 import 'line_card/line_card.dart';
 import 'line_detail/line_detail_screen.dart';
+import '../theme/lines_screen_colors.dart';
 
 class LinesScreen extends StatefulWidget {
   const LinesScreen({
@@ -33,17 +34,16 @@ class LinesScreen extends StatefulWidget {
 }
 
 class _LinesScreenState extends State<LinesScreen> {
-  late final TransitRepository _repository;
+  static const LinesScreenColors _colors = LinesScreenColors();
+
   late final LinesViewModel _viewModel;
 
   @override
   void initState() {
     super.initState();
 
-    _repository = widget.repository;
-
     _viewModel = LinesViewModel(
-      transitRepository: _repository,
+      transitRepository: widget.repository,
       savedLinesRepository: widget.savedLinesRepository,
       userId: widget.userId,
     );
@@ -59,8 +59,9 @@ class _LinesScreenState extends State<LinesScreen> {
 
   void _openLineDetails(TransitLine line) {
     Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (_) => LineDetailScreen(line: line, repository: _repository),
+      MaterialPageRoute<void>(
+        builder: (_) =>
+            LineDetailScreen(line: line, repository: widget.repository),
       ),
     );
   }
@@ -96,11 +97,11 @@ class _LinesScreenState extends State<LinesScreen> {
       animation: _viewModel,
       builder: (context, child) {
         return Scaffold(
-          backgroundColor: const Color(0xFFF6FAFF),
+          backgroundColor: _colors.pageBackground,
           body: DecoratedBox(
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [Color(0xFFF6FAFF), Color(0xFFF2F6FC)],
+                colors: [_colors.gradientStart, _colors.gradientEnd],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
               ),
@@ -119,7 +120,7 @@ class _LinesScreenState extends State<LinesScreen> {
                           'Elenco Linee',
                           style: Theme.of(context).textTheme.headlineSmall
                               ?.copyWith(
-                                color: const Color(0xFF111827),
+                                color: _colors.titleText,
                                 fontSize: 22,
                                 fontWeight: FontWeight.w800,
                               ),
@@ -129,7 +130,7 @@ class _LinesScreenState extends State<LinesScreen> {
                           _viewModel.subtitle,
                           style: Theme.of(context).textTheme.bodyMedium
                               ?.copyWith(
-                                color: const Color(0xFF5D6675),
+                                color: _colors.secondaryText,
                                 fontSize: 12,
                                 height: 1.25,
                               ),
@@ -175,13 +176,14 @@ class _LinesScreenState extends State<LinesScreen> {
       return _ErrorLinesArea(
         message: _viewModel.errorMessage!,
         onRetry: _viewModel.loadLines,
+        colors: _colors,
       );
     }
 
     final lines = _viewModel.visibleLines;
 
     if (lines.isEmpty) {
-      return _SavedLinesEmptyArea(isGuest: widget.isGuest);
+      return _SavedLinesEmptyArea(isGuest: widget.isGuest, colors: _colors);
     }
 
     return ListView.separated(
@@ -205,10 +207,15 @@ class _LinesScreenState extends State<LinesScreen> {
 }
 
 class _ErrorLinesArea extends StatelessWidget {
-  const _ErrorLinesArea({required this.message, required this.onRetry});
+  const _ErrorLinesArea({
+    required this.message,
+    required this.onRetry,
+    required this.colors,
+  });
 
   final String message;
   final Future<void> Function() onRetry;
+  final LinesScreenColors colors;
 
   @override
   Widget build(BuildContext context) {
@@ -219,12 +226,12 @@ class _ErrorLinesArea extends StatelessWidget {
         Container(
           padding: const EdgeInsets.fromLTRB(18, 18, 18, 18),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: colors.cardBackground,
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: const Color(0xFFE5EAF2)),
+            border: Border.all(color: colors.cardBorder),
             boxShadow: [
               BoxShadow(
-                color: const Color(0xFF0F172A).withValues(alpha: 0.06),
+                color: colors.cardShadow.withValues(alpha: 0.06),
                 blurRadius: 18,
                 offset: const Offset(0, 8),
               ),
@@ -236,7 +243,7 @@ class _ErrorLinesArea extends StatelessWidget {
               Text(
                 'Errore caricamento linee',
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: const Color(0xFF111827),
+                  color: colors.titleText,
                   fontSize: 14,
                   fontWeight: FontWeight.w800,
                 ),
@@ -245,7 +252,7 @@ class _ErrorLinesArea extends StatelessWidget {
               Text(
                 message,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: const Color(0xFF5D6675),
+                  color: colors.secondaryText,
                   fontSize: 12.5,
                   height: 1.5,
                 ),
@@ -261,9 +268,10 @@ class _ErrorLinesArea extends StatelessWidget {
 }
 
 class _SavedLinesEmptyArea extends StatelessWidget {
-  const _SavedLinesEmptyArea({required this.isGuest});
+  const _SavedLinesEmptyArea({required this.isGuest, required this.colors});
 
   final bool isGuest;
+  final LinesScreenColors colors;
 
   @override
   Widget build(BuildContext context) {
@@ -278,6 +286,7 @@ class _SavedLinesEmptyArea extends StatelessWidget {
           body: isGuest
               ? 'Accedi o registrati per salvare le linee che usi più spesso.'
               : 'Tocca il cuore su una linea nella tab Tutte per ritrovarla qui.',
+          colors: colors,
         ),
       ],
     );
@@ -285,22 +294,27 @@ class _SavedLinesEmptyArea extends StatelessWidget {
 }
 
 class _MessageCard extends StatelessWidget {
-  const _MessageCard({required this.title, required this.body});
+  const _MessageCard({
+    required this.title,
+    required this.body,
+    required this.colors,
+  });
 
   final String title;
   final String body;
+  final LinesScreenColors colors;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.fromLTRB(18, 18, 18, 18),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: colors.cardBackground,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: const Color(0xFFE5EAF2)),
+        border: Border.all(color: colors.cardBorder),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF0F172A).withValues(alpha: 0.06),
+            color: colors.cardShadow.withValues(alpha: 0.06),
             blurRadius: 18,
             offset: const Offset(0, 8),
           ),
@@ -312,7 +326,7 @@ class _MessageCard extends StatelessWidget {
           Text(
             title,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              color: const Color(0xFF111827),
+              color: colors.titleText,
               fontSize: 14,
               fontWeight: FontWeight.w800,
             ),
@@ -321,7 +335,7 @@ class _MessageCard extends StatelessWidget {
           Text(
             body,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: const Color(0xFF5D6675),
+              color: colors.secondaryText,
               fontSize: 12.5,
               height: 1.5,
             ),

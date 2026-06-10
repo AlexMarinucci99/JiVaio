@@ -4,7 +4,7 @@ import '../../../../domain/models/transit_line.dart';
 
 // Widget già esistenti della card linea, riutilizzati anche nel dettaglio.
 import '../line_card/line_badge.dart';
-import '../line_card/line_card_colors.dart';
+import '../../theme/line_card_colors.dart';
 import '../line_card/line_central_label.dart';
 import '../line_card/line_info_pill.dart';
 

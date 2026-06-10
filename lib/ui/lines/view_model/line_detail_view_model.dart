@@ -1,8 +1,7 @@
-import 'package:flutter/material.dart';
-
 import '../../../data/repositories/transit_repository.dart';
 import '../../../domain/models/transit_line.dart';
-import '../widgets/line_card/line_card_colors.dart';
+
+import 'package:flutter/foundation.dart';
 
 enum LineDetailReportLocation { onBus, atStop }
 
@@ -11,16 +10,12 @@ enum LineDetailReportType { delay, crowding }
 class LineDetailViewModel extends ChangeNotifier {
   LineDetailViewModel({
     required TransitLine line,
-    TransitRepository? repository,
-    this.colors = LineCardColors.defaultPalette,
+    required TransitRepository repository,
   }) : _line = line,
-       _repository = repository ?? TransitRepository();
+       _repository = repository;
 
   final TransitLine _line;
   final TransitRepository _repository;
-
-  // Palette condivisa con la feature linee.
-  final LineCardPalette colors;
 
   int _selectedDirectionIndex = 0;
 
@@ -58,10 +53,6 @@ class LineDetailViewModel extends ChangeNotifier {
 
   List<int> get manualHours {
     return List<int>.generate(18, (index) => index + 5, growable: false);
-  }
-
-  Color get lineColor {
-    return LineCardColors.parseLineColor(_line.routeColor, colors: colors);
   }
 
   bool get hasDirections {

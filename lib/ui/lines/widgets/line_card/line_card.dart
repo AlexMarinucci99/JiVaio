@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../domain/models/transit_line.dart';
-import 'line_card_colors.dart';
+import '../../theme/line_card_colors.dart';
 import 'line_card_header.dart';
 import 'line_route_preview.dart';
 
