@@ -1,5 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
+import '../../../domain/exceptions/auth_failure.dart';
 
 import '../../../data/repositories/auth_repository.dart';
 
@@ -106,8 +106,8 @@ class AuthViewModel extends ChangeNotifier {
       }
 
       return const AuthSubmitResult.valid();
-    } on FirebaseAuthException catch (error) {
-      return AuthSubmitResult.invalid(_mapFirebaseAuthError(error.code));
+    } on AuthFailure catch (error) {
+      return AuthSubmitResult.invalid(_mapAuthFailure(error.code));
     } catch (_) {
       return const AuthSubmitResult.invalid(
         'Si è verificato un errore imprevisto. Riprova.',
@@ -194,23 +194,29 @@ class AuthViewModel extends ChangeNotifier {
     return email.contains('@') && email.contains('.');
   }
 
-  String _mapFirebaseAuthError(String code) {
+  String _mapAuthFailure(AuthFailureCode code) {
     switch (code) {
-      case 'invalid-email':
+      case AuthFailureCode.invalidEmail:
         return 'Email non valida.';
-      case 'user-not-found':
+      case AuthFailureCode.userNotFound:
         return 'Nessun account trovato con questa email.';
-      case 'wrong-password':
+      case AuthFailureCode.wrongPassword:
         return 'Password non corretta.';
-      case 'email-already-in-use':
+      case AuthFailureCode.emailAlreadyInUse:
         return 'Questa email è già associata a un account.';
-      case 'weak-password':
+      case AuthFailureCode.weakPassword:
         return 'La password è troppo debole.';
-      case 'network-request-failed':
+      case AuthFailureCode.networkRequestFailed:
         return 'Controlla la connessione e riprova.';
-      case 'invalid-credential':
+      case AuthFailureCode.invalidCredential:
         return 'Credenziali non valide.';
-      default:
+      case AuthFailureCode.tooManyRequests:
+        return 'Troppe richieste in poco tempo. Riprova più tardi.';
+      case AuthFailureCode.userDisabled:
+        return 'Questo account è stato disabilitato.';
+      case AuthFailureCode.operationNotAllowed:
+        return 'Operazione non disponibile. Riprova più tardi.';
+      case AuthFailureCode.unknown:
         return 'Autenticazione non riuscita. Riprova.';
     }
   }

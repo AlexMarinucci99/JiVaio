@@ -1,5 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import '../domain/models/app_user.dart';
 
 import '../config/app_dependencies.dart';
 import '../data/repositories/auth_repository.dart';
@@ -52,7 +52,7 @@ class _AuthGateState extends State<AuthGate> {
       );
     }
 
-    return StreamBuilder<User?>(
+    return StreamBuilder<AppUser?>(
       stream: _authRepository.authStateChanges,
       initialData: _authRepository.currentUser,
       builder: (context, snapshot) {
@@ -61,7 +61,7 @@ class _AuthGateState extends State<AuthGate> {
         if (user != null) {
           return MainNavigationScreen(
             isGuest: false,
-            userId: user.uid,
+            userId: user.id,
             onLogout: _logout,
             transitRepository: widget.dependencies.transitRepository,
             locationRepository: widget.dependencies.locationRepository,

@@ -1,5 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
+import '../../../domain/exceptions/auth_failure.dart';
 
 import '../../../data/repositories/auth_repository.dart';
 
@@ -66,8 +66,8 @@ class ResetPasswordViewModel extends ChangeNotifier {
       return ResetPasswordSubmitResult.success(
         'Se l’email è associata a un account JiVaio, riceverai un link per reimpostare la password.',
       );
-    } on FirebaseAuthException catch (error) {
-      return ResetPasswordSubmitResult.failure(_mapFirebaseAuthError(error));
+    } on AuthFailure catch (error) {
+      return ResetPasswordSubmitResult.failure(_mapAuthFailure(error.code));
     } catch (_) {
       return const ResetPasswordSubmitResult.failure(
         'Si è verificato un errore imprevisto. Riprova.',
@@ -83,17 +83,23 @@ class ResetPasswordViewModel extends ChangeNotifier {
     return email.contains('@') && email.contains('.');
   }
 
-  String _mapFirebaseAuthError(FirebaseAuthException error) {
-    switch (error.code) {
-      case 'invalid-email':
+  String _mapAuthFailure(AuthFailureCode code) {
+    switch (code) {
+      case AuthFailureCode.invalidEmail:
         return 'Inserisci un indirizzo email valido.';
-      case 'network-request-failed':
+      case AuthFailureCode.networkRequestFailed:
         return 'Controlla la connessione e riprova.';
-      case 'too-many-requests':
+      case AuthFailureCode.tooManyRequests:
         return 'Troppe richieste in poco tempo. Riprova più tardi.';
-      case 'user-not-found':
+      case AuthFailureCode.userNotFound:
         return 'Se l’email è associata a un account JiVaio, riceverai un link per reimpostare la password.';
-      default:
+      case AuthFailureCode.wrongPassword:
+      case AuthFailureCode.emailAlreadyInUse:
+      case AuthFailureCode.weakPassword:
+      case AuthFailureCode.invalidCredential:
+      case AuthFailureCode.userDisabled:
+      case AuthFailureCode.operationNotAllowed:
+      case AuthFailureCode.unknown:
         return 'Non è stato possibile inviare il link di recupero. Riprova.';
     }
   }
