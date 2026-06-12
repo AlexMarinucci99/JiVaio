@@ -29,4 +29,4 @@ Per maggiori dettagli, consultare il file LICENSE.
 ## Sicurezza
 
 Le vulnerabilità non devono essere segnalate tramite issue pubbliche.
-Consultare il file (SECURITY.md) per le modalità di segnalazione.
+Consultare il file SECURITY.md per le modalità di segnalazione.
