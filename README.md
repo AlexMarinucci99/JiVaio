@@ -17,3 +17,11 @@
 ## Overview
 
 JiVaio è un’app mobile Flutter pensata per supportare gli utenti nella consultazione di linee, fermate, direzioni e percorsi del trasporto pubblico urbano.
+
+## Licenza
+
+JiVaio è un progetto proprietario reso pubblicamente consultabile per finalità
+accademiche. Il codice sorgente e i materiali originali non possono essere
+riutilizzati, modificati o redistribuiti senza autorizzazione scritta.
+
+Per maggiori dettagli, consultare il file LICENSE.
