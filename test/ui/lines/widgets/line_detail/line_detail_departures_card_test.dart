@@ -6,18 +6,9 @@ import 'package:jivaio/ui/lines/widgets/line_detail/line_detail_departures_card.
 
 void main() {
   const testDepartures = [
-    TransitLineDeparture(
-      tripId: 'trip-1',
-      departureTime: '08:10',
-    ),
-    TransitLineDeparture(
-      tripId: 'trip-2',
-      departureTime: '08:40',
-    ),
-    TransitLineDeparture(
-      tripId: 'trip-3',
-      departureTime: '09:15',
-    ),
+    TransitLineDeparture(tripId: 'trip-1', departureTime: '08:10'),
+    TransitLineDeparture(tripId: 'trip-2', departureTime: '08:40'),
+    TransitLineDeparture(tripId: 'trip-3', departureTime: '09:15'),
   ];
 
   Widget buildTestWidget({
@@ -47,11 +38,10 @@ void main() {
     );
   }
 
-  testWidgets('mostra titolo, fascia oraria e sezione corse disponibili',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(),
-    );
+  testWidgets('mostra titolo, fascia oraria e sezione corse disponibili', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(buildTestWidget());
 
     expect(find.text('Prossime partenze'), findsOneWidget);
     expect(find.text('Fascia oraria'), findsOneWidget);
@@ -59,52 +49,49 @@ void main() {
     expect(find.text('Corse disponibili'), findsOneWidget);
   });
 
-  testWidgets('mostra le icone del selettore fascia oraria',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(),
-    );
+  testWidgets('mostra le icone del selettore fascia oraria', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(buildTestWidget());
 
     expect(find.byIcon(Icons.access_time_rounded), findsOneWidget);
     expect(find.byIcon(Icons.keyboard_arrow_down_rounded), findsOneWidget);
   });
 
-  testWidgets('mostra gli orari delle corse disponibili',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(),
-    );
+  testWidgets('mostra gli orari delle corse disponibili', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(buildTestWidget());
 
     expect(find.text('08:10'), findsOneWidget);
     expect(find.text('08:40'), findsOneWidget);
     expect(find.text('09:15'), findsOneWidget);
   });
 
-  testWidgets('esegue onSelectTimeRange quando viene premuta la fascia oraria',
-      (WidgetTester tester) async {
-    var filterOpened = false;
+  testWidgets(
+    'esegue onSelectTimeRange quando viene premuta la fascia oraria',
+    (WidgetTester tester) async {
+      var filterOpened = false;
 
-    await tester.pumpWidget(
-      buildTestWidget(
-        onSelectTimeRange: () {
-          filterOpened = true;
-        },
-      ),
-    );
+      await tester.pumpWidget(
+        buildTestWidget(
+          onSelectTimeRange: () {
+            filterOpened = true;
+          },
+        ),
+      );
 
-    await tester.tap(find.text('08:00 - 09:00'));
-    await tester.pump();
+      await tester.tap(find.text('08:00 - 09:00'));
+      await tester.pump();
 
-    expect(filterOpened, isTrue);
-  });
+      expect(filterOpened, isTrue);
+    },
+  );
 
-  testWidgets('mostra loader quando isLoading è true',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(
-        isLoading: true,
-      ),
-    );
+  testWidgets('mostra loader quando isLoading è true', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(buildTestWidget(isLoading: true));
 
     expect(find.byType(CircularProgressIndicator), findsOneWidget);
 
@@ -114,8 +101,9 @@ void main() {
     expect(find.text('Non ci sono bus in questa fascia oraria.'), findsNothing);
   });
 
-  testWidgets('mostra messaggio vuoto quando non ci sono corse',
-      (WidgetTester tester) async {
+  testWidgets('mostra messaggio vuoto quando non ci sono corse', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(
       buildTestWidget(
         departures: const [],
@@ -134,25 +122,26 @@ void main() {
     expect(find.text('09:15'), findsNothing);
   });
 
-  testWidgets('mostra messaggio di nessun servizio quando passato dal chiamante',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(
-        departures: const [],
-        selectedTripId: null,
-        emptyMessage: 'Nessuna corsa attiva per oggi.',
-      ),
-    );
+  testWidgets(
+    'mostra messaggio di nessun servizio quando passato dal chiamante',
+    (WidgetTester tester) async {
+      await tester.pumpWidget(
+        buildTestWidget(
+          departures: const [],
+          selectedTripId: null,
+          emptyMessage: 'Nessuna corsa attiva per oggi.',
+        ),
+      );
 
-    expect(find.text('Nessuna corsa attiva per oggi.'), findsOneWidget);
-  });
+      expect(find.text('Nessuna corsa attiva per oggi.'), findsOneWidget);
+    },
+  );
 
-  testWidgets('aggiorna il testo della fascia oraria ricevuta',
-      (WidgetTester tester) async {
+  testWidgets('aggiorna il testo della fascia oraria ricevuta', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(
-      buildTestWidget(
-        selectedTimeRange: '14:00 - 15:00',
-      ),
+      buildTestWidget(selectedTimeRange: '14:00 - 15:00'),
     );
 
     expect(find.text('14:00 - 15:00'), findsOneWidget);

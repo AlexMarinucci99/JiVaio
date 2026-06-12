@@ -78,9 +78,7 @@ void main() {
         isRead: false,
       );
 
-      final updatedNotification = notification.copyWith(
-        isRead: true,
-      );
+      final updatedNotification = notification.copyWith(isRead: true);
 
       expect(updatedNotification.id, notification.id);
       expect(updatedNotification.title, notification.title);
@@ -100,9 +98,7 @@ void main() {
         isRead: false,
       );
 
-      final updatedNotification = notification.copyWith(
-        isRead: true,
-      );
+      final updatedNotification = notification.copyWith(isRead: true);
 
       expect(notification.isRead, isFalse);
       expect(updatedNotification.isRead, isTrue);

@@ -49,8 +49,9 @@ void main() {
     expect(container.constraints?.maxHeight, 24);
   });
 
-  testWidgets('applica il colore di sfondo passato al widget',
-      (WidgetTester tester) async {
+  testWidgets('applica il colore di sfondo passato al widget', (
+    WidgetTester tester,
+  ) async {
     const backgroundColor = Color(0xFF0B7A55);
 
     await tester.pumpWidget(
@@ -67,8 +68,9 @@ void main() {
     expect(decoration.color, backgroundColor);
   });
 
-  testWidgets('applica il colore del testo passato al widget',
-      (WidgetTester tester) async {
+  testWidgets('applica il colore del testo passato al widget', (
+    WidgetTester tester,
+  ) async {
     const textColor = Color(0xFF191970);
 
     await tester.pumpWidget(
@@ -84,8 +86,9 @@ void main() {
     expect(text.style?.color, textColor);
   });
 
-  testWidgets('mostra correttamente anche label testuali',
-      (WidgetTester tester) async {
+  testWidgets('mostra correttamente anche label testuali', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(
       buildTestWidget(
         label: '9+',

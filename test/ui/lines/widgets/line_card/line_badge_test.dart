@@ -34,8 +34,7 @@ void main() {
     expect(find.text('1'), findsOneWidget);
   });
 
-  testWidgets('usa dimensioni fisse per il badge',
-      (WidgetTester tester) async {
+  testWidgets('usa dimensioni fisse per il badge', (WidgetTester tester) async {
     await tester.pumpWidget(
       buildTestWidget(
         shortName: 'A',
@@ -50,8 +49,9 @@ void main() {
     expect(container.constraints?.maxHeight, 48);
   });
 
-  testWidgets('applica il colore di sfondo passato al widget',
-      (WidgetTester tester) async {
+  testWidgets('applica il colore di sfondo passato al widget', (
+    WidgetTester tester,
+  ) async {
     const backgroundColor = Color(0xFF0B7A55);
 
     await tester.pumpWidget(
@@ -68,8 +68,9 @@ void main() {
     expect(decoration.color, backgroundColor);
   });
 
-  testWidgets('applica il colore del testo passato al widget',
-      (WidgetTester tester) async {
+  testWidgets('applica il colore del testo passato al widget', (
+    WidgetTester tester,
+  ) async {
     const textColor = Color(0xFF191970);
 
     await tester.pumpWidget(
@@ -85,8 +86,9 @@ void main() {
     expect(text.style?.color, textColor);
   });
 
-  testWidgets('mostra correttamente nomi linea più lunghi',
-      (WidgetTester tester) async {
+  testWidgets('mostra correttamente nomi linea più lunghi', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(
       buildTestWidget(
         shortName: 'MEX',

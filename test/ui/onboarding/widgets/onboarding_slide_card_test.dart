@@ -19,9 +19,7 @@ class TestAssetBundle extends CachingAssetBundle {
       final manifestData = const StandardMessageCodec().encodeMessage(
         <String, Object?>{
           testImagePath: <Object?>[
-            <String, Object?>{
-              'asset': testImagePath,
-            },
+            <String, Object?>{'asset': testImagePath},
           ],
         },
       );
@@ -32,9 +30,7 @@ class TestAssetBundle extends CachingAssetBundle {
     if (key == 'AssetManifest.json') {
       return ByteData.sublistView(
         Uint8List.fromList(
-          utf8.encode(
-            '{"$testImagePath":["$testImagePath"]}',
-          ),
+          utf8.encode('{"$testImagePath":["$testImagePath"]}'),
         ),
       );
     }
@@ -88,8 +84,9 @@ void main() {
     await tester.pump();
   }
 
-  testWidgets('mostra titolo e descrizione della slide',
-      (WidgetTester tester) async {
+  testWidgets('mostra titolo e descrizione della slide', (
+    WidgetTester tester,
+  ) async {
     await pumpSlideCard(
       tester,
       title: 'Benvenuto in JiVaio',
@@ -103,8 +100,7 @@ void main() {
     );
   });
 
-  testWidgets('mostra immagine asset della slide',
-      (WidgetTester tester) async {
+  testWidgets('mostra immagine asset della slide', (WidgetTester tester) async {
     await pumpSlideCard(tester);
 
     expect(find.byType(Image), findsOneWidget);
@@ -117,29 +113,26 @@ void main() {
     expect(image.filterQuality, FilterQuality.high);
   });
 
-  testWidgets('mostra icona quando icon è valorizzata',
-      (WidgetTester tester) async {
-    await pumpSlideCard(
-      tester,
-      icon: Icons.map_rounded,
-    );
+  testWidgets('mostra icona quando icon è valorizzata', (
+    WidgetTester tester,
+  ) async {
+    await pumpSlideCard(tester, icon: Icons.map_rounded);
 
     expect(find.byIcon(Icons.map_rounded), findsOneWidget);
   });
 
-  testWidgets('non mostra icona quando icon è null',
-      (WidgetTester tester) async {
-    await pumpSlideCard(
-      tester,
-      icon: null,
-    );
+  testWidgets('non mostra icona quando icon è null', (
+    WidgetTester tester,
+  ) async {
+    await pumpSlideCard(tester, icon: null);
 
     expect(find.byIcon(Icons.directions_bus_rounded), findsNothing);
     expect(find.byType(Icon), findsNothing);
   });
 
-  testWidgets('usa accentColor per colorare icona quando viene passato',
-      (WidgetTester tester) async {
+  testWidgets('usa accentColor per colorare icona quando viene passato', (
+    WidgetTester tester,
+  ) async {
     const customAccent = Color(0xFF0B7A55);
 
     await pumpSlideCard(
@@ -148,15 +141,14 @@ void main() {
       accentColor: customAccent,
     );
 
-    final icon = tester.widget<Icon>(
-      find.byIcon(Icons.route_rounded),
-    );
+    final icon = tester.widget<Icon>(find.byIcon(Icons.route_rounded));
 
     expect(icon.color, customAccent);
   });
 
-  testWidgets('usa i colori personalizzati per titolo e descrizione',
-      (WidgetTester tester) async {
+  testWidgets('usa i colori personalizzati per titolo e descrizione', (
+    WidgetTester tester,
+  ) async {
     const customColors = OnboardingSlideCardColors(
       titleColor: Color(0xFF191970),
       descriptionColor: Color(0xFF0B7A55),
@@ -177,12 +169,10 @@ void main() {
     expect(description.style?.color, const Color(0xFF0B7A55));
   });
 
-  testWidgets('applica allineamento immagine passato al widget',
-      (WidgetTester tester) async {
-    await pumpSlideCard(
-      tester,
-      imageAlignment: Alignment.topCenter,
-    );
+  testWidgets('applica allineamento immagine passato al widget', (
+    WidgetTester tester,
+  ) async {
+    await pumpSlideCard(tester, imageAlignment: Alignment.topCenter);
 
     final image = tester.widget<Image>(find.byType(Image));
 

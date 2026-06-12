@@ -50,11 +50,10 @@ void main() {
     );
   }
 
-  testWidgets('mostra i campi Nome, Email, Password e Conferma password',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(),
-    );
+  testWidgets('mostra i campi Nome, Email, Password e Conferma password', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(buildTestWidget());
 
     expect(find.byType(AuthTextField), findsNWidgets(4));
 
@@ -68,11 +67,10 @@ void main() {
     expect(find.byIcon(Icons.lock_outline), findsNWidgets(2));
   });
 
-  testWidgets('aggiorna tutti i controller quando vengono inseriti i dati',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(),
-    );
+  testWidgets('aggiorna tutti i controller quando vengono inseriti i dati', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(buildTestWidget());
 
     final fields = find.byType(TextField);
 
@@ -88,104 +86,103 @@ void main() {
     expect(confirmPasswordController.text, 'password123');
   });
 
-  testWidgets('usa TextInputType.emailAddress per il campo email',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(),
-    );
+  testWidgets('usa TextInputType.emailAddress per il campo email', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(buildTestWidget());
 
-    final emailField = tester.widget<TextField>(
-      find.byType(TextField).at(1),
-    );
+    final emailField = tester.widget<TextField>(find.byType(TextField).at(1));
 
     expect(emailField.keyboardType, TextInputType.emailAddress);
   });
 
-  testWidgets('nasconde password e conferma password quando gli obscure sono true',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(
-        obscurePassword: true,
-        obscureConfirmPassword: true,
-      ),
-    );
+  testWidgets(
+    'nasconde password e conferma password quando gli obscure sono true',
+    (WidgetTester tester) async {
+      await tester.pumpWidget(
+        buildTestWidget(obscurePassword: true, obscureConfirmPassword: true),
+      );
 
-    final passwordField = tester.widget<TextField>(
-      find.byType(TextField).at(2),
-    );
+      final passwordField = tester.widget<TextField>(
+        find.byType(TextField).at(2),
+      );
 
-    final confirmPasswordField = tester.widget<TextField>(
-      find.byType(TextField).at(3),
-    );
+      final confirmPasswordField = tester.widget<TextField>(
+        find.byType(TextField).at(3),
+      );
 
-    expect(passwordField.obscureText, isTrue);
-    expect(confirmPasswordField.obscureText, isTrue);
+      expect(passwordField.obscureText, isTrue);
+      expect(confirmPasswordField.obscureText, isTrue);
 
-    expect(find.byIcon(Icons.visibility_outlined), findsNWidgets(2));
-  });
-
-  testWidgets('mostra password e conferma password quando gli obscure sono false',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(
-        obscurePassword: false,
-        obscureConfirmPassword: false,
-      ),
-    );
-
-    final passwordField = tester.widget<TextField>(
-      find.byType(TextField).at(2),
-    );
-
-    final confirmPasswordField = tester.widget<TextField>(
-      find.byType(TextField).at(3),
-    );
-
-    expect(passwordField.obscureText, isFalse);
-    expect(confirmPasswordField.obscureText, isFalse);
-
-    expect(find.byIcon(Icons.visibility_off_outlined), findsNWidgets(2));
-  });
-
-  testWidgets('esegue onTogglePasswordVisibility quando si preme la prima icona',
-      (WidgetTester tester) async {
-    var passwordToggled = false;
-
-    await tester.pumpWidget(
-      buildTestWidget(
-        onTogglePasswordVisibility: () {
-          passwordToggled = true;
-        },
-      ),
-    );
-
-    await tester.tap(find.byIcon(Icons.visibility_outlined).at(0));
-    await tester.pump();
-
-    expect(passwordToggled, isTrue);
-  });
+      expect(find.byIcon(Icons.visibility_outlined), findsNWidgets(2));
+    },
+  );
 
   testWidgets(
-      'esegue onToggleConfirmPasswordVisibility quando si preme la seconda icona',
-      (WidgetTester tester) async {
-    var confirmPasswordToggled = false;
+    'mostra password e conferma password quando gli obscure sono false',
+    (WidgetTester tester) async {
+      await tester.pumpWidget(
+        buildTestWidget(obscurePassword: false, obscureConfirmPassword: false),
+      );
 
-    await tester.pumpWidget(
-      buildTestWidget(
-        onToggleConfirmPasswordVisibility: () {
-          confirmPasswordToggled = true;
-        },
-      ),
-    );
+      final passwordField = tester.widget<TextField>(
+        find.byType(TextField).at(2),
+      );
 
-    await tester.tap(find.byIcon(Icons.visibility_outlined).at(1));
-    await tester.pump();
+      final confirmPasswordField = tester.widget<TextField>(
+        find.byType(TextField).at(3),
+      );
 
-    expect(confirmPasswordToggled, isTrue);
-  });
+      expect(passwordField.obscureText, isFalse);
+      expect(confirmPasswordField.obscureText, isFalse);
 
-  testWidgets('i due toggle password sono indipendenti',
-      (WidgetTester tester) async {
+      expect(find.byIcon(Icons.visibility_off_outlined), findsNWidgets(2));
+    },
+  );
+
+  testWidgets(
+    'esegue onTogglePasswordVisibility quando si preme la prima icona',
+    (WidgetTester tester) async {
+      var passwordToggled = false;
+
+      await tester.pumpWidget(
+        buildTestWidget(
+          onTogglePasswordVisibility: () {
+            passwordToggled = true;
+          },
+        ),
+      );
+
+      await tester.tap(find.byIcon(Icons.visibility_outlined).at(0));
+      await tester.pump();
+
+      expect(passwordToggled, isTrue);
+    },
+  );
+
+  testWidgets(
+    'esegue onToggleConfirmPasswordVisibility quando si preme la seconda icona',
+    (WidgetTester tester) async {
+      var confirmPasswordToggled = false;
+
+      await tester.pumpWidget(
+        buildTestWidget(
+          onToggleConfirmPasswordVisibility: () {
+            confirmPasswordToggled = true;
+          },
+        ),
+      );
+
+      await tester.tap(find.byIcon(Icons.visibility_outlined).at(1));
+      await tester.pump();
+
+      expect(confirmPasswordToggled, isTrue);
+    },
+  );
+
+  testWidgets('i due toggle password sono indipendenti', (
+    WidgetTester tester,
+  ) async {
     var passwordToggleCount = 0;
     var confirmPasswordToggleCount = 0;
 

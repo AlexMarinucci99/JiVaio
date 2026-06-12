@@ -22,9 +22,7 @@ void main() {
     displayName: 'Linea 1',
     routeLongName: 'Terminal Bus - Università',
     routeColor: '0B7A55',
-    directions: [
-      testDirection,
-    ],
+    directions: [testDirection],
   );
 
   Widget buildTestWidget({
@@ -47,40 +45,38 @@ void main() {
     );
   }
 
-  testWidgets('mostra numero linea, nome e descrizione',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(),
-    );
+  testWidgets('mostra numero linea, nome e descrizione', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(buildTestWidget());
 
     expect(find.text('1'), findsOneWidget);
     expect(find.text('Linea 1'), findsOneWidget);
     expect(find.text('Terminal Bus - Università'), findsOneWidget);
   });
 
-  testWidgets('mostra badge, pill informativa e bottone salva',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(),
-    );
+  testWidgets('mostra badge, pill informativa e bottone salva', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(buildTestWidget());
 
     expect(find.byType(LineBadge), findsOneWidget);
     expect(find.byType(LineInfoPill), findsOneWidget);
     expect(find.byType(LineSaveButton), findsOneWidget);
   });
 
-  testWidgets('mostra il numero corretto di fermate al plurale',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(),
-    );
+  testWidgets('mostra il numero corretto di fermate al plurale', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(buildTestWidget());
 
     expect(find.text('8 fermate'), findsOneWidget);
     expect(find.byIcon(Icons.place_rounded), findsOneWidget);
   });
 
-  testWidgets('mostra il numero corretto di fermate al singolare',
-      (WidgetTester tester) async {
+  testWidgets('mostra il numero corretto di fermate al singolare', (
+    WidgetTester tester,
+  ) async {
     const singleStopDirection = TransitLineDirection(
       key: 'outbound',
       originName: 'Terminal Bus',
@@ -89,43 +85,34 @@ void main() {
       upcomingDepartures: ['08:10'],
     );
 
-    await tester.pumpWidget(
-      buildTestWidget(
-        direction: singleStopDirection,
-      ),
-    );
+    await tester.pumpWidget(buildTestWidget(direction: singleStopDirection));
 
     expect(find.text('1 fermata'), findsOneWidget);
   });
 
-  testWidgets('mostra cuore vuoto quando la linea non è salvata',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(
-        isSaved: false,
-      ),
-    );
+  testWidgets('mostra cuore vuoto quando la linea non è salvata', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(buildTestWidget(isSaved: false));
 
     expect(find.byIcon(Icons.favorite_border_rounded), findsOneWidget);
     expect(find.byIcon(Icons.favorite_rounded), findsNothing);
     expect(find.byTooltip('Salva linea'), findsOneWidget);
   });
 
-  testWidgets('mostra cuore pieno quando la linea è salvata',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(
-        isSaved: true,
-      ),
-    );
+  testWidgets('mostra cuore pieno quando la linea è salvata', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(buildTestWidget(isSaved: true));
 
     expect(find.byIcon(Icons.favorite_rounded), findsOneWidget);
     expect(find.byIcon(Icons.favorite_border_rounded), findsNothing);
     expect(find.byTooltip('Rimuovi dai salvati'), findsOneWidget);
   });
 
-  testWidgets('esegue onToggleSaved quando si preme il bottone salva',
-      (WidgetTester tester) async {
+  testWidgets('esegue onToggleSaved quando si preme il bottone salva', (
+    WidgetTester tester,
+  ) async {
     var toggled = false;
 
     await tester.pumpWidget(
@@ -143,11 +130,10 @@ void main() {
     expect(toggled, isTrue);
   });
 
-  testWidgets('usa layout orizzontale con contenuto principale espanso',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(),
-    );
+  testWidgets('usa layout orizzontale con contenuto principale espanso', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(buildTestWidget());
 
     expect(find.byType(Row), findsWidgets);
     expect(find.byType(Expanded), findsOneWidget);

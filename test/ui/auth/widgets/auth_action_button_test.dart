@@ -11,29 +11,22 @@ void main() {
     return MaterialApp(
       home: Scaffold(
         body: Center(
-          child: AuthActionButton(
-            label: label,
-            onPressed: onPressed,
-          ),
+          child: AuthActionButton(label: label, onPressed: onPressed),
         ),
       ),
     );
   }
 
   testWidgets('mostra il testo del bottone', (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(
-        label: 'Accedi',
-        onPressed: () {},
-      ),
-    );
+    await tester.pumpWidget(buildTestWidget(label: 'Accedi', onPressed: () {}));
 
     expect(find.text('Accedi'), findsOneWidget);
     expect(find.byType(TextButton), findsOneWidget);
   });
 
-  testWidgets('esegue la callback quando viene premuto',
-      (WidgetTester tester) async {
+  testWidgets('esegue la callback quando viene premuto', (
+    WidgetTester tester,
+  ) async {
     var pressed = false;
 
     await tester.pumpWidget(
@@ -51,16 +44,12 @@ void main() {
     expect(pressed, isTrue);
   });
 
-  testWidgets('non esegue la callback quando il bottone è disabilitato',
-      (WidgetTester tester) async {
+  testWidgets('non esegue la callback quando il bottone è disabilitato', (
+    WidgetTester tester,
+  ) async {
     var pressed = false;
 
-    await tester.pumpWidget(
-      buildTestWidget(
-        label: 'Accedi',
-        onPressed: null,
-      ),
-    );
+    await tester.pumpWidget(buildTestWidget(label: 'Accedi', onPressed: null));
 
     await tester.tap(find.text('Accedi'));
     await tester.pumpAndSettle();

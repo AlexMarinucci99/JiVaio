@@ -27,10 +27,7 @@ void main() {
         displayName: 'Linea 1',
         routeLongName: 'Terminal Bus - Università',
         routeColor: '0B7A55',
-        directions: [
-          outboundDirection,
-          returnDirection,
-        ],
+        directions: [outboundDirection, returnDirection],
       );
 
       expect(line.primaryDirection, outboundDirection);
@@ -44,10 +41,7 @@ void main() {
         displayName: 'Linea 1',
         routeLongName: 'Terminal Bus - Università',
         routeColor: '0B7A55',
-        directions: [
-          outboundDirection,
-          returnDirection,
-        ],
+        directions: [outboundDirection, returnDirection],
       );
 
       expect(line.isUnidirectional, isFalse);
@@ -60,9 +54,7 @@ void main() {
         displayName: 'Linea 2U',
         routeLongName: 'Linea universitaria',
         routeColor: '0B7A55',
-        directions: [
-          outboundDirection,
-        ],
+        directions: [outboundDirection],
       );
 
       expect(line.isUnidirectional, isTrue);
@@ -75,9 +67,7 @@ void main() {
         displayName: 'Linea 2U',
         routeLongName: 'Linea universitaria',
         routeColor: '0B7A55',
-        directions: [
-          outboundDirection,
-        ],
+        directions: [outboundDirection],
       );
 
       expect(line.isUnidirectional, isTrue);
@@ -140,10 +130,7 @@ void main() {
 
   group('TransitLineDirectionSchedule', () {
     const departures = [
-      TransitLineDeparture(
-        tripId: 'trip-1',
-        departureTime: '08:10',
-      ),
+      TransitLineDeparture(tripId: 'trip-1', departureTime: '08:10'),
     ];
 
     const stops = [

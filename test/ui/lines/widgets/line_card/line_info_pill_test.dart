@@ -13,23 +13,17 @@ void main() {
     return MaterialApp(
       home: Scaffold(
         body: Center(
-          child: LineInfoPill(
-            icon: icon,
-            label: label,
-            colors: colors,
-          ),
+          child: LineInfoPill(icon: icon, label: label, colors: colors),
         ),
       ),
     );
   }
 
-  testWidgets('mostra icona e testo della pill informativa',
-      (WidgetTester tester) async {
+  testWidgets('mostra icona e testo della pill informativa', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(
-      buildTestWidget(
-        icon: Icons.schedule_rounded,
-        label: 'Ogni 20 min',
-      ),
+      buildTestWidget(icon: Icons.schedule_rounded, label: 'Ogni 20 min'),
     );
 
     expect(find.byIcon(Icons.schedule_rounded), findsOneWidget);
@@ -49,8 +43,9 @@ void main() {
     expect(row.mainAxisSize, MainAxisSize.min);
   });
 
-  testWidgets('applica i colori personalizzati alla pill',
-      (WidgetTester tester) async {
+  testWidgets('applica i colori personalizzati alla pill', (
+    WidgetTester tester,
+  ) async {
     const customColors = LineCardPalette(
       pillBackground: Color(0xFFE8F5EE),
       border: Color(0xFF0B7A55),
@@ -68,13 +63,9 @@ void main() {
     final container = tester.widget<Container>(find.byType(Container));
     final decoration = container.decoration as BoxDecoration;
 
-    final icon = tester.widget<Icon>(
-      find.byIcon(Icons.info_outline_rounded),
-    );
+    final icon = tester.widget<Icon>(find.byIcon(Icons.info_outline_rounded));
 
-    final text = tester.widget<Text>(
-      find.text('Attiva'),
-    );
+    final text = tester.widget<Text>(find.text('Attiva'));
 
     expect(decoration.color, const Color(0xFFE8F5EE));
     expect(decoration.border, isNotNull);
@@ -82,8 +73,9 @@ void main() {
     expect(text.style?.color, const Color(0xFF191970));
   });
 
-  testWidgets('mostra correttamente label più lunghe',
-      (WidgetTester tester) async {
+  testWidgets('mostra correttamente label più lunghe', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(
       buildTestWidget(
         icon: Icons.route_rounded,

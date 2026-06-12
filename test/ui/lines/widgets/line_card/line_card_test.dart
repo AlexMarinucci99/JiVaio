@@ -29,10 +29,7 @@ void main() {
     displayName: 'Linea 1',
     routeLongName: 'Terminal Bus - Università',
     routeColor: '0B7A55',
-    directions: [
-      outboundDirection,
-      returnDirection,
-    ],
+    directions: [outboundDirection, returnDirection],
   );
 
   Widget buildTestWidget({
@@ -55,21 +52,19 @@ void main() {
     );
   }
 
-  testWidgets('compone header e preview della linea',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(),
-    );
+  testWidgets('compone header e preview della linea', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(buildTestWidget());
 
     expect(find.byType(LineCardHeader), findsOneWidget);
     expect(find.byType(LineRoutePreview), findsOneWidget);
   });
 
-  testWidgets('mostra le informazioni principali della linea',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(),
-    );
+  testWidgets('mostra le informazioni principali della linea', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(buildTestWidget());
 
     expect(find.text('1'), findsOneWidget);
     expect(find.text('Linea 1'), findsOneWidget);
@@ -77,11 +72,10 @@ void main() {
     expect(find.text('8 fermate'), findsOneWidget);
   });
 
-  testWidgets('mostra la direzione iniziale e le sue prossime partenze',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(),
-    );
+  testWidgets('mostra la direzione iniziale e le sue prossime partenze', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(buildTestWidget());
 
     expect(find.text('Partenza'), findsOneWidget);
     expect(find.text('Capolinea'), findsOneWidget);
@@ -95,8 +89,9 @@ void main() {
     expect(find.text('10:30'), findsNothing);
   });
 
-  testWidgets('esegue onToggleSaved quando viene premuto il bottone salva',
-      (WidgetTester tester) async {
+  testWidgets('esegue onToggleSaved quando viene premuto il bottone salva', (
+    WidgetTester tester,
+  ) async {
     var savedToggled = false;
 
     await tester.pumpWidget(
@@ -114,20 +109,18 @@ void main() {
     expect(savedToggled, isTrue);
   });
 
-  testWidgets('mostra stato salvato quando isSaved è true',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(
-        isSaved: true,
-      ),
-    );
+  testWidgets('mostra stato salvato quando isSaved è true', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(buildTestWidget(isSaved: true));
 
     expect(find.byIcon(Icons.favorite_rounded), findsOneWidget);
     expect(find.byTooltip('Rimuovi dai salvati'), findsOneWidget);
   });
 
-  testWidgets('esegue onOpenDetails quando viene premuto Apri linea completa',
-      (WidgetTester tester) async {
+  testWidgets('esegue onOpenDetails quando viene premuto Apri linea completa', (
+    WidgetTester tester,
+  ) async {
     var opened = false;
 
     await tester.pumpWidget(
@@ -144,11 +137,10 @@ void main() {
     expect(opened, isTrue);
   });
 
-  testWidgets('inverte la direzione quando viene premuto il bottone swap',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(),
-    );
+  testWidgets('inverte la direzione quando viene premuto il bottone swap', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(buildTestWidget());
 
     expect(find.text('08:10'), findsOneWidget);
     expect(find.text('10:00'), findsNothing);
@@ -164,38 +156,37 @@ void main() {
     expect(find.text('09:15'), findsNothing);
   });
 
-  testWidgets('non mostra il tooltip di swap attivo se la linea ha una sola direzione',
-      (WidgetTester tester) async {
-    const singleDirectionLine = TransitLine(
-      routeId: 'line-single',
-      shortName: '3',
-      displayName: 'Linea 3',
-      routeLongName: 'Terminal Bus - Centro',
-      routeColor: '0B7A55',
-      directions: [
-        TransitLineDirection(
-          key: 'outbound',
-          originName: 'Terminal Bus',
-          destinationName: 'Centro',
-          stopCount: 5,
-          upcomingDepartures: ['11:00'],
-        ),
-      ],
-    );
+  testWidgets(
+    'non mostra il tooltip di swap attivo se la linea ha una sola direzione',
+    (WidgetTester tester) async {
+      const singleDirectionLine = TransitLine(
+        routeId: 'line-single',
+        shortName: '3',
+        displayName: 'Linea 3',
+        routeLongName: 'Terminal Bus - Centro',
+        routeColor: '0B7A55',
+        directions: [
+          TransitLineDirection(
+            key: 'outbound',
+            originName: 'Terminal Bus',
+            destinationName: 'Centro',
+            stopCount: 5,
+            upcomingDepartures: ['11:00'],
+          ),
+        ],
+      );
 
-    await tester.pumpWidget(
-      buildTestWidget(
-        line: singleDirectionLine,
-      ),
-    );
+      await tester.pumpWidget(buildTestWidget(line: singleDirectionLine));
 
-    expect(find.byTooltip('Inverti direzione'), findsNothing);
-    expect(find.byTooltip('Direzione unica'), findsOneWidget);
-    expect(find.text('11:00'), findsOneWidget);
-  });
+      expect(find.byTooltip('Inverti direzione'), findsNothing);
+      expect(find.byTooltip('Direzione unica'), findsOneWidget);
+      expect(find.text('11:00'), findsOneWidget);
+    },
+  );
 
-  testWidgets('mostra messaggio vuoto quando la direzione non ha partenze',
-      (WidgetTester tester) async {
+  testWidgets('mostra messaggio vuoto quando la direzione non ha partenze', (
+    WidgetTester tester,
+  ) async {
     const lineWithoutDepartures = TransitLine(
       routeId: 'line-empty',
       shortName: '4',
@@ -213,11 +204,7 @@ void main() {
       ],
     );
 
-    await tester.pumpWidget(
-      buildTestWidget(
-        line: lineWithoutDepartures,
-      ),
-    );
+    await tester.pumpWidget(buildTestWidget(line: lineWithoutDepartures));
 
     expect(
       find.text('Nessuna altra partenza disponibile per oggi.'),

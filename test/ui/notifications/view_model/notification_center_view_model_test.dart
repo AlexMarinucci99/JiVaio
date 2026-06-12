@@ -52,13 +52,9 @@ AppNotification buildNotification({
 void main() {
   group('NotificationCenterViewModel', () {
     test('parte con stato iniziale vuoto', () {
-      final repository = FakeNotificationRepository(
-        notifications: const [],
-      );
+      final repository = FakeNotificationRepository(notifications: const []);
 
-      final viewModel = NotificationCenterViewModel(
-        repository: repository,
-      );
+      final viewModel = NotificationCenterViewModel(repository: repository);
 
       expect(viewModel.notifications, isEmpty);
       expect(viewModel.isLoading, isFalse);
@@ -81,9 +77,7 @@ void main() {
         ],
       );
 
-      final viewModel = NotificationCenterViewModel(
-        repository: repository,
-      );
+      final viewModel = NotificationCenterViewModel(repository: repository);
 
       await viewModel.loadNotifications();
 
@@ -117,9 +111,7 @@ void main() {
         ],
       );
 
-      final viewModel = NotificationCenterViewModel(
-        repository: repository,
-      );
+      final viewModel = NotificationCenterViewModel(repository: repository);
 
       await viewModel.loadNotifications();
 
@@ -154,9 +146,7 @@ void main() {
         ],
       );
 
-      final viewModel = NotificationCenterViewModel(
-        repository: repository,
-      );
+      final viewModel = NotificationCenterViewModel(repository: repository);
 
       await viewModel.loadNotifications();
 
@@ -167,13 +157,9 @@ void main() {
     });
 
     test('togglePanel apre e chiude il pannello', () {
-      final repository = FakeNotificationRepository(
-        notifications: const [],
-      );
+      final repository = FakeNotificationRepository(notifications: const []);
 
-      final viewModel = NotificationCenterViewModel(
-        repository: repository,
-      );
+      final viewModel = NotificationCenterViewModel(repository: repository);
 
       expect(viewModel.isPanelOpen, isFalse);
 
@@ -187,13 +173,9 @@ void main() {
     });
 
     test('closePanel chiude il pannello solo se è aperto', () {
-      final repository = FakeNotificationRepository(
-        notifications: const [],
-      );
+      final repository = FakeNotificationRepository(notifications: const []);
 
-      final viewModel = NotificationCenterViewModel(
-        repository: repository,
-      );
+      final viewModel = NotificationCenterViewModel(repository: repository);
 
       viewModel.closePanel();
       expect(viewModel.isPanelOpen, isFalse);
@@ -225,9 +207,7 @@ void main() {
         ],
       );
 
-      final viewModel = NotificationCenterViewModel(
-        repository: repository,
-      );
+      final viewModel = NotificationCenterViewModel(repository: repository);
 
       await viewModel.loadNotifications();
 
@@ -260,9 +240,7 @@ void main() {
         ],
       );
 
-      final viewModel = NotificationCenterViewModel(
-        repository: repository,
-      );
+      final viewModel = NotificationCenterViewModel(repository: repository);
 
       await viewModel.loadNotifications();
 
@@ -292,9 +270,7 @@ void main() {
         ],
       );
 
-      final viewModel = NotificationCenterViewModel(
-        repository: repository,
-      );
+      final viewModel = NotificationCenterViewModel(repository: repository);
 
       await viewModel.loadNotifications();
 
@@ -310,29 +286,29 @@ void main() {
       viewModel.dispose();
     });
 
-    test('loadNotifications non ricarica se le notifiche sono già presenti',
-        () async {
-      final repository = FakeNotificationRepository(
-        notifications: [
-          buildNotification(
-            id: 'notification-1',
-            title: 'Ritardo linea 1',
-            createdAt: DateTime(2026, 6, 10, 8),
-          ),
-        ],
-      );
+    test(
+      'loadNotifications non ricarica se le notifiche sono già presenti',
+      () async {
+        final repository = FakeNotificationRepository(
+          notifications: [
+            buildNotification(
+              id: 'notification-1',
+              title: 'Ritardo linea 1',
+              createdAt: DateTime(2026, 6, 10, 8),
+            ),
+          ],
+        );
 
-      final viewModel = NotificationCenterViewModel(
-        repository: repository,
-      );
+        final viewModel = NotificationCenterViewModel(repository: repository);
 
-      await viewModel.loadNotifications();
-      await viewModel.loadNotifications();
+        await viewModel.loadNotifications();
+        await viewModel.loadNotifications();
 
-      expect(repository.getNotificationsCallCount, 1);
+        expect(repository.getNotificationsCallCount, 1);
 
-      viewModel.dispose();
-    });
+        viewModel.dispose();
+      },
+    );
 
     test('gestisce errore durante il caricamento notifiche', () async {
       final repository = FakeNotificationRepository(
@@ -340,9 +316,7 @@ void main() {
         shouldThrow: true,
       );
 
-      final viewModel = NotificationCenterViewModel(
-        repository: repository,
-      );
+      final viewModel = NotificationCenterViewModel(repository: repository);
 
       await viewModel.loadNotifications();
 
@@ -364,9 +338,7 @@ void main() {
         ],
       );
 
-      final viewModel = NotificationCenterViewModel(
-        repository: repository,
-      );
+      final viewModel = NotificationCenterViewModel(repository: repository);
 
       var notifyCount = 0;
 

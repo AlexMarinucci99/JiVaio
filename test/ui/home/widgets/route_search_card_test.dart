@@ -4,25 +4,18 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:jivaio/ui/home/widgets/route_search_card.dart';
 
 void main() {
-  Widget buildTestWidget({
-    void Function(String from, String to)? onSearch,
-  }) {
+  Widget buildTestWidget({void Function(String from, String to)? onSearch}) {
     return MaterialApp(
       home: Scaffold(
-        body: Center(
-          child: RouteSearchCard(
-            onSearch: onSearch,
-          ),
-        ),
+        body: Center(child: RouteSearchCard(onSearch: onSearch)),
       ),
     );
   }
 
-  testWidgets('mostra i campi di partenza e destinazione',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(),
-    );
+  testWidgets('mostra i campi di partenza e destinazione', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(buildTestWidget());
 
     expect(find.text('Da'), findsOneWidget);
     expect(find.text('A'), findsOneWidget);
@@ -35,61 +28,60 @@ void main() {
     expect(fromField.controller?.text, 'Posizione attuale');
   });
 
-  testWidgets('mostra le icone principali della card',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(),
-    );
+  testWidgets('mostra le icone principali della card', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(buildTestWidget());
 
     expect(find.byIcon(Icons.navigation_rounded), findsNWidgets(2));
     expect(find.byIcon(Icons.place_rounded), findsOneWidget);
     expect(find.byIcon(Icons.swap_vert_rounded), findsOneWidget);
   });
 
-  testWidgets('il bottone Cerca percorso è disabilitato se manca la destinazione',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(
-        onSearch: (_, _) {},
-      ),
-    );
+  testWidgets(
+    'il bottone Cerca percorso è disabilitato se manca la destinazione',
+    (WidgetTester tester) async {
+      await tester.pumpWidget(buildTestWidget(onSearch: (_, _) {}));
 
-    final button = tester.widget<FilledButton>(
-      find.widgetWithText(FilledButton, 'Cerca percorso'),
-    );
+      final button = tester.widget<FilledButton>(
+        find.widgetWithText(FilledButton, 'Cerca percorso'),
+      );
 
-    expect(button.onPressed, isNull);
-  });
+      expect(button.onPressed, isNull);
+    },
+  );
 
   testWidgets(
-      'chiama onSearch con partenza e destinazione quando i campi sono compilati',
-      (WidgetTester tester) async {
-    String? searchedFrom;
-    String? searchedTo;
+    'chiama onSearch con partenza e destinazione quando i campi sono compilati',
+    (WidgetTester tester) async {
+      String? searchedFrom;
+      String? searchedTo;
 
-    await tester.pumpWidget(
-      buildTestWidget(
-        onSearch: (from, to) {
-          searchedFrom = from;
-          searchedTo = to;
-        },
-      ),
-    );
+      await tester.pumpWidget(
+        buildTestWidget(
+          onSearch: (from, to) {
+            searchedFrom = from;
+            searchedTo = to;
+          },
+        ),
+      );
 
-    final fields = find.byType(TextField);
+      final fields = find.byType(TextField);
 
-    await tester.enterText(fields.at(1), 'Università');
-    await tester.pump();
+      await tester.enterText(fields.at(1), 'Università');
+      await tester.pump();
 
-    await tester.tap(find.text('Cerca percorso'));
-    await tester.pump();
+      await tester.tap(find.text('Cerca percorso'));
+      await tester.pump();
 
-    expect(searchedFrom, 'Posizione attuale');
-    expect(searchedTo, 'Università');
-  });
+      expect(searchedFrom, 'Posizione attuale');
+      expect(searchedTo, 'Università');
+    },
+  );
 
-  testWidgets('non chiama onSearch se la destinazione contiene solo spazi',
-      (WidgetTester tester) async {
+  testWidgets('non chiama onSearch se la destinazione contiene solo spazi', (
+    WidgetTester tester,
+  ) async {
     var searchCalled = false;
 
     await tester.pumpWidget(
@@ -113,11 +105,10 @@ void main() {
     expect(searchCalled, isFalse);
   });
 
-  testWidgets('il bottone swap inverte partenza e destinazione',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(),
-    );
+  testWidgets('il bottone swap inverte partenza e destinazione', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(buildTestWidget());
 
     final fields = find.byType(TextField);
 

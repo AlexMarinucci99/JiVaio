@@ -4,8 +4,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:jivaio/ui/core/widgets/bottom_nav_bar.dart';
 
 void main() {
-  testWidgets('chiama la callback quando si preme una voce della navbar',
-      (WidgetTester tester) async {
+  testWidgets('chiama la callback quando si preme una voce della navbar', (
+    WidgetTester tester,
+  ) async {
     int? selectedIndex;
 
     await tester.pumpWidget(

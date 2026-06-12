@@ -37,11 +37,10 @@ void main() {
     );
   }
 
-  testWidgets('mostra titolo e descrizione della sezione segnalazioni',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(),
-    );
+  testWidgets('mostra titolo e descrizione della sezione segnalazioni', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(buildTestWidget());
 
     expect(find.text('Segnalazioni'), findsOneWidget);
     expect(
@@ -53,11 +52,8 @@ void main() {
     expect(find.text('Sei sulla navetta?'), findsOneWidget);
   });
 
-  testWidgets('mostra le due opzioni Sì e No',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(),
-    );
+  testWidgets('mostra le due opzioni Sì e No', (WidgetTester tester) async {
+    await tester.pumpWidget(buildTestWidget());
 
     expect(find.text('Sì'), findsOneWidget);
     expect(find.text('No'), findsOneWidget);
@@ -65,8 +61,9 @@ void main() {
     expect(find.byIcon(Icons.location_on_rounded), findsOneWidget);
   });
 
-  testWidgets('esegue onLocationChanged con onBus quando si preme Sì',
-      (WidgetTester tester) async {
+  testWidgets('esegue onLocationChanged con onBus quando si preme Sì', (
+    WidgetTester tester,
+  ) async {
     LineDetailReportLocation? selectedLocation;
 
     await tester.pumpWidget(
@@ -83,8 +80,9 @@ void main() {
     expect(selectedLocation, LineDetailReportLocation.onBus);
   });
 
-  testWidgets('esegue onLocationChanged con atStop quando si preme No',
-      (WidgetTester tester) async {
+  testWidgets('esegue onLocationChanged con atStop quando si preme No', (
+    WidgetTester tester,
+  ) async {
     LineDetailReportLocation? selectedLocation;
 
     await tester.pumpWidget(
@@ -101,20 +99,20 @@ void main() {
     expect(selectedLocation, LineDetailReportLocation.atStop);
   });
 
-  testWidgets('mostra istruzione iniziale quando non è stata scelta la posizione',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(
-        reportLocation: null,
-        canSendReport: false,
-      ),
-    );
+  testWidgets(
+    'mostra istruzione iniziale quando non è stata scelta la posizione',
+    (WidgetTester tester) async {
+      await tester.pumpWidget(
+        buildTestWidget(reportLocation: null, canSendReport: false),
+      );
 
-    expect(find.text('Seleziona Sì o No per continuare.'), findsOneWidget);
-  });
+      expect(find.text('Seleziona Sì o No per continuare.'), findsOneWidget);
+    },
+  );
 
-  testWidgets('abilita le segnalazioni quando canSendReport è true',
-      (WidgetTester tester) async {
+  testWidgets('abilita le segnalazioni quando canSendReport è true', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(
       buildTestWidget(
         reportLocation: LineDetailReportLocation.onBus,
@@ -132,16 +130,16 @@ void main() {
 
     expect(delayButton.onPressed, isNotNull);
     expect(crowdingButton.onPressed, isNotNull);
-    expect(find.textContaining('Puoi inviare una segnalazione'), findsOneWidget);
+    expect(
+      find.textContaining('Puoi inviare una segnalazione'),
+      findsOneWidget,
+    );
   });
 
-  testWidgets('disabilita le segnalazioni quando canSendReport è false',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(
-        canSendReport: false,
-      ),
-    );
+  testWidgets('disabilita le segnalazioni quando canSendReport è false', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(buildTestWidget(canSendReport: false));
 
     final delayButton = tester.widget<FilledButton>(
       find.widgetWithText(FilledButton, 'Segnala ritardo'),
@@ -155,8 +153,9 @@ void main() {
     expect(crowdingButton.onPressed, isNull);
   });
 
-  testWidgets('richiede la selezione della fermata quando serve',
-      (WidgetTester tester) async {
+  testWidgets('richiede la selezione della fermata quando serve', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(
       buildTestWidget(
         reportLocation: LineDetailReportLocation.atStop,
@@ -174,8 +173,9 @@ void main() {
     );
   });
 
-  testWidgets('mostra la fermata selezionata quando presente',
-      (WidgetTester tester) async {
+  testWidgets('mostra la fermata selezionata quando presente', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(
       buildTestWidget(
         reportLocation: LineDetailReportLocation.atStop,
@@ -185,34 +185,34 @@ void main() {
       ),
     );
 
-    expect(
-      find.text('Fermata selezionata: Fontana Luminosa.'),
-      findsOneWidget,
-    );
+    expect(find.text('Fermata selezionata: Fontana Luminosa.'), findsOneWidget);
   });
 
-  testWidgets('esegue onReportPressed con delay quando si preme Segnala ritardo',
-      (WidgetTester tester) async {
-    LineDetailReportType? selectedReportType;
+  testWidgets(
+    'esegue onReportPressed con delay quando si preme Segnala ritardo',
+    (WidgetTester tester) async {
+      LineDetailReportType? selectedReportType;
 
-    await tester.pumpWidget(
-      buildTestWidget(
-        reportLocation: LineDetailReportLocation.onBus,
-        canSendReport: true,
-        onReportPressed: (type) {
-          selectedReportType = type;
-        },
-      ),
-    );
+      await tester.pumpWidget(
+        buildTestWidget(
+          reportLocation: LineDetailReportLocation.onBus,
+          canSendReport: true,
+          onReportPressed: (type) {
+            selectedReportType = type;
+          },
+        ),
+      );
 
-    await tester.tap(find.text('Segnala ritardo'));
-    await tester.pump();
+      await tester.tap(find.text('Segnala ritardo'));
+      await tester.pump();
 
-    expect(selectedReportType, LineDetailReportType.delay);
-  });
+      expect(selectedReportType, LineDetailReportType.delay);
+    },
+  );
 
-  testWidgets('esegue onReportPressed con crowding quando si preme Bus pieno',
-      (WidgetTester tester) async {
+  testWidgets('esegue onReportPressed con crowding quando si preme Bus pieno', (
+    WidgetTester tester,
+  ) async {
     LineDetailReportType? selectedReportType;
 
     await tester.pumpWidget(
@@ -231,30 +231,33 @@ void main() {
     expect(selectedReportType, LineDetailReportType.crowding);
   });
 
-  testWidgets('non esegue onReportPressed quando i pulsanti sono disabilitati',
-      (WidgetTester tester) async {
-    LineDetailReportType? selectedReportType;
+  testWidgets(
+    'non esegue onReportPressed quando i pulsanti sono disabilitati',
+    (WidgetTester tester) async {
+      LineDetailReportType? selectedReportType;
 
-    await tester.pumpWidget(
-      buildTestWidget(
-        canSendReport: false,
-        onReportPressed: (type) {
-          selectedReportType = type;
-        },
-      ),
-    );
+      await tester.pumpWidget(
+        buildTestWidget(
+          canSendReport: false,
+          onReportPressed: (type) {
+            selectedReportType = type;
+          },
+        ),
+      );
 
-    await tester.tap(find.text('Segnala ritardo'));
-    await tester.pump();
+      await tester.tap(find.text('Segnala ritardo'));
+      await tester.pump();
 
-    await tester.tap(find.text('Bus pieno'));
-    await tester.pump();
+      await tester.tap(find.text('Bus pieno'));
+      await tester.pump();
 
-    expect(selectedReportType, isNull);
-  });
+      expect(selectedReportType, isNull);
+    },
+  );
 
-  testWidgets('mostra il messaggio finale della segnalazione quando presente',
-      (WidgetTester tester) async {
+  testWidgets('mostra il messaggio finale della segnalazione quando presente', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(
       buildTestWidget(
         reportLocation: LineDetailReportLocation.onBus,

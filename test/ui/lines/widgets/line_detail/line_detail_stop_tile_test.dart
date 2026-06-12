@@ -42,11 +42,10 @@ void main() {
     );
   }
 
-  testWidgets('mostra nome fermata e orario ufficiale',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(),
-    );
+  testWidgets('mostra nome fermata e orario ufficiale', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(buildTestWidget());
 
     expect(find.text('Terminal Bus'), findsOneWidget);
     expect(find.text('Orario ufficiale'), findsOneWidget);
@@ -54,8 +53,9 @@ void main() {
     expect(find.text('Orario stimato non disponibile'), findsOneWidget);
   });
 
-  testWidgets('mostra fallback --:-- quando officialTime è null',
-      (WidgetTester tester) async {
+  testWidgets('mostra fallback --:-- quando officialTime è null', (
+    WidgetTester tester,
+  ) async {
     const stopWithoutTime = TransitLineStop(
       stopId: 'stop-2',
       name: 'Fontana Luminosa',
@@ -63,18 +63,15 @@ void main() {
       officialTime: null,
     );
 
-    await tester.pumpWidget(
-      buildTestWidget(
-        stop: stopWithoutTime,
-      ),
-    );
+    await tester.pumpWidget(buildTestWidget(stop: stopWithoutTime));
 
     expect(find.text('Fontana Luminosa'), findsOneWidget);
     expect(find.text('--:--'), findsOneWidget);
   });
 
-  testWidgets('mostra fallback --:-- quando officialTime è vuoto',
-      (WidgetTester tester) async {
+  testWidgets('mostra fallback --:-- quando officialTime è vuoto', (
+    WidgetTester tester,
+  ) async {
     const stopWithEmptyTime = TransitLineStop(
       stopId: 'stop-3',
       name: 'Villa Comunale',
@@ -82,64 +79,50 @@ void main() {
       officialTime: '   ',
     );
 
-    await tester.pumpWidget(
-      buildTestWidget(
-        stop: stopWithEmptyTime,
-      ),
-    );
+    await tester.pumpWidget(buildTestWidget(stop: stopWithEmptyTime));
 
     expect(find.text('Villa Comunale'), findsOneWidget);
     expect(find.text('--:--'), findsOneWidget);
   });
 
-  testWidgets('mostra badge Partenza quando la fermata è la prima',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(
-        isFirst: true,
-      ),
-    );
+  testWidgets('mostra badge Partenza quando la fermata è la prima', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(buildTestWidget(isFirst: true));
 
     expect(find.text('Partenza'), findsOneWidget);
     expect(find.text('Capolinea'), findsNothing);
   });
 
-  testWidgets('mostra badge Capolinea quando la fermata è l’ultima',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(
-        isLast: true,
-      ),
-    );
+  testWidgets('mostra badge Capolinea quando la fermata è l’ultima', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(buildTestWidget(isLast: true));
 
     expect(find.text('Capolinea'), findsOneWidget);
     expect(find.text('Partenza'), findsNothing);
   });
 
-  testWidgets('mostra badge Selezionata quando la fermata è selezionata',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(
-        isSelected: true,
-      ),
-    );
+  testWidgets('mostra badge Selezionata quando la fermata è selezionata', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(buildTestWidget(isSelected: true));
 
     expect(find.text('Selezionata'), findsOneWidget);
   });
 
-  testWidgets('non mostra badge Selezionata quando la fermata non è selezionata',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(
-        isSelected: false,
-      ),
-    );
+  testWidgets(
+    'non mostra badge Selezionata quando la fermata non è selezionata',
+    (WidgetTester tester) async {
+      await tester.pumpWidget(buildTestWidget(isSelected: false));
 
-    expect(find.text('Selezionata'), findsNothing);
-  });
+      expect(find.text('Selezionata'), findsNothing);
+    },
+  );
 
-  testWidgets('esegue onTap quando la selezione è abilitata',
-      (WidgetTester tester) async {
+  testWidgets('esegue onTap quando la selezione è abilitata', (
+    WidgetTester tester,
+  ) async {
     var tapped = false;
 
     await tester.pumpWidget(
@@ -157,8 +140,9 @@ void main() {
     expect(tapped, isTrue);
   });
 
-  testWidgets('non esegue onTap quando la selezione è disabilitata',
-      (WidgetTester tester) async {
+  testWidgets('non esegue onTap quando la selezione è disabilitata', (
+    WidgetTester tester,
+  ) async {
     var tapped = false;
 
     await tester.pumpWidget(
@@ -176,11 +160,10 @@ void main() {
     expect(tapped, isFalse);
   });
 
-  testWidgets('usa AnimatedContainer per aggiornare lo stato visuale',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(),
-    );
+  testWidgets('usa AnimatedContainer per aggiornare lo stato visuale', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(buildTestWidget());
 
     expect(find.byType(AnimatedContainer), findsOneWidget);
   });

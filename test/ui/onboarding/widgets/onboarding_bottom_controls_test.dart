@@ -26,8 +26,9 @@ void main() {
     );
   }
 
-  testWidgets('mostra il bottone Avanti quando non è l’ultima pagina',
-      (WidgetTester tester) async {
+  testWidgets('mostra il bottone Avanti quando non è l’ultima pagina', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(
       buildTestWidget(
         currentIndex: 0,
@@ -42,8 +43,9 @@ void main() {
     expect(find.text('Inizia'), findsNothing);
   });
 
-  testWidgets('mostra il bottone Inizia quando è l’ultima pagina',
-      (WidgetTester tester) async {
+  testWidgets('mostra il bottone Inizia quando è l’ultima pagina', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(
       buildTestWidget(
         currentIndex: 2,
@@ -58,8 +60,9 @@ void main() {
     expect(find.text('Avanti'), findsNothing);
   });
 
-  testWidgets('non mostra Indietro nella prima pagina',
-      (WidgetTester tester) async {
+  testWidgets('non mostra Indietro nella prima pagina', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(
       buildTestWidget(
         currentIndex: 0,
@@ -74,8 +77,9 @@ void main() {
     expect(find.byIcon(Icons.chevron_left_rounded), findsNothing);
   });
 
-  testWidgets('mostra Indietro dalla seconda pagina in poi',
-      (WidgetTester tester) async {
+  testWidgets('mostra Indietro dalla seconda pagina in poi', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(
       buildTestWidget(
         currentIndex: 1,
@@ -90,8 +94,9 @@ void main() {
     expect(find.byIcon(Icons.chevron_left_rounded), findsOneWidget);
   });
 
-  testWidgets('esegue onNext quando viene premuto Avanti',
-      (WidgetTester tester) async {
+  testWidgets('esegue onNext quando viene premuto Avanti', (
+    WidgetTester tester,
+  ) async {
     var nextPressed = false;
 
     await tester.pumpWidget(
@@ -112,8 +117,9 @@ void main() {
     expect(nextPressed, isTrue);
   });
 
-  testWidgets('esegue onNext quando viene premuto Inizia',
-      (WidgetTester tester) async {
+  testWidgets('esegue onNext quando viene premuto Inizia', (
+    WidgetTester tester,
+  ) async {
     var nextPressed = false;
 
     await tester.pumpWidget(
@@ -134,8 +140,9 @@ void main() {
     expect(nextPressed, isTrue);
   });
 
-  testWidgets('esegue onBack quando viene premuto Indietro',
-      (WidgetTester tester) async {
+  testWidgets('esegue onBack quando viene premuto Indietro', (
+    WidgetTester tester,
+  ) async {
     var backPressed = false;
 
     await tester.pumpWidget(
@@ -156,8 +163,7 @@ void main() {
     expect(backPressed, isTrue);
   });
 
-  testWidgets('mostra un pallino per ogni slide',
-      (WidgetTester tester) async {
+  testWidgets('mostra un pallino per ogni slide', (WidgetTester tester) async {
     await tester.pumpWidget(
       buildTestWidget(
         currentIndex: 1,

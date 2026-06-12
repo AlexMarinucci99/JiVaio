@@ -25,8 +25,9 @@ void main() {
     );
   }
 
-  testWidgets('mostra caption e valore della label centrale',
-      (WidgetTester tester) async {
+  testWidgets('mostra caption e valore della label centrale', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(
       buildTestWidget(
         caption: 'Partenza',
@@ -39,8 +40,9 @@ void main() {
     expect(find.text('Terminal Bus'), findsOneWidget);
   });
 
-  testWidgets('usa l’allineamento passato al widget',
-      (WidgetTester tester) async {
+  testWidgets('usa l’allineamento passato al widget', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(
       buildTestWidget(
         caption: 'Capolinea',
@@ -54,38 +56,43 @@ void main() {
     expect(column.crossAxisAlignment, CrossAxisAlignment.end);
   });
 
-  testWidgets('allinea il testo del valore a destra quando crossAxisAlignment è end',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(
-        caption: 'Capolinea',
-        value: 'Università',
-        crossAxisAlignment: CrossAxisAlignment.end,
-      ),
-    );
+  testWidgets(
+    'allinea il testo del valore a destra quando crossAxisAlignment è end',
+    (WidgetTester tester) async {
+      await tester.pumpWidget(
+        buildTestWidget(
+          caption: 'Capolinea',
+          value: 'Università',
+          crossAxisAlignment: CrossAxisAlignment.end,
+        ),
+      );
 
-    final valueText = tester.widget<Text>(find.text('Università'));
+      final valueText = tester.widget<Text>(find.text('Università'));
 
-    expect(valueText.textAlign, TextAlign.end);
-  });
+      expect(valueText.textAlign, TextAlign.end);
+    },
+  );
 
-  testWidgets('allinea il testo del valore a sinistra quando crossAxisAlignment è start',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(
-        caption: 'Partenza',
-        value: 'Terminal Bus',
-        crossAxisAlignment: CrossAxisAlignment.start,
-      ),
-    );
+  testWidgets(
+    'allinea il testo del valore a sinistra quando crossAxisAlignment è start',
+    (WidgetTester tester) async {
+      await tester.pumpWidget(
+        buildTestWidget(
+          caption: 'Partenza',
+          value: 'Terminal Bus',
+          crossAxisAlignment: CrossAxisAlignment.start,
+        ),
+      );
 
-    final valueText = tester.widget<Text>(find.text('Terminal Bus'));
+      final valueText = tester.widget<Text>(find.text('Terminal Bus'));
 
-    expect(valueText.textAlign, TextAlign.start);
-  });
+      expect(valueText.textAlign, TextAlign.start);
+    },
+  );
 
-  testWidgets('applica i colori personalizzati a caption e valore',
-      (WidgetTester tester) async {
+  testWidgets('applica i colori personalizzati a caption e valore', (
+    WidgetTester tester,
+  ) async {
     const customColors = LineCardPalette(
       labelAccent: Color(0xFF0B7A55),
       primaryText: Color(0xFF191970),
@@ -107,8 +114,9 @@ void main() {
     expect(valueText.style?.color, const Color(0xFF191970));
   });
 
-  testWidgets('limita il valore a una sola riga con ellissi',
-      (WidgetTester tester) async {
+  testWidgets('limita il valore a una sola riga con ellissi', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(
       buildTestWidget(
         caption: 'Partenza',

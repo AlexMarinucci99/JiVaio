@@ -11,10 +11,7 @@ void main() {
     return MaterialApp(
       home: Scaffold(
         body: Center(
-          child: OnboardingActionButton(
-            label: label,
-            onPressed: onPressed,
-          ),
+          child: OnboardingActionButton(label: label, onPressed: onPressed),
         ),
       ),
     );
@@ -22,18 +19,16 @@ void main() {
 
   testWidgets('mostra il testo del bottone', (WidgetTester tester) async {
     await tester.pumpWidget(
-      buildTestWidget(
-        label: 'Continua',
-        onPressed: () {},
-      ),
+      buildTestWidget(label: 'Continua', onPressed: () {}),
     );
 
     expect(find.text('Continua'), findsOneWidget);
     expect(find.byType(ElevatedButton), findsOneWidget);
   });
 
-  testWidgets('esegue la callback quando viene premuto',
-      (WidgetTester tester) async {
+  testWidgets('esegue la callback quando viene premuto', (
+    WidgetTester tester,
+  ) async {
     var pressed = false;
 
     await tester.pumpWidget(
@@ -51,18 +46,14 @@ void main() {
     expect(pressed, isTrue);
   });
 
-  testWidgets('il bottone è disabilitato quando onPressed è null',
-      (WidgetTester tester) async {
+  testWidgets('il bottone è disabilitato quando onPressed è null', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(
-      buildTestWidget(
-        label: 'Continua',
-        onPressed: null,
-      ),
+      buildTestWidget(label: 'Continua', onPressed: null),
     );
 
-    final button = tester.widget<ElevatedButton>(
-      find.byType(ElevatedButton),
-    );
+    final button = tester.widget<ElevatedButton>(find.byType(ElevatedButton));
 
     expect(button.onPressed, isNull);
     expect(find.text('Continua'), findsOneWidget);

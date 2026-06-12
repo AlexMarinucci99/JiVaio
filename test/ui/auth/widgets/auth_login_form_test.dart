@@ -39,11 +39,8 @@ void main() {
     );
   }
 
-  testWidgets('mostra i campi Email e Password',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(),
-    );
+  testWidgets('mostra i campi Email e Password', (WidgetTester tester) async {
+    await tester.pumpWidget(buildTestWidget());
 
     expect(find.byType(AuthTextField), findsNWidgets(2));
     expect(find.text('Email'), findsOneWidget);
@@ -52,42 +49,36 @@ void main() {
     expect(find.byIcon(Icons.lock_outline), findsOneWidget);
   });
 
-  testWidgets('aggiorna i controller quando vengono inseriti email e password',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(),
-    );
+  testWidgets(
+    'aggiorna i controller quando vengono inseriti email e password',
+    (WidgetTester tester) async {
+      await tester.pumpWidget(buildTestWidget());
 
-    final fields = find.byType(TextField);
+      final fields = find.byType(TextField);
 
-    await tester.enterText(fields.at(0), 'utente@test.it');
-    await tester.enterText(fields.at(1), 'password123');
-    await tester.pump();
+      await tester.enterText(fields.at(0), 'utente@test.it');
+      await tester.enterText(fields.at(1), 'password123');
+      await tester.pump();
 
-    expect(emailController.text, 'utente@test.it');
-    expect(passwordController.text, 'password123');
-  });
+      expect(emailController.text, 'utente@test.it');
+      expect(passwordController.text, 'password123');
+    },
+  );
 
-  testWidgets('usa TextInputType.emailAddress per il campo email',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(),
-    );
+  testWidgets('usa TextInputType.emailAddress per il campo email', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(buildTestWidget());
 
-    final emailField = tester.widget<TextField>(
-      find.byType(TextField).at(0),
-    );
+    final emailField = tester.widget<TextField>(find.byType(TextField).at(0));
 
     expect(emailField.keyboardType, TextInputType.emailAddress);
   });
 
-  testWidgets('nasconde la password quando obscurePassword è true',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(
-        obscurePassword: true,
-      ),
-    );
+  testWidgets('nasconde la password quando obscurePassword è true', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(buildTestWidget(obscurePassword: true));
 
     final passwordField = tester.widget<TextField>(
       find.byType(TextField).at(1),
@@ -97,13 +88,10 @@ void main() {
     expect(find.byIcon(Icons.visibility_outlined), findsOneWidget);
   });
 
-  testWidgets('mostra la password quando obscurePassword è false',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(
-        obscurePassword: false,
-      ),
-    );
+  testWidgets('mostra la password quando obscurePassword è false', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(buildTestWidget(obscurePassword: false));
 
     final passwordField = tester.widget<TextField>(
       find.byType(TextField).at(1),
@@ -113,35 +101,35 @@ void main() {
     expect(find.byIcon(Icons.visibility_off_outlined), findsOneWidget);
   });
 
-  testWidgets('esegue onTogglePasswordVisibility quando si preme icona visibilità',
-      (WidgetTester tester) async {
-    var toggled = false;
+  testWidgets(
+    'esegue onTogglePasswordVisibility quando si preme icona visibilità',
+    (WidgetTester tester) async {
+      var toggled = false;
 
-    await tester.pumpWidget(
-      buildTestWidget(
-        onTogglePasswordVisibility: () {
-          toggled = true;
-        },
-      ),
-    );
+      await tester.pumpWidget(
+        buildTestWidget(
+          onTogglePasswordVisibility: () {
+            toggled = true;
+          },
+        ),
+      );
 
-    await tester.tap(find.byIcon(Icons.visibility_outlined));
-    await tester.pump();
+      await tester.tap(find.byIcon(Icons.visibility_outlined));
+      await tester.pump();
 
-    expect(toggled, isTrue);
-  });
+      expect(toggled, isTrue);
+    },
+  );
 
-  testWidgets('mostra link Password dimenticata',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(),
-    );
+  testWidgets('mostra link Password dimenticata', (WidgetTester tester) async {
+    await tester.pumpWidget(buildTestWidget());
 
     expect(find.text('Password dimenticata?'), findsOneWidget);
   });
 
-  testWidgets('esegue onForgotPassword quando si preme Password dimenticata',
-      (WidgetTester tester) async {
+  testWidgets('esegue onForgotPassword quando si preme Password dimenticata', (
+    WidgetTester tester,
+  ) async {
     var forgotPressed = false;
 
     await tester.pumpWidget(

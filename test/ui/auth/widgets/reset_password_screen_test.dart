@@ -9,9 +9,7 @@ class FakeAuthRepository implements AuthRepository {
   String? lastEmail;
 
   @override
-  Future<void> sendPasswordResetEmail({
-    required String email,
-  }) async {
+  Future<void> sendPasswordResetEmail({required String email}) async {
     sendPasswordResetEmailCalled = true;
     lastEmail = email;
   }
@@ -23,25 +21,18 @@ class FakeAuthRepository implements AuthRepository {
 }
 
 void main() {
-  Widget buildTestWidget({
-    required FakeAuthRepository authRepository,
-  }) {
+  Widget buildTestWidget({required FakeAuthRepository authRepository}) {
     return MaterialApp(
-      home: ResetPasswordScreen(
-        authRepository: authRepository,
-      ),
+      home: ResetPasswordScreen(authRepository: authRepository),
     );
   }
 
-  testWidgets('mostra i contenuti principali della schermata',
-      (WidgetTester tester) async {
+  testWidgets('mostra i contenuti principali della schermata', (
+    WidgetTester tester,
+  ) async {
     final authRepository = FakeAuthRepository();
 
-    await tester.pumpWidget(
-      buildTestWidget(
-        authRepository: authRepository,
-      ),
-    );
+    await tester.pumpWidget(buildTestWidget(authRepository: authRepository));
 
     expect(find.text('Password dimenticata?'), findsOneWidget);
     expect(
@@ -54,15 +45,12 @@ void main() {
     expect(find.text('Torna ad Accedi'), findsOneWidget);
   });
 
-  testWidgets('il bottone invio è disabilitato con email vuota',
-      (WidgetTester tester) async {
+  testWidgets('il bottone invio è disabilitato con email vuota', (
+    WidgetTester tester,
+  ) async {
     final authRepository = FakeAuthRepository();
 
-    await tester.pumpWidget(
-      buildTestWidget(
-        authRepository: authRepository,
-      ),
-    );
+    await tester.pumpWidget(buildTestWidget(authRepository: authRepository));
 
     final buttonFinder = find.ancestor(
       of: find.text('Invia link di recupero'),
@@ -75,20 +63,14 @@ void main() {
     expect(authRepository.sendPasswordResetEmailCalled, isFalse);
   });
 
-  testWidgets('inserendo una email il bottone viene abilitato',
-      (WidgetTester tester) async {
+  testWidgets('inserendo una email il bottone viene abilitato', (
+    WidgetTester tester,
+  ) async {
     final authRepository = FakeAuthRepository();
 
-    await tester.pumpWidget(
-      buildTestWidget(
-        authRepository: authRepository,
-      ),
-    );
+    await tester.pumpWidget(buildTestWidget(authRepository: authRepository));
 
-    await tester.enterText(
-      find.byType(TextField),
-      'utente@jivaio.it',
-    );
+    await tester.enterText(find.byType(TextField), 'utente@jivaio.it');
     await tester.pump();
 
     final buttonFinder = find.ancestor(
@@ -101,20 +83,14 @@ void main() {
     expect(button.onPressed, isNotNull);
   });
 
-  testWidgets('invia il link di recupero con email valida',
-      (WidgetTester tester) async {
+  testWidgets('invia il link di recupero con email valida', (
+    WidgetTester tester,
+  ) async {
     final authRepository = FakeAuthRepository();
 
-    await tester.pumpWidget(
-      buildTestWidget(
-        authRepository: authRepository,
-      ),
-    );
+    await tester.pumpWidget(buildTestWidget(authRepository: authRepository));
 
-    await tester.enterText(
-      find.byType(TextField),
-      'utente@jivaio.it',
-    );
+    await tester.enterText(find.byType(TextField), 'utente@jivaio.it');
     await tester.pump();
 
     await tester.tap(find.text('Invia link di recupero'));
@@ -129,20 +105,12 @@ void main() {
     );
   });
 
-  testWidgets('mostra errore se email non valida',
-      (WidgetTester tester) async {
+  testWidgets('mostra errore se email non valida', (WidgetTester tester) async {
     final authRepository = FakeAuthRepository();
 
-    await tester.pumpWidget(
-      buildTestWidget(
-        authRepository: authRepository,
-      ),
-    );
+    await tester.pumpWidget(buildTestWidget(authRepository: authRepository));
 
-    await tester.enterText(
-      find.byType(TextField),
-      'email-non-valida',
-    );
+    await tester.enterText(find.byType(TextField), 'email-non-valida');
     await tester.pump();
 
     await tester.tap(find.text('Invia link di recupero'));
@@ -150,9 +118,6 @@ void main() {
     await tester.pump(const Duration(milliseconds: 500));
 
     expect(authRepository.sendPasswordResetEmailCalled, isFalse);
-    expect(
-      find.text('Inserisci un indirizzo email valido'),
-      findsOneWidget,
-    );
+    expect(find.text('Inserisci un indirizzo email valido'), findsOneWidget);
   });
 }

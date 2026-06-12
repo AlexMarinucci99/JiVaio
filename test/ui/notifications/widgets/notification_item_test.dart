@@ -8,7 +8,8 @@ void main() {
   AppNotification buildNotification({
     String id = 'notification-1',
     String title = 'Ritardo sulla linea 1',
-    String message = 'La linea 1 potrebbe subire un ritardo di circa 10 minuti.',
+    String message =
+        'La linea 1 potrebbe subire un ritardo di circa 10 minuti.',
     AppNotificationType type = AppNotificationType.delay,
     DateTime? createdAt,
     bool isRead = false,
@@ -39,8 +40,9 @@ void main() {
     );
   }
 
-  testWidgets('mostra titolo e messaggio della notifica',
-      (WidgetTester tester) async {
+  testWidgets('mostra titolo e messaggio della notifica', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(
       buildTestWidget(
         notification: buildNotification(
@@ -57,34 +59,33 @@ void main() {
     );
   });
 
-  testWidgets('mostra icona schedule per notifica di ritardo',
-      (WidgetTester tester) async {
+  testWidgets('mostra icona schedule per notifica di ritardo', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(
       buildTestWidget(
-        notification: buildNotification(
-          type: AppNotificationType.delay,
-        ),
+        notification: buildNotification(type: AppNotificationType.delay),
       ),
     );
 
     expect(find.byIcon(Icons.schedule_rounded), findsOneWidget);
   });
 
-  testWidgets('mostra icona notifiche attive per notifica di viaggio',
-      (WidgetTester tester) async {
+  testWidgets('mostra icona notifiche attive per notifica di viaggio', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(
       buildTestWidget(
-        notification: buildNotification(
-          type: AppNotificationType.trip,
-        ),
+        notification: buildNotification(type: AppNotificationType.trip),
       ),
     );
 
     expect(find.byIcon(Icons.notifications_active_rounded), findsOneWidget);
   });
 
-  testWidgets('mostra icona percorso alternativo per aggiornamento servizio',
-      (WidgetTester tester) async {
+  testWidgets('mostra icona percorso alternativo per aggiornamento servizio', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(
       buildTestWidget(
         notification: buildNotification(
@@ -96,8 +97,9 @@ void main() {
     expect(find.byIcon(Icons.alt_route_rounded), findsOneWidget);
   });
 
-  testWidgets('esegue onTap quando viene premuta la notifica',
-      (WidgetTester tester) async {
+  testWidgets('esegue onTap quando viene premuta la notifica', (
+    WidgetTester tester,
+  ) async {
     var tapped = false;
 
     await tester.pumpWidget(
@@ -115,14 +117,11 @@ void main() {
     expect(tapped, isTrue);
   });
 
-  testWidgets('mostra indicatore non letto quando isRead è false',
-      (WidgetTester tester) async {
+  testWidgets('mostra indicatore non letto quando isRead è false', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(
-      buildTestWidget(
-        notification: buildNotification(
-          isRead: false,
-        ),
-      ),
+      buildTestWidget(notification: buildNotification(isRead: false)),
     );
 
     final unreadIndicator = tester.widget<AnimatedOpacity>(
@@ -132,14 +131,11 @@ void main() {
     expect(unreadIndicator.opacity, 1);
   });
 
-  testWidgets('nasconde indicatore non letto quando isRead è true',
-      (WidgetTester tester) async {
+  testWidgets('nasconde indicatore non letto quando isRead è true', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(
-      buildTestWidget(
-        notification: buildNotification(
-          isRead: true,
-        ),
-      ),
+      buildTestWidget(notification: buildNotification(isRead: true)),
     );
 
     final unreadIndicator = tester.widget<AnimatedOpacity>(
@@ -149,21 +145,21 @@ void main() {
     expect(unreadIndicator.opacity, 0);
   });
 
-  testWidgets('mostra Adesso per notifiche appena create',
-      (WidgetTester tester) async {
+  testWidgets('mostra Adesso per notifiche appena create', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(
       buildTestWidget(
-        notification: buildNotification(
-          createdAt: DateTime.now(),
-        ),
+        notification: buildNotification(createdAt: DateTime.now()),
       ),
     );
 
     expect(find.text('Adesso'), findsOneWidget);
   });
 
-  testWidgets('mostra minuti fa per notifiche recenti',
-      (WidgetTester tester) async {
+  testWidgets('mostra minuti fa per notifiche recenti', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(
       buildTestWidget(
         notification: buildNotification(
@@ -175,8 +171,9 @@ void main() {
     expect(find.text('5 min fa'), findsOneWidget);
   });
 
-  testWidgets('mostra ore fa per notifiche della stessa giornata',
-      (WidgetTester tester) async {
+  testWidgets('mostra ore fa per notifiche della stessa giornata', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(
       buildTestWidget(
         notification: buildNotification(
@@ -188,8 +185,9 @@ void main() {
     expect(find.text('2 ore fa'), findsOneWidget);
   });
 
-  testWidgets('mostra Ieri per notifiche del giorno precedente',
-      (WidgetTester tester) async {
+  testWidgets('mostra Ieri per notifiche del giorno precedente', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(
       buildTestWidget(
         notification: buildNotification(

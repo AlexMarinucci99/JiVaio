@@ -12,9 +12,7 @@ class FakeAuthRepository implements AuthRepository {
   Object? genericExceptionToThrow;
 
   @override
-  Future<void> sendPasswordResetEmail({
-    required String email,
-  }) async {
+  Future<void> sendPasswordResetEmail({required String email}) async {
     sendPasswordResetEmailCalled = true;
     lastEmail = email;
 
@@ -158,7 +156,10 @@ void main() {
     final result = await viewModel.sendResetLink();
 
     expect(result.isSuccess, isFalse);
-    expect(result.message, 'Troppe richieste in poco tempo. Riprova più tardi.');
+    expect(
+      result.message,
+      'Troppe richieste in poco tempo. Riprova più tardi.',
+    );
     expect(viewModel.isSubmitting, isFalse);
   });
 
@@ -204,10 +205,7 @@ void main() {
     final result = await viewModel.sendResetLink();
 
     expect(result.isSuccess, isFalse);
-    expect(
-      result.message,
-      'Si è verificato un errore imprevisto. Riprova.',
-    );
+    expect(result.message, 'Si è verificato un errore imprevisto. Riprova.');
     expect(viewModel.isSubmitting, isFalse);
   });
 }

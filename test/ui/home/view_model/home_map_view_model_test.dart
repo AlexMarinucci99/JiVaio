@@ -146,31 +146,35 @@ void main() {
     );
   });
 
-  test('locateUser restituisce permissionDenied senza leggere la posizione',
-      () async {
-    locationRepository.accessResult = LocationAccessResult.permissionDenied;
+  test(
+    'locateUser restituisce permissionDenied senza leggere la posizione',
+    () async {
+      locationRepository.accessResult = LocationAccessResult.permissionDenied;
 
-    final result = await viewModel.locateUser();
+      final result = await viewModel.locateUser();
 
-    expect(result, LocationAccessResult.permissionDenied);
-    expect(locationRepository.ensureLocationAccessCalled, isTrue);
-    expect(locationRepository.getCurrentLocationCalled, isFalse);
-    expect(viewModel.isLocating, isFalse);
-    expect(viewModel.userLocation, isNull);
-  });
+      expect(result, LocationAccessResult.permissionDenied);
+      expect(locationRepository.ensureLocationAccessCalled, isTrue);
+      expect(locationRepository.getCurrentLocationCalled, isFalse);
+      expect(viewModel.isLocating, isFalse);
+      expect(viewModel.userLocation, isNull);
+    },
+  );
 
-  test('locateUser restituisce serviceDisabled senza leggere la posizione',
-      () async {
-    locationRepository.accessResult = LocationAccessResult.serviceDisabled;
+  test(
+    'locateUser restituisce serviceDisabled senza leggere la posizione',
+    () async {
+      locationRepository.accessResult = LocationAccessResult.serviceDisabled;
 
-    final result = await viewModel.locateUser();
+      final result = await viewModel.locateUser();
 
-    expect(result, LocationAccessResult.serviceDisabled);
-    expect(locationRepository.ensureLocationAccessCalled, isTrue);
-    expect(locationRepository.getCurrentLocationCalled, isFalse);
-    expect(viewModel.isLocating, isFalse);
-    expect(viewModel.userLocation, isNull);
-  });
+      expect(result, LocationAccessResult.serviceDisabled);
+      expect(locationRepository.ensureLocationAccessCalled, isTrue);
+      expect(locationRepository.getCurrentLocationCalled, isFalse);
+      expect(viewModel.isLocating, isFalse);
+      expect(viewModel.userLocation, isNull);
+    },
+  );
 
   test(
     'locateUser restituisce permissionDeniedForever senza leggere la posizione',

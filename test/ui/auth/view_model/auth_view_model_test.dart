@@ -95,17 +95,20 @@ void main() {
     expect(viewModel.obscurePassword, isTrue);
   });
 
-  test('toggleConfirmPasswordVisibility cambia visibilità conferma password', () {
-    expect(viewModel.obscureConfirmPassword, isTrue);
+  test(
+    'toggleConfirmPasswordVisibility cambia visibilità conferma password',
+    () {
+      expect(viewModel.obscureConfirmPassword, isTrue);
 
-    viewModel.toggleConfirmPasswordVisibility();
+      viewModel.toggleConfirmPasswordVisibility();
 
-    expect(viewModel.obscureConfirmPassword, isFalse);
+      expect(viewModel.obscureConfirmPassword, isFalse);
 
-    viewModel.toggleConfirmPasswordVisibility();
+      viewModel.toggleConfirmPasswordVisibility();
 
-    expect(viewModel.obscureConfirmPassword, isTrue);
-  });
+      expect(viewModel.obscureConfirmPassword, isTrue);
+    },
+  );
 
   test('validateSubmit login fallisce se email o password sono vuote', () {
     final result = viewModel.validateSubmit(
@@ -185,19 +188,22 @@ void main() {
     expect(result.message, 'La password deve contenere almeno 6 caratteri');
   });
 
-  test('validateSubmit registrazione fallisce se le password non coincidono', () {
-    viewModel.setMode(AuthMode.register);
+  test(
+    'validateSubmit registrazione fallisce se le password non coincidono',
+    () {
+      viewModel.setMode(AuthMode.register);
 
-    final result = viewModel.validateSubmit(
-      name: 'Mario Rossi',
-      email: 'utente@test.it',
-      password: 'password123',
-      confirmPassword: 'password456',
-    );
+      final result = viewModel.validateSubmit(
+        name: 'Mario Rossi',
+        email: 'utente@test.it',
+        password: 'password123',
+        confirmPassword: 'password456',
+      );
 
-    expect(result.isValid, isFalse);
-    expect(result.message, 'Le password non coincidono');
-  });
+      expect(result.isValid, isFalse);
+      expect(result.message, 'Le password non coincidono');
+    },
+  );
 
   test('validateSubmit registrazione passa con dati validi', () {
     viewModel.setMode(AuthMode.register);
@@ -213,11 +219,14 @@ void main() {
     expect(result.message, isNull);
   });
 
-  test('socialLoginMessage restituisce messaggio funzione non implementata', () {
-    final message = viewModel.socialLoginMessage('Google');
+  test(
+    'socialLoginMessage restituisce messaggio funzione non implementata',
+    () {
+      final message = viewModel.socialLoginMessage('Google');
 
-    expect(message, 'Accesso con Google non ancora implementato');
-  });
+      expect(message, 'Accesso con Google non ancora implementato');
+    },
+  );
 
   test('submit non chiama il repository se la validazione fallisce', () async {
     final result = await viewModel.submit(

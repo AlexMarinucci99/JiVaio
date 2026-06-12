@@ -13,10 +13,7 @@ class FakeAuthRepository implements AuthRepository {
   String? lastName;
 
   @override
-  Future<void> login({
-    required String email,
-    required String password,
-  }) async {
+  Future<void> login({required String email, required String password}) async {
     loginCalled = true;
     lastEmail = email;
     lastPassword = password;
@@ -54,9 +51,7 @@ void main() {
         return MaterialPageRoute<void>(
           builder: (_) {
             return const Scaffold(
-              body: Center(
-                child: Text('Reset Password Test'),
-              ),
+              body: Center(child: Text('Reset Password Test')),
             );
           },
         );
@@ -78,15 +73,12 @@ void main() {
     await tester.pump();
   }
 
-  testWidgets('mostra la schermata iniziale in modalità login',
-      (WidgetTester tester) async {
+  testWidgets('mostra la schermata iniziale in modalità login', (
+    WidgetTester tester,
+  ) async {
     final authRepository = FakeAuthRepository();
 
-    await tester.pumpWidget(
-      buildTestWidget(
-        authRepository: authRepository,
-      ),
-    );
+    await tester.pumpWidget(buildTestWidget(authRepository: authRepository));
 
     expect(find.text('Come vuoi continuare?'), findsOneWidget);
     expect(find.text('Bentornato'), findsOneWidget);
@@ -100,15 +92,12 @@ void main() {
     expect(find.text('Continua come ospite'), findsOneWidget);
   });
 
-  testWidgets('passa dalla modalità login alla modalità registrazione',
-      (WidgetTester tester) async {
+  testWidgets('passa dalla modalità login alla modalità registrazione', (
+    WidgetTester tester,
+  ) async {
     final authRepository = FakeAuthRepository();
 
-    await tester.pumpWidget(
-      buildTestWidget(
-        authRepository: authRepository,
-      ),
-    );
+    await tester.pumpWidget(buildTestWidget(authRepository: authRepository));
 
     await tapVisibleText(tester, 'Registrati');
 
@@ -123,8 +112,9 @@ void main() {
     expect(find.text('Conferma password'), findsOneWidget);
   });
 
-  testWidgets('continua come ospite quando viene premuto il bottone guest',
-      (WidgetTester tester) async {
+  testWidgets('continua come ospite quando viene premuto il bottone guest', (
+    WidgetTester tester,
+  ) async {
     final authRepository = FakeAuthRepository();
     var guestCalled = false;
 
@@ -142,15 +132,12 @@ void main() {
     expect(guestCalled, isTrue);
   });
 
-  testWidgets('mostra snackbar quando si preme login con Google',
-      (WidgetTester tester) async {
+  testWidgets('mostra snackbar quando si preme login con Google', (
+    WidgetTester tester,
+  ) async {
     final authRepository = FakeAuthRepository();
 
-    await tester.pumpWidget(
-      buildTestWidget(
-        authRepository: authRepository,
-      ),
-    );
+    await tester.pumpWidget(buildTestWidget(authRepository: authRepository));
 
     await tapVisibleText(tester, 'Google');
     await tester.pump();
@@ -161,15 +148,10 @@ void main() {
     );
   });
 
-  testWidgets('apre la schermata reset password',
-      (WidgetTester tester) async {
+  testWidgets('apre la schermata reset password', (WidgetTester tester) async {
     final authRepository = FakeAuthRepository();
 
-    await tester.pumpWidget(
-      buildTestWidget(
-        authRepository: authRepository,
-      ),
-    );
+    await tester.pumpWidget(buildTestWidget(authRepository: authRepository));
 
     await tapVisibleText(tester, 'Password dimenticata?');
     await tester.pumpAndSettle();
@@ -177,30 +159,17 @@ void main() {
     expect(find.text('Reset Password Test'), findsOneWidget);
   });
 
-  testWidgets('invia login con email e password valide',
-      (WidgetTester tester) async {
+  testWidgets('invia login con email e password valide', (
+    WidgetTester tester,
+  ) async {
     final authRepository = FakeAuthRepository();
 
-    await tester.pumpWidget(
-      buildTestWidget(
-        authRepository: authRepository,
-      ),
-    );
+    await tester.pumpWidget(buildTestWidget(authRepository: authRepository));
 
-    await tester.enterText(
-      find.byType(TextField).at(0),
-      'utente@jivaio.it',
-    );
-    await tester.enterText(
-      find.byType(TextField).at(1),
-      'password123',
-    );
+    await tester.enterText(find.byType(TextField).at(0), 'utente@jivaio.it');
+    await tester.enterText(find.byType(TextField).at(1), 'password123');
 
-    await tapVisibleText(
-      tester,
-      'Accedi',
-      last: true,
-    );
+    await tapVisibleText(tester, 'Accedi', last: true);
 
     await tester.pump();
 
@@ -209,40 +178,21 @@ void main() {
     expect(authRepository.lastPassword, 'password123');
   });
 
-  testWidgets('invia registrazione con dati validi',
-      (WidgetTester tester) async {
+  testWidgets('invia registrazione con dati validi', (
+    WidgetTester tester,
+  ) async {
     final authRepository = FakeAuthRepository();
 
-    await tester.pumpWidget(
-      buildTestWidget(
-        authRepository: authRepository,
-      ),
-    );
+    await tester.pumpWidget(buildTestWidget(authRepository: authRepository));
 
     await tapVisibleText(tester, 'Registrati');
 
-    await tester.enterText(
-      find.byType(TextField).at(0),
-      'Mario Rossi',
-    );
-    await tester.enterText(
-      find.byType(TextField).at(1),
-      'mario@jivaio.it',
-    );
-    await tester.enterText(
-      find.byType(TextField).at(2),
-      'password123',
-    );
-    await tester.enterText(
-      find.byType(TextField).at(3),
-      'password123',
-    );
+    await tester.enterText(find.byType(TextField).at(0), 'Mario Rossi');
+    await tester.enterText(find.byType(TextField).at(1), 'mario@jivaio.it');
+    await tester.enterText(find.byType(TextField).at(2), 'password123');
+    await tester.enterText(find.byType(TextField).at(3), 'password123');
 
-    await tapVisibleText(
-      tester,
-      'Registrati',
-      last: true,
-    );
+    await tapVisibleText(tester, 'Registrati', last: true);
 
     await tester.pump();
 

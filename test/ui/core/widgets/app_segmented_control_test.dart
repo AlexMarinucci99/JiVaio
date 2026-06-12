@@ -15,10 +15,7 @@ void main() {
             selectedValue: selectedValue,
             onChanged: onChanged,
             items: const [
-              AppSegmentedControlItem<String>(
-                value: 'all',
-                label: 'Tutte',
-              ),
+              AppSegmentedControlItem<String>(value: 'all', label: 'Tutte'),
               AppSegmentedControlItem<String>(
                 value: 'saved',
                 label: 'Salvate',
@@ -36,13 +33,11 @@ void main() {
     );
   }
 
-  testWidgets('mostra tutte le opzioni del segmented control',
-      (WidgetTester tester) async {
+  testWidgets('mostra tutte le opzioni del segmented control', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(
-      buildTestWidget(
-        selectedValue: 'all',
-        onChanged: (_) {},
-      ),
+      buildTestWidget(selectedValue: 'all', onChanged: (_) {}),
     );
 
     expect(find.text('Tutte'), findsOneWidget);
@@ -51,59 +46,62 @@ void main() {
     expect(find.byType(TextButton), findsNWidgets(3));
   });
 
-  testWidgets('mostra i badge delle opzioni che hanno badgeLabel',
-      (WidgetTester tester) async {
+  testWidgets('mostra i badge delle opzioni che hanno badgeLabel', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(
-      buildTestWidget(
-        selectedValue: 'all',
-        onChanged: (_) {},
-      ),
+      buildTestWidget(selectedValue: 'all', onChanged: (_) {}),
     );
 
     expect(find.text('2'), findsOneWidget);
     expect(find.text('5'), findsOneWidget);
   });
 
-  testWidgets('chiama onChanged quando viene premuta una voce non selezionata',
-      (WidgetTester tester) async {
-    String? selectedValue;
+  testWidgets(
+    'chiama onChanged quando viene premuta una voce non selezionata',
+    (WidgetTester tester) async {
+      String? selectedValue;
 
-    await tester.pumpWidget(
-      buildTestWidget(
-        selectedValue: 'all',
-        onChanged: (value) {
-          selectedValue = value;
-        },
-      ),
-    );
+      await tester.pumpWidget(
+        buildTestWidget(
+          selectedValue: 'all',
+          onChanged: (value) {
+            selectedValue = value;
+          },
+        ),
+      );
 
-    await tester.tap(find.text('Salvate'));
-    await tester.pump();
+      await tester.tap(find.text('Salvate'));
+      await tester.pump();
 
-    expect(selectedValue, 'saved');
-  });
+      expect(selectedValue, 'saved');
+    },
+  );
 
-  testWidgets('non chiama onChanged quando viene premuta la voce già selezionata',
-      (WidgetTester tester) async {
-    String? selectedValue;
+  testWidgets(
+    'non chiama onChanged quando viene premuta la voce già selezionata',
+    (WidgetTester tester) async {
+      String? selectedValue;
 
-    await tester.pumpWidget(
-      buildTestWidget(
-        selectedValue: 'all',
-        onChanged: (value) {
-          selectedValue = value;
-        },
-      ),
-    );
+      await tester.pumpWidget(
+        buildTestWidget(
+          selectedValue: 'all',
+          onChanged: (value) {
+            selectedValue = value;
+          },
+        ),
+      );
 
-    await tester.tap(find.text('Tutte'));
-    await tester.pump();
+      await tester.tap(find.text('Tutte'));
+      await tester.pump();
 
-    expect(selectedValue, isNull);
-  });
+      expect(selectedValue, isNull);
+    },
+  );
 
-  testWidgets('chiama onChanged con il valore corretto della terza voce',
-      (WidgetTester tester) async {
+  testWidgets('chiama onChanged con il valore corretto della terza voce', (
+    WidgetTester tester,
+  ) async {
     String? selectedValue;
 
     await tester.pumpWidget(
@@ -127,10 +125,7 @@ void main() {
         selectedValue: 'all',
         onChanged: (_) {},
         items: const [
-          AppSegmentedControlItem<String>(
-            value: 'all',
-            label: 'Tutte',
-          ),
+          AppSegmentedControlItem<String>(value: 'all', label: 'Tutte'),
         ],
       ),
       throwsAssertionError,

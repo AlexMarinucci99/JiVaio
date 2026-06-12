@@ -11,35 +11,24 @@ void main() {
     return MaterialApp(
       home: Scaffold(
         body: Center(
-          child: LineSaveButton(
-            isSaved: isSaved,
-            onPressed: onPressed,
-          ),
+          child: LineSaveButton(isSaved: isSaved, onPressed: onPressed),
         ),
       ),
     );
   }
 
-  testWidgets('mostra cuore vuoto quando la linea non è salvata',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(
-        isSaved: false,
-        onPressed: () {},
-      ),
-    );
+  testWidgets('mostra cuore vuoto quando la linea non è salvata', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(buildTestWidget(isSaved: false, onPressed: () {}));
 
     expect(find.byIcon(Icons.favorite_border_rounded), findsOneWidget);
   });
 
-  testWidgets('mostra cuore pieno quando la linea è salvata',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(
-        isSaved: true,
-        onPressed: () {},
-      ),
-    );
+  testWidgets('mostra cuore pieno quando la linea è salvata', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(buildTestWidget(isSaved: true, onPressed: () {}));
 
     expect(find.byIcon(Icons.favorite_rounded), findsOneWidget);
   });

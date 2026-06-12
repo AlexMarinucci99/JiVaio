@@ -28,8 +28,9 @@ void main() {
     );
   }
 
-  testWidgets('mostra label e icona del campo input',
-      (WidgetTester tester) async {
+  testWidgets('mostra label e icona del campo input', (
+    WidgetTester tester,
+  ) async {
     final controller = TextEditingController();
     addTearDown(controller.dispose);
 
@@ -46,8 +47,9 @@ void main() {
     expect(find.byType(TextField), findsOneWidget);
   });
 
-  testWidgets('aggiorna il controller quando viene inserito testo',
-      (WidgetTester tester) async {
+  testWidgets('aggiorna il controller quando viene inserito testo', (
+    WidgetTester tester,
+  ) async {
     final controller = TextEditingController();
     addTearDown(controller.dispose);
 
@@ -66,8 +68,9 @@ void main() {
     expect(controller.text, 'test@email.com');
   });
 
-  testWidgets('usa obscureText quando il campo è una password',
-      (WidgetTester tester) async {
+  testWidgets('usa obscureText quando il campo è una password', (
+    WidgetTester tester,
+  ) async {
     final controller = TextEditingController();
     addTearDown(controller.dispose);
 
@@ -87,8 +90,9 @@ void main() {
     expect(find.byIcon(Icons.lock_outline), findsOneWidget);
   });
 
-  testWidgets('mostra la suffix icon quando viene fornita',
-      (WidgetTester tester) async {
+  testWidgets('mostra la suffix icon quando viene fornita', (
+    WidgetTester tester,
+  ) async {
     final controller = TextEditingController();
     addTearDown(controller.dispose);
 

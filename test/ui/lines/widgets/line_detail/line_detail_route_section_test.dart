@@ -53,28 +53,23 @@ void main() {
     );
   }
 
-  testWidgets('mostra titolo e descrizione quando la selezione è disabilitata',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(
-        isStopSelectionEnabled: false,
-      ),
-    );
+  testWidgets(
+    'mostra titolo e descrizione quando la selezione è disabilitata',
+    (WidgetTester tester) async {
+      await tester.pumpWidget(buildTestWidget(isStopSelectionEnabled: false));
 
-    expect(find.text('Percorso completo'), findsOneWidget);
-    expect(
-      find.text('Fermate ordinate della direzione selezionata.'),
-      findsOneWidget,
-    );
-  });
+      expect(find.text('Percorso completo'), findsOneWidget);
+      expect(
+        find.text('Fermate ordinate della direzione selezionata.'),
+        findsOneWidget,
+      );
+    },
+  );
 
-  testWidgets('mostra descrizione per la selezione fermata quando abilitata',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(
-        isStopSelectionEnabled: true,
-      ),
-    );
+  testWidgets('mostra descrizione per la selezione fermata quando abilitata', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(buildTestWidget(isStopSelectionEnabled: true));
 
     expect(
       find.text('Seleziona la fermata da cui vuoi inviare la segnalazione.'),
@@ -82,11 +77,8 @@ void main() {
     );
   });
 
-  testWidgets('mostra una tile per ogni fermata',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(),
-    );
+  testWidgets('mostra una tile per ogni fermata', (WidgetTester tester) async {
+    await tester.pumpWidget(buildTestWidget());
 
     expect(find.byType(LineDetailStopTile), findsNWidgets(3));
 
@@ -95,61 +87,59 @@ void main() {
     expect(find.text('Università'), findsOneWidget);
   });
 
-  testWidgets('mostra gli orari ufficiali delle fermate',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(),
-    );
+  testWidgets('mostra gli orari ufficiali delle fermate', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(buildTestWidget());
 
     expect(find.text('08:10'), findsOneWidget);
     expect(find.text('08:18'), findsOneWidget);
     expect(find.text('08:32'), findsOneWidget);
   });
 
-  testWidgets('marca la prima fermata come Partenza e l’ultima come Capolinea',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(),
-    );
+  testWidgets(
+    'marca la prima fermata come Partenza e l’ultima come Capolinea',
+    (WidgetTester tester) async {
+      await tester.pumpWidget(buildTestWidget());
 
-    expect(find.text('Partenza'), findsOneWidget);
-    expect(find.text('Capolinea'), findsOneWidget);
-  });
+      expect(find.text('Partenza'), findsOneWidget);
+      expect(find.text('Capolinea'), findsOneWidget);
+    },
+  );
 
-  testWidgets('mostra la fermata selezionata',
-      (WidgetTester tester) async {
+  testWidgets('mostra la fermata selezionata', (WidgetTester tester) async {
     await tester.pumpWidget(
-      buildTestWidget(
-        selectedStopId: 'stop-2',
-        isStopSelectionEnabled: true,
-      ),
+      buildTestWidget(selectedStopId: 'stop-2', isStopSelectionEnabled: true),
     );
 
     expect(find.text('Selezionata'), findsOneWidget);
     expect(find.text('Fontana Luminosa'), findsOneWidget);
   });
 
-  testWidgets('esegue onStopSelected con lo stopId corretto quando la selezione è abilitata',
-      (WidgetTester tester) async {
-    String? selectedStopId;
+  testWidgets(
+    'esegue onStopSelected con lo stopId corretto quando la selezione è abilitata',
+    (WidgetTester tester) async {
+      String? selectedStopId;
 
-    await tester.pumpWidget(
-      buildTestWidget(
-        isStopSelectionEnabled: true,
-        onStopSelected: (stopId) {
-          selectedStopId = stopId;
-        },
-      ),
-    );
+      await tester.pumpWidget(
+        buildTestWidget(
+          isStopSelectionEnabled: true,
+          onStopSelected: (stopId) {
+            selectedStopId = stopId;
+          },
+        ),
+      );
 
-    await tester.tap(find.text('Fontana Luminosa'));
-    await tester.pump();
+      await tester.tap(find.text('Fontana Luminosa'));
+      await tester.pump();
 
-    expect(selectedStopId, 'stop-2');
-  });
+      expect(selectedStopId, 'stop-2');
+    },
+  );
 
-  testWidgets('non esegue onStopSelected quando la selezione è disabilitata',
-      (WidgetTester tester) async {
+  testWidgets('non esegue onStopSelected quando la selezione è disabilitata', (
+    WidgetTester tester,
+  ) async {
     String? selectedStopId;
 
     await tester.pumpWidget(
@@ -167,13 +157,10 @@ void main() {
     expect(selectedStopId, isNull);
   });
 
-  testWidgets('mostra messaggio vuoto quando non ci sono fermate',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(
-        stops: const [],
-      ),
-    );
+  testWidgets('mostra messaggio vuoto quando non ci sono fermate', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(buildTestWidget(stops: const []));
 
     expect(find.byType(LineDetailStopTile), findsNothing);
     expect(
@@ -182,11 +169,10 @@ void main() {
     );
   });
 
-  testWidgets('assegna una ValueKey a ogni fermata',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(),
-    );
+  testWidgets('assegna una ValueKey a ogni fermata', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(buildTestWidget());
 
     expect(find.byKey(const ValueKey('stop-1')), findsOneWidget);
     expect(find.byKey(const ValueKey('stop-2')), findsOneWidget);

@@ -37,8 +37,9 @@ void main() {
     expect(find.byType(OutlinedButton), findsNWidgets(3));
   });
 
-  testWidgets('esegue la callback Google quando viene premuto Google',
-      (WidgetTester tester) async {
+  testWidgets('esegue la callback Google quando viene premuto Google', (
+    WidgetTester tester,
+  ) async {
     var googlePressed = false;
 
     await tester.pumpWidget(
@@ -57,8 +58,9 @@ void main() {
     expect(googlePressed, isTrue);
   });
 
-  testWidgets('esegue la callback Apple quando viene premuto Apple',
-      (WidgetTester tester) async {
+  testWidgets('esegue la callback Apple quando viene premuto Apple', (
+    WidgetTester tester,
+  ) async {
     var applePressed = false;
 
     await tester.pumpWidget(
@@ -77,8 +79,9 @@ void main() {
     expect(applePressed, isTrue);
   });
 
-  testWidgets('esegue la callback Facebook quando viene premuto Facebook',
-      (WidgetTester tester) async {
+  testWidgets('esegue la callback Facebook quando viene premuto Facebook', (
+    WidgetTester tester,
+  ) async {
     var facebookPressed = false;
 
     await tester.pumpWidget(

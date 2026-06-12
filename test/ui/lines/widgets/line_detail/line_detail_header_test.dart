@@ -26,9 +26,7 @@ const testLine = TransitLine(
   displayName: 'Linea 1',
   routeLongName: 'Terminal Bus - Università',
   routeColor: '0B7A55',
-  directions: [
-    testDirection,
-  ],
+  directions: [testDirection],
 );
 
 const testUnidirectionalLine = TransitLine(
@@ -37,9 +35,7 @@ const testUnidirectionalLine = TransitLine(
   displayName: 'Linea 2U',
   routeLongName: 'Direzione unica',
   routeColor: '2563EB',
-  directions: [
-    testDirection,
-  ],
+  directions: [testDirection],
 );
 
 void main() {
@@ -68,11 +64,10 @@ void main() {
     );
   }
 
-  testWidgets('mostra le informazioni principali della linea',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(),
-    );
+  testWidgets('mostra le informazioni principali della linea', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(buildTestWidget());
 
     expect(find.text('1'), findsOneWidget);
     expect(find.text('Linea 1'), findsOneWidget);
@@ -84,19 +79,20 @@ void main() {
     expect(find.text('Università'), findsOneWidget);
   });
 
-  testWidgets('mostra il testo singolare quando la direzione ha una sola fermata',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(
-        direction: testSingleStopDirection,
-      ),
-    );
+  testWidgets(
+    'mostra il testo singolare quando la direzione ha una sola fermata',
+    (WidgetTester tester) async {
+      await tester.pumpWidget(
+        buildTestWidget(direction: testSingleStopDirection),
+      );
 
-    expect(find.text('1 fermata'), findsOneWidget);
-  });
+      expect(find.text('1 fermata'), findsOneWidget);
+    },
+  );
 
-  testWidgets('esegue onClose quando viene premuto il bottone indietro',
-      (WidgetTester tester) async {
+  testWidgets('esegue onClose quando viene premuto il bottone indietro', (
+    WidgetTester tester,
+  ) async {
     var closeCalled = false;
 
     await tester.pumpWidget(
@@ -113,27 +109,30 @@ void main() {
     expect(closeCalled, isTrue);
   });
 
-  testWidgets('esegue onSwapDirection quando il cambio direzione è disponibile',
-      (WidgetTester tester) async {
-    var swapCalled = false;
+  testWidgets(
+    'esegue onSwapDirection quando il cambio direzione è disponibile',
+    (WidgetTester tester) async {
+      var swapCalled = false;
 
-    await tester.pumpWidget(
-      buildTestWidget(
-        canSwapDirection: true,
-        onSwapDirection: () {
-          swapCalled = true;
-        },
-      ),
-    );
+      await tester.pumpWidget(
+        buildTestWidget(
+          canSwapDirection: true,
+          onSwapDirection: () {
+            swapCalled = true;
+          },
+        ),
+      );
 
-    await tester.tap(find.byTooltip('Inverti direzione'));
-    await tester.pump();
+      await tester.tap(find.byTooltip('Inverti direzione'));
+      await tester.pump();
 
-    expect(swapCalled, isTrue);
-  });
+      expect(swapCalled, isTrue);
+    },
+  );
 
-  testWidgets('non esegue onSwapDirection quando canSwapDirection è false',
-      (WidgetTester tester) async {
+  testWidgets('non esegue onSwapDirection quando canSwapDirection è false', (
+    WidgetTester tester,
+  ) async {
     var swapCalled = false;
 
     await tester.pumpWidget(
@@ -153,8 +152,9 @@ void main() {
     expect(swapCalled, isFalse);
   });
 
-  testWidgets('non esegue onSwapDirection per una linea a direzione unica',
-      (WidgetTester tester) async {
+  testWidgets('non esegue onSwapDirection per una linea a direzione unica', (
+    WidgetTester tester,
+  ) async {
     var swapCalled = false;
 
     await tester.pumpWidget(
@@ -176,13 +176,10 @@ void main() {
     expect(swapCalled, isFalse);
   });
 
-  testWidgets('mostra messaggio quando la direzione non è disponibile',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(
-        direction: null,
-      ),
-    );
+  testWidgets('mostra messaggio quando la direzione non è disponibile', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(buildTestWidget(direction: null));
 
     expect(find.text('Direzione non disponibile'), findsOneWidget);
     expect(find.text('Partenza'), findsNothing);

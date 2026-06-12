@@ -9,32 +9,25 @@ void main() {
     required Future<void> Function() onLogout,
   }) {
     return MaterialApp(
-      home: SettingsScreen(
-        isGuest: isGuest,
-        onLogout: onLogout,
-      ),
+      home: SettingsScreen(isGuest: isGuest, onLogout: onLogout),
     );
   }
 
-  testWidgets('mostra il titolo della schermata impostazioni',
-      (WidgetTester tester) async {
+  testWidgets('mostra il titolo della schermata impostazioni', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(
-      buildTestWidget(
-        isGuest: false,
-        onLogout: () async {},
-      ),
+      buildTestWidget(isGuest: false, onLogout: () async {}),
     );
 
     expect(find.text('Impostazioni'), findsOneWidget);
   });
 
-  testWidgets('mostra Logout quando utente non è guest',
-      (WidgetTester tester) async {
+  testWidgets('mostra Logout quando utente non è guest', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(
-      buildTestWidget(
-        isGuest: false,
-        onLogout: () async {},
-      ),
+      buildTestWidget(isGuest: false, onLogout: () async {}),
     );
 
     expect(find.text('Logout'), findsOneWidget);
@@ -44,13 +37,11 @@ void main() {
     expect(find.byIcon(Icons.login_rounded), findsNothing);
   });
 
-  testWidgets('mostra Accedi o registrati quando utente è guest',
-      (WidgetTester tester) async {
+  testWidgets('mostra Accedi o registrati quando utente è guest', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(
-      buildTestWidget(
-        isGuest: true,
-        onLogout: () async {},
-      ),
+      buildTestWidget(isGuest: true, onLogout: () async {}),
     );
 
     expect(find.text('Accedi o registrati'), findsOneWidget);
@@ -60,8 +51,9 @@ void main() {
     expect(find.byIcon(Icons.logout_rounded), findsNothing);
   });
 
-  testWidgets('esegue onLogout quando si preme Logout',
-      (WidgetTester tester) async {
+  testWidgets('esegue onLogout quando si preme Logout', (
+    WidgetTester tester,
+  ) async {
     var logoutCalled = false;
 
     await tester.pumpWidget(
@@ -79,8 +71,9 @@ void main() {
     expect(logoutCalled, isTrue);
   });
 
-  testWidgets('esegue onLogout quando il guest preme Accedi o registrati',
-      (WidgetTester tester) async {
+  testWidgets('esegue onLogout quando il guest preme Accedi o registrati', (
+    WidgetTester tester,
+  ) async {
     var logoutCalled = false;
 
     await tester.pumpWidget(
@@ -98,13 +91,11 @@ void main() {
     expect(logoutCalled, isTrue);
   });
 
-  testWidgets('usa TextButton.icon come azione principale',
-      (WidgetTester tester) async {
+  testWidgets('usa TextButton.icon come azione principale', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(
-      buildTestWidget(
-        isGuest: false,
-        onLogout: () async {},
-      ),
+      buildTestWidget(isGuest: false, onLogout: () async {}),
     );
 
     expect(find.byType(TextButton), findsOneWidget);

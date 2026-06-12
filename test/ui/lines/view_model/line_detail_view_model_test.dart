@@ -5,10 +5,7 @@ import 'package:jivaio/domain/models/transit_line.dart';
 import 'package:jivaio/ui/lines/view_model/line_detail_view_model.dart';
 
 class FakeTransitRepository implements TransitRepository {
-  FakeTransitRepository({
-    this.schedule,
-    this.shouldThrow = false,
-  });
+  FakeTransitRepository({this.schedule, this.shouldThrow = false});
 
   TransitLineDirectionSchedule? schedule;
   bool shouldThrow;
@@ -18,18 +15,18 @@ class FakeTransitRepository implements TransitRepository {
   TransitLineDirection? lastDirection;
   DateTime? lastMoment;
 
- @override
-Future<TransitLineDirectionSchedule> getLineDirectionSchedule({
-  required TransitLine line,
-  required TransitLineDirection direction,
-  DateTime? moment,
-}) async {
+  @override
+  Future<TransitLineDirectionSchedule> getLineDirectionSchedule({
+    required TransitLine line,
+    required TransitLineDirection direction,
+    DateTime? moment,
+  }) async {
     getScheduleCallCount++;
-lastLine = line;
-lastDirection = direction;
+    lastLine = line;
+    lastDirection = direction;
 
-final selectedMoment = moment ?? DateTime.now();
-lastMoment = selectedMoment;
+    final selectedMoment = moment ?? DateTime.now();
+    lastMoment = selectedMoment;
 
     if (shouldThrow) {
       throw Exception('Errore test schedule');
@@ -41,10 +38,7 @@ lastMoment = selectedMoment;
           directionKey: direction.key,
           timeRangeLabel: _formatHourRange(selectedMoment.hour),
           departures: const [
-            TransitLineDeparture(
-              tripId: 'trip-1',
-              departureTime: '08:10',
-            ),
+            TransitLineDeparture(tripId: 'trip-1', departureTime: '08:10'),
           ],
           stops: const [
             TransitLineStop(
@@ -100,10 +94,7 @@ void main() {
     displayName: 'Linea 1',
     routeLongName: 'Terminal Bus - Università',
     routeColor: '0B7A55',
-    directions: [
-      outboundDirection,
-      returnDirection,
-    ],
+    directions: [outboundDirection, returnDirection],
   );
 
   LineDetailViewModel buildViewModel({
@@ -157,9 +148,7 @@ void main() {
 
     test('loadSchedule carica partenze e fermate dal repository', () async {
       final repository = FakeTransitRepository();
-      final viewModel = buildViewModel(
-        repository: repository,
-      );
+      final viewModel = buildViewModel(repository: repository);
 
       await viewModel.loadSchedule();
 
@@ -179,30 +168,28 @@ void main() {
       viewModel.dispose();
     });
 
-    test('loadSchedule espone messaggio errore se il repository fallisce',
-        () async {
-      final repository = FakeTransitRepository(
-        shouldThrow: true,
-      );
+    test(
+      'loadSchedule espone messaggio errore se il repository fallisce',
+      () async {
+        final repository = FakeTransitRepository(shouldThrow: true);
 
-      final viewModel = buildViewModel(
-        repository: repository,
-      );
+        final viewModel = buildViewModel(repository: repository);
 
-      await viewModel.loadSchedule();
+        await viewModel.loadSchedule();
 
-      expect(repository.getScheduleCallCount, 1);
-      expect(viewModel.schedule, isNull);
-      expect(viewModel.departures, isEmpty);
-      expect(viewModel.stops, isEmpty);
-      expect(viewModel.isLoadingSchedule, isFalse);
-      expect(
-        viewModel.errorMessage,
-        'Impossibile caricare partenze e fermate.',
-      );
+        expect(repository.getScheduleCallCount, 1);
+        expect(viewModel.schedule, isNull);
+        expect(viewModel.departures, isEmpty);
+        expect(viewModel.stops, isEmpty);
+        expect(viewModel.isLoadingSchedule, isFalse);
+        expect(
+          viewModel.errorMessage,
+          'Impossibile caricare partenze e fermate.',
+        );
 
-      viewModel.dispose();
-    });
+        viewModel.dispose();
+      },
+    );
 
     test('loadSchedule gestisce linea senza direzioni', () async {
       const lineWithoutDirections = TransitLine(
@@ -233,9 +220,7 @@ void main() {
 
     test('toggleDirection cambia direzione e ricarica lo schedule', () async {
       final repository = FakeTransitRepository();
-      final viewModel = buildViewModel(
-        repository: repository,
-      );
+      final viewModel = buildViewModel(repository: repository);
 
       await viewModel.loadSchedule();
 
@@ -252,82 +237,79 @@ void main() {
       viewModel.dispose();
     });
 
-    test('toggleDirection non cambia nulla per linea unidirezionale 2U',
-        () async {
-      const oneWayLine = TransitLine(
-        routeId: 'line-2u',
-        shortName: '2U',
-        displayName: 'Linea 2U',
-        routeLongName: 'Linea universitaria',
-        routeColor: '0B7A55',
-        directions: [
-          outboundDirection,
-          returnDirection,
-        ],
-      );
+    test(
+      'toggleDirection non cambia nulla per linea unidirezionale 2U',
+      () async {
+        const oneWayLine = TransitLine(
+          routeId: 'line-2u',
+          shortName: '2U',
+          displayName: 'Linea 2U',
+          routeLongName: 'Linea universitaria',
+          routeColor: '0B7A55',
+          directions: [outboundDirection, returnDirection],
+        );
 
-      final repository = FakeTransitRepository();
+        final repository = FakeTransitRepository();
 
-      final viewModel = buildViewModel(
-        line: oneWayLine,
-        repository: repository,
-      );
+        final viewModel = buildViewModel(
+          line: oneWayLine,
+          repository: repository,
+        );
 
-      expect(viewModel.canSwapDirection, isTrue);
-      expect(viewModel.canToggleDirection, isFalse);
+        expect(viewModel.canSwapDirection, isTrue);
+        expect(viewModel.canToggleDirection, isFalse);
 
-      await viewModel.toggleDirection();
+        await viewModel.toggleDirection();
 
-      expect(viewModel.selectedDirectionIndex, 0);
-      expect(repository.getScheduleCallCount, 0);
+        expect(viewModel.selectedDirectionIndex, 0);
+        expect(repository.getScheduleCallCount, 0);
 
-      viewModel.dispose();
-    });
+        viewModel.dispose();
+      },
+    );
 
-    test('selectManualHour imposta ora manuale e ricarica lo schedule',
-        () async {
-      final repository = FakeTransitRepository();
-      final viewModel = buildViewModel(
-        repository: repository,
-      );
+    test(
+      'selectManualHour imposta ora manuale e ricarica lo schedule',
+      () async {
+        final repository = FakeTransitRepository();
+        final viewModel = buildViewModel(repository: repository);
 
-      await viewModel.selectManualHour(14);
+        await viewModel.selectManualHour(14);
 
-      expect(viewModel.isAutomaticTime, isFalse);
-      expect(viewModel.selectedManualHour, 14);
-      expect(viewModel.timeRangeLabel, '14:00 - 15:00');
-      expect(repository.lastMoment?.hour, 14);
-      expect(repository.getScheduleCallCount, 1);
+        expect(viewModel.isAutomaticTime, isFalse);
+        expect(viewModel.selectedManualHour, 14);
+        expect(viewModel.timeRangeLabel, '14:00 - 15:00');
+        expect(repository.lastMoment?.hour, 14);
+        expect(repository.getScheduleCallCount, 1);
 
-      viewModel.dispose();
-    });
+        viewModel.dispose();
+      },
+    );
 
-    test('selectAutomaticTime torna alla modalità automatica e ricarica',
-        () async {
-      final repository = FakeTransitRepository();
-      final viewModel = buildViewModel(
-        repository: repository,
-      );
+    test(
+      'selectAutomaticTime torna alla modalità automatica e ricarica',
+      () async {
+        final repository = FakeTransitRepository();
+        final viewModel = buildViewModel(repository: repository);
 
-      await viewModel.selectManualHour(14);
+        await viewModel.selectManualHour(14);
 
-      expect(viewModel.isAutomaticTime, isFalse);
-      expect(viewModel.selectedManualHour, 14);
+        expect(viewModel.isAutomaticTime, isFalse);
+        expect(viewModel.selectedManualHour, 14);
 
-      await viewModel.selectAutomaticTime();
+        await viewModel.selectAutomaticTime();
 
-      expect(viewModel.isAutomaticTime, isTrue);
-      expect(viewModel.selectedManualHour, isNull);
-      expect(repository.getScheduleCallCount, 2);
+        expect(viewModel.isAutomaticTime, isTrue);
+        expect(viewModel.selectedManualHour, isNull);
+        expect(repository.getScheduleCallCount, 2);
 
-      viewModel.dispose();
-    });
+        viewModel.dispose();
+      },
+    );
 
     test('notifica i listener durante loadSchedule', () async {
       final repository = FakeTransitRepository();
-      final viewModel = buildViewModel(
-        repository: repository,
-      );
+      final viewModel = buildViewModel(repository: repository);
 
       var notifyCount = 0;
 

@@ -63,47 +63,38 @@ void main() {
     );
   }
 
-  testWidgets('mostra sempre la campanella notifiche',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(),
-    );
+  testWidgets('mostra sempre la campanella notifiche', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(buildTestWidget());
 
     expect(find.byType(NotificationBellButton), findsOneWidget);
     expect(find.byIcon(Icons.notifications_none_rounded), findsOneWidget);
   });
 
-  testWidgets('mostra il badge con il numero di notifiche non lette',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(
-        unreadCount: 3,
-      ),
-    );
+  testWidgets('mostra il badge con il numero di notifiche non lette', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(buildTestWidget(unreadCount: 3));
 
     expect(find.byType(NotificationBellButton), findsOneWidget);
     expect(find.text('3'), findsOneWidget);
   });
 
-  testWidgets('non mostra il pannello quando isPanelOpen è false',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(
-        isPanelOpen: false,
-      ),
-    );
+  testWidgets('non mostra il pannello quando isPanelOpen è false', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(buildTestWidget(isPanelOpen: false));
 
     expect(find.byType(NotificationCenterPanel), findsNothing);
     expect(find.text('Notifiche'), findsNothing);
   });
 
-  testWidgets('mostra il pannello quando isPanelOpen è true',
-      (WidgetTester tester) async {
+  testWidgets('mostra il pannello quando isPanelOpen è true', (
+    WidgetTester tester,
+  ) async {
     final notifications = [
-      buildNotification(
-        id: 'notification-1',
-        title: 'Ritardo linea 1',
-      ),
+      buildNotification(id: 'notification-1', title: 'Ritardo linea 1'),
     ];
 
     await tester.pumpWidget(
@@ -119,8 +110,9 @@ void main() {
     expect(find.text('Ritardo linea 1'), findsOneWidget);
   });
 
-  testWidgets('esegue onTogglePanel quando si preme la campanella',
-      (WidgetTester tester) async {
+  testWidgets('esegue onTogglePanel quando si preme la campanella', (
+    WidgetTester tester,
+  ) async {
     var toggled = false;
 
     await tester.pumpWidget(
@@ -137,8 +129,9 @@ void main() {
     expect(toggled, isTrue);
   });
 
-  testWidgets('esegue onClosePanel quando si preme Chiudi notifiche',
-      (WidgetTester tester) async {
+  testWidgets('esegue onClosePanel quando si preme Chiudi notifiche', (
+    WidgetTester tester,
+  ) async {
     var closed = false;
 
     await tester.pumpWidget(
@@ -156,8 +149,9 @@ void main() {
     expect(closed, isTrue);
   });
 
-  testWidgets('esegue onClosePanel quando si tocca fuori dal pannello',
-      (WidgetTester tester) async {
+  testWidgets('esegue onClosePanel quando si tocca fuori dal pannello', (
+    WidgetTester tester,
+  ) async {
     var closed = false;
 
     await tester.pumpWidget(
@@ -175,8 +169,9 @@ void main() {
     expect(closed, isTrue);
   });
 
-  testWidgets('inoltra onMarkAllAsRead al pannello',
-      (WidgetTester tester) async {
+  testWidgets('inoltra onMarkAllAsRead al pannello', (
+    WidgetTester tester,
+  ) async {
     var markedAllAsRead = false;
 
     await tester.pumpWidget(
@@ -195,19 +190,14 @@ void main() {
     expect(markedAllAsRead, isTrue);
   });
 
-  testWidgets('inoltra onNotificationTap con id corretto',
-      (WidgetTester tester) async {
+  testWidgets('inoltra onNotificationTap con id corretto', (
+    WidgetTester tester,
+  ) async {
     String? selectedNotificationId;
 
     final notifications = [
-      buildNotification(
-        id: 'notification-1',
-        title: 'Ritardo linea 1',
-      ),
-      buildNotification(
-        id: 'notification-2',
-        title: 'Cambio fermata',
-      ),
+      buildNotification(id: 'notification-1', title: 'Ritardo linea 1'),
+      buildNotification(id: 'notification-2', title: 'Cambio fermata'),
     ];
 
     await tester.pumpWidget(
@@ -226,30 +216,30 @@ void main() {
     expect(selectedNotificationId, 'notification-2');
   });
 
-  testWidgets('mostra stato loading del pannello quando isLoading è true',
-      (WidgetTester tester) async {
+  testWidgets('mostra stato loading del pannello quando isLoading è true', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(
-      buildTestWidget(
-        isPanelOpen: true,
-        isLoading: true,
-      ),
+      buildTestWidget(isPanelOpen: true, isLoading: true),
     );
 
     expect(find.byType(NotificationCenterPanel), findsOneWidget);
     expect(find.byType(CircularProgressIndicator), findsOneWidget);
   });
 
-  testWidgets('mostra stato errore del pannello quando errorMessage è presente',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      buildTestWidget(
-        isPanelOpen: true,
-        errorMessage: 'Errore caricamento notifiche.',
-      ),
-    );
+  testWidgets(
+    'mostra stato errore del pannello quando errorMessage è presente',
+    (WidgetTester tester) async {
+      await tester.pumpWidget(
+        buildTestWidget(
+          isPanelOpen: true,
+          errorMessage: 'Errore caricamento notifiche.',
+        ),
+      );
 
-    expect(find.byType(NotificationCenterPanel), findsOneWidget);
-    expect(find.text('Errore caricamento notifiche.'), findsOneWidget);
-    expect(find.byIcon(Icons.error_outline_rounded), findsOneWidget);
-  });
+      expect(find.byType(NotificationCenterPanel), findsOneWidget);
+      expect(find.text('Errore caricamento notifiche.'), findsOneWidget);
+      expect(find.byIcon(Icons.error_outline_rounded), findsOneWidget);
+    },
+  );
 }
