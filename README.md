@@ -25,3 +25,8 @@ accademiche. Il codice sorgente e i materiali originali non possono essere
 riutilizzati, modificati o redistribuiti senza autorizzazione scritta.
 
 Per maggiori dettagli, consultare il file LICENSE.
+
+## Sicurezza
+
+Le vulnerabilità non devono essere segnalate tramite issue pubbliche.
+Consultare il file (SECURITY.md) per le modalità di segnalazione.
