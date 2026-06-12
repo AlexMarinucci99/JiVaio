@@ -112,20 +112,12 @@ class LineDetailViewModel extends ChangeNotifier {
   }
 
   bool get requiresStopSelection {
-    return _reportLocation == LineDetailReportLocation.atStop;
-  }
+  return _reportLocation != null;
+}
 
   bool get canSendReport {
-    if (_reportLocation == LineDetailReportLocation.onBus) {
-      return true;
-    }
-
-    if (_reportLocation == LineDetailReportLocation.atStop) {
-      return _selectedReportStopId != null;
-    }
-
-    return false;
-  }
+  return _reportLocation != null && _selectedReportStopId != null;
+}
 
   String? get selectedReportStopName {
     final selectedStopId = _selectedReportStopId;
@@ -208,10 +200,6 @@ class LineDetailViewModel extends ChangeNotifier {
 
     _reportLocation = location;
     _lastReportMessage = null;
-
-    if (location == LineDetailReportLocation.onBus) {
-      _selectedReportStopId = null;
-    }
 
     notifyListeners();
   }

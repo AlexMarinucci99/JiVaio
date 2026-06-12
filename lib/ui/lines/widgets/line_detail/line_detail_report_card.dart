@@ -46,7 +46,7 @@ class LineDetailReportCard extends StatelessWidget {
           ),
           const SizedBox(height: 5),
           Text(
-            'Aiutaci a capire lo stato della corsa. Per ora la funzione è in modalità demo.',
+            'Aiuta le altre persone con una segnalazione. Per ora la funzione è in modalità demo.',
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: colors.secondaryText,
               fontSize: 12,
@@ -94,6 +94,7 @@ class LineDetailReportCard extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           _ReportInstructionBox(
+            reportLocation: reportLocation,
             requiresStopSelection: requiresStopSelection,
             canSendReport: canSendReport,
             selectedStopName: selectedStopName,
@@ -200,12 +201,14 @@ class _LocationChoiceButton extends StatelessWidget {
 
 class _ReportInstructionBox extends StatelessWidget {
   const _ReportInstructionBox({
+    required this.reportLocation,
     required this.requiresStopSelection,
     required this.canSendReport,
     required this.selectedStopName,
     required this.colors,
   });
 
+  final LineDetailReportLocation? reportLocation;
   final bool requiresStopSelection;
   final bool canSendReport;
   final String? selectedStopName;
@@ -239,20 +242,29 @@ class _ReportInstructionBox extends StatelessWidget {
   }
 
   String _message() {
-    if (requiresStopSelection && selectedStopName == null) {
-      return 'Seleziona una fermata dal percorso completo prima di inviare la segnalazione.';
-    }
+  final location = reportLocation;
+  final stopName = selectedStopName;
 
-    if (requiresStopSelection && selectedStopName != null) {
-      return 'Fermata selezionata: $selectedStopName.';
-    }
-
-    if (canSendReport) {
-      return 'Puoi inviare una segnalazione riferita alla corsa corrente selezionando la fermata dove si è nel percorso completo ';
-    }
-
+  if (location == null) {
     return 'Seleziona Sì o No per continuare.';
   }
+
+  if (stopName == null) {
+    return switch (location) {
+      LineDetailReportLocation.onBus =>
+        'Seleziona dall’elenco fermate, la fermata in cui sei salito sul bus.',
+      LineDetailReportLocation.atStop =>
+        'Seleziona dall’elenco fermate, la fermata in cui ti trovi.',
+    };
+  }
+
+  return switch (location) {
+    LineDetailReportLocation.onBus =>
+      'Fermata di salita selezionata: $stopName.',
+    LineDetailReportLocation.atStop =>
+      'Fermata attuale selezionata: $stopName.',
+  };
+}
 }
 
 class _ReportActionButton extends StatelessWidget {

@@ -58,9 +58,9 @@ void main() {
     (WidgetTester tester) async {
       await tester.pumpWidget(buildTestWidget(isStopSelectionEnabled: false));
 
-      expect(find.text('Percorso completo'), findsOneWidget);
+      expect(find.text('Elenco fermate'), findsOneWidget);
       expect(
-        find.text('Fermate ordinate della direzione selezionata.'),
+        find.text('Fermate ordinate della tratta selezionata.'),
         findsOneWidget,
       );
     },

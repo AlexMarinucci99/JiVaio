@@ -167,7 +167,7 @@ void main() {
 
     expect(
       find.text(
-        'Seleziona una fermata dal percorso completo prima di inviare la segnalazione.',
+        "Seleziona una fermata dall'elenco fermate prima di inviare la segnalazione.",
       ),
       findsOneWidget,
     );
