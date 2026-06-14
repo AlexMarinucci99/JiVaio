@@ -112,12 +112,12 @@ class LineDetailViewModel extends ChangeNotifier {
   }
 
   bool get requiresStopSelection {
-  return _reportLocation != null;
-}
+    return _reportLocation != null;
+  }
 
   bool get canSendReport {
-  return _reportLocation != null && _selectedReportStopId != null;
-}
+    return _reportLocation != null && _selectedReportStopId != null;
+  }
 
   String? get selectedReportStopName {
     final selectedStopId = _selectedReportStopId;

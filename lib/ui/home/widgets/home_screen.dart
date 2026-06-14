@@ -6,10 +6,12 @@ import 'package:latlong2/latlong.dart';
 
 import '../../../data/repositories/location_repository.dart';
 import '../../../data/repositories/notification_repository.dart';
+import '../../../data/repositories/route_planning_repository.dart';
 import '../../../data/repositories/transit_repository.dart';
 import '../../../domain/models/location_access_result.dart';
 import '../../notifications/view_model/notification_center_view_model.dart';
 import '../../notifications/widgets/notification_center_overlay.dart';
+import '../../route_results/widgets/route_results_screen.dart';
 import '../theme/home_colors.dart';
 import '../view_model/home_map_view_model.dart';
 import 'home_map.dart';
@@ -22,11 +24,13 @@ class HomeScreen extends StatefulWidget {
     required this.repository,
     required this.locationRepository,
     required this.notificationRepository,
+    required this.routePlanningRepository,
   });
 
   final TransitRepository repository;
   final LocationRepository locationRepository;
   final NotificationRepository notificationRepository;
+  final RoutePlanningRepository routePlanningRepository;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -217,6 +221,22 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     );
   }
 
+  void _openRouteResults(String origin, String destination) {
+    unawaited(
+      Navigator.of(context).push<void>(
+        MaterialPageRoute<void>(
+          builder: (_) {
+            return RouteResultsScreen(
+              repository: widget.routePlanningRepository,
+              origin: origin,
+              destination: destination,
+            );
+          },
+        ),
+      ),
+    );
+  }
+
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
@@ -291,12 +311,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                   alignment: Alignment.topCenter,
                   child: RouteSearchCard(
                     colors: _colors.routeSearchCardColors,
-                    onSearch: (origin, destination) {
-                      _showSnackBar(
-                        'Ricerca UI: $origin → $destination. '
-                        'Logica percorso non collegata.',
-                      );
-                    },
+                    onSearch: _openRouteResults,
                   ),
                 ),
               ),

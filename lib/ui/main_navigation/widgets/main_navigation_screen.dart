@@ -8,6 +8,7 @@ import '../../settings/widgets/settings_screen.dart';
 import '../../../data/repositories/location_repository.dart';
 import '../../../data/repositories/notification_repository.dart';
 import '../../../data/repositories/saved_lines_repository.dart';
+import '../../../data/repositories/route_planning_repository.dart';
 
 // Schermata principale dopo login/registrazione oppure accesso guest.
 // Contiene le sezioni principali dell'app e la navbar inferiore.
@@ -21,6 +22,7 @@ class MainNavigationScreen extends StatefulWidget {
     required this.locationRepository,
     required this.notificationRepository,
     required this.savedLinesRepository,
+    required this.routePlanningRepository,
   }) : assert(isGuest || userId != null);
 
   // true = utente ospite
@@ -40,6 +42,7 @@ class MainNavigationScreen extends StatefulWidget {
   final LocationRepository locationRepository;
   final NotificationRepository notificationRepository;
   final SavedLinesRepository savedLinesRepository;
+  final RoutePlanningRepository routePlanningRepository;
 
   @override
   State<MainNavigationScreen> createState() => _MainNavigationScreenState();
@@ -62,6 +65,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
         repository: widget.transitRepository,
         locationRepository: widget.locationRepository,
         notificationRepository: widget.notificationRepository,
+        routePlanningRepository: widget.routePlanningRepository,
       ),
       LinesScreen(
         key: const PageStorageKey<String>('lines-screen'),

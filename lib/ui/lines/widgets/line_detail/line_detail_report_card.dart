@@ -242,29 +242,29 @@ class _ReportInstructionBox extends StatelessWidget {
   }
 
   String _message() {
-  final location = reportLocation;
-  final stopName = selectedStopName;
+    final location = reportLocation;
+    final stopName = selectedStopName;
 
-  if (location == null) {
-    return 'Seleziona Sì o No per continuare.';
-  }
+    if (location == null) {
+      return 'Seleziona Sì o No per continuare.';
+    }
 
-  if (stopName == null) {
+    if (stopName == null) {
+      return switch (location) {
+        LineDetailReportLocation.onBus =>
+          'Seleziona dall’elenco fermate, la fermata in cui sei salito sul bus.',
+        LineDetailReportLocation.atStop =>
+          'Seleziona dall’elenco fermate, la fermata in cui ti trovi.',
+      };
+    }
+
     return switch (location) {
       LineDetailReportLocation.onBus =>
-        'Seleziona dall’elenco fermate, la fermata in cui sei salito sul bus.',
+        'Fermata di salita selezionata: $stopName.',
       LineDetailReportLocation.atStop =>
-        'Seleziona dall’elenco fermate, la fermata in cui ti trovi.',
+        'Fermata attuale selezionata: $stopName.',
     };
   }
-
-  return switch (location) {
-    LineDetailReportLocation.onBus =>
-      'Fermata di salita selezionata: $stopName.',
-    LineDetailReportLocation.atStop =>
-      'Fermata attuale selezionata: $stopName.',
-  };
-}
 }
 
 class _ReportActionButton extends StatelessWidget {

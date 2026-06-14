@@ -49,6 +49,7 @@ class _AuthGateState extends State<AuthGate> {
         locationRepository: widget.dependencies.locationRepository,
         notificationRepository: widget.dependencies.notificationRepository,
         savedLinesRepository: widget.dependencies.savedLinesRepository,
+        routePlanningRepository: widget.dependencies.routePlanningRepository,
       );
     }
 
@@ -67,6 +68,8 @@ class _AuthGateState extends State<AuthGate> {
             locationRepository: widget.dependencies.locationRepository,
             notificationRepository: widget.dependencies.notificationRepository,
             savedLinesRepository: widget.dependencies.savedLinesRepository,
+            routePlanningRepository:
+                widget.dependencies.routePlanningRepository,
           );
         }
 

@@ -41,14 +41,14 @@ class LineDetailRouteSection extends StatelessWidget {
           ),
           const SizedBox(height: 5),
           Text(
-  'Fermate ordinate della tratta selezionata.',
-  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-    color: colors.secondaryText,
-    fontSize: 12,
-    height: 1.35,
-    fontWeight: FontWeight.w500,
-  ),
-),
+            'Fermate ordinate della tratta selezionata.',
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: colors.secondaryText,
+              fontSize: 12,
+              height: 1.35,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
           const SizedBox(height: 14),
           if (stops.isEmpty)
             _EmptyRouteBox(colors: colors)
