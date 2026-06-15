@@ -9,29 +9,30 @@ import '../../../data/repositories/location_repository.dart';
 import '../../../data/repositories/notification_repository.dart';
 import '../../../data/repositories/saved_lines_repository.dart';
 import '../../../data/repositories/route_planning_repository.dart';
+import '../../../domain/models/app_user.dart';
 
 // Schermata principale dopo login/registrazione oppure accesso guest.
 // Contiene le sezioni principali dell'app e la navbar inferiore.
 class MainNavigationScreen extends StatefulWidget {
   const MainNavigationScreen({
-    super.key,
-    required this.isGuest,
-    required this.userId,
-    required this.onLogout,
-    required this.transitRepository,
-    required this.locationRepository,
-    required this.notificationRepository,
-    required this.savedLinesRepository,
-    required this.routePlanningRepository,
-  }) : assert(isGuest || userId != null);
+  super.key,
+  required this.user,
+  required this.onLogout,
+  required this.transitRepository,
+  required this.locationRepository,
+  required this.notificationRepository,
+  required this.savedLinesRepository,
+  required this.routePlanningRepository,
+});
 
-  // true = utente ospite
-  // false = utente autenticato con Firebase
-  final bool isGuest;
+  /// Utente autenticato.
+///
+/// Il valore è null quando l'app viene utilizzata
+/// in modalità guest.
+final AppUser? user;
 
-  // UID Firebase dell'utente autenticato.
-  // È null soltanto in modalità guest.
-  final String? userId;
+/// Restituisce true quando non è presente un utente autenticato.
+bool get isGuest => user == null;
 
   // Azione eseguita dalla schermata impostazioni.
   // Per utente registrato: logout Firebase.
@@ -68,17 +69,17 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
         routePlanningRepository: widget.routePlanningRepository,
       ),
       LinesScreen(
-        key: const PageStorageKey<String>('lines-screen'),
-        isGuest: widget.isGuest,
-        userId: widget.userId,
-        repository: widget.transitRepository,
-        savedLinesRepository: widget.savedLinesRepository,
-      ),
+  key: const PageStorageKey<String>('lines-screen'),
+  isGuest: widget.isGuest,
+  userId: widget.user?.id,
+  repository: widget.transitRepository,
+  savedLinesRepository: widget.savedLinesRepository,
+),
       SettingsScreen(
-        key: const PageStorageKey<String>('settings-screen'),
-        isGuest: widget.isGuest,
-        onLogout: widget.onLogout,
-      ),
+  key: const PageStorageKey<String>('settings-screen'),
+  user: widget.user,
+  onLogout: widget.onLogout,
+),
     ];
   }
 

@@ -42,15 +42,14 @@ class _AuthGateState extends State<AuthGate> {
   Widget build(BuildContext context) {
     if (_isGuest) {
       return MainNavigationScreen(
-        isGuest: true,
-        userId: null,
-        onLogout: _exitGuestMode,
-        transitRepository: widget.dependencies.transitRepository,
-        locationRepository: widget.dependencies.locationRepository,
-        notificationRepository: widget.dependencies.notificationRepository,
-        savedLinesRepository: widget.dependencies.savedLinesRepository,
-        routePlanningRepository: widget.dependencies.routePlanningRepository,
-      );
+  user: null,
+  onLogout: _exitGuestMode,
+  transitRepository: widget.dependencies.transitRepository,
+  locationRepository: widget.dependencies.locationRepository,
+  notificationRepository: widget.dependencies.notificationRepository,
+  savedLinesRepository: widget.dependencies.savedLinesRepository,
+  routePlanningRepository: widget.dependencies.routePlanningRepository,
+);
     }
 
     return StreamBuilder<AppUser?>(
@@ -61,16 +60,14 @@ class _AuthGateState extends State<AuthGate> {
 
         if (user != null) {
           return MainNavigationScreen(
-            isGuest: false,
-            userId: user.id,
-            onLogout: _logout,
-            transitRepository: widget.dependencies.transitRepository,
-            locationRepository: widget.dependencies.locationRepository,
-            notificationRepository: widget.dependencies.notificationRepository,
-            savedLinesRepository: widget.dependencies.savedLinesRepository,
-            routePlanningRepository:
-                widget.dependencies.routePlanningRepository,
-          );
+  user: user,
+  onLogout: _logout,
+  transitRepository: widget.dependencies.transitRepository,
+  locationRepository: widget.dependencies.locationRepository,
+  notificationRepository: widget.dependencies.notificationRepository,
+  savedLinesRepository: widget.dependencies.savedLinesRepository,
+  routePlanningRepository: widget.dependencies.routePlanningRepository,
+);
         }
 
         return AuthChoiceScreen(

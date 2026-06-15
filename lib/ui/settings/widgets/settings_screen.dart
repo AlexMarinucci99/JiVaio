@@ -1,44 +1,64 @@
 import 'package:flutter/material.dart';
 
+import '../../../domain/models/app_user.dart';
+import '../theme/settings_screen_colors.dart';
+import '../view_model/settings_view_model.dart';
+import 'settings_profile_card.dart';
+
 // Schermata impostazioni.
 // Per ora contiene solo l'azione di uscita dall'account
 // o dalla modalità ospite.
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({
     super.key,
-    required this.isGuest,
+    required this.user,
     required this.onLogout,
   });
 
-  // true = utente ospite
-  // false = utente autenticato con Firebase
-  final bool isGuest;
+  /// Utente autenticato.
+  ///
+  /// È null quando JiVaio viene utilizzata
+  /// in modalità guest.
+  final AppUser? user;
 
-  // Per utente registrato: logout Firebase.
-  // Per guest: ritorno alla schermata di accesso.
+  /// Per un utente autenticato esegue il logout.
+  ///
+  /// Per un guest ritorna alla schermata di accesso.
   final Future<void> Function() onLogout;
 
-  // Palette privata della schermata impostazioni.
-  static const _SettingsScreenColors _colors = _SettingsScreenColors();
+  /// Palette grafica della schermata impostazioni.
+  static const SettingsScreenColors _colors = SettingsScreenColors();
+
 
   Future<void> _handleLogout() async {
     await onLogout();
   }
 
   @override
-  Widget build(BuildContext context) {
-    final actionLabel = isGuest ? 'Accedi o registrati' : 'Logout';
+Widget build(BuildContext context) {
+  final viewModel = SettingsViewModel(user: user);
 
-    final actionIcon = isGuest ? Icons.login_rounded : Icons.logout_rounded;
+  final actionLabel = viewModel.isGuest
+      ? 'Accedi o registrati'
+      : 'Logout';
 
-    final actionColor = isGuest ? _colors.primaryColor : _colors.logoutColor;
+  final actionIcon = viewModel.isGuest
+      ? Icons.login_rounded
+      : Icons.logout_rounded;
+
+  final actionColor = viewModel.isGuest
+      ? _colors.primaryAction
+      : _colors.dangerAction;
 
     return Scaffold(
-      backgroundColor: _colors.backgroundColor,
+      backgroundColor: _colors.pageBackground,
       body: DecoratedBox(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xFFF6FAFF), Color(0xFFF2F6FC)],
+            colors: [
+              _colors.gradientStart,
+              _colors.gradientEnd,
+            ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -50,22 +70,29 @@ class SettingsScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Titolo pagina: stesso stile di "Elenco Linee".
                 Text(
-                  'Impostazioni',
-                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    color: _colors.titleColor,
-                    fontSize: 22,
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-
-                const SizedBox(height: 28),
-
-                // Azione principale della schermata.
-                TextButton.icon(
+  'Impostazioni',
+  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+    color: _colors.titleText,
+    fontSize: 22,
+    fontWeight: FontWeight.w800,
+  ),
+),
+const SizedBox(height: 18),
+SettingsProfileCard(
+  title: viewModel.profileTitle,
+  subtitle: viewModel.profileSubtitle,
+  isGuest: viewModel.isGuest,
+  colors: _colors,
+),
+const SizedBox(height: 20),
+TextButton.icon(
                   onPressed: _handleLogout,
-                  icon: Icon(actionIcon, size: 24, color: actionColor),
+                  icon: Icon(
+                    actionIcon,
+                    size: 24,
+                    color: actionColor,
+                  ),
                   label: Text(
                     actionLabel,
                     style: TextStyle(
@@ -88,17 +115,4 @@ class SettingsScreen extends StatelessWidget {
       ),
     );
   }
-}
-
-// Colori specifici della schermata impostazioni.
-class _SettingsScreenColors {
-  const _SettingsScreenColors();
-
-  final Color backgroundColor = const Color(0xFFF6FAFF);
-
-  final Color titleColor = const Color(0xFF111827);
-
-  final Color primaryColor = const Color(0xFF102A6B);
-
-  final Color logoutColor = const Color(0xFFDC2626);
 }

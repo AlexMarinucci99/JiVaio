@@ -1,17 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:jivaio/domain/models/app_user.dart';
 import 'package:jivaio/ui/settings/widgets/settings_screen.dart';
 
 void main() {
   Widget buildTestWidget({
-    required bool isGuest,
-    required Future<void> Function() onLogout,
-  }) {
-    return MaterialApp(
-      home: SettingsScreen(isGuest: isGuest, onLogout: onLogout),
-    );
-  }
+  required bool isGuest,
+  required Future<void> Function() onLogout,
+}) {
+  final user = isGuest
+      ? null
+      : const AppUser(
+          id: 'test-user-id',
+          email: 'utente@test.it',
+          displayName: 'Utente Test',
+        );
+
+  return MaterialApp(
+    home: SettingsScreen(
+      user: user,
+      onLogout: onLogout,
+    ),
+  );
+}
 
   testWidgets('mostra il titolo della schermata impostazioni', (
     WidgetTester tester,
@@ -22,6 +34,37 @@ void main() {
 
     expect(find.text('Impostazioni'), findsOneWidget);
   });
+
+  testWidgets('mostra nome ed email dell’utente autenticato', (
+  WidgetTester tester,
+) async {
+  await tester.pumpWidget(
+    buildTestWidget(
+      isGuest: false,
+      onLogout: () async {},
+    ),
+  );
+
+  expect(find.text('Utente Test'), findsOneWidget);
+  expect(find.text('utente@test.it'), findsOneWidget);
+});
+
+testWidgets('mostra le informazioni della modalità guest', (
+  WidgetTester tester,
+) async {
+  await tester.pumpWidget(
+    buildTestWidget(
+      isGuest: true,
+      onLogout: () async {},
+    ),
+  );
+
+  expect(find.text('Modalità ospite'), findsOneWidget);
+  expect(
+    find.text('Accedi per personalizzare la tua esperienza.'),
+    findsOneWidget,
+  );
+});
 
   testWidgets('mostra Logout quando utente non è guest', (
     WidgetTester tester,
@@ -92,13 +135,25 @@ void main() {
   });
 
   testWidgets('usa TextButton.icon come azione principale', (
-    WidgetTester tester,
-  ) async {
-    await tester.pumpWidget(
-      buildTestWidget(isGuest: false, onLogout: () async {}),
-    );
+  WidgetTester tester,
+) async {
+  await tester.pumpWidget(
+    buildTestWidget(
+      isGuest: false,
+      onLogout: () async {},
+    ),
+  );
 
-    expect(find.byType(TextButton), findsOneWidget);
-    expect(find.byType(Icon), findsOneWidget);
-  });
+  final textButtonFinder = find.byType(TextButton);
+
+  expect(textButtonFinder, findsOneWidget);
+
+  expect(
+    find.descendant(
+      of: textButtonFinder,
+      matching: find.byType(Icon),
+    ),
+    findsOneWidget,
+  );
+});
 }
