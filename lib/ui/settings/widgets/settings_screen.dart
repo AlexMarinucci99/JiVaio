@@ -72,9 +72,11 @@ class SettingsScreen extends StatelessWidget {
                 colors: _colors,
               ),
               const SizedBox(height: 24),
-_buildAccountSection(viewModel),
-const SizedBox(height: 24),
-_buildNotificationsSection(),
+              _buildAccountSection(viewModel),
+              const SizedBox(height: 24),
+              _buildNotificationsSection(),
+              const SizedBox(height: 24),
+              _buildPrivacyAndSupportSection(),
             ],
           ),
         ),
@@ -82,7 +84,7 @@ _buildNotificationsSection(),
     );
   }
 
-    Widget _buildAccountSection(SettingsViewModel viewModel) {
+  Widget _buildAccountSection(SettingsViewModel viewModel) {
     if (viewModel.isGuest) {
       return SettingsSection(
         title: 'Account',
@@ -150,6 +152,47 @@ _buildNotificationsSection(),
           title: 'Preferenze notifiche',
           subtitle:
               'Gestisci gli avvisi relativi a linee, viabilità e viaggio',
+          iconColor: _colors.primaryAction,
+          colors: _colors,
+          showChevron: false,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildPrivacyAndSupportSection() {
+    return SettingsSection(
+      title: 'Privacy e assistenza',
+      colors: _colors,
+      children: [
+        SettingsTile(
+          icon: Icons.shield_outlined,
+          title: 'Privacy e gestione dei dati',
+          subtitle: 'Scopri come vengono trattati i tuoi dati',
+          iconColor: _colors.primaryAction,
+          colors: _colors,
+          showChevron: false,
+        ),
+        SettingsTile(
+          icon: Icons.admin_panel_settings_outlined,
+          title: "Permessi dell'app",
+          subtitle: 'Posizione, notifiche e accessi autorizzati',
+          iconColor: _colors.primaryAction,
+          colors: _colors,
+          showChevron: false,
+        ),
+        SettingsTile(
+          icon: Icons.support_agent_rounded,
+          title: 'Assistenza',
+          subtitle: 'FAQ, supporto e contatti',
+          iconColor: _colors.primaryAction,
+          colors: _colors,
+          showChevron: false,
+        ),
+        SettingsTile(
+          icon: Icons.report_problem_outlined,
+          title: 'Segnala un problema',
+          subtitle: "Comunica malfunzionamenti dell'app",
           iconColor: _colors.primaryAction,
           colors: _colors,
           showChevron: false,
