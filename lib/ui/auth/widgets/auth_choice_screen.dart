@@ -8,7 +8,7 @@ import 'auth_action_button.dart';
 import 'auth_login_form.dart';
 import 'auth_register_form.dart';
 import 'auth_social_buttons.dart';
-import 'auth_text_field.dart';
+import '../theme/auth_choice_colors.dart';
 
 class AuthChoiceScreen extends StatefulWidget {
   const AuthChoiceScreen({
@@ -35,7 +35,7 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
   final TextEditingController _confirmPasswordController =
       TextEditingController();
 
-  static const _AuthChoiceColors _colors = _AuthChoiceColors();
+  static const AuthChoiceColors _colors = AuthChoiceColors();
 
   @override
   void initState() {
@@ -140,19 +140,7 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
                   AppSegmentedControl<AuthMode>(
                     selectedValue: _viewModel.selectedMode,
                     onChanged: _setMode,
-                    colors: AppSegmentedControlColors(
-                      backgroundColor: _colors.fieldBackgroundColor,
-                      selectedColor: _colors.segmentedSelectedColor,
-                      borderColor: _colors.segmentedBorderColor,
-                      selectedTextColor: _colors.primaryColor,
-                      unselectedTextColor: _colors.segmentedUnselectedTextColor,
-                      badgeBackgroundColor:
-                          _colors.segmentedBadgeBackgroundColor,
-                      badgeTextColor: _colors.primaryColor,
-                      selectedBadgeBackgroundColor:
-                          _colors.segmentedSelectedBadgeBackgroundColor,
-                      selectedBadgeTextColor: _colors.primaryColor,
-                    ),
+                    colors: _colors.segmentedControlColors,
                     items: const [
                       AppSegmentedControlItem(
                         value: AuthMode.login,
@@ -290,53 +278,3 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
   }
 }
 
-class _AuthChoiceColors {
-  const _AuthChoiceColors();
-
-  final Color backgroundColor = Colors.white;
-
-  final Color primaryColor = const Color(0xFF191970);
-
-  final Color screenTitleColor = const Color(0xFF111827);
-
-  final Color subtitleColor = const Color(0xFF4B5563);
-
-  final Color helperTextColor = const Color(0xFF6B7280);
-
-  final Color fieldBackgroundColor = const Color(0xFFF1F4FA);
-
-  final Color dividerColor = const Color(0xFFD1D5DB);
-
-  final Color separatorTextColor = const Color(0xFF6B7280);
-
-  final Color segmentedSelectedColor = Colors.white;
-
-  final Color segmentedBorderColor = const Color(0xFFE1E7F0);
-
-  final Color segmentedUnselectedTextColor = const Color(0xFF4B5563);
-
-  final Color segmentedBadgeBackgroundColor = const Color(0xFFE8EAFF);
-
-  final Color segmentedSelectedBadgeBackgroundColor = const Color(0x2EFFFFFF);
-
-  final AuthTextFieldColors textFieldColors = const AuthTextFieldColors(
-    primaryColor: Color(0xFF191970),
-    backgroundColor: Color(0xFFF1F4FA),
-    labelColor: Color(0xFF4B5563),
-    iconColor: Color(0xFF5D6675),
-  );
-
-  final AuthActionButtonColors actionButtonColors =
-      const AuthActionButtonColors(
-        backgroundColor: Color(0xFFF7F9FC),
-        foregroundColor: Color(0xFF191970),
-        disabledBackgroundColor: Color(0xFFE5E7EB),
-        disabledForegroundColor: Color(0xFF9CA3AF),
-      );
-
-  final AuthSocialButtonsColors socialButtonsColors =
-      const AuthSocialButtonsColors(
-        foregroundColor: Color(0xFF191970),
-        borderColor: Color(0xFF9CA3AF),
-      );
-}

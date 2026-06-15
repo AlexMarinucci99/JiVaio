@@ -4,6 +4,8 @@ import '../view_model/reset_password_view_model.dart';
 import 'auth_action_button.dart';
 import 'auth_text_field.dart';
 import '../../../data/repositories/auth_repository.dart';
+import '../theme/reset_password_colors.dart';
+
 
 class ResetPasswordScreen extends StatefulWidget {
   const ResetPasswordScreen({super.key, required this.authRepository});
@@ -18,7 +20,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   late final ResetPasswordViewModel _viewModel;
   final TextEditingController _emailController = TextEditingController();
 
-  static const _ResetPasswordColors _colors = _ResetPasswordColors();
+  static const ResetPasswordColors _colors = ResetPasswordColors();
 
   @override
   void initState() {
@@ -160,31 +162,3 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   }
 }
 
-class _ResetPasswordColors {
-  const _ResetPasswordColors();
-
-  final Color backgroundColor = Colors.white;
-
-  final Color primaryColor = const Color(0xFF191970);
-
-  final Color descriptionColor = const Color(0xFF4B5563);
-
-  final Color snackBarBackgroundColor = const Color(0xFF061A3A);
-
-  final Color snackBarTextColor = Colors.white;
-
-  final AuthTextFieldColors textFieldColors = const AuthTextFieldColors(
-    primaryColor: Color(0xFF191970),
-    backgroundColor: Color(0xFFF1F4FA),
-    labelColor: Color(0xFF4B5563),
-    iconColor: Color(0xFF5D6675),
-  );
-
-  final AuthActionButtonColors actionButtonColors =
-      const AuthActionButtonColors(
-        backgroundColor: Color(0xFF191970),
-        foregroundColor: Colors.white,
-        disabledBackgroundColor: Color(0xFFE5E7EB),
-        disabledForegroundColor: Color(0xFF9CA3AF),
-      );
-}
