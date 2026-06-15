@@ -194,4 +194,44 @@ class SettingsScreen extends StatelessWidget {
       ],
     );
   }
+  Widget _buildInformationSection() {
+  return SettingsSection(
+    title: 'Informazioni',
+    colors: _colors,
+    children: [
+      SettingsTile(
+        icon: Icons.info_outline_rounded,
+        title: 'Informazioni su JiVaio',
+        subtitle: 'Scopri il progetto e i suoi obiettivi',
+        iconColor: _colors.primaryAction,
+        colors: _colors,
+        showChevron: false,
+      ),
+      SettingsTile(
+        icon: Icons.groups_outlined,
+        title: 'Team di sviluppo',
+        subtitle: 'Rasputeam',
+        iconColor: _colors.primaryAction,
+        colors: _colors,
+        showChevron: false,
+      ),
+      SettingsTile(
+        icon: Icons.description_outlined,
+        title: 'Licenze software',
+        subtitle: 'Pacchetti e componenti utilizzati',
+        iconColor: _colors.primaryAction,
+        colors: _colors,
+        showChevron: false,
+      ),
+      SettingsTile(
+        icon: Icons.code_rounded,
+        title: 'Versione app',
+        subtitle: '1.0.0',
+        iconColor: _colors.primaryAction,
+        colors: _colors,
+        showChevron: false,
+      ),
+    ],
+  );
+}
 }
