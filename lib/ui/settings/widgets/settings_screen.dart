@@ -70,6 +70,8 @@ class SettingsScreen extends StatelessWidget {
               _buildNotificationsSection(),
               const SizedBox(height: 24),
               _buildPrivacyAndSupportSection(),
+              const SizedBox(height: 24),
+              _buildInformationSection(),
             ],
           ),
         ),
@@ -107,7 +109,7 @@ class SettingsScreen extends StatelessWidget {
           subtitle: 'Gestisci le informazioni del tuo account',
           iconColor: _colors.primaryAction,
           colors: _colors,
-          enabled: false,
+
           showChevron: false,
         ),
         SettingsTile(
@@ -116,7 +118,7 @@ class SettingsScreen extends StatelessWidget {
           subtitle: 'Aggiorna la password del tuo account',
           iconColor: _colors.primaryAction,
           colors: _colors,
-          enabled: false,
+
           showChevron: false,
         ),
         SettingsTile(
