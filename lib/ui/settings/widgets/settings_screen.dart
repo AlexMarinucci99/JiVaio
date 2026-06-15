@@ -12,11 +12,7 @@ import 'settings_tile.dart';
 /// Riceve l'utente autenticato, oppure null in modalità guest,
 /// e mostra le voci disponibili per il relativo profilo.
 class SettingsScreen extends StatelessWidget {
-  const SettingsScreen({
-    super.key,
-    required this.user,
-    required this.onLogout,
-  });
+  const SettingsScreen({super.key, required this.user, required this.onLogout});
 
   /// Utente autenticato.
   ///
@@ -43,10 +39,7 @@ class SettingsScreen extends StatelessWidget {
       body: DecoratedBox(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [
-              _colors.gradientStart,
-              _colors.gradientEnd,
-            ],
+            colors: [_colors.gradientStart, _colors.gradientEnd],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -150,8 +143,7 @@ class SettingsScreen extends StatelessWidget {
         SettingsTile(
           icon: Icons.notifications_none_rounded,
           title: 'Preferenze notifiche',
-          subtitle:
-              'Gestisci gli avvisi relativi a linee, viabilità e viaggio',
+          subtitle: 'Gestisci gli avvisi relativi a linee, viabilità e viaggio',
           iconColor: _colors.primaryAction,
           colors: _colors,
           showChevron: false,

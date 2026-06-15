@@ -15,24 +15,24 @@ import '../../../domain/models/app_user.dart';
 // Contiene le sezioni principali dell'app e la navbar inferiore.
 class MainNavigationScreen extends StatefulWidget {
   const MainNavigationScreen({
-  super.key,
-  required this.user,
-  required this.onLogout,
-  required this.transitRepository,
-  required this.locationRepository,
-  required this.notificationRepository,
-  required this.savedLinesRepository,
-  required this.routePlanningRepository,
-});
+    super.key,
+    required this.user,
+    required this.onLogout,
+    required this.transitRepository,
+    required this.locationRepository,
+    required this.notificationRepository,
+    required this.savedLinesRepository,
+    required this.routePlanningRepository,
+  });
 
   /// Utente autenticato.
-///
-/// Il valore è null quando l'app viene utilizzata
-/// in modalità guest.
-final AppUser? user;
+  ///
+  /// Il valore è null quando l'app viene utilizzata
+  /// in modalità guest.
+  final AppUser? user;
 
-/// Restituisce true quando non è presente un utente autenticato.
-bool get isGuest => user == null;
+  /// Restituisce true quando non è presente un utente autenticato.
+  bool get isGuest => user == null;
 
   // Azione eseguita dalla schermata impostazioni.
   // Per utente registrato: logout Firebase.
@@ -69,17 +69,17 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
         routePlanningRepository: widget.routePlanningRepository,
       ),
       LinesScreen(
-  key: const PageStorageKey<String>('lines-screen'),
-  isGuest: widget.isGuest,
-  userId: widget.user?.id,
-  repository: widget.transitRepository,
-  savedLinesRepository: widget.savedLinesRepository,
-),
+        key: const PageStorageKey<String>('lines-screen'),
+        isGuest: widget.isGuest,
+        userId: widget.user?.id,
+        repository: widget.transitRepository,
+        savedLinesRepository: widget.savedLinesRepository,
+      ),
       SettingsScreen(
-  key: const PageStorageKey<String>('settings-screen'),
-  user: widget.user,
-  onLogout: widget.onLogout,
-),
+        key: const PageStorageKey<String>('settings-screen'),
+        user: widget.user,
+        onLogout: widget.onLogout,
+      ),
     ];
   }
 

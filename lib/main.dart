@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 import 'app.dart';
 import 'config/app_dependencies.dart';
-import 'data/services/onboarding_preferences_service.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -13,13 +12,11 @@ Future<void> main() async {
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  final onboardingPreferencesService = OnboardingPreferencesService();
-
-  final shouldSkipOnboarding = await onboardingPreferencesService
-      .shouldSkipOnboarding();
-
   // Le dipendenze vengono costruite dopo l'inizializzazione di Firebase.
   final dependencies = AppDependencies.create();
+
+  final shouldSkipOnboarding = await dependencies.onboardingRepository
+      .shouldSkipOnboarding();
 
   runApp(
     JiVaioApp(

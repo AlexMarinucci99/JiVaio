@@ -27,8 +27,9 @@ class JiVaioApp extends StatelessWidget {
           ? AppRoutes.onboarding
           : AppRoutes.authChoice,
       routes: {
-        AppRoutes.onboarding: (_) => const OnboardingScreen(),
-
+        AppRoutes.onboarding: (_) => OnboardingScreen(
+          onboardingRepository: dependencies.onboardingRepository,
+        ),
         AppRoutes.authChoice: (_) => AuthGate(dependencies: dependencies),
 
         // Route mantenuta per compatibilità.

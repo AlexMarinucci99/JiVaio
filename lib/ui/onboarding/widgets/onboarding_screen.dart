@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../data/services/onboarding_preferences_service.dart';
+import '../../../data/repositories/onboarding_repository.dart';
 import '../../../routing/app_routes.dart';
 import '../theme/onboarding_colors.dart';
 import '../view_model/onboarding_view_model.dart';
@@ -10,21 +10,18 @@ import 'onboarding_slide_card.dart';
 
 // StatefulWidget: schermata principale che contiene le 3 pagine di onboarding.
 class OnboardingScreen extends StatefulWidget {
-  const OnboardingScreen({super.key});
+  const OnboardingScreen({super.key, required this.onboardingRepository});
+
+  final OnboardingRepository onboardingRepository;
 
   @override
   State<OnboardingScreen> createState() => _OnboardingScreenState();
 }
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
-  final OnboardingPreferencesService _onboardingPreferencesService =
-      OnboardingPreferencesService();
-
   final PageController _pageController = PageController();
-  final OnboardingViewModel _viewModel = OnboardingViewModel();
 
-  // Stato della checkbox "Non mostrarla più".
-  bool _hideOnboardingNextTime = false;
+  late final OnboardingViewModel _viewModel;
 
   // Palette colori della feature onboarding.
   static const OnboardingColors _colors = OnboardingColors();
@@ -45,12 +42,19 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     ),
   ];
 
+  @override
+  void initState() {
+    super.initState();
+
+    _viewModel = OnboardingViewModel(
+      onboardingRepository: widget.onboardingRepository,
+    );
+  }
+
   // Bottone "Avanti" / "Inizia".
   Future<void> _goNext() async {
     if (_viewModel.isLastPage) {
-      await _onboardingPreferencesService.setSkipOnboarding(
-        _hideOnboardingNextTime,
-      );
+      await _viewModel.completeOnboarding();
 
       if (!mounted) return;
 
@@ -76,11 +80,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   // Bottone "Salta" superiore.
   Future<void> _skip() async {
-    if (_viewModel.isLastPage) {
-      await _onboardingPreferencesService.setSkipOnboarding(
-        _hideOnboardingNextTime,
-      );
-    }
+    await _viewModel.skipOnboarding();
 
     if (!mounted) return;
 
@@ -159,14 +159,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                 key: const ValueKey(
                                   'hide_onboarding_preference',
                                 ),
-                                value: _hideOnboardingNextTime,
+                                value: _viewModel.hideOnboardingNextTime,
                                 colors: _colors.hidePreferenceColors,
-                                onChanged: () {
-                                  setState(() {
-                                    _hideOnboardingNextTime =
-                                        !_hideOnboardingNextTime;
-                                  });
-                                },
+                                onChanged:
+                                    _viewModel.toggleHideOnboardingNextTime,
                               )
                             : const SizedBox.shrink(
                                 key: ValueKey('empty_onboarding_preference'),

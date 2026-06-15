@@ -5,9 +5,7 @@ import '../../../domain/models/app_user.dart';
 /// Riceve il modello applicativo dell'utente e lo trasforma
 /// in informazioni direttamente utilizzabili dalla UI.
 class SettingsViewModel {
-  const SettingsViewModel({
-    required this.user,
-  });
+  const SettingsViewModel({required this.user});
 
   /// Utente autenticato.
   ///

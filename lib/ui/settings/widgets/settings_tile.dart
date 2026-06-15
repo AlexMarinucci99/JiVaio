@@ -55,10 +55,7 @@ class SettingsTile extends StatelessWidget {
       child: InkWell(
         onTap: enabled ? onTap : null,
         child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 14,
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
           child: Row(
             children: [
               Container(
@@ -69,11 +66,7 @@ class SettingsTile extends StatelessWidget {
                   color: effectiveIconColor.withValues(alpha: 0.10),
                   borderRadius: BorderRadius.circular(11),
                 ),
-                child: Icon(
-                  icon,
-                  size: 20,
-                  color: effectiveIconColor,
-                ),
+                child: Icon(icon, size: 20, color: effectiveIconColor),
               ),
               const SizedBox(width: 14),
               Expanded(

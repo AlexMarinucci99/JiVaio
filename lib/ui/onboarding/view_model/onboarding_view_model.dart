@@ -1,6 +1,13 @@
 import 'package:flutter/foundation.dart';
 
+import '../../../data/repositories/onboarding_repository.dart';
+
 class OnboardingViewModel extends ChangeNotifier {
+  OnboardingViewModel({required OnboardingRepository onboardingRepository})
+    : _onboardingRepository = onboardingRepository;
+
+  final OnboardingRepository _onboardingRepository;
+
   final List<OnboardingItem> items = const [
     OnboardingItem(
       imagePath: 'assets/onboarding/onboarding_1.png',
@@ -24,16 +31,34 @@ class OnboardingViewModel extends ChangeNotifier {
   ];
 
   int _currentPage = 0;
+  bool _hideOnboardingNextTime = false;
 
   int get currentPage => _currentPage;
 
   bool get isLastPage => _currentPage == items.length - 1;
+
+  bool get hideOnboardingNextTime => _hideOnboardingNextTime;
 
   void updatePage(int index) {
     if (_currentPage == index) return;
 
     _currentPage = index;
     notifyListeners();
+  }
+
+  void toggleHideOnboardingNextTime() {
+    _hideOnboardingNextTime = !_hideOnboardingNextTime;
+    notifyListeners();
+  }
+
+  Future<void> completeOnboarding() {
+    return _onboardingRepository.setSkipOnboarding(_hideOnboardingNextTime);
+  }
+
+  Future<void> skipOnboarding() async {
+    if (!isLastPage) return;
+
+    await completeOnboarding();
   }
 }
 

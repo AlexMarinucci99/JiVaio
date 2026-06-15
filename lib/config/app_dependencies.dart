@@ -1,15 +1,16 @@
 import '../data/repositories/auth_repository.dart';
 import '../data/repositories/location_repository.dart';
 import '../data/repositories/notification_repository.dart';
+import '../data/repositories/onboarding_repository.dart';
+import '../data/repositories/route_planning_repository.dart';
 import '../data/repositories/saved_lines_repository.dart';
 import '../data/repositories/transit_repository.dart';
 import '../data/services/auth_service.dart';
-import '../data/services/saved_lines_service.dart';
-import '../data/repositories/route_planning_repository.dart';
 import '../data/services/mock_route_planning_service.dart';
+import '../data/services/onboarding_preferences_service.dart';
+import '../data/services/saved_lines_service.dart';
 
 /// Contenitore delle dipendenze principali dell'app.
-///
 /// Repository e service vengono creati una sola volta all'avvio
 /// e successivamente passati alle schermate che ne hanno bisogno.
 class AppDependencies {
@@ -20,10 +21,10 @@ class AppDependencies {
     required this.notificationRepository,
     required this.savedLinesRepository,
     required this.routePlanningRepository,
+    required this.onboardingRepository,
   });
 
   /// Costruisce il grafo delle dipendenze reali dell'app.
-  ///
   /// In futuro potremo affiancare factory dedicate a test,
   /// staging o sviluppo locale.
   factory AppDependencies.create() {
@@ -36,6 +37,9 @@ class AppDependencies {
       routePlanningRepository: const RoutePlanningRepository(
         MockRoutePlanningService(),
       ),
+      onboardingRepository: OnboardingRepository(
+        OnboardingPreferencesService(),
+      ),
     );
   }
 
@@ -45,4 +49,5 @@ class AppDependencies {
   final NotificationRepository notificationRepository;
   final SavedLinesRepository savedLinesRepository;
   final RoutePlanningRepository routePlanningRepository;
+  final OnboardingRepository onboardingRepository;
 }

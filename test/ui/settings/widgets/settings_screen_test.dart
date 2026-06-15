@@ -6,24 +6,21 @@ import 'package:jivaio/ui/settings/widgets/settings_screen.dart';
 
 void main() {
   Widget buildTestWidget({
-  required bool isGuest,
-  required Future<void> Function() onLogout,
-}) {
-  final user = isGuest
-      ? null
-      : const AppUser(
-          id: 'test-user-id',
-          email: 'utente@test.it',
-          displayName: 'Utente Test',
-        );
+    required bool isGuest,
+    required Future<void> Function() onLogout,
+  }) {
+    final user = isGuest
+        ? null
+        : const AppUser(
+            id: 'test-user-id',
+            email: 'utente@test.it',
+            displayName: 'Utente Test',
+          );
 
-  return MaterialApp(
-    home: SettingsScreen(
-      user: user,
-      onLogout: onLogout,
-    ),
-  );
-}
+    return MaterialApp(
+      home: SettingsScreen(user: user, onLogout: onLogout),
+    );
+  }
 
   testWidgets('mostra il titolo della schermata impostazioni', (
     WidgetTester tester,
@@ -36,52 +33,43 @@ void main() {
   });
 
   testWidgets('mostra nome ed email dell’utente autenticato', (
-  WidgetTester tester,
-) async {
-  await tester.pumpWidget(
-    buildTestWidget(
-      isGuest: false,
-      onLogout: () async {},
-    ),
-  );
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(
+      buildTestWidget(isGuest: false, onLogout: () async {}),
+    );
 
-  expect(find.text('Utente Test'), findsOneWidget);
-  expect(find.text('utente@test.it'), findsOneWidget);
-});
+    expect(find.text('Utente Test'), findsOneWidget);
+    expect(find.text('utente@test.it'), findsOneWidget);
+  });
 
-testWidgets('mostra le informazioni della modalità guest', (
-  WidgetTester tester,
-) async {
-  await tester.pumpWidget(
-    buildTestWidget(
-      isGuest: true,
-      onLogout: () async {},
-    ),
-  );
+  testWidgets('mostra le informazioni della modalità guest', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(
+      buildTestWidget(isGuest: true, onLogout: () async {}),
+    );
 
-  expect(find.text('Modalità ospite'), findsOneWidget);
-  expect(
-    find.text('Accedi per personalizzare la tua esperienza.'),
-    findsOneWidget,
-  );
-});
+    expect(find.text('Modalità ospite'), findsOneWidget);
+    expect(
+      find.text('Accedi per personalizzare la tua esperienza.'),
+      findsOneWidget,
+    );
+  });
 
   testWidgets("mostra Esci dall'account per l'utente autenticato", (
-  WidgetTester tester,
-) async {
-  await tester.pumpWidget(
-    buildTestWidget(
-      isGuest: false,
-      onLogout: () async {},
-    ),
-  );
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(
+      buildTestWidget(isGuest: false, onLogout: () async {}),
+    );
 
-  expect(find.text("Esci dall'account"), findsOneWidget);
-  expect(find.byIcon(Icons.logout_rounded), findsOneWidget);
+    expect(find.text("Esci dall'account"), findsOneWidget);
+    expect(find.byIcon(Icons.logout_rounded), findsOneWidget);
 
-  expect(find.text('Accedi o registrati'), findsNothing);
-  expect(find.byIcon(Icons.login_rounded), findsNothing);
-});
+    expect(find.text('Accedi o registrati'), findsNothing);
+    expect(find.byIcon(Icons.login_rounded), findsNothing);
+  });
 
   testWidgets('mostra Accedi o registrati quando utente è guest', (
     WidgetTester tester,
