@@ -65,9 +65,7 @@ void main() {
     });
 
     test('usa valori di fallback quando nome ed email non sono presenti', () {
-      const user = AppUser(
-        id: 'test-user-id',
-      );
+      const user = AppUser(id: 'test-user-id');
 
       const viewModel = SettingsViewModel(user: user);
 

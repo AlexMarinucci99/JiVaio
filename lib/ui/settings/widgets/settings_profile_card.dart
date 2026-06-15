@@ -48,9 +48,7 @@ class SettingsProfileCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(18),
             ),
             child: Icon(
-              isGuest
-                  ? Icons.person_outline_rounded
-                  : Icons.person_rounded,
+              isGuest ? Icons.person_outline_rounded : Icons.person_rounded,
               size: 31,
               color: colors.primaryAction,
             ),

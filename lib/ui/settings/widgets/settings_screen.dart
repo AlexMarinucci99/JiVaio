@@ -12,11 +12,7 @@ import 'settings_tile.dart';
 /// Riceve l'utente autenticato, oppure null in modalità guest,
 /// e mostra le voci disponibili per il relativo profilo.
 class SettingsScreen extends StatelessWidget {
-  const SettingsScreen({
-    super.key,
-    required this.user,
-    required this.onLogout,
-  });
+  const SettingsScreen({super.key, required this.user, required this.onLogout});
 
   /// Utente autenticato.
   ///
@@ -43,10 +39,7 @@ class SettingsScreen extends StatelessWidget {
       body: DecoratedBox(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [
-              _colors.gradientStart,
-              _colors.gradientEnd,
-            ],
+            colors: [_colors.gradientStart, _colors.gradientEnd],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -77,6 +70,8 @@ class SettingsScreen extends StatelessWidget {
               _buildNotificationsSection(),
               const SizedBox(height: 24),
               _buildPrivacyAndSupportSection(),
+              const SizedBox(height: 24),
+              _buildInformationSection(),
             ],
           ),
         ),
@@ -114,7 +109,7 @@ class SettingsScreen extends StatelessWidget {
           subtitle: 'Gestisci le informazioni del tuo account',
           iconColor: _colors.primaryAction,
           colors: _colors,
-          enabled: false,
+
           showChevron: false,
         ),
         SettingsTile(
@@ -123,7 +118,7 @@ class SettingsScreen extends StatelessWidget {
           subtitle: 'Aggiorna la password del tuo account',
           iconColor: _colors.primaryAction,
           colors: _colors,
-          enabled: false,
+
           showChevron: false,
         ),
         SettingsTile(
@@ -150,8 +145,7 @@ class SettingsScreen extends StatelessWidget {
         SettingsTile(
           icon: Icons.notifications_none_rounded,
           title: 'Preferenze notifiche',
-          subtitle:
-              'Gestisci gli avvisi relativi a linee, viabilità e viaggio',
+          subtitle: 'Gestisci gli avvisi relativi a linee, viabilità e viaggio',
           iconColor: _colors.primaryAction,
           colors: _colors,
           showChevron: false,
@@ -193,6 +187,47 @@ class SettingsScreen extends StatelessWidget {
           icon: Icons.report_problem_outlined,
           title: 'Segnala un problema',
           subtitle: "Comunica malfunzionamenti dell'app",
+          iconColor: _colors.primaryAction,
+          colors: _colors,
+          showChevron: false,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildInformationSection() {
+    return SettingsSection(
+      title: 'Informazioni',
+      colors: _colors,
+      children: [
+        SettingsTile(
+          icon: Icons.info_outline_rounded,
+          title: 'Informazioni su JiVaio',
+          subtitle: 'Scopri il progetto e i suoi obiettivi',
+          iconColor: _colors.primaryAction,
+          colors: _colors,
+          showChevron: false,
+        ),
+        SettingsTile(
+          icon: Icons.groups_outlined,
+          title: 'Team di sviluppo',
+          subtitle: 'Master Mobile Devs',
+          iconColor: _colors.primaryAction,
+          colors: _colors,
+          showChevron: false,
+        ),
+        SettingsTile(
+          icon: Icons.description_outlined,
+          title: 'Licenze software',
+          subtitle: 'Pacchetti e componenti utilizzati',
+          iconColor: _colors.primaryAction,
+          colors: _colors,
+          showChevron: false,
+        ),
+        SettingsTile(
+          icon: Icons.code_rounded,
+          title: 'Versione app',
+          subtitle: '1.0.0',
           iconColor: _colors.primaryAction,
           colors: _colors,
           showChevron: false,
