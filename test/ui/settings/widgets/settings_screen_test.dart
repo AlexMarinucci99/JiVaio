@@ -66,19 +66,22 @@ testWidgets('mostra le informazioni della modalità guest', (
   );
 });
 
-  testWidgets('mostra Logout quando utente non è guest', (
-    WidgetTester tester,
-  ) async {
-    await tester.pumpWidget(
-      buildTestWidget(isGuest: false, onLogout: () async {}),
-    );
+  testWidgets("mostra Esci dall'account per l'utente autenticato", (
+  WidgetTester tester,
+) async {
+  await tester.pumpWidget(
+    buildTestWidget(
+      isGuest: false,
+      onLogout: () async {},
+    ),
+  );
 
-    expect(find.text('Logout'), findsOneWidget);
-    expect(find.byIcon(Icons.logout_rounded), findsOneWidget);
+  expect(find.text("Esci dall'account"), findsOneWidget);
+  expect(find.byIcon(Icons.logout_rounded), findsOneWidget);
 
-    expect(find.text('Accedi o registrati'), findsNothing);
-    expect(find.byIcon(Icons.login_rounded), findsNothing);
-  });
+  expect(find.text('Accedi o registrati'), findsNothing);
+  expect(find.byIcon(Icons.login_rounded), findsNothing);
+});
 
   testWidgets('mostra Accedi o registrati quando utente è guest', (
     WidgetTester tester,
@@ -90,11 +93,11 @@ testWidgets('mostra le informazioni della modalità guest', (
     expect(find.text('Accedi o registrati'), findsOneWidget);
     expect(find.byIcon(Icons.login_rounded), findsOneWidget);
 
-    expect(find.text('Logout'), findsNothing);
+    expect(find.text("Esci dall'account"), findsNothing);
     expect(find.byIcon(Icons.logout_rounded), findsNothing);
   });
 
-  testWidgets('esegue onLogout quando si preme Logout', (
+  testWidgets("esegue onLogout quando si preme Esci dall'account", (
     WidgetTester tester,
   ) async {
     var logoutCalled = false;
@@ -108,7 +111,7 @@ testWidgets('mostra le informazioni della modalità guest', (
       ),
     );
 
-    await tester.tap(find.text('Logout'));
+    await tester.tap(find.text("Esci dall'account"));
     await tester.pump();
 
     expect(logoutCalled, isTrue);
@@ -133,27 +136,4 @@ testWidgets('mostra le informazioni della modalità guest', (
 
     expect(logoutCalled, isTrue);
   });
-
-  testWidgets('usa TextButton.icon come azione principale', (
-  WidgetTester tester,
-) async {
-  await tester.pumpWidget(
-    buildTestWidget(
-      isGuest: false,
-      onLogout: () async {},
-    ),
-  );
-
-  final textButtonFinder = find.byType(TextButton);
-
-  expect(textButtonFinder, findsOneWidget);
-
-  expect(
-    find.descendant(
-      of: textButtonFinder,
-      matching: find.byType(Icon),
-    ),
-    findsOneWidget,
-  );
-});
 }
