@@ -33,7 +33,10 @@ class TransitLine {
 
   // Alcune linee possono essere considerate a direzione unica.
   bool get isUnidirectional {
-    const knownUnidirectionalShortNames = <String>{'2U'};
+    const knownUnidirectionalShortNames = <String>{
+    '2U',
+    '2UT',
+  };
 
     return knownUnidirectionalShortNames.contains(
       shortName.trim().toUpperCase(),
