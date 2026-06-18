@@ -11,9 +11,7 @@ void main() {
   setUp(() {
     onboardingRepository = FakeOnboardingRepository();
 
-    viewModel = OnboardingViewModel(
-      onboardingRepository: onboardingRepository,
-    );
+    viewModel = OnboardingViewModel(onboardingRepository: onboardingRepository);
   });
 
   tearDown(() {
@@ -118,23 +116,27 @@ void main() {
     expect(notifyCount, 1);
   });
 
-  test('completeOnboarding salva false quando la preferenza non è selezionata',
-      () async {
-    await viewModel.completeOnboarding();
+  test(
+    'completeOnboarding salva false quando la preferenza non è selezionata',
+    () async {
+      await viewModel.completeOnboarding();
 
-    expect(onboardingRepository.setSkipOnboardingCallCount, 1);
-    expect(onboardingRepository.lastSkipOnboardingValue, isFalse);
-  });
+      expect(onboardingRepository.setSkipOnboardingCallCount, 1);
+      expect(onboardingRepository.lastSkipOnboardingValue, isFalse);
+    },
+  );
 
-  test('completeOnboarding salva true quando la preferenza è selezionata',
-      () async {
-    viewModel.toggleHideOnboardingNextTime();
+  test(
+    'completeOnboarding salva true quando la preferenza è selezionata',
+    () async {
+      viewModel.toggleHideOnboardingNextTime();
 
-    await viewModel.completeOnboarding();
+      await viewModel.completeOnboarding();
 
-    expect(onboardingRepository.setSkipOnboardingCallCount, 1);
-    expect(onboardingRepository.lastSkipOnboardingValue, isTrue);
-  });
+      expect(onboardingRepository.setSkipOnboardingCallCount, 1);
+      expect(onboardingRepository.lastSkipOnboardingValue, isTrue);
+    },
+  );
 
   test('skipOnboarding non salva prima dell’ultima pagina', () async {
     await viewModel.skipOnboarding();

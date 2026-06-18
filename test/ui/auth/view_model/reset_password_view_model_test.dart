@@ -12,9 +12,7 @@ class FakeAuthRepository implements AuthRepository {
   Object? genericExceptionToThrow;
 
   @override
-  Future<void> sendPasswordResetEmail({
-    required String email,
-  }) async {
+  Future<void> sendPasswordResetEmail({required String email}) async {
     sendPasswordResetEmailCalled = true;
     lastEmail = email;
 
@@ -187,9 +185,7 @@ void main() {
   test('gestisce errore AuthFailure sconosciuto', () async {
     viewModel.updateEmail('utente@jivaio.it');
 
-    authRepository.authFailureToThrow = AuthFailure(
-      AuthFailureCode.unknown,
-    );
+    authRepository.authFailureToThrow = AuthFailure(AuthFailureCode.unknown);
 
     final result = await viewModel.sendResetLink();
 
@@ -209,10 +205,7 @@ void main() {
     final result = await viewModel.sendResetLink();
 
     expect(result.isSuccess, isFalse);
-    expect(
-      result.message,
-      'Si è verificato un errore imprevisto. Riprova.',
-    );
+    expect(result.message, 'Si è verificato un errore imprevisto. Riprova.');
     expect(viewModel.isSubmitting, isFalse);
   });
 }

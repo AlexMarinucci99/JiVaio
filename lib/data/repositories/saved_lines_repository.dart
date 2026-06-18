@@ -1,7 +1,8 @@
 import '../services/saved_lines_service.dart';
 
 /// Espone al ViewModel operazioni orientate al dominio dei preferiti.
-/// Il ViewModel non deve conoscere Cloud Firestore.
+///
+/// Il ViewModel non deve conoscere Firestore o altre sorgenti dati concrete.
 class SavedLinesRepository {
   const SavedLinesRepository(this._service);
 

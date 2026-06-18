@@ -10,6 +10,7 @@ import '../../../data/repositories/notification_repository.dart';
 import '../../../data/repositories/saved_lines_repository.dart';
 import '../../../data/repositories/route_planning_repository.dart';
 import '../../../domain/models/app_user.dart';
+import '../theme/main_navigation_colors.dart';
 
 // Schermata principale dopo login/registrazione oppure accesso guest.
 // Contiene le sezioni principali dell'app e la navbar inferiore.
@@ -54,7 +55,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   int _selectedIndex = 0;
 
   // Colori propri della main shell.
-  static const _MainShellColors _colors = _MainShellColors();
+  static const MainNavigationColors _colors = MainNavigationColors();
 
   // Schermate principali dell'app.
   // Non è static const perché LinesScreen e SettingsScreen
@@ -112,20 +113,4 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
       ),
     );
   }
-}
-
-// Palette privata della shell principale.
-// Qui si decide l'aspetto della navbar dentro la schermata principale.
-class _MainShellColors {
-  const _MainShellColors();
-
-  final BottomNavBarColors bottomNavBarColors = const BottomNavBarColors(
-    backgroundColor: Colors.white,
-    shadowColor: Color(0x29000000),
-    selectedColor: Color(0xFF102A6B),
-    unselectedColor: Color(0xFF9AA3AD),
-    selectedBackgroundColor: Color(0xFFEAF2FF),
-    splashColor: Color(0x14102A6B),
-    highlightColor: Color(0x0A102A6B),
-  );
 }

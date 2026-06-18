@@ -6,7 +6,6 @@ import 'auth_text_field.dart';
 import '../../../data/repositories/auth_repository.dart';
 import '../theme/reset_password_colors.dart';
 
-
 class ResetPasswordScreen extends StatefulWidget {
   const ResetPasswordScreen({super.key, required this.authRepository});
 
@@ -161,4 +160,3 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     );
   }
 }
-

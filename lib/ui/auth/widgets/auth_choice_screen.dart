@@ -277,4 +277,3 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
     );
   }
 }
-

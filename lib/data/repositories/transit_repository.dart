@@ -92,24 +92,24 @@ class TransitRepository {
 
       final shortName = _stringValue(route, 'route_short_name');
 
-final rawDirections = _buildDirections(
-  routeTrips: routeTrips,
-  bundle: bundle,
-  stopTimesByTrip: stopTimesByTrip,
-  stopsById: stopsById,
-  moment: now,
-);
+      final rawDirections = _buildDirections(
+        routeTrips: routeTrips,
+        bundle: bundle,
+        stopTimesByTrip: stopTimesByTrip,
+        stopsById: stopsById,
+        moment: now,
+      );
 
-final directions = _normalizeDirections(
-  shortName: shortName,
-  directions: rawDirections,
-);
+      final directions = _normalizeDirections(
+        shortName: shortName,
+        directions: rawDirections,
+      );
 
-if (directions.isEmpty) {
-  continue;
-}
+      if (directions.isEmpty) {
+        continue;
+      }
 
-final longName = _stringValue(route, 'route_long_name');
+      final longName = _stringValue(route, 'route_long_name');
       final routeDescription = _stringValue(route, 'route_desc');
 
       lines.add(
@@ -219,41 +219,36 @@ final longName = _stringValue(route, 'route_long_name');
   }
 
   List<TransitLineDirection> _normalizeDirections({
-  required String shortName,
-  required List<TransitLineDirection> directions,
-}) {
-  if (directions.isEmpty) {
-    return directions;
+    required String shortName,
+    required List<TransitLineDirection> directions,
+  }) {
+    if (directions.isEmpty) {
+      return directions;
+    }
+
+    final normalizedShortName = shortName.trim().toUpperCase();
+
+    if (normalizedShortName != '2UT') {
+      return directions;
+    }
+
+    final terminalDirection = directions.firstWhere((direction) {
+      return direction.destinationName.trim().toLowerCase().contains(
+        'terminal',
+      );
+    }, orElse: () => directions.first);
+
+    return <TransitLineDirection>[
+      TransitLineDirection(
+        key: terminalDirection.key,
+        originName: "L'aquilone",
+        destinationName: 'Terminal',
+        stopCount: terminalDirection.stopCount,
+        upcomingDepartures: terminalDirection.upcomingDepartures,
+        hasServiceToday: terminalDirection.hasServiceToday,
+      ),
+    ];
   }
-
-  final normalizedShortName = shortName.trim().toUpperCase();
-
-  if (normalizedShortName != '2UT') {
-    return directions;
-  }
-
-  
-  final terminalDirection = directions.firstWhere(
-    (direction) {
-      return direction.destinationName
-          .trim()
-          .toLowerCase()
-          .contains('terminal');
-    },
-    orElse: () => directions.first,
-  );
-
-  return <TransitLineDirection>[
-    TransitLineDirection(
-      key: terminalDirection.key,
-      originName: "L'aquilone",
-      destinationName: 'Terminal',
-      stopCount: terminalDirection.stopCount,
-      upcomingDepartures: terminalDirection.upcomingDepartures,
-      hasServiceToday: terminalDirection.hasServiceToday,
-    ),
-  ];
-}
 
   List<TransitLineDirection> _buildDirections({
     required List<_RawMap> routeTrips,

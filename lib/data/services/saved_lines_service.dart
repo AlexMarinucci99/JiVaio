@@ -1,50 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
-/// Accesso diretto a Cloud Firestore per i preferiti delle linee.
+/// Contratto per le sorgenti dati delle linee salvate.
 ///
-/// Struttura dati:
-class SavedLinesService {
-  SavedLinesService({FirebaseFirestore? firestore})
-    : _firestore = firestore ?? FirebaseFirestore.instance;
+/// Permette al repository di non dipendere direttamente da Firestore
+/// e rende sostituibile la sorgente dati nei test o in future implementazioni.
+abstract class SavedLinesService {
+  Stream<Set<String>> watchSavedLineIds({required String userId});
 
-  final FirebaseFirestore _firestore;
+  Future<void> saveLine({required String userId, required String routeId});
 
-  CollectionReference<Map<String, dynamic>> _savedLinesCollection(
-    String userId,
-  ) {
-    return _firestore.collection('users').doc(userId).collection('saved_lines');
-  }
-
-  DocumentReference<Map<String, dynamic>> _savedLineDocument({
-    required String userId,
-    required String routeId,
-  }) {
-    return _savedLinesCollection(userId).doc(Uri.encodeComponent(routeId));
-  }
-
-  Stream<Set<String>> watchSavedLineIds({required String userId}) {
-    return _savedLinesCollection(userId).snapshots().map((snapshot) {
-      return snapshot.docs
-          .map((document) => document.data()['routeId'])
-          .whereType<String>()
-          .toSet();
-    });
-  }
-
-  Future<void> saveLine({
-    required String userId,
-    required String routeId,
-  }) async {
-    await _savedLineDocument(
-      userId: userId,
-      routeId: routeId,
-    ).set({'routeId': routeId, 'savedAt': FieldValue.serverTimestamp()});
-  }
-
-  Future<void> removeLine({
-    required String userId,
-    required String routeId,
-  }) async {
-    await _savedLineDocument(userId: userId, routeId: routeId).delete();
-  }
+  Future<void> removeLine({required String userId, required String routeId});
 }

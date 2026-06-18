@@ -1,13 +1,15 @@
 import '../../domain/models/app_notification.dart';
+import 'notification_service.dart';
 
 // Sorgente dati temporanea per il centro notifiche.
 //
 // In questa prima versione restituisce notifiche create manualmente.
 // In futuro potrà essere sostituita da un service collegato a Firebase,
-// Supabase oppure a una API REST senza modificare la UI.
-class MockNotificationService {
+// Supabase oppure a una API REST senza modificare la UI o il ViewModel.
+class MockNotificationService implements NotificationService {
   const MockNotificationService();
 
+  @override
   Future<List<AppNotification>> fetchNotifications() async {
     // Piccolo ritardo artificiale per simulare il recupero dei dati
     // da una sorgente remota o da un database.
@@ -36,7 +38,7 @@ class MockNotificationService {
         type: AppNotificationType.serviceUpdate,
         title: 'Modifica temporanea della viabilità',
         message:
-            'A causa di lavori , la fermata di Via XX Settembre è temporaneamente sospesa.',
+            'A causa di lavori, la fermata di Via XX Settembre è temporaneamente sospesa.',
         createdAt: now.subtract(const Duration(hours: 1)),
       ),
     ];

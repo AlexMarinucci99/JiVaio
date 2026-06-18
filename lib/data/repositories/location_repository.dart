@@ -2,9 +2,11 @@ import '../../domain/models/location_access_result.dart';
 import '../../domain/models/user_location.dart';
 import '../services/location_service.dart';
 
-// Espone al ViewModel un'API pulita e indipendente dal plugin.
+/// Espone al ViewModel un'API pulita per la posizione utente.
+///
+/// Il repository dipende da [LocationService], non dal plugin concreto.
 class LocationRepository {
-  const LocationRepository({LocationService service = const LocationService()})
+  const LocationRepository({required LocationService service})
     : _service = service;
 
   final LocationService _service;

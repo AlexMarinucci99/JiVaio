@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -31,8 +30,7 @@ class TestOnboardingAssetBundle extends CachingAssetBundle {
           ],
       };
 
-      final manifestData =
-          const StandardMessageCodec().encodeMessage(manifest);
+      final manifestData = const StandardMessageCodec().encodeMessage(manifest);
 
       return manifestData!;
     }
@@ -43,9 +41,7 @@ class TestOnboardingAssetBundle extends CachingAssetBundle {
       };
 
       return ByteData.sublistView(
-        Uint8List.fromList(
-          utf8.encode(jsonEncode(manifest)),
-        ),
+        Uint8List.fromList(utf8.encode(jsonEncode(manifest))),
       );
     }
 
@@ -71,9 +67,7 @@ void main() {
       MaterialApp(
         home: DefaultAssetBundle(
           bundle: TestOnboardingAssetBundle(),
-          child: OnboardingScreen(
-            onboardingRepository: onboardingRepository,
-          ),
+          child: OnboardingScreen(onboardingRepository: onboardingRepository),
         ),
       ),
     );
@@ -81,8 +75,9 @@ void main() {
     await tester.pump();
   }
 
-  testWidgets('mostra correttamente la prima schermata di onboarding',
-      (WidgetTester tester) async {
+  testWidgets('mostra correttamente la prima schermata di onboarding', (
+    WidgetTester tester,
+  ) async {
     await pumpOnboardingScreen(tester);
 
     expect(find.byType(OnboardingScreen), findsOneWidget);
