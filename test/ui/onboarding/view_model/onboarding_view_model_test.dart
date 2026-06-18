@@ -2,11 +2,18 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:jivaio/ui/onboarding/view_model/onboarding_view_model.dart';
 
+import '../../../helpers/fakes/fake_onboarding_repository.dart';
+
 void main() {
+  late FakeOnboardingRepository onboardingRepository;
   late OnboardingViewModel viewModel;
 
   setUp(() {
-    viewModel = OnboardingViewModel();
+    onboardingRepository = FakeOnboardingRepository();
+
+    viewModel = OnboardingViewModel(
+      onboardingRepository: onboardingRepository,
+    );
   });
 
   tearDown(() {
@@ -16,6 +23,7 @@ void main() {
   test('parte dalla prima pagina', () {
     expect(viewModel.currentPage, 0);
     expect(viewModel.isLastPage, isFalse);
+    expect(viewModel.hideOnboardingNextTime, isFalse);
   });
 
   test('contiene le tre slide di onboarding previste', () {
@@ -28,9 +36,9 @@ void main() {
 
   test('ogni slide contiene immagine, titolo e descrizione', () {
     for (final item in viewModel.items) {
-      expect(item.imagePath.trim().isNotEmpty, isTrue);
-      expect(item.title.trim().isNotEmpty, isTrue);
-      expect(item.description.trim().isNotEmpty, isTrue);
+      expect(item.imagePath.trim(), isNotEmpty);
+      expect(item.title.trim(), isNotEmpty);
+      expect(item.description.trim(), isNotEmpty);
     }
   });
 
@@ -84,5 +92,65 @@ void main() {
     viewModel.updatePage(0);
     expect(viewModel.currentPage, 0);
     expect(viewModel.isLastPage, isFalse);
+  });
+
+  test('toggleHideOnboardingNextTime aggiorna la preferenza', () {
+    expect(viewModel.hideOnboardingNextTime, isFalse);
+
+    viewModel.toggleHideOnboardingNextTime();
+
+    expect(viewModel.hideOnboardingNextTime, isTrue);
+
+    viewModel.toggleHideOnboardingNextTime();
+
+    expect(viewModel.hideOnboardingNextTime, isFalse);
+  });
+
+  test('toggleHideOnboardingNextTime notifica i listener', () {
+    var notifyCount = 0;
+
+    viewModel.addListener(() {
+      notifyCount++;
+    });
+
+    viewModel.toggleHideOnboardingNextTime();
+
+    expect(notifyCount, 1);
+  });
+
+  test('completeOnboarding salva false quando la preferenza non è selezionata',
+      () async {
+    await viewModel.completeOnboarding();
+
+    expect(onboardingRepository.setSkipOnboardingCallCount, 1);
+    expect(onboardingRepository.lastSkipOnboardingValue, isFalse);
+  });
+
+  test('completeOnboarding salva true quando la preferenza è selezionata',
+      () async {
+    viewModel.toggleHideOnboardingNextTime();
+
+    await viewModel.completeOnboarding();
+
+    expect(onboardingRepository.setSkipOnboardingCallCount, 1);
+    expect(onboardingRepository.lastSkipOnboardingValue, isTrue);
+  });
+
+  test('skipOnboarding non salva prima dell’ultima pagina', () async {
+    await viewModel.skipOnboarding();
+
+    expect(onboardingRepository.setSkipOnboardingCallCount, 0);
+    expect(onboardingRepository.lastSkipOnboardingValue, isNull);
+  });
+
+  test('skipOnboarding completa il salvataggio nell’ultima pagina', () async {
+    viewModel.updatePage(2);
+    viewModel.toggleHideOnboardingNextTime();
+
+    await viewModel.skipOnboarding();
+
+    expect(viewModel.isLastPage, isTrue);
+    expect(onboardingRepository.setSkipOnboardingCallCount, 1);
+    expect(onboardingRepository.lastSkipOnboardingValue, isTrue);
   });
 }

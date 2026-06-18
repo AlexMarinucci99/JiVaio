@@ -1,27 +1,31 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:jivaio/data/repositories/auth_repository.dart';
+import 'package:jivaio/domain/exceptions/auth_failure.dart';
 import 'package:jivaio/ui/auth/view_model/reset_password_view_model.dart';
 
 class FakeAuthRepository implements AuthRepository {
   bool sendPasswordResetEmailCalled = false;
   String? lastEmail;
 
-  FirebaseAuthException? firebaseExceptionToThrow;
+  AuthFailure? authFailureToThrow;
   Object? genericExceptionToThrow;
 
   @override
-  Future<void> sendPasswordResetEmail({required String email}) async {
+  Future<void> sendPasswordResetEmail({
+    required String email,
+  }) async {
     sendPasswordResetEmailCalled = true;
     lastEmail = email;
 
-    final firebaseException = firebaseExceptionToThrow;
-    if (firebaseException != null) {
-      throw firebaseException;
+    final authFailure = authFailureToThrow;
+
+    if (authFailure != null) {
+      throw authFailure;
     }
 
     final genericException = genericExceptionToThrow;
+
     if (genericException != null) {
       throw genericException;
     }
@@ -118,11 +122,11 @@ void main() {
     expect(viewModel.isSubmitting, isFalse);
   });
 
-  test('gestisce errore Firebase invalid-email', () async {
+  test('gestisce errore invalidEmail', () async {
     viewModel.updateEmail('utente@jivaio.it');
 
-    authRepository.firebaseExceptionToThrow = FirebaseAuthException(
-      code: 'invalid-email',
+    authRepository.authFailureToThrow = AuthFailure(
+      AuthFailureCode.invalidEmail,
     );
 
     final result = await viewModel.sendResetLink();
@@ -132,11 +136,11 @@ void main() {
     expect(viewModel.isSubmitting, isFalse);
   });
 
-  test('gestisce errore Firebase network-request-failed', () async {
+  test('gestisce errore networkRequestFailed', () async {
     viewModel.updateEmail('utente@jivaio.it');
 
-    authRepository.firebaseExceptionToThrow = FirebaseAuthException(
-      code: 'network-request-failed',
+    authRepository.authFailureToThrow = AuthFailure(
+      AuthFailureCode.networkRequestFailed,
     );
 
     final result = await viewModel.sendResetLink();
@@ -146,11 +150,11 @@ void main() {
     expect(viewModel.isSubmitting, isFalse);
   });
 
-  test('gestisce errore Firebase too-many-requests', () async {
+  test('gestisce errore tooManyRequests', () async {
     viewModel.updateEmail('utente@jivaio.it');
 
-    authRepository.firebaseExceptionToThrow = FirebaseAuthException(
-      code: 'too-many-requests',
+    authRepository.authFailureToThrow = AuthFailure(
+      AuthFailureCode.tooManyRequests,
     );
 
     final result = await viewModel.sendResetLink();
@@ -163,11 +167,11 @@ void main() {
     expect(viewModel.isSubmitting, isFalse);
   });
 
-  test('gestisce errore Firebase user-not-found con messaggio sicuro', () async {
+  test('gestisce userNotFound con messaggio sicuro', () async {
     viewModel.updateEmail('utente@jivaio.it');
 
-    authRepository.firebaseExceptionToThrow = FirebaseAuthException(
-      code: 'user-not-found',
+    authRepository.authFailureToThrow = AuthFailure(
+      AuthFailureCode.userNotFound,
     );
 
     final result = await viewModel.sendResetLink();
@@ -180,11 +184,11 @@ void main() {
     expect(viewModel.isSubmitting, isFalse);
   });
 
-  test('gestisce errore Firebase generico', () async {
+  test('gestisce errore AuthFailure sconosciuto', () async {
     viewModel.updateEmail('utente@jivaio.it');
 
-    authRepository.firebaseExceptionToThrow = FirebaseAuthException(
-      code: 'unknown-error',
+    authRepository.authFailureToThrow = AuthFailure(
+      AuthFailureCode.unknown,
     );
 
     final result = await viewModel.sendResetLink();
@@ -205,7 +209,10 @@ void main() {
     final result = await viewModel.sendResetLink();
 
     expect(result.isSuccess, isFalse);
-    expect(result.message, 'Si è verificato un errore imprevisto. Riprova.');
+    expect(
+      result.message,
+      'Si è verificato un errore imprevisto. Riprova.',
+    );
     expect(viewModel.isSubmitting, isFalse);
   });
 }

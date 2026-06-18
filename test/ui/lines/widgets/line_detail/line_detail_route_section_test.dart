@@ -53,31 +53,48 @@ void main() {
     );
   }
 
-  testWidgets(
-    'mostra titolo e descrizione quando la selezione è disabilitata',
-    (WidgetTester tester) async {
-      await tester.pumpWidget(buildTestWidget(isStopSelectionEnabled: false));
-
-      expect(find.text('Elenco fermate'), findsOneWidget);
-      expect(
-        find.text('Fermate ordinate della tratta selezionata.'),
-        findsOneWidget,
-      );
-    },
-  );
-
-  testWidgets('mostra descrizione per la selezione fermata quando abilitata', (
+  testWidgets('mostra titolo e descrizione della sezione', (
     WidgetTester tester,
   ) async {
-    await tester.pumpWidget(buildTestWidget(isStopSelectionEnabled: true));
+    await tester.pumpWidget(
+      buildTestWidget(
+        isStopSelectionEnabled: false,
+      ),
+    );
 
+    expect(find.text('Elenco fermate'), findsOneWidget);
     expect(
-      find.text('Seleziona la fermata da cui vuoi inviare la segnalazione.'),
+      find.text('Fermate ordinate della tratta selezionata.'),
       findsOneWidget,
     );
   });
 
-  testWidgets('mostra una tile per ogni fermata', (WidgetTester tester) async {
+  testWidgets(
+    'mantiene la descrizione unica quando la selezione è abilitata',
+    (WidgetTester tester) async {
+      await tester.pumpWidget(
+        buildTestWidget(
+          isStopSelectionEnabled: true,
+        ),
+      );
+
+      expect(
+        find.text('Fermate ordinate della tratta selezionata.'),
+        findsOneWidget,
+      );
+
+      expect(
+        find.text(
+          'Seleziona la fermata da cui vuoi inviare la segnalazione.',
+        ),
+        findsNothing,
+      );
+    },
+  );
+
+  testWidgets('mostra una tile per ogni fermata', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(buildTestWidget());
 
     expect(find.byType(LineDetailStopTile), findsNWidgets(3));
@@ -107,9 +124,14 @@ void main() {
     },
   );
 
-  testWidgets('mostra la fermata selezionata', (WidgetTester tester) async {
+  testWidgets('mostra la fermata selezionata', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(
-      buildTestWidget(selectedStopId: 'stop-2', isStopSelectionEnabled: true),
+      buildTestWidget(
+        selectedStopId: 'stop-2',
+        isStopSelectionEnabled: true,
+      ),
     );
 
     expect(find.text('Selezionata'), findsOneWidget);
@@ -137,30 +159,35 @@ void main() {
     },
   );
 
-  testWidgets('non esegue onStopSelected quando la selezione è disabilitata', (
-    WidgetTester tester,
-  ) async {
-    String? selectedStopId;
+  testWidgets(
+    'non esegue onStopSelected quando la selezione è disabilitata',
+    (WidgetTester tester) async {
+      String? selectedStopId;
 
-    await tester.pumpWidget(
-      buildTestWidget(
-        isStopSelectionEnabled: false,
-        onStopSelected: (stopId) {
-          selectedStopId = stopId;
-        },
-      ),
-    );
+      await tester.pumpWidget(
+        buildTestWidget(
+          isStopSelectionEnabled: false,
+          onStopSelected: (stopId) {
+            selectedStopId = stopId;
+          },
+        ),
+      );
 
-    await tester.tap(find.text('Fontana Luminosa'));
-    await tester.pump();
+      await tester.tap(find.text('Fontana Luminosa'));
+      await tester.pump();
 
-    expect(selectedStopId, isNull);
-  });
+      expect(selectedStopId, isNull);
+    },
+  );
 
   testWidgets('mostra messaggio vuoto quando non ci sono fermate', (
     WidgetTester tester,
   ) async {
-    await tester.pumpWidget(buildTestWidget(stops: const []));
+    await tester.pumpWidget(
+      buildTestWidget(
+        stops: const [],
+      ),
+    );
 
     expect(find.byType(LineDetailStopTile), findsNothing);
     expect(
