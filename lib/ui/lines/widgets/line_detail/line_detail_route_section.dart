@@ -5,6 +5,7 @@ import '../../theme/line_card_colors.dart';
 import '../../theme/line_detail_colors.dart';
 import 'line_detail_stop_tile.dart';
 
+/// Mostra l'elenco delle fermate della direzione selezionata.
 class LineDetailRouteSection extends StatelessWidget {
   const LineDetailRouteSection({
     super.key,
@@ -58,7 +59,7 @@ class LineDetailRouteSection extends StatelessWidget {
               final stop = entry.value;
 
               return LineDetailStopTile(
-                key: ValueKey(stop.stopId),
+                key: ValueKey('route-stop-$index-${stop.stopId}'),
                 stop: stop,
                 lineColor: lineColor,
                 isFirst: index == 0,

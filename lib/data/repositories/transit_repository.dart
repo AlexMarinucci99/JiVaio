@@ -1,11 +1,13 @@
 import '../../domain/models/transit_line.dart';
 import '../../domain/models/transit_stop.dart';
+import '../gtfs/gtfs_calendar_utils.dart';
+import '../gtfs/gtfs_collection_utils.dart';
+import '../gtfs/gtfs_utils.dart';
 import '../services/transit_raw_service.dart';
 
-// Traduce i dati raw nei model del dominio.
+typedef _RawMap = GtfsRawMap;
 
-typedef _RawMap = Map<String, dynamic>;
-
+/// Traduce i dati raw GTFS nei model del dominio.
 class TransitRepository {
   TransitRepository({TransitRawService rawService = const TransitRawService()})
     : _rawService = rawService;
@@ -28,13 +30,13 @@ class TransitRepository {
     final mapStops = <TransitStop>[];
 
     for (final rawStop in bundle.stops) {
-      final stopId = _stringValue(rawStop, 'stop_id');
-      final latitude = _doubleValue(rawStop, 'stop_lat');
-      final longitude = _doubleValue(rawStop, 'stop_lon');
+      final stopId = gtfsStringValue(rawStop, 'stop_id');
+      final latitude = gtfsDoubleValue(rawStop, 'stop_lat');
+      final longitude = gtfsDoubleValue(rawStop, 'stop_lon');
 
       // In GTFS location_type = 0 identifica una fermata effettiva.
       // Se il campo manca o è vuoto, viene considerato 0.
-      final locationType = _intValue(rawStop, 'location_type');
+      final locationType = gtfsIntValue(rawStop, 'location_type');
 
       if (stopId.isEmpty || latitude == null || longitude == null) {
         continue;
@@ -76,21 +78,21 @@ class TransitRepository {
     final bundle = await _loadBundle();
     final now = moment ?? DateTime.now();
 
-    final stopTimesByTrip = _groupStopTimesByTrip(bundle.stopTimes);
-    final stopsById = _mapById(bundle.stops, 'stop_id');
-    final tripsByRoute = _groupBy(bundle.trips, 'route_id');
+    final stopTimesByTrip = gtfsGroupStopTimesByTrip(bundle.stopTimes);
+    final stopsById = gtfsMapById(bundle.stops, 'stop_id');
+    final tripsByRoute = gtfsGroupBy(bundle.trips, 'route_id');
 
     final lines = <TransitLine>[];
 
     for (final route in bundle.routes) {
-      final routeId = _stringValue(route, 'route_id');
+      final routeId = gtfsStringValue(route, 'route_id');
       final routeTrips = tripsByRoute[routeId] ?? const <_RawMap>[];
 
       if (routeTrips.isEmpty) {
         continue;
       }
 
-      final shortName = _stringValue(route, 'route_short_name');
+      final shortName = gtfsStringValue(route, 'route_short_name');
 
       final rawDirections = _buildDirections(
         routeTrips: routeTrips,
@@ -109,8 +111,8 @@ class TransitRepository {
         continue;
       }
 
-      final longName = _stringValue(route, 'route_long_name');
-      final routeDescription = _stringValue(route, 'route_desc');
+      final longName = gtfsStringValue(route, 'route_long_name');
+      final routeDescription = gtfsStringValue(route, 'route_desc');
 
       lines.add(
         TransitLine(
@@ -128,9 +130,9 @@ class TransitRepository {
     }
 
     lines.sort((a, b) {
-      final byNumber = _naturalLineOrder(
+      final byNumber = gtfsNaturalLineOrder(
         a.shortName,
-      ).compareTo(_naturalLineOrder(b.shortName));
+      ).compareTo(gtfsNaturalLineOrder(b.shortName));
 
       if (byNumber != 0) {
         return byNumber;
@@ -150,19 +152,24 @@ class TransitRepository {
     final bundle = await _loadBundle();
     final now = moment ?? DateTime.now();
 
-    final stopTimesByTrip = _groupStopTimesByTrip(bundle.stopTimes);
-    final stopsById = _mapById(bundle.stops, 'stop_id');
+    final stopTimesByTrip = gtfsGroupStopTimesByTrip(bundle.stopTimes);
+    final stopsById = gtfsMapById(bundle.stops, 'stop_id');
 
     final routeTrips = bundle.trips
         .where((trip) {
-          return _stringValue(trip, 'route_id') == line.routeId &&
+          return gtfsStringValue(trip, 'route_id') == line.routeId &&
               _directionKeyOf(trip) == direction.key;
         })
         .toList(growable: false);
 
     final activeTrips = routeTrips
         .where((trip) {
-          return _isTripActiveOnDate(trip: trip, bundle: bundle, date: now);
+          return gtfsIsTripActiveOnDate(
+            trip: trip,
+            calendar: bundle.calendar,
+            calendarDates: bundle.calendarDates,
+            date: now,
+          );
         })
         .toList(growable: false);
 
@@ -198,7 +205,7 @@ class TransitRepository {
     return TransitLineDirectionSchedule(
       routeId: line.routeId,
       directionKey: direction.key,
-      timeRangeLabel: _formatHourRange(hourStart),
+      timeRangeLabel: gtfsFormatHourRange(hourStart),
       departures: departures,
       stops: stops,
       selectedTripId: selectedTripId,
@@ -271,9 +278,10 @@ class TransitRepository {
 
       final activeDirectionTrips = allDirectionTrips
           .where((trip) {
-            return _isTripActiveOnDate(
+            return gtfsIsTripActiveOnDate(
               trip: trip,
-              bundle: bundle,
+              calendar: bundle.calendar,
+              calendarDates: bundle.calendarDates,
               date: moment,
             );
           })
@@ -291,7 +299,7 @@ class TransitRepository {
       }
 
       final representativeStopTimes =
-          stopTimesByTrip[_stringValue(representativeTrip, 'trip_id')] ??
+          stopTimesByTrip[gtfsStringValue(representativeTrip, 'trip_id')] ??
           const <_RawMap>[];
 
       if (representativeStopTimes.isEmpty) {
@@ -301,8 +309,9 @@ class TransitRepository {
       final firstStopTime = representativeStopTimes.first;
       final lastStopTime = representativeStopTimes.last;
 
-      final originStop = stopsById[_stringValue(firstStopTime, 'stop_id')];
-      final destinationStop = stopsById[_stringValue(lastStopTime, 'stop_id')];
+      final originStop = stopsById[gtfsStringValue(firstStopTime, 'stop_id')];
+      final destinationStop =
+          stopsById[gtfsStringValue(lastStopTime, 'stop_id')];
 
       final originName = _stopName(originStop);
       final destinationName = _stopName(destinationStop);
@@ -336,30 +345,30 @@ class TransitRepository {
     final departures = <TransitLineDeparture>[];
 
     for (final trip in trips) {
-      final tripId = _stringValue(trip, 'trip_id');
+      final tripId = gtfsStringValue(trip, 'trip_id');
       final stopTimes = stopTimesByTrip[tripId] ?? const <_RawMap>[];
 
       if (stopTimes.isEmpty) {
         continue;
       }
 
-      final departureTime = _stringValue(stopTimes.first, 'departure_time');
-      final departureMinutes = _timeToMinutes(departureTime);
+      final departureTime = gtfsStringValue(stopTimes.first, 'departure_time');
+      final departureMinutes = gtfsTimeToMinutes(departureTime);
 
       if (departureMinutes >= startMinutes && departureMinutes < endMinutes) {
         departures.add(
           TransitLineDeparture(
             tripId: tripId,
-            departureTime: _formatGtfsTime(departureTime),
+            departureTime: gtfsFormatTime(departureTime),
           ),
         );
       }
     }
 
     departures.sort((a, b) {
-      return _timeToMinutes(
+      return gtfsTimeToMinutes(
         a.departureTime,
-      ).compareTo(_timeToMinutes(b.departureTime));
+      ).compareTo(gtfsTimeToMinutes(b.departureTime));
     });
 
     return departures;
@@ -371,20 +380,20 @@ class TransitRepository {
     required Map<String, _RawMap> stopsById,
     required bool includeOfficialTimes,
   }) {
-    final tripId = _stringValue(trip, 'trip_id');
+    final tripId = gtfsStringValue(trip, 'trip_id');
     final stopTimes = stopTimesByTrip[tripId] ?? const <_RawMap>[];
 
     return stopTimes
         .map((stopTime) {
-          final stopId = _stringValue(stopTime, 'stop_id');
+          final stopId = gtfsStringValue(stopTime, 'stop_id');
           final stop = stopsById[stopId];
 
           return TransitLineStop(
             stopId: stopId,
             name: _stopName(stop),
-            sequence: _intValue(stopTime, 'stop_sequence'),
+            sequence: gtfsIntValue(stopTime, 'stop_sequence'),
             officialTime: includeOfficialTimes
-                ? _formatGtfsTime(_stringValue(stopTime, 'arrival_time'))
+                ? gtfsFormatTime(gtfsStringValue(stopTime, 'arrival_time'))
                 : null,
           );
         })
@@ -399,7 +408,7 @@ class TransitRepository {
   }) {
     if (selectedTripId != null) {
       for (final trip in activeTrips) {
-        if (_stringValue(trip, 'trip_id') == selectedTripId) {
+        if (gtfsStringValue(trip, 'trip_id') == selectedTripId) {
           return trip;
         }
       }
@@ -423,7 +432,7 @@ class TransitRepository {
       });
 
     for (final trip in sortedTrips) {
-      final tripId = _stringValue(trip, 'trip_id');
+      final tripId = gtfsStringValue(trip, 'trip_id');
       final stopTimes = stopTimesByTrip[tripId] ?? const <_RawMap>[];
 
       if (stopTimes.isNotEmpty) {
@@ -451,21 +460,21 @@ class TransitRepository {
       });
 
     for (final trip in sortedTrips) {
-      final tripId = _stringValue(trip, 'trip_id');
+      final tripId = gtfsStringValue(trip, 'trip_id');
       final stopTimes = stopTimesByTrip[tripId] ?? const <_RawMap>[];
 
       if (stopTimes.isEmpty) {
         continue;
       }
 
-      final departureTime = _stringValue(stopTimes.first, 'departure_time');
-      final departureMinutes = _timeToMinutes(departureTime);
+      final departureTime = gtfsStringValue(stopTimes.first, 'departure_time');
+      final departureMinutes = gtfsTimeToMinutes(departureTime);
 
       if (departureMinutes < nowMinutes) {
         continue;
       }
 
-      departures.add(_formatGtfsTime(departureTime));
+      departures.add(gtfsFormatTime(departureTime));
 
       if (departures.length == limit) {
         break;
@@ -475,144 +484,35 @@ class TransitRepository {
     return departures;
   }
 
-  bool _isTripActiveOnDate({
-    required _RawMap trip,
-    required TransitRawBundle bundle,
-    required DateTime date,
-  }) {
-    final serviceId = _stringValue(trip, 'service_id');
-    return _isServiceActiveOnDate(
-      serviceId: serviceId,
-      bundle: bundle,
-      date: date,
-    );
-  }
-
-  bool _isServiceActiveOnDate({
-    required String serviceId,
-    required TransitRawBundle bundle,
-    required DateTime date,
-  }) {
-    final dateKey = _formatGtfsDate(date);
-
-    for (final calendarDate in bundle.calendarDates) {
-      if (_stringValue(calendarDate, 'service_id') != serviceId) {
-        continue;
-      }
-
-      if (_stringValue(calendarDate, 'date') != dateKey) {
-        continue;
-      }
-
-      final exceptionType = _stringValue(calendarDate, 'exception_type');
-
-      if (exceptionType == '1') {
-        return true;
-      }
-
-      if (exceptionType == '2') {
-        return false;
-      }
-    }
-
-    _RawMap? calendarRow;
-
-    for (final row in bundle.calendar) {
-      if (_stringValue(row, 'service_id') == serviceId) {
-        calendarRow = row;
-        break;
-      }
-    }
-
-    if (calendarRow == null) {
-      return false;
-    }
-
-    final startDate = _stringValue(calendarRow, 'start_date');
-    final endDate = _stringValue(calendarRow, 'end_date');
-
-    if (dateKey.compareTo(startDate) < 0 || dateKey.compareTo(endDate) > 0) {
-      return false;
-    }
-
-    final weekdayKey = _weekdayKey(date);
-    return _stringValue(calendarRow, weekdayKey) == '1';
-  }
-
-  Map<String, List<_RawMap>> _groupStopTimesByTrip(List<_RawMap> stopTimes) {
-    final grouped = _groupBy(stopTimes, 'trip_id');
-
-    for (final entry in grouped.entries) {
-      entry.value.sort((a, b) {
-        return _intValue(
-          a,
-          'stop_sequence',
-        ).compareTo(_intValue(b, 'stop_sequence'));
-      });
-    }
-
-    return grouped;
-  }
-
-  Map<String, List<_RawMap>> _groupBy(List<_RawMap> rows, String key) {
-    final grouped = <String, List<_RawMap>>{};
-
-    for (final row in rows) {
-      final value = _stringValue(row, key);
-
-      if (value.isEmpty) {
-        continue;
-      }
-
-      grouped.putIfAbsent(value, () => <_RawMap>[]).add(row);
-    }
-
-    return grouped;
-  }
-
-  Map<String, _RawMap> _mapById(List<_RawMap> rows, String key) {
-    final mapped = <String, _RawMap>{};
-
-    for (final row in rows) {
-      final value = _stringValue(row, key);
-
-      if (value.isEmpty) {
-        continue;
-      }
-
-      mapped[value] = row;
-    }
-
-    return mapped;
-  }
-
   int _firstDepartureMinutes(
     _RawMap trip,
     Map<String, List<_RawMap>> stopTimesByTrip,
   ) {
-    final tripId = _stringValue(trip, 'trip_id');
+    final tripId = gtfsStringValue(trip, 'trip_id');
     final stopTimes = stopTimesByTrip[tripId] ?? const <_RawMap>[];
 
     if (stopTimes.isEmpty) {
       return 1 << 30;
     }
 
-    return _timeToMinutes(_stringValue(stopTimes.first, 'departure_time'));
+    return gtfsTimeToMinutes(
+      gtfsStringValue(stopTimes.first, 'departure_time'),
+    );
   }
 
   String _directionKeyOf(_RawMap trip) {
-    final directionId = _stringValue(trip, 'direction_id');
+    final directionId = gtfsStringValue(trip, 'direction_id');
     return directionId.isEmpty ? '0' : directionId;
   }
 
   String _resolveRouteColor(_RawMap route) {
-    final rawColor = _stringValue(route, 'route_color');
+    final rawColor = gtfsStringValue(route, 'route_color');
 
     if (rawColor.length == 6) {
       return rawColor;
     }
 
-    final shortName = _stringValue(route, 'route_short_name').toUpperCase();
+    final shortName = gtfsStringValue(route, 'route_short_name').toUpperCase();
 
     const fallbackColors = <String, String>{
       '1': 'C86F27',
@@ -655,7 +555,7 @@ class TransitRepository {
       return 'Fermata non disponibile';
     }
 
-    final name = _stringValue(stop, 'stop_name');
+    final name = gtfsStringValue(stop, 'stop_name');
 
     if (name.isEmpty) {
       return 'Fermata non disponibile';
@@ -682,104 +582,5 @@ class TransitRepository {
           return part[0].toUpperCase() + part.substring(1);
         })
         .join(' ');
-  }
-
-  String _stringValue(_RawMap row, String key) {
-    final value = row[key];
-
-    if (value == null) {
-      return '';
-    }
-
-    return value.toString().trim();
-  }
-
-  double? _doubleValue(_RawMap row, String key) {
-    final value = _stringValue(row, key);
-
-    if (value.isEmpty) {
-      return null;
-    }
-
-    return double.tryParse(value.replaceAll(',', '.'));
-  }
-
-  int _intValue(_RawMap row, String key) {
-    final value = int.tryParse(_stringValue(row, key));
-    return value ?? 0;
-  }
-
-  int _timeToMinutes(String value) {
-    final parts = value.split(':');
-
-    if (parts.length < 2) {
-      return 1 << 30;
-    }
-
-    final hours = int.tryParse(parts[0]) ?? 0;
-    final minutes = int.tryParse(parts[1]) ?? 0;
-
-    return hours * 60 + minutes;
-  }
-
-  String _formatGtfsTime(String value) {
-    final parts = value.split(':');
-
-    if (parts.length < 2) {
-      return value;
-    }
-
-    final hours = int.tryParse(parts[0]) ?? 0;
-    final minutes = int.tryParse(parts[1]) ?? 0;
-
-    return '${hours.toString().padLeft(2, '0')}:'
-        '${minutes.toString().padLeft(2, '0')}';
-  }
-
-  String _formatHourRange(DateTime hourStart) {
-    final startHour = hourStart.hour;
-    final endHour = startHour + 1;
-
-    return '${startHour.toString().padLeft(2, '0')}:00 - '
-        '${endHour.toString().padLeft(2, '0')}:00';
-  }
-
-  String _formatGtfsDate(DateTime date) {
-    final year = date.year.toString().padLeft(4, '0');
-    final month = date.month.toString().padLeft(2, '0');
-    final day = date.day.toString().padLeft(2, '0');
-
-    return '$year$month$day';
-  }
-
-  String _weekdayKey(DateTime date) {
-    switch (date.weekday) {
-      case DateTime.monday:
-        return 'monday';
-      case DateTime.tuesday:
-        return 'tuesday';
-      case DateTime.wednesday:
-        return 'wednesday';
-      case DateTime.thursday:
-        return 'thursday';
-      case DateTime.friday:
-        return 'friday';
-      case DateTime.saturday:
-        return 'saturday';
-      case DateTime.sunday:
-        return 'sunday';
-    }
-
-    return 'monday';
-  }
-
-  int _naturalLineOrder(String value) {
-    final match = RegExp(r'^\d+').firstMatch(value.trim());
-
-    if (match == null) {
-      return 10000;
-    }
-
-    return int.tryParse(match.group(0) ?? '') ?? 10000;
   }
 }
