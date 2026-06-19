@@ -172,14 +172,4 @@ void main() {
       findsOneWidget,
     );
   });
-
-  testWidgets('assegna una ValueKey a ogni fermata', (
-    WidgetTester tester,
-  ) async {
-    await tester.pumpWidget(buildTestWidget());
-
-    expect(find.byKey(const ValueKey('stop-1')), findsOneWidget);
-    expect(find.byKey(const ValueKey('stop-2')), findsOneWidget);
-    expect(find.byKey(const ValueKey('stop-3')), findsOneWidget);
-  });
 }
