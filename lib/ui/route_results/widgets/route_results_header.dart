@@ -5,8 +5,8 @@ import '../theme/route_results_colors.dart';
 
 /// Header superiore della schermata dei risultati.
 ///
-/// Mostra il riepilogo della ricerca inserita dall'utente e chiarisce
-/// che il calcolo reale del percorso sarà integrato successivamente.
+/// Mostra il riepilogo della ricerca inserita dall'utente e mantiene
+/// descrittiva la durata, senza simulare un calcolo reale del percorso.
 class RouteResultsHeader extends StatelessWidget {
   const RouteResultsHeader({
     super.key,
@@ -83,34 +83,70 @@ class _RouteSummaryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(18, 18, 18, 18),
-      decoration: BoxDecoration(
-        color: colors.summaryCardBackgroundColor,
-        borderRadius: BorderRadius.circular(22),
-        border: Border.all(color: colors.summaryCardBorderColor),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _SummaryLocationText(
-            label: 'Partenza',
-            value: result.origin,
-            colors: colors,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final isCompact = constraints.maxWidth < 360;
+
+        return Container(
+          width: double.infinity,
+          padding: EdgeInsets.fromLTRB(
+            isCompact ? 16 : 20,
+            18,
+            isCompact ? 14 : 18,
+            18,
           ),
-          const SizedBox(height: 12),
-          _SummaryLocationText(
-            label: 'Destinazione',
-            value: result.destination,
-            colors: colors,
+          decoration: BoxDecoration(
+            color: colors.summaryCardBackgroundColor,
+            borderRadius: BorderRadius.circular(22),
+            border: Border.all(color: colors.summaryCardBorderColor),
           ),
-          const SizedBox(height: 16),
-          Divider(height: 1, color: colors.summaryDividerColor),
-          const SizedBox(height: 14),
-          _SummaryDescription(colors: colors),
-        ],
-      ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                child: _SummaryLocations(result: result, colors: colors),
+              ),
+              Container(
+                width: 1,
+                height: 108,
+                margin: EdgeInsets.symmetric(horizontal: isCompact ? 12 : 16),
+                color: colors.summaryDividerColor,
+              ),
+              SizedBox(
+                width: isCompact ? 92 : 116,
+                child: _EstimatedDurationLabel(colors: colors),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _SummaryLocations extends StatelessWidget {
+  const _SummaryLocations({required this.result, required this.colors});
+
+  final RouteResult result;
+  final RouteResultsColors colors;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _SummaryLocationText(
+          label: 'Partenza',
+          value: result.origin,
+          colors: colors,
+        ),
+        const SizedBox(height: 14),
+        _SummaryLocationText(
+          label: 'Destinazione',
+          value: result.destination,
+          colors: colors,
+        ),
+      ],
     );
   }
 }
@@ -153,19 +189,21 @@ class _SummaryLocationText extends StatelessWidget {
   }
 }
 
-class _SummaryDescription extends StatelessWidget {
-  const _SummaryDescription({required this.colors});
+class _EstimatedDurationLabel extends StatelessWidget {
+  const _EstimatedDurationLabel({required this.colors});
 
   final RouteResultsColors colors;
 
   @override
   Widget build(BuildContext context) {
     return Text(
-      'MINUTI STIMATI DI PERCORRENZA',
-      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+      'MINUTI STIMATI\nDI PERCORRENZA',
+      textAlign: TextAlign.center,
+      style: Theme.of(context).textTheme.labelSmall?.copyWith(
         color: colors.headerMutedTextColor,
-        fontWeight: FontWeight.w500,
-        height: 1.4,
+        fontWeight: FontWeight.w800,
+        height: 1.35,
+        letterSpacing: 0.7,
       ),
     );
   }
