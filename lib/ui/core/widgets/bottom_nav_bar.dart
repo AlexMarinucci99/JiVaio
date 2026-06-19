@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
+/// Definisce la palette cromatica della barra di navigazione inferiore.
 class BottomNavBarColors {
   const BottomNavBarColors({
     this.backgroundColor = const Color(0xCCFFFFFF),
@@ -15,36 +16,38 @@ class BottomNavBarColors {
     this.highlightColor = const Color(0x0A102A6B),
   });
 
-  // Sfondo glass della navbar.
+  /// Colore dello sfondo con effetto glass.
   final Color backgroundColor;
 
-  // Bordo chiaro del contenitore glass.
+  /// Colore del bordo esterno.
   final Color borderColor;
 
-  // Ombra esterna della navbar.
+  /// Colore dell'ombra esterna.
   final Color shadowColor;
 
-  // Colore icona/testo del tab selezionato.
+  /// Colore di icona e testo del tab selezionato.
   final Color selectedColor;
 
-  // Colore icona/testo dei tab non selezionati.
+  /// Colore di icona e testo dei tab non selezionati.
   final Color unselectedColor;
 
-  // Sfondo dell'indicatore attivo.
+  /// Colore dello sfondo dell'indicatore attivo.
   final Color selectedBackgroundColor;
 
-  // Bagliore morbido sotto l'indicatore attivo.
+  /// Colore del bagliore associato all'indicatore attivo.
   final Color selectedGlowColor;
 
-  // Colore effetto tap.
+  /// Colore dell'effetto tap.
   final Color splashColor;
 
-  // Colore effetto pressione.
+  /// Colore dell'effetto pressione.
   final Color highlightColor;
 }
 
-// Navbar inferiore condivisa dell'app.
-// Riceve il tab selezionato e comunica alla schermata padre il cambio tab.
+/// Mostra la barra di navigazione inferiore condivisa dell'app.
+///
+/// Il widget riceve l'indice selezionato dalla schermata padre e comunica
+/// i cambi di tab tramite [onItemSelected].
 class BottomNavBar extends StatelessWidget {
   const BottomNavBar({
     super.key,
@@ -53,13 +56,13 @@ class BottomNavBar extends StatelessWidget {
     this.colors = const BottomNavBarColors(),
   });
 
-  // Indice del tab attualmente selezionato.
+  /// Indice del tab attualmente selezionato.
   final int selectedIndex;
 
-  // Callback chiamata quando l'utente seleziona un tab.
+  /// Callback invocata quando l'utente seleziona un tab.
   final ValueChanged<int> onItemSelected;
 
-  // Palette colori propria della navbar.
+  /// Palette cromatica usata dalla barra.
   final BottomNavBarColors colors;
 
   static const List<_BottomNavItem> _items = [
@@ -152,7 +155,6 @@ class BottomNavBar extends StatelessWidget {
   }
 }
 
-// Singolo elemento della navbar.
 class _BottomNavTile extends StatelessWidget {
   const _BottomNavTile({
     required this.item,
@@ -227,7 +229,6 @@ class _BottomNavTile extends StatelessWidget {
   }
 }
 
-// Modello interno di un tab della navbar.
 class _BottomNavItem {
   const _BottomNavItem({required this.label, required this.icon});
 

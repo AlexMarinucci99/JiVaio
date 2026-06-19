@@ -14,8 +14,8 @@ import '../data/services/onboarding_preferences_service.dart';
 
 /// Contenitore delle dipendenze principali dell'app.
 ///
-/// Repository e service vengono creati una sola volta all'avvio
-/// e successivamente passati alle schermate che ne hanno bisogno.
+/// Centralizza la creazione di repository e service, così le schermate
+/// ricevono dipendenze già pronte senza conoscere i dettagli di costruzione.
 class AppDependencies {
   const AppDependencies({
     required this.authRepository,
@@ -27,10 +27,10 @@ class AppDependencies {
     required this.onboardingRepository,
   });
 
-  /// Costruisce il grafo delle dipendenze reali dell'app.
+  /// Costruisce il grafo delle dipendenze predefinite dell'app.
   ///
-  /// In futuro potremo affiancare factory dedicate a test,
-  /// staging o sviluppo locale.
+  /// Mantiene in un solo punto l'associazione tra repository e service,
+  /// compresi i mock usati per funzionalità non ancora collegate a dati reali.
   factory AppDependencies.create() {
     return AppDependencies(
       authRepository: AuthRepository(FirebaseAuthService()),

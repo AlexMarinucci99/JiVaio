@@ -1,9 +1,10 @@
 import '../../domain/models/app_notification.dart';
 
-/// Contratto per le sorgenti dati delle notifiche.
+/// Definisce il contratto per le sorgenti dati delle notifiche.
 ///
-/// La UI e il ViewModel non devono sapere se le notifiche arrivano
-/// da dati mock, Firebase, Supabase o API REST.
+/// Il repository dipende da questa astrazione invece che da una sorgente
+/// concreta, così le notifiche possono arrivare da mock, Firebase,
+/// Supabase o API REST senza modificare UI e ViewModel.
 abstract class NotificationService {
   Future<List<AppNotification>> fetchNotifications();
 }

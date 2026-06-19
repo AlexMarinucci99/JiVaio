@@ -1,9 +1,9 @@
 import '../../domain/models/app_user.dart';
 
-/// Contratto per le sorgenti dati di autenticazione.
+/// Definisce il contratto per le sorgenti dati di autenticazione.
 ///
-/// Permette al repository di non dipendere direttamente da Firebase
-/// e rende sostituibile la sorgente dati nei test o in future implementazioni.
+/// Il repository dipende da questa astrazione invece che da Firebase,
+/// così la sorgente dati può essere sostituita nei test o in implementazioni future.
 abstract class AuthService {
   /// Restituisce l'utente autenticato corrente, se presente.
   AppUser? get currentUser;

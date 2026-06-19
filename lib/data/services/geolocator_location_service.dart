@@ -5,9 +5,10 @@ import '../../domain/models/location_access_result.dart';
 import '../../domain/models/user_location.dart';
 import 'location_service.dart';
 
-/// Implementazione di [LocationService] basata sul plugin Geolocator.
+/// Implementa [LocationService] usando il plugin Geolocator.
 ///
-/// È l'unico punto dell'app che conosce direttamente il plugin esterno.
+/// Questo service isola l'accesso al plugin esterno e restituisce al resto
+/// dell'app modelli di dominio indipendenti da Geolocator.
 class GeolocatorLocationService implements LocationService {
   const GeolocatorLocationService();
 
@@ -48,8 +49,8 @@ class GeolocatorLocationService implements LocationService {
       );
       debugPrintStack(stackTrace: stackTrace);
 
-      // Fallback necessario perché su alcuni dispositivi Android
-      // il nuovo fix GPS può richiedere più tempo del previsto.
+      // Manteniamo il fallback perché il fix GPS può richiedere più tempo
+      // del previsto su alcuni dispositivi Android.
       final lastKnownPosition = await Geolocator.getLastKnownPosition();
 
       if (lastKnownPosition != null) {
@@ -82,8 +83,8 @@ class GeolocatorLocationService implements LocationService {
         rethrow;
       }
 
-      // Su Android manteniamo un secondo tentativo tramite LocationManager
-      // perché alcuni emulatori o device gestiscono male il provider fused.
+      // Su Android usiamo un secondo tentativo perché emulatori e alcuni
+      // dispositivi possono gestire male il provider fused.
       return Geolocator.getCurrentPosition(
         locationSettings: AndroidSettings(
           accuracy: LocationAccuracy.high,

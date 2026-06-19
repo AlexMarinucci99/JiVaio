@@ -4,9 +4,10 @@ import '../../domain/exceptions/auth_failure.dart';
 import '../../domain/models/app_user.dart';
 import 'auth_service.dart';
 
-/// Implementazione Firebase del servizio di autenticazione.
+/// Implementa [AuthService] usando Firebase Authentication.
 ///
-/// È l'unico punto dell'app che conosce direttamente FirebaseAuth.
+/// Questo service è l'unico punto dell'app che dipende direttamente
+/// da [FirebaseAuth] e traduce gli errori Firebase in errori di dominio.
 class FirebaseAuthService implements AuthService {
   FirebaseAuthService({FirebaseAuth? firebaseAuth})
     : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance;

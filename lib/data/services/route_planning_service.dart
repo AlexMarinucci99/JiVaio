@@ -1,11 +1,11 @@
 import '../../domain/models/route_result.dart';
 
-/// Contratto per una sorgente capace di pianificare un percorso.
+/// Definisce il contratto per una sorgente capace di pianificare un percorso.
 ///
-/// Oggi verrà utilizzata un'implementazione mock.
-/// In futuro potrà essere sostituita dall'algoritmo reale senza modificare
-/// repository, ViewModel o widget.
+/// Il repository dipende da questa astrazione, così l'implementazione mock
+/// può essere sostituita dall'algoritmo reale senza modificare ViewModel e UI.
 abstract interface class RoutePlanningService {
+  /// Calcola un percorso tra [origin] e [destination].
   Future<RouteResult> planRoute({
     required String origin,
     required String destination,

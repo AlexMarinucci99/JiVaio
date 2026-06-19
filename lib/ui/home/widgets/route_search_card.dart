@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+
 import '../theme/home_colors.dart';
 
+/// Mostra la card di ricerca del percorso nella home.
+///
+/// La card raccoglie partenza e destinazione, abilita la ricerca solo
+/// quando entrambi i campi sono compilati e delega l'azione tramite [onSearch].
 class RouteSearchCard extends StatefulWidget {
   const RouteSearchCard({
     super.key,
@@ -10,20 +15,21 @@ class RouteSearchCard extends StatefulWidget {
     this.colors = const RouteSearchCardColors(),
   }) : assert(contentScale > 0);
 
-  // Larghezza esterna della card.
-  // Se resta null, la card prende la larghezza disponibile dal parent.
+  /// Larghezza esterna della card.
+  ///
+  /// Se il valore è null, la card occupa la larghezza disponibile.
   final double? width;
 
-  // Scala generale del contenuto interno.
-  // 1.0 = dimensione normale
-  // 0.90 = contenuto più piccolo.
+  /// Fattore di scala applicato agli elementi interni della card.
   final double contentScale;
 
-  // Funzione chiamata quando l'utente preme il bottone Cerca percorso.
-  // Per ora non contiene logica di routing: serve solo come aggancio futuro.
+  /// Callback invocata quando l'utente richiede la ricerca del percorso.
+  ///
+  /// Nel prototipo corrente la card non calcola il percorso, ma passa
+  /// verso l'esterno i valori inseriti nei campi.
   final void Function(String from, String to)? onSearch;
 
-  // Palette colori propria della card.
+  /// Palette cromatica usata dalla card.
   final RouteSearchCardColors colors;
 
   @override
@@ -31,20 +37,12 @@ class RouteSearchCard extends StatefulWidget {
 }
 
 class _RouteSearchCardState extends State<RouteSearchCard> {
-  // =========================
-  // CONTROLLER DEI CAMPI
-  // =========================
-  // Servono per leggere e modificare il testo scritto dall'utente.
   final TextEditingController _fromController = TextEditingController(
     text: 'Posizione attuale',
   );
 
   final TextEditingController _toController = TextEditingController();
 
-  // =========================
-  // STATO DEL BOTTONE
-  // =========================
-  // Il bottone si attiva solo quando entrambi i campi contengono testo.
   bool get _canSearch {
     return _fromController.text.trim().isNotEmpty &&
         _toController.text.trim().isNotEmpty;
@@ -53,16 +51,12 @@ class _RouteSearchCardState extends State<RouteSearchCard> {
   @override
   void initState() {
     super.initState();
-
-    // Ogni volta che cambia il testo, aggiorniamo la UI.
-    // Serve per cambiare colore/stato del bottone.
     _fromController.addListener(_refreshCard);
     _toController.addListener(_refreshCard);
   }
 
   @override
   void dispose() {
-    // Pulizia dei controller quando il widget viene eliminato.
     _fromController.dispose();
     _toController.dispose();
     super.dispose();
@@ -73,15 +67,12 @@ class _RouteSearchCardState extends State<RouteSearchCard> {
   }
 
   void _swapFields() {
-    // Inverte partenza e destinazione.
     final oldFrom = _fromController.text;
     _fromController.text = _toController.text;
     _toController.text = oldFrom;
   }
 
   void _searchRoute() {
-    // Per ora il bottone non calcola il percorso.
-    // Passa solo i valori verso l'esterno.
     if (!_canSearch) {
       return;
     }
@@ -94,29 +85,18 @@ class _RouteSearchCardState extends State<RouteSearchCard> {
 
   @override
   Widget build(BuildContext context) {
-    // =========================
-    // SCALA GENERALE
-    // =========================
-    // Cambiando contentScale, ridimensioni il contenuto interno della card.
     final scale = widget.contentScale;
     final colors = widget.colors;
 
     return SizedBox(
-      // Qui cambi la larghezza esterna della card.
       width: widget.width,
-
       child: Container(
-        // =========================
-        // STRUTTURA ESTERNA CARD
-        // =========================
-        // Questo padding cambia lo spazio interno della card.
         padding: EdgeInsets.fromLTRB(
           14 * scale,
           0 * scale,
           14 * scale,
           13 * scale,
         ),
-
         decoration: BoxDecoration(
           color: colors.cardColor,
           borderRadius: BorderRadius.circular(22 * scale),
@@ -128,13 +108,9 @@ class _RouteSearchCardState extends State<RouteSearchCard> {
             ),
           ],
         ),
-
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // =========================
-            // CAMPO PARTENZA - DA
-            // =========================
             Transform.translate(
               offset: Offset(0, 10 * scale),
               child: _SearchTextField(
@@ -146,12 +122,6 @@ class _RouteSearchCardState extends State<RouteSearchCard> {
                 colors: colors,
               ),
             ),
-
-            // =========================
-            // SEPARATORE + SCAMBIO DA/A
-            // =========================
-            // Per abbassare linea e switch, modifica il valore 5.
-            // Esempio: 3 = meno basso, 7 = più basso.
             Padding(
               padding: EdgeInsets.only(top: 5 * scale),
               child: Row(
@@ -162,8 +132,6 @@ class _RouteSearchCardState extends State<RouteSearchCard> {
                       color: colors.dividerColor,
                     ),
                   ),
-
-                  // Bottone per invertire partenza e destinazione.
                   IconButton(
                     onPressed: _swapFields,
                     padding: EdgeInsets.zero,
@@ -180,10 +148,6 @@ class _RouteSearchCardState extends State<RouteSearchCard> {
                 ],
               ),
             ),
-
-            // =========================
-            // CAMPO DESTINAZIONE - A
-            // =========================
             _SearchTextField(
               label: 'A',
               controller: _toController,
@@ -192,12 +156,7 @@ class _RouteSearchCardState extends State<RouteSearchCard> {
               scale: scale,
               colors: colors,
             ),
-
             SizedBox(height: 12 * scale),
-
-            // =========================
-            // BOTTONE CERCA PERCORSO
-            // =========================
             SizedBox(
               width: double.infinity,
               height: 50 * scale,
@@ -255,17 +214,12 @@ class _SearchTextField extends StatelessWidget {
   final IconData icon;
   final String hintText;
   final double scale;
-
-  // Usa la stessa palette della RouteSearchCard.
   final RouteSearchCardColors colors;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        // =========================
-        // ICONA LATERALE
-        // =========================
         Container(
           width: 46 * scale,
           height: 46 * scale,
@@ -275,17 +229,11 @@ class _SearchTextField extends StatelessWidget {
           ),
           child: Icon(icon, size: 14 * scale, color: colors.iconColor),
         ),
-
         SizedBox(width: 14 * scale),
-
-        // =========================
-        // TESTO LABEL + INPUT
-        // =========================
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Etichetta piccola: Da / A.
               Text(
                 label,
                 style: Theme.of(context).textTheme.labelMedium?.copyWith(
@@ -294,8 +242,6 @@ class _SearchTextField extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                 ),
               ),
-
-              // Campo testuale.
               TextField(
                 controller: controller,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(

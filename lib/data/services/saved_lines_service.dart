@@ -1,7 +1,7 @@
-/// Contratto per le sorgenti dati delle linee salvate.
+/// Definisce il contratto per le sorgenti dati delle linee salvate.
 ///
-/// Permette al repository di non dipendere direttamente da Firestore
-/// e rende sostituibile la sorgente dati nei test o in future implementazioni.
+/// Il repository dipende da questa astrazione invece che da Firestore,
+/// così la sorgente dati resta sostituibile nei test o in implementazioni future.
 abstract class SavedLinesService {
   Stream<Set<String>> watchSavedLineIds({required String userId});
 

@@ -16,7 +16,7 @@ enum AuthFailureCode {
   unknown,
 }
 
-/// Errore applicativo utilizzato dal repository auth.
+/// Errore applicativo utilizzato dal repository di autenticazione.
 ///
 /// Traduce gli errori del provider esterno in errori
 /// comprensibili dal resto dell'app.

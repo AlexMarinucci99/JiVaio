@@ -1,16 +1,19 @@
 import '../../domain/models/route_result.dart';
 import '../services/route_planning_service.dart';
 
-/// Punto di accesso del ViewModel alla pianificazione dei percorsi.
+/// Gestisce l'accesso alla pianificazione dei percorsi.
 ///
-/// Il repository nasconde il service concreto utilizzato.
-/// Il ViewModel non deve sapere se i dati arrivano da un mock,
-/// da un algoritmo locale, da un database oppure da una API.
+/// Espone ai ViewModel un'API stabile e nasconde se la pianificazione
+/// viene prodotta da mock, algoritmo locale, database o API esterna.
 class RoutePlanningRepository {
   const RoutePlanningRepository(this._service);
 
   final RoutePlanningService _service;
 
+  /// Pianifica un percorso tra [origin] e [destination].
+  ///
+  /// Normalizza gli input ricevuti dalla UI e blocca richieste prive
+  /// di partenza o destinazione prima di delegare al service.
   Future<RouteResult> planRoute({
     required String origin,
     required String destination,

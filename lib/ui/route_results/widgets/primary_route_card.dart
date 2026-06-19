@@ -57,9 +57,7 @@ class PrimaryRouteCard extends StatelessWidget {
             ),
           ),
           Divider(height: 1, color: colors.borderColor),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(18, 20, 18, 20),
-          ),
+          Padding(padding: const EdgeInsets.fromLTRB(18, 20, 18, 20)),
         ],
       ),
     );

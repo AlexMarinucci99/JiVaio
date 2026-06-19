@@ -2,10 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'saved_lines_service.dart';
 
-/// Implementazione Firestore del salvataggio delle linee preferite.
+/// Implementa [SavedLinesService] usando Cloud Firestore.
 ///
-/// È l'unico punto dell'app che conosce la struttura della collection
-/// usata per salvare le linee associate a un utente registrato.
+/// Questo service è l'unico punto dell'app che conosce la struttura
+/// della collection usata per salvare le linee preferite dell'utente.
 class FirestoreSavedLinesService implements SavedLinesService {
   FirestoreSavedLinesService({FirebaseFirestore? firestore})
     : _firestore = firestore ?? FirebaseFirestore.instance;

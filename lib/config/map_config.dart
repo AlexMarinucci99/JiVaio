@@ -1,7 +1,7 @@
+/// Definisce i parametri di configurazione della mappa.
 class MapConfig {
   const MapConfig._();
 
-  // Centro iniziale: L'Aquila.
   static const double initialLatitude = 42.3498;
   static const double initialLongitude = 13.3995;
 
@@ -9,7 +9,7 @@ class MapConfig {
   static const double minZoom = 5;
   static const double maxZoom = 19;
 
-  // Mappa minimal/light basata su OpenStreetMap, più pulita della OSM standard.
+  /// URL del tema Carto light usato per una resa più pulita di OpenStreetMap.
   static const String lightTileUrl =
       'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png';
 

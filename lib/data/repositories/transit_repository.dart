@@ -11,7 +11,10 @@ import '../services/transit_raw_service.dart';
 
 typedef _RawMap = GtfsRawMap;
 
-/// Traduce i dati raw GTFS nei model del dominio.
+/// Traduce i dati GTFS grezzi nei model di dominio del trasporto urbano.
+///
+/// Il repository nasconde alla UI e ai ViewModel la struttura dei file GTFS,
+/// applicando filtri, ordinamenti e normalizzazioni utili alla consultazione.
 class TransitRepository {
   TransitRepository({TransitRawService rawService = const TransitRawService()})
     : _rawService = rawService;
@@ -21,6 +24,10 @@ class TransitRepository {
   TransitRawBundle? _cachedBundle;
   List<TransitStop>? _cachedMapStops;
 
+  /// Restituisce le fermate visualizzabili sulla mappa.
+  ///
+  /// La lista include solo fermate effettive con coordinate valide e viene
+  /// memorizzata in cache dopo il primo caricamento.
   Future<List<TransitStop>> getMapStops() async {
     final cachedStops = _cachedMapStops;
 
@@ -38,8 +45,7 @@ class TransitRepository {
       final latitude = gtfsDoubleValue(rawStop, 'stop_lat');
       final longitude = gtfsDoubleValue(rawStop, 'stop_lon');
 
-      // In GTFS location_type = 0 identifica una fermata effettiva.
-      // Se il campo manca o è vuoto, viene considerato 0.
+      // Nel formato GTFS, location_type = 0 identifica una fermata effettiva.
       final locationType = gtfsIntValue(rawStop, 'location_type');
 
       if (stopId.isEmpty || latitude == null || longitude == null) {
@@ -78,6 +84,10 @@ class TransitRepository {
     return result;
   }
 
+  /// Restituisce le linee disponibili nel dataset GTFS.
+  ///
+  /// Per ogni linea costruisce le direzioni, calcola le prossime partenze
+  /// rispetto a [moment] e ordina il risultato in modo leggibile per la UI.
   Future<List<TransitLine>> getLines({DateTime? moment}) async {
     final bundle = await _loadBundle();
     final now = moment ?? DateTime.now();
@@ -148,6 +158,11 @@ class TransitRepository {
     return lines;
   }
 
+  /// Restituisce orari e fermate per una direzione specifica.
+  ///
+  /// La fascia oraria è calcolata sull'ora corrente di [moment]. Se non ci sono
+  /// partenze nella fascia, viene comunque scelta una corsa rappresentativa
+  /// per mostrare la sequenza delle fermate.
   Future<TransitLineDirectionSchedule> getLineDirectionSchedule({
     required TransitLine line,
     required TransitLineDirection direction,

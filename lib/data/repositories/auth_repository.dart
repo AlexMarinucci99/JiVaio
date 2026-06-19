@@ -1,9 +1,10 @@
 import '../../domain/models/app_user.dart';
 import '../services/auth_service.dart';
 
-/// Repository responsabile dell'accesso ai dati di autenticazione.
+/// Gestisce l'accesso ai dati di autenticazione.
 ///
-/// Espone al resto dell'app un'API indipendente dal provider concreto.
+/// Espone al resto dell'app un'API stabile e indipendente
+/// dall'implementazione concreta di [AuthService].
 class AuthRepository {
   const AuthRepository(this._authService);
 

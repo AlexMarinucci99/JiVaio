@@ -25,7 +25,7 @@ class AppNotification {
   // Categoria della notifica.
   final AppNotificationType type;
 
-  // Titolo breve mostrato nel pannello.
+  // Titolo breve mostrato nell'iterfaccia.
   final String title;
 
   // Descrizione completa dell'avviso.

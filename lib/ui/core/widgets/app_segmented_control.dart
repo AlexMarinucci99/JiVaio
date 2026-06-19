@@ -5,6 +5,7 @@ import '../themes/app_segmented_control_colors.dart';
 
 export '../themes/app_segmented_control_colors.dart';
 
+/// Rappresenta una voce selezionabile di [AppSegmentedControl].
 class AppSegmentedControlItem<T> {
   const AppSegmentedControlItem({
     required this.value,
@@ -12,16 +13,20 @@ class AppSegmentedControlItem<T> {
     this.badgeLabel,
   });
 
-  // Valore logico dell'opzione.
+  /// Valore associato all'opzione.
   final T value;
 
-  // Testo visibile nell'interfaccia.
+  /// Testo mostrato nel segmento.
   final String label;
 
-  // Badge opzionale accanto al testo.
+  /// Testo opzionale mostrato nel badge del segmento.
   final String? badgeLabel;
 }
 
+/// Mostra un controllo segmentato riutilizzabile.
+///
+/// Il widget supporta da due a quattro opzioni e può essere personalizzato
+/// tramite [colors] oppure tramite override puntuali dei singoli colori.
 class AppSegmentedControl<T> extends StatelessWidget {
   const AppSegmentedControl({
     super.key,
@@ -29,9 +34,6 @@ class AppSegmentedControl<T> extends StatelessWidget {
     required this.selectedValue,
     required this.onChanged,
     this.colors = AppSegmentedControlColors.primary,
-
-    // Parametri mantenuti per compatibilità con il codice già scritto.
-    // Se vengono passati, sovrascrivono i valori presenti in colors.
     this.backgroundColor,
     this.selectedColor,
     this.borderColor,
@@ -44,50 +46,47 @@ class AppSegmentedControl<T> extends StatelessWidget {
   }) : assert(items.length >= 2),
        assert(items.length <= 4);
 
-  // Lista delle opzioni da mostrare.
+  /// Opzioni mostrate nel controllo.
   final List<AppSegmentedControlItem<T>> items;
 
-  // Valore attualmente selezionato.
+  /// Valore attualmente selezionato.
   final T selectedValue;
 
-  // Funzione chiamata quando l'utente seleziona una nuova opzione.
+  /// Callback invocata quando l'utente seleziona una nuova opzione.
   final ValueChanged<T> onChanged;
 
-  // Palette completa del widget.
-  // Permette di usare colori diversi in schermate diverse.
+  /// Palette cromatica predefinita del controllo.
   final AppSegmentedControlColors colors;
 
-  // Override opzionale del colore del contenitore esterno.
+  /// Override opzionale del colore del contenitore esterno.
   final Color? backgroundColor;
 
-  // Override opzionale del colore del segmento attivo.
+  /// Override opzionale del colore del segmento selezionato.
   final Color? selectedColor;
 
-  // Override opzionale del colore del bordo esterno.
+  /// Override opzionale del colore del bordo esterno.
   final Color? borderColor;
 
-  // Override opzionale del colore testo del segmento attivo.
+  /// Override opzionale del colore del testo selezionato.
   final Color? selectedTextColor;
 
-  // Override opzionale del colore testo dei segmenti non attivi.
+  /// Override opzionale del colore del testo non selezionato.
   final Color? unselectedTextColor;
 
-  // Override opzionale del colore sfondo badge non selezionato.
+  /// Override opzionale dello sfondo del badge non selezionato.
   final Color? badgeBackgroundColor;
 
-  // Override opzionale del colore testo badge non selezionato.
+  /// Override opzionale del testo del badge non selezionato.
   final Color? badgeTextColor;
 
-  // Override opzionale del colore sfondo badge selezionato.
+  /// Override opzionale dello sfondo del badge selezionato.
   final Color? selectedBadgeBackgroundColor;
 
-  // Override opzionale del colore testo badge selezionato.
+  /// Override opzionale del testo del badge selezionato.
   final Color? selectedBadgeTextColor;
 
   @override
   Widget build(BuildContext context) {
-    // Colori effettivi usati dal widget.
-    // Prima controllano gli override singoli, poi usano la palette colors.
     final effectiveBackgroundColor = backgroundColor ?? colors.backgroundColor;
     final effectiveSelectedColor = selectedColor ?? colors.selectedColor;
     final effectiveBorderColor = borderColor ?? colors.borderColor;
@@ -104,15 +103,12 @@ class AppSegmentedControl<T> extends StatelessWidget {
         selectedBadgeTextColor ?? colors.selectedBadgeTextColor;
 
     return Container(
-      // Box esterno dello switch.
       padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(
         color: effectiveBackgroundColor,
         borderRadius: BorderRadius.circular(14),
         border: Border.all(color: effectiveBorderColor),
       ),
-
-      // Riga orizzontale dei segmenti.
       child: Row(
         children: items
             .map((item) {
@@ -157,7 +153,6 @@ class AppSegmentedControl<T> extends StatelessWidget {
                               fontWeight: FontWeight.w700,
                             ),
                       ),
-
                       if (hasBadge) ...[
                         const SizedBox(width: 8),
                         AppSegmentedNSave(

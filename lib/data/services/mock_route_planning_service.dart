@@ -1,10 +1,10 @@
 import '../../domain/models/route_result.dart';
 import 'route_planning_service.dart';
 
-/// Restituisce un percorso dimostrativo statico.
+/// Restituisce un percorso dimostrativo per la schermata dei risultati.
 ///
-/// Serve esclusivamente per costruire e verificare la UI.
-/// Verrà sostituito quando sarà disponibile l'algoritmo reale.
+/// Il service consente di sviluppare e testare la UI prima
+/// dell'integrazione con l'algoritmo reale di pianificazione.
 class MockRoutePlanningService implements RoutePlanningService {
   const MockRoutePlanningService();
 
@@ -13,8 +13,7 @@ class MockRoutePlanningService implements RoutePlanningService {
     required String origin,
     required String destination,
   }) async {
-    // Simula una breve operazione asincrona.
-    // Permetterà di verificare anche lo stato di caricamento della schermata.
+    // Simula la latenza necessaria a verificare lo stato di caricamento.
     await Future<void>.delayed(const Duration(milliseconds: 350));
 
     return RouteResult(

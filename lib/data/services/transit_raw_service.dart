@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart' show rootBundle;
 
-//si occupa di leggere i file jso raw
+/// Contiene i dati GTFS grezzi caricati dagli asset locali.
 class TransitRawBundle {
   const TransitRawBundle({
     required this.routes,
@@ -13,19 +13,35 @@ class TransitRawBundle {
     required this.calendarDates,
   });
 
+  /// Righe del file `routes.json`.
   final List<Map<String, dynamic>> routes;
+
+  /// Righe del file `trips.json`.
   final List<Map<String, dynamic>> trips;
+
+  /// Righe del file `stop_times.json`.
   final List<Map<String, dynamic>> stopTimes;
+
+  /// Righe del file `stops.json`.
   final List<Map<String, dynamic>> stops;
+
+  /// Righe del file `calendar.json`.
   final List<Map<String, dynamic>> calendar;
+
+  /// Righe del file `calendar_dates.json`.
   final List<Map<String, dynamic>> calendarDates;
 }
 
+/// Carica dagli asset locali i file GTFS convertiti in JSON.
+///
+/// Il servizio mantiene isolato l'accesso a [rootBundle], così il repository
+/// lavora su dati già caricati e validati.
 class TransitRawService {
   const TransitRawService();
 
   static const String _basePath = 'assets/gtfs/raw';
 
+  /// Restituisce il bundle completo dei dati GTFS grezzi.
   Future<TransitRawBundle> loadBundle() async {
     final results = await Future.wait([
       _loadJsonList('$_basePath/routes.json'),

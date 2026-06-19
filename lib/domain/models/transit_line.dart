@@ -1,3 +1,4 @@
+/// Rappresenta una linea del trasporto urbano.
 class TransitLine {
   const TransitLine({
     required this.routeId,
@@ -8,30 +9,28 @@ class TransitLine {
     required this.directions,
   });
 
-  // Identificativo interno della linea.
-  // Esempio GTFS: route_id.
+  /// Identificativo della linea nella sorgente dati.
   final String routeId;
 
-  // Numero/nome breve mostrato nel badge.
-  // Esempio: "1", "2U", "6D".
+  /// Nome breve mostrato nei badge e nelle card.
   final String shortName;
 
-  // Nome visibile principale della linea.
+  /// Nome principale mostrato all'utente.
   final String displayName;
 
-  // Nome esteso o descrizione della linea.
+  /// Descrizione estesa della linea.
   final String routeLongName;
 
-  // Colore linea in formato esadecimale.
-  // Esempio: "2F80ED" oppure "#2F80ED".
+  /// Colore associato alla linea in formato esadecimale.
   final String routeColor;
 
-  // Direzioni disponibili per questa linea.
+  /// Direzioni disponibili per la linea.
   final List<TransitLineDirection> directions;
 
+  /// Restituisce la prima direzione disponibile.
   TransitLineDirection get primaryDirection => directions.first;
 
-  // Alcune linee possono essere considerate a direzione unica.
+  /// Indica se la linea deve essere trattata come direzione unica.
   bool get isUnidirectional {
     const knownUnidirectionalShortNames = <String>{'2U', '2UT'};
 
@@ -41,6 +40,7 @@ class TransitLine {
   }
 }
 
+/// Descrive una direzione di percorrenza associata a una linea.
 class TransitLineDirection {
   const TransitLineDirection({
     required this.key,
@@ -51,28 +51,28 @@ class TransitLineDirection {
     this.hasServiceToday = true,
   });
 
-  // Chiave interna della direzione.
-  // Esempio: "outbound", "return", oppure direction_id GTFS.
+  /// Chiave interna della direzione.
   final String key;
 
-  // Capolinea di partenza.
+  /// Capolinea di partenza.
   final String originName;
 
-  // Capolinea di arrivo.
+  /// Capolinea di arrivo.
   final String destinationName;
 
-  // Numero fermate della direzione.
+  /// Numero di fermate nella direzione.
   final int stopCount;
 
-  // Prossime partenze già formattate.
-  // Verranno alimentate da raw/service/repository.
+  /// Prossime partenze già formattate per la UI.
   final List<String> upcomingDepartures;
 
-  // Serve per distinguere "nessun servizio oggi" da "nessuna altra corsa".
+  /// Indica se la direzione ha servizio nella giornata corrente.
   final bool hasServiceToday;
 
+  /// Indica se sono disponibili prossime partenze.
   bool get hasUpcomingDepartures => upcomingDepartures.isNotEmpty;
 
+  /// Restituisce il messaggio da mostrare quando non ci sono partenze.
   String get emptyStateMessage {
     if (!hasServiceToday) {
       return 'Nessuna corsa attiva per oggi.';
@@ -82,6 +82,7 @@ class TransitLineDirection {
   }
 }
 
+/// Raccoglie orari e fermate per una specifica direzione.
 class TransitLineDirectionSchedule {
   const TransitLineDirectionSchedule({
     required this.routeId,
@@ -93,33 +94,34 @@ class TransitLineDirectionSchedule {
     this.hasServiceToday = true,
   });
 
-  // Linea a cui appartiene lo schedule.
+  /// Identificativo della linea associata allo schedule.
   final String routeId;
 
-  // Direzione selezionata.
+  /// Chiave della direzione selezionata.
   final String directionKey;
 
-  // Fascia oraria mostrata nella card partenze.
-  // Esempio: "18:00 - 19:00".
+  /// Fascia oraria mostrata nella sezione partenze.
   final String timeRangeLabel;
 
-  // Corse disponibili nella fascia.
+  /// Corse disponibili nella fascia oraria.
   final List<TransitLineDeparture> departures;
 
-  // Fermate ordinate della direzione, possibilmente con orario ufficiale
-  // riferito alla corsa selezionata.
+  /// Fermate ordinate della direzione.
   final List<TransitLineStop> stops;
 
-  // Trip selezionato nella fascia. Può essere null se non ci sono corse.
+  /// Identificativo della corsa selezionata, se disponibile.
   final String? selectedTripId;
 
-  // Indica se la linea ha servizio nella giornata.
+  /// Indica se la linea ha servizio nella giornata corrente.
   final bool hasServiceToday;
 
+  /// Indica se sono disponibili corse nella fascia selezionata.
   bool get hasDepartures => departures.isNotEmpty;
 
+  /// Indica se sono disponibili fermate per la direzione.
   bool get hasStops => stops.isNotEmpty;
 
+  /// Restituisce il messaggio da mostrare quando non ci sono corse.
   String get emptyDeparturesMessage {
     if (!hasServiceToday) {
       return 'Nessuna corsa attiva per oggi.';
@@ -129,21 +131,21 @@ class TransitLineDirectionSchedule {
   }
 }
 
+/// Descrive una corsa disponibile per una linea.
 class TransitLineDeparture {
   const TransitLineDeparture({
     required this.tripId,
     required this.departureTime,
   });
 
-  // Identificativo della corsa.
-  // Esempio GTFS: trip_id.
+  /// Identificativo della corsa nella sorgente dati.
   final String tripId;
 
-  // Orario ufficiale della partenza dal capolinea.
-  // Per ora stringa formattata "HH:mm", così la UI resta semplice.
+  /// Orario ufficiale di partenza dal capolinea.
   final String departureTime;
 }
 
+/// Descrive una fermata ordinata all'interno di una direzione.
 class TransitLineStop {
   const TransitLineStop({
     required this.stopId,
@@ -152,20 +154,19 @@ class TransitLineStop {
     this.officialTime,
   });
 
-  // Identificativo fermata.
-  // Esempio GTFS: stop_id.
+  /// Identificativo della fermata nella sorgente dati.
   final String stopId;
 
-  // Nome fermata mostrato nella timeline.
+  /// Nome della fermata mostrato nella timeline.
   final String name;
 
-  // Ordine della fermata nella direzione.
+  /// Posizione della fermata nella sequenza della direzione.
   final int sequence;
 
-  // Orario ufficiale della fermata per la corsa selezionata.
-  // Può essere null se non disponibile.
+  /// Orario ufficiale della fermata per la corsa selezionata.
   final String? officialTime;
 
+  /// Indica se la fermata ha un orario ufficiale valido.
   bool get hasOfficialTime {
     final value = officialTime;
     return value != null && value.trim().isNotEmpty;

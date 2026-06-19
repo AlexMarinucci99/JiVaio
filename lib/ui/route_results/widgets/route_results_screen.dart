@@ -111,11 +111,11 @@ class _RouteResultsScreenState extends State<RouteResultsScreen> {
     }
 
     return _LoadedRouteResultsView(
-  result: result,
-  colors: _colors,
-  onBack: _handleBack,
-  onStartNavigation: _handleStartNavigation,
-);
+      result: result,
+      colors: _colors,
+      onBack: _handleBack,
+      onStartNavigation: _handleStartNavigation,
+    );
   }
 }
 
@@ -140,9 +140,7 @@ class _LoadedRouteResultsView extends StatelessWidget {
         Expanded(
           child: ListView(
             padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
-            children: [
-              PrimaryRouteCard(result: result, colors: colors),
-            ],
+            children: [PrimaryRouteCard(result: result, colors: colors)],
           ),
         ),
         SafeArea(
@@ -159,7 +157,6 @@ class _LoadedRouteResultsView extends StatelessWidget {
     );
   }
 }
-
 
 class _LoadingRouteResultsView extends StatelessWidget {
   const _LoadingRouteResultsView({required this.colors});
