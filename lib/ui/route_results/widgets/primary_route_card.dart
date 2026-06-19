@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../../../domain/models/route_result.dart';
 import '../theme/route_results_colors.dart';
-import 'route_timeline.dart';
 
 /// Card principale con il percorso suggerito.
 ///
@@ -60,10 +59,6 @@ class PrimaryRouteCard extends StatelessWidget {
           Divider(height: 1, color: colors.borderColor),
           Padding(
             padding: const EdgeInsets.fromLTRB(18, 20, 18, 20),
-            child: RouteTimeline(
-              steps: result.recommendedSteps,
-              colors: colors,
-            ),
           ),
         ],
       ),

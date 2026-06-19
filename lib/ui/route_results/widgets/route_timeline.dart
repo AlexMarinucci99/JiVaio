@@ -97,7 +97,9 @@ class _TimelineStepTile extends StatelessWidget {
                   );
                 }
 
-                final metadataWidth = constraints.maxWidth < 320 ? 112.0 : 138.0;
+                final metadataWidth = constraints.maxWidth < 320
+                    ? 112.0
+                    : 138.0;
 
                 return Column(
                   children: [

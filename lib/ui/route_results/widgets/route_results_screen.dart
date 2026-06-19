@@ -4,7 +4,6 @@ import '../../../data/repositories/route_planning_repository.dart';
 import '../../../domain/models/route_result.dart';
 import '../theme/route_results_colors.dart';
 import '../view_model/route_results_view_model.dart';
-import 'next_bus_card.dart';
 import 'primary_route_card.dart';
 import 'route_navigation_button.dart';
 import 'route_results_header.dart';
@@ -71,12 +70,6 @@ class _RouteResultsScreenState extends State<RouteResultsScreen> {
     );
   }
 
-  void _handleAlternativeDetails(AlternativeRoute route) {
-    _showFeatureNotReadyMessage(
-      'Dettagli della linea ${route.lineCode} non ancora implementati.',
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
@@ -118,12 +111,11 @@ class _RouteResultsScreenState extends State<RouteResultsScreen> {
     }
 
     return _LoadedRouteResultsView(
-      result: result,
-      colors: _colors,
-      onBack: _handleBack,
-      onStartNavigation: _handleStartNavigation,
-      onAlternativeDetails: _handleAlternativeDetails,
-    );
+  result: result,
+  colors: _colors,
+  onBack: _handleBack,
+  onStartNavigation: _handleStartNavigation,
+);
   }
 }
 
@@ -133,14 +125,12 @@ class _LoadedRouteResultsView extends StatelessWidget {
     required this.colors,
     required this.onBack,
     required this.onStartNavigation,
-    required this.onAlternativeDetails,
   });
 
   final RouteResult result;
   final RouteResultsColors colors;
   final VoidCallback onBack;
   final VoidCallback onStartNavigation;
-  final void Function(AlternativeRoute route) onAlternativeDetails;
 
   @override
   Widget build(BuildContext context) {
@@ -151,11 +141,7 @@ class _LoadedRouteResultsView extends StatelessWidget {
           child: ListView(
             padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
             children: [
-              NextBusCard(times: result.nextBusTimes, colors: colors),
-              const SizedBox(height: 18),
               PrimaryRouteCard(result: result, colors: colors),
-              const SizedBox(height: 24),
-              
             ],
           ),
         ),
