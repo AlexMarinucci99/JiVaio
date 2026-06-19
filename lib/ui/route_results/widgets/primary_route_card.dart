@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import '../../../domain/models/route_result.dart';
 import '../theme/route_results_colors.dart';
 
-/// Card principale con il percorso suggerito.
+/// Mostra il percorso consigliato in forma semplificata.
 ///
-/// La card compone il titolo, la durata totale e la timeline.
-/// Non accede direttamente al ViewModel o al data layer.
+/// La card mantiene una suddivisione in sezioni, ma sostituisce i
+/// dettagli operativi del mock con descrizioni sintetiche, più coerenti
+/// con lo stato attuale del progetto.
 class PrimaryRouteCard extends StatelessWidget {
   const PrimaryRouteCard({
     super.key,
@@ -34,57 +35,107 @@ class PrimaryRouteCard extends StatelessWidget {
         ],
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          _PrimaryRouteHeader(colors: colors),
+          Divider(height: 1, color: colors.borderColor),
           Padding(
-            padding: const EdgeInsets.fromLTRB(20, 18, 18, 16),
-            child: Row(
+            padding: const EdgeInsets.fromLTRB(18, 18, 18, 20),
+            child: Column(
               children: [
-                Expanded(
-                  child: Text(
-                    'Percorso consigliato',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: colors.textPrimaryColor,
-                      fontWeight: FontWeight.w800,
-                    ),
-                  ),
+                _PrimaryRouteSection(
+                  title: 'Partenza',
+                  description: result.origin,
+                  colors: colors,
                 ),
-                const SizedBox(width: 12),
-                _TotalDurationBadge(
-                  duration: result.totalDuration,
+                const SizedBox(height: 12),
+                _PrimaryRouteSection(
+                  title: 'Fermata iniziale',
+                  description: 'Fermata X.',
+                  colors: colors,
+                ),
+                const SizedBox(height: 12),
+                _PrimaryRouteSection(
+                  title: 'Linea consigliata',
+                  description: 'Nav. Y.',
+                  colors: colors,
+                ),
+                const SizedBox(height: 12),
+                _PrimaryRouteSection(
+                  title: 'Arrivo',
+                  description: result.destination,
                   colors: colors,
                 ),
               ],
             ),
           ),
-          Divider(height: 1, color: colors.borderColor),
-          Padding(padding: const EdgeInsets.fromLTRB(18, 20, 18, 20)),
         ],
       ),
     );
   }
 }
 
-class _TotalDurationBadge extends StatelessWidget {
-  const _TotalDurationBadge({required this.duration, required this.colors});
+class _PrimaryRouteHeader extends StatelessWidget {
+  const _PrimaryRouteHeader({required this.colors});
 
-  final Duration duration;
+  final RouteResultsColors colors;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(18, 18, 18, 16),
+      child: Text(
+        'Percorso consigliato',
+        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+          color: colors.textPrimaryColor,
+          fontWeight: FontWeight.w800,
+        ),
+      ),
+    );
+  }
+}
+
+class _PrimaryRouteSection extends StatelessWidget {
+  const _PrimaryRouteSection({
+    required this.title,
+    required this.description,
+    required this.colors,
+  });
+
+  final String title;
+  final String description;
   final RouteResultsColors colors;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 7),
+      width: double.infinity,
+      padding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
       decoration: BoxDecoration(
         color: colors.accentSoftColor,
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: BorderRadius.circular(16),
         border: Border.all(color: colors.accentBorderColor),
       ),
-      child: Text(
-        '${duration.inMinutes} min',
-        style: Theme.of(context).textTheme.labelLarge?.copyWith(
-          color: colors.accentColor,
-          fontWeight: FontWeight.w800,
-        ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: colors.textPrimaryColor,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            description,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: colors.textSecondaryColor,
+              height: 1.4,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ],
       ),
     );
   }
