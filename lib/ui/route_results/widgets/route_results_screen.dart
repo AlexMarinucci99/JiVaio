@@ -4,7 +4,6 @@ import '../../../data/repositories/route_planning_repository.dart';
 import '../../../domain/models/route_result.dart';
 import '../theme/route_results_colors.dart';
 import '../view_model/route_results_view_model.dart';
-import 'alternative_route_card.dart';
 import 'next_bus_card.dart';
 import 'primary_route_card.dart';
 import 'route_navigation_button.dart';
@@ -149,91 +148,32 @@ class _LoadedRouteResultsView extends StatelessWidget {
       children: [
         RouteResultsHeader(result: result, colors: colors, onBack: onBack),
         Expanded(
-          child: Stack(
+          child: ListView(
+            padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
             children: [
-              ListView(
-                padding: const EdgeInsets.fromLTRB(20, 20, 20, 118),
-                children: [
-                  NextBusCard(times: result.nextBusTimes, colors: colors),
-                  const SizedBox(height: 18),
-                  PrimaryRouteCard(result: result, colors: colors),
-                  const SizedBox(height: 24),
-                  _AlternativeRoutesSection(
-                    result: result,
-                    colors: colors,
-                    onAlternativeDetails: onAlternativeDetails,
-                  ),
-                ],
-              ),
-              Positioned(
-                left: 20,
-                right: 20,
-                bottom: 16,
-                child: SafeArea(
-                  top: false,
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      color: colors.backgroundColor.withValues(alpha: 0.92),
-                      borderRadius: BorderRadius.circular(22),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: RouteNavigationButton(
-                        colors: colors,
-                        onPressed: onStartNavigation,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+              NextBusCard(times: result.nextBusTimes, colors: colors),
+              const SizedBox(height: 18),
+              PrimaryRouteCard(result: result, colors: colors),
+              const SizedBox(height: 24),
+              
             ],
           ),
         ),
-      ],
-    );
-  }
-}
-
-class _AlternativeRoutesSection extends StatelessWidget {
-  const _AlternativeRoutesSection({
-    required this.result,
-    required this.colors,
-    required this.onAlternativeDetails,
-  });
-
-  final RouteResult result;
-  final RouteResultsColors colors;
-  final void Function(AlternativeRoute route) onAlternativeDetails;
-
-  @override
-  Widget build(BuildContext context) {
-    if (result.alternativeRoutes.isEmpty) {
-      return const SizedBox.shrink();
-    }
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Linee alternative',
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            color: colors.textPrimaryColor,
-            fontWeight: FontWeight.w800,
+        SafeArea(
+          top: false,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 8, 20, 16),
+            child: RouteNavigationButton(
+              colors: colors,
+              onPressed: onStartNavigation,
+            ),
           ),
         ),
-        const SizedBox(height: 12),
-        for (final route in result.alternativeRoutes) ...[
-          AlternativeRouteCard(
-            route: route,
-            colors: colors,
-            onDetails: () => onAlternativeDetails(route),
-          ),
-          const SizedBox(height: 14),
-        ],
       ],
     );
   }
 }
+
 
 class _LoadingRouteResultsView extends StatelessWidget {
   const _LoadingRouteResultsView({required this.colors});

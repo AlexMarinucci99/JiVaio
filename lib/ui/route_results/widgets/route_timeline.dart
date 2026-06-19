@@ -50,76 +50,44 @@ class _TimelineStepTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IntrinsicHeight(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          SizedBox(
-            width: 46,
-            child: Column(
-              children: [
-                _TimelineMarker(stepType: step.type, colors: colors),
-                if (!isLast)
-                  Expanded(
-                    child: _TimelineConnector(
-                      isDotted: _usesDottedConnector(step.type),
-                      colors: colors,
-                    ),
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          width: 46,
+          child: Column(
+            children: [
+              _TimelineMarker(stepType: step.type, colors: colors),
+              if (!isLast)
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 6),
+                  child: _TimelineConnector(
+                    isDotted: _usesDottedConnector(step.type),
+                    colors: colors,
                   ),
-              ],
-            ),
+                ),
+            ],
           ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.only(bottom: isLast ? 0 : 18),
-              child: LayoutBuilder(
-                builder: (context, constraints) {
-                  final useCompactLayout = constraints.maxWidth < 250;
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Padding(
+            padding: EdgeInsets.only(bottom: isLast ? 0 : 18),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                final useCompactLayout = constraints.maxWidth < 250;
 
-                  if (useCompactLayout) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _StepDescription(step: step, colors: colors),
-                        const SizedBox(height: 8),
-                        _StepMetadata(
-                          step: step,
-                          colors: colors,
-                          alignment: CrossAxisAlignment.start,
-                          textAlign: TextAlign.start,
-                        ),
-                        if (!isLast) ...[
-                          const SizedBox(height: 16),
-                          Divider(height: 1, color: colors.borderColor),
-                        ],
-                      ],
-                    );
-                  }
-
-                  final metadataWidth = constraints.maxWidth < 320
-                      ? 112.0
-                      : 138.0;
-
+                if (useCompactLayout) {
                   return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: _StepDescription(step: step, colors: colors),
-                          ),
-                          const SizedBox(width: 10),
-                          SizedBox(
-                            width: metadataWidth,
-                            child: _StepMetadata(
-                              step: step,
-                              colors: colors,
-                              alignment: CrossAxisAlignment.end,
-                              textAlign: TextAlign.end,
-                            ),
-                          ),
-                        ],
+                      _StepDescription(step: step, colors: colors),
+                      const SizedBox(height: 8),
+                      _StepMetadata(
+                        step: step,
+                        colors: colors,
+                        alignment: CrossAxisAlignment.start,
+                        textAlign: TextAlign.start,
                       ),
                       if (!isLast) ...[
                         const SizedBox(height: 16),
@@ -127,12 +95,41 @@ class _TimelineStepTile extends StatelessWidget {
                       ],
                     ],
                   );
-                },
-              ),
+                }
+
+                final metadataWidth = constraints.maxWidth < 320 ? 112.0 : 138.0;
+
+                return Column(
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: _StepDescription(step: step, colors: colors),
+                        ),
+                        const SizedBox(width: 10),
+                        SizedBox(
+                          width: metadataWidth,
+                          child: _StepMetadata(
+                            step: step,
+                            colors: colors,
+                            alignment: CrossAxisAlignment.end,
+                            textAlign: TextAlign.end,
+                          ),
+                        ),
+                      ],
+                    ),
+                    if (!isLast) ...[
+                      const SizedBox(height: 16),
+                      Divider(height: 1, color: colors.borderColor),
+                    ],
+                  ],
+                );
+              },
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -198,14 +195,13 @@ class _TimelineConnector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: SizedBox(
-        width: 3,
-        child: CustomPaint(
-          painter: _TimelineConnectorPainter(
-            color: colors.accentColor,
-            isDotted: isDotted,
-          ),
+    return SizedBox(
+      width: 3,
+      height: 46,
+      child: CustomPaint(
+        painter: _TimelineConnectorPainter(
+          color: colors.accentColor,
+          isDotted: isDotted,
         ),
       ),
     );
