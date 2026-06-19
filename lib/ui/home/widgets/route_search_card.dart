@@ -4,8 +4,8 @@ import '../theme/home_colors.dart';
 
 /// Mostra la card di ricerca del percorso nella home.
 ///
-/// La card raccoglie partenza e destinazione, abilita la ricerca solo
-/// quando entrambi i campi sono compilati e delega l'azione tramite [onSearch].
+/// La card raccoglie partenza e destinazione, abilita la ricerca
+/// quando la destinazione è compilata e delega l'azione tramite [onSearch].
 class RouteSearchCard extends StatefulWidget {
   const RouteSearchCard({
     super.key,
@@ -25,8 +25,8 @@ class RouteSearchCard extends StatefulWidget {
 
   /// Callback invocata quando l'utente richiede la ricerca del percorso.
   ///
-  /// Nel prototipo corrente la card non calcola il percorso, ma passa
-  /// verso l'esterno i valori inseriti nei campi.
+  /// Nel prototipo corrente la card non calcola il percorso.
+  /// Se la partenza è vuota, viene usata la posizione attuale.
   final void Function(String from, String to)? onSearch;
 
   /// Palette cromatica usata dalla card.
@@ -37,15 +37,13 @@ class RouteSearchCard extends StatefulWidget {
 }
 
 class _RouteSearchCardState extends State<RouteSearchCard> {
-  final TextEditingController _fromController = TextEditingController(
-    text: 'Posizione attuale',
-  );
+  static const String _currentPositionLabel = 'Posizione attuale';
 
+  final TextEditingController _fromController = TextEditingController();
   final TextEditingController _toController = TextEditingController();
 
   bool get _canSearch {
-    return _fromController.text.trim().isNotEmpty &&
-        _toController.text.trim().isNotEmpty;
+    return _toController.text.trim().isNotEmpty;
   }
 
   @override
@@ -67,9 +65,19 @@ class _RouteSearchCardState extends State<RouteSearchCard> {
   }
 
   void _swapFields() {
-    final oldFrom = _fromController.text;
+    final oldFrom = _fromController.text.trim();
+    final oldTo = _toController.text.trim();
+
+    if (oldFrom.isEmpty && oldTo.isEmpty) {
+      return;
+    }
+
+    final effectiveFrom = oldFrom.isEmpty
+        ? _currentPositionLabel
+        : _fromController.text;
+
     _fromController.text = _toController.text;
-    _toController.text = oldFrom;
+    _toController.text = effectiveFrom;
   }
 
   void _searchRoute() {
@@ -77,8 +85,10 @@ class _RouteSearchCardState extends State<RouteSearchCard> {
       return;
     }
 
+    final from = _fromController.text.trim();
+
     widget.onSearch?.call(
-      _fromController.text.trim(),
+      from.isEmpty ? _currentPositionLabel : from,
       _toController.text.trim(),
     );
   }
@@ -117,7 +127,7 @@ class _RouteSearchCardState extends State<RouteSearchCard> {
                 label: 'Da',
                 controller: _fromController,
                 icon: Icons.navigation_rounded,
-                hintText: 'Posizione attuale',
+                hintText: 'Da dove vuoi partire?',
                 scale: scale,
                 colors: colors,
               ),
