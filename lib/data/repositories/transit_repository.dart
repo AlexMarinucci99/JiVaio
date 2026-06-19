@@ -2,6 +2,10 @@ import '../../domain/models/transit_line.dart';
 import '../../domain/models/transit_stop.dart';
 import '../gtfs/gtfs_calendar_utils.dart';
 import '../gtfs/gtfs_collection_utils.dart';
+import '../gtfs/gtfs_departure_utils.dart';
+import '../gtfs/gtfs_route_utils.dart';
+import '../gtfs/gtfs_stop_utils.dart';
+import '../gtfs/gtfs_trip_utils.dart';
 import '../gtfs/gtfs_utils.dart';
 import '../services/transit_raw_service.dart';
 
@@ -61,7 +65,7 @@ class TransitRepository {
       mapStops.add(
         TransitStop(
           stopId: stopId,
-          name: _stopName(rawStop),
+          name: gtfsStopName(rawStop),
           latitude: latitude,
           longitude: longitude,
         ),
@@ -119,11 +123,11 @@ class TransitRepository {
           routeId: routeId,
           shortName: shortName.isEmpty ? routeId : shortName,
           displayName: longName.isEmpty ? 'Linea $shortName' : longName,
-          routeLongName: _buildRouteSubtitle(
+          routeLongName: gtfsRouteSubtitle(
             shortName: shortName,
             routeDescription: routeDescription,
           ),
-          routeColor: _resolveRouteColor(route),
+          routeColor: gtfsRouteColor(route),
           directions: directions,
         ),
       );
@@ -158,7 +162,7 @@ class TransitRepository {
     final routeTrips = bundle.trips
         .where((trip) {
           return gtfsStringValue(trip, 'route_id') == line.routeId &&
-              _directionKeyOf(trip) == direction.key;
+              gtfsDirectionKeyOf(trip) == direction.key;
         })
         .toList(growable: false);
 
@@ -177,7 +181,7 @@ class TransitRepository {
     final rangeStartMinutes = now.hour * 60;
     final rangeEndMinutes = rangeStartMinutes + 60;
 
-    final departures = _departuresForRange(
+    final departures = gtfsDeparturesForRange(
       trips: activeTrips,
       stopTimesByTrip: stopTimesByTrip,
       startMinutes: rangeStartMinutes,
@@ -186,7 +190,7 @@ class TransitRepository {
 
     final selectedTripId = departures.isEmpty ? null : departures.first.tripId;
 
-    final representativeTrip = _findRepresentativeTrip(
+    final representativeTrip = gtfsFindRepresentativeTrip(
       selectedTripId: selectedTripId,
       activeTrips: activeTrips,
       allTrips: routeTrips,
@@ -265,14 +269,15 @@ class TransitRepository {
     required DateTime moment,
   }) {
     final directionKeys =
-        routeTrips.map(_directionKeyOf).toSet().toList(growable: false)..sort();
+        routeTrips.map(gtfsDirectionKeyOf).toSet().toList(growable: false)
+          ..sort();
 
     final directions = <TransitLineDirection>[];
 
     for (final directionKey in directionKeys) {
       final allDirectionTrips = routeTrips
           .where((trip) {
-            return _directionKeyOf(trip) == directionKey;
+            return gtfsDirectionKeyOf(trip) == directionKey;
           })
           .toList(growable: false);
 
@@ -287,7 +292,7 @@ class TransitRepository {
           })
           .toList(growable: false);
 
-      final representativeTrip = _firstTripWithStops(
+      final representativeTrip = gtfsFirstTripWithStops(
         activeDirectionTrips.isNotEmpty
             ? activeDirectionTrips
             : allDirectionTrips,
@@ -313,8 +318,8 @@ class TransitRepository {
       final destinationStop =
           stopsById[gtfsStringValue(lastStopTime, 'stop_id')];
 
-      final originName = _stopName(originStop);
-      final destinationName = _stopName(destinationStop);
+      final originName = gtfsStopName(originStop);
+      final destinationName = gtfsStopName(destinationStop);
 
       directions.add(
         TransitLineDirection(
@@ -322,7 +327,7 @@ class TransitRepository {
           originName: originName,
           destinationName: destinationName,
           stopCount: representativeStopTimes.length,
-          upcomingDepartures: _upcomingDepartures(
+          upcomingDepartures: gtfsUpcomingDepartures(
             trips: activeDirectionTrips,
             stopTimesByTrip: stopTimesByTrip,
             moment: moment,
@@ -334,44 +339,6 @@ class TransitRepository {
     }
 
     return directions;
-  }
-
-  List<TransitLineDeparture> _departuresForRange({
-    required List<_RawMap> trips,
-    required Map<String, List<_RawMap>> stopTimesByTrip,
-    required int startMinutes,
-    required int endMinutes,
-  }) {
-    final departures = <TransitLineDeparture>[];
-
-    for (final trip in trips) {
-      final tripId = gtfsStringValue(trip, 'trip_id');
-      final stopTimes = stopTimesByTrip[tripId] ?? const <_RawMap>[];
-
-      if (stopTimes.isEmpty) {
-        continue;
-      }
-
-      final departureTime = gtfsStringValue(stopTimes.first, 'departure_time');
-      final departureMinutes = gtfsTimeToMinutes(departureTime);
-
-      if (departureMinutes >= startMinutes && departureMinutes < endMinutes) {
-        departures.add(
-          TransitLineDeparture(
-            tripId: tripId,
-            departureTime: gtfsFormatTime(departureTime),
-          ),
-        );
-      }
-    }
-
-    departures.sort((a, b) {
-      return gtfsTimeToMinutes(
-        a.departureTime,
-      ).compareTo(gtfsTimeToMinutes(b.departureTime));
-    });
-
-    return departures;
   }
 
   List<TransitLineStop> _buildStopsForTrip({
@@ -390,7 +357,7 @@ class TransitRepository {
 
           return TransitLineStop(
             stopId: stopId,
-            name: _stopName(stop),
+            name: gtfsStopName(stop),
             sequence: gtfsIntValue(stopTime, 'stop_sequence'),
             officialTime: includeOfficialTimes
                 ? gtfsFormatTime(gtfsStringValue(stopTime, 'arrival_time'))
@@ -398,189 +365,5 @@ class TransitRepository {
           );
         })
         .toList(growable: false);
-  }
-
-  _RawMap? _findRepresentativeTrip({
-    required String? selectedTripId,
-    required List<_RawMap> activeTrips,
-    required List<_RawMap> allTrips,
-    required Map<String, List<_RawMap>> stopTimesByTrip,
-  }) {
-    if (selectedTripId != null) {
-      for (final trip in activeTrips) {
-        if (gtfsStringValue(trip, 'trip_id') == selectedTripId) {
-          return trip;
-        }
-      }
-    }
-
-    return _firstTripWithStops(
-      activeTrips.isNotEmpty ? activeTrips : allTrips,
-      stopTimesByTrip,
-    );
-  }
-
-  _RawMap? _firstTripWithStops(
-    List<_RawMap> trips,
-    Map<String, List<_RawMap>> stopTimesByTrip,
-  ) {
-    final sortedTrips = [...trips]
-      ..sort((a, b) {
-        final aTime = _firstDepartureMinutes(a, stopTimesByTrip);
-        final bTime = _firstDepartureMinutes(b, stopTimesByTrip);
-        return aTime.compareTo(bTime);
-      });
-
-    for (final trip in sortedTrips) {
-      final tripId = gtfsStringValue(trip, 'trip_id');
-      final stopTimes = stopTimesByTrip[tripId] ?? const <_RawMap>[];
-
-      if (stopTimes.isNotEmpty) {
-        return trip;
-      }
-    }
-
-    return null;
-  }
-
-  List<String> _upcomingDepartures({
-    required List<_RawMap> trips,
-    required Map<String, List<_RawMap>> stopTimesByTrip,
-    required DateTime moment,
-    required int limit,
-  }) {
-    final nowMinutes = moment.hour * 60 + moment.minute;
-    final departures = <String>[];
-
-    final sortedTrips = [...trips]
-      ..sort((a, b) {
-        final aTime = _firstDepartureMinutes(a, stopTimesByTrip);
-        final bTime = _firstDepartureMinutes(b, stopTimesByTrip);
-        return aTime.compareTo(bTime);
-      });
-
-    for (final trip in sortedTrips) {
-      final tripId = gtfsStringValue(trip, 'trip_id');
-      final stopTimes = stopTimesByTrip[tripId] ?? const <_RawMap>[];
-
-      if (stopTimes.isEmpty) {
-        continue;
-      }
-
-      final departureTime = gtfsStringValue(stopTimes.first, 'departure_time');
-      final departureMinutes = gtfsTimeToMinutes(departureTime);
-
-      if (departureMinutes < nowMinutes) {
-        continue;
-      }
-
-      departures.add(gtfsFormatTime(departureTime));
-
-      if (departures.length == limit) {
-        break;
-      }
-    }
-
-    return departures;
-  }
-
-  int _firstDepartureMinutes(
-    _RawMap trip,
-    Map<String, List<_RawMap>> stopTimesByTrip,
-  ) {
-    final tripId = gtfsStringValue(trip, 'trip_id');
-    final stopTimes = stopTimesByTrip[tripId] ?? const <_RawMap>[];
-
-    if (stopTimes.isEmpty) {
-      return 1 << 30;
-    }
-
-    return gtfsTimeToMinutes(
-      gtfsStringValue(stopTimes.first, 'departure_time'),
-    );
-  }
-
-  String _directionKeyOf(_RawMap trip) {
-    final directionId = gtfsStringValue(trip, 'direction_id');
-    return directionId.isEmpty ? '0' : directionId;
-  }
-
-  String _resolveRouteColor(_RawMap route) {
-    final rawColor = gtfsStringValue(route, 'route_color');
-
-    if (rawColor.length == 6) {
-      return rawColor;
-    }
-
-    final shortName = gtfsStringValue(route, 'route_short_name').toUpperCase();
-
-    const fallbackColors = <String, String>{
-      '1': 'C86F27',
-      '1T': 'C86F27',
-      '2U': '2F80ED',
-      '2UT': '2F80ED',
-      '6D': 'F59E0B',
-      '6S': '10B981',
-      '15': '8B5CF6',
-      'NC': 'EF4444',
-      'EST': '0EA5E9',
-      'OVEST': '14B8A6',
-      'NB': '14213D',
-      'M2UF': '6366F1',
-    };
-
-    return fallbackColors[shortName] ?? '2F80ED';
-  }
-
-  String _buildRouteSubtitle({
-    required String shortName,
-    required String routeDescription,
-  }) {
-    final normalizedShortName = shortName.trim();
-    final normalizedDescription = routeDescription.trim();
-
-    if (normalizedDescription.isEmpty) {
-      return normalizedShortName.isEmpty
-          ? 'Trasporto urbano'
-          : 'Linea $normalizedShortName';
-    }
-
-    return normalizedShortName.isEmpty
-        ? normalizedDescription
-        : 'Linea $normalizedShortName · $normalizedDescription';
-  }
-
-  String _stopName(_RawMap? stop) {
-    if (stop == null) {
-      return 'Fermata non disponibile';
-    }
-
-    final name = gtfsStringValue(stop, 'stop_name');
-
-    if (name.isEmpty) {
-      return 'Fermata non disponibile';
-    }
-
-    return _normalizeStopName(name);
-  }
-
-  String _normalizeStopName(String value) {
-    final lower = value.toLowerCase();
-
-    if (lower.isEmpty) {
-      return value;
-    }
-
-    return lower
-        .split(' ')
-        .where((part) => part.trim().isNotEmpty)
-        .map((part) {
-          if (part.length == 1) {
-            return part.toUpperCase();
-          }
-
-          return part[0].toUpperCase() + part.substring(1);
-        })
-        .join(' ');
   }
 }
