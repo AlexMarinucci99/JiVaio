@@ -16,6 +16,7 @@ class PrimaryRouteCard extends StatelessWidget {
   });
 
   final RouteResult result;
+
   final RouteResultsColors colors;
 
   @override

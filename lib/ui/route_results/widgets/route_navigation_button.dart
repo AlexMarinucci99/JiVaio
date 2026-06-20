@@ -14,6 +14,8 @@ class RouteNavigationButton extends StatelessWidget {
   });
 
   final RouteResultsColors colors;
+
+  /// Callback eseguita quando l'utente preme il pulsante.
   final VoidCallback onPressed;
 
   @override

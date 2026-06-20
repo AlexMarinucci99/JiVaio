@@ -1,3 +1,4 @@
+/// Definisce i percorsi nominati usati dal router dell'app.
 class AppRoutes {
   static const String onboarding = '/onboarding';
   static const String authChoice = '/auth-choice';

@@ -31,6 +31,10 @@ class RouteResultsViewModel extends ChangeNotifier {
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
 
+  /// Carica il percorso richiesto dalla schermata.
+  ///
+  /// Evita chiamate concorrenti e aggiorna lo stato esposto alla View
+  /// durante caricamento, successo o errore.
   Future<void> loadRoute() async {
     if (_isDisposed || _isLoading) {
       return;

@@ -1,8 +1,9 @@
 import 'package:flutter/foundation.dart';
-import '../../../domain/exceptions/auth_failure.dart';
 
+import '../../../domain/exceptions/auth_failure.dart';
 import '../../../data/repositories/auth_repository.dart';
 
+/// Risultato dell'invio del link di recupero password.
 class ResetPasswordSubmitResult {
   const ResetPasswordSubmitResult._({
     required this.isSuccess,
@@ -12,12 +13,19 @@ class ResetPasswordSubmitResult {
   final bool isSuccess;
   final String message;
 
+  /// Crea un risultato positivo con [message].
   const ResetPasswordSubmitResult.success(String message)
     : this._(isSuccess: true, message: message);
 
+  /// Crea un risultato negativo con [message].
   const ResetPasswordSubmitResult.failure(String message)
     : this._(isSuccess: false, message: message);
 }
+
+/// Gestisce stato, validazione e invio del recupero password.
+///
+/// Il ViewModel mantiene la logica fuori dalla schermata e delega
+/// l'operazione di recupero ad [AuthRepository].
 
 class ResetPasswordViewModel extends ChangeNotifier {
   ResetPasswordViewModel(this._authRepository);
@@ -35,6 +43,7 @@ class ResetPasswordViewModel extends ChangeNotifier {
     return _email.trim().isNotEmpty && !_isSubmitting;
   }
 
+  /// Aggiorna l'email corrente normalizzando il valore inserito dalla View.
   void updateEmail(String value) {
     final normalizedEmail = value.trim();
 
@@ -46,6 +55,7 @@ class ResetPasswordViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Valida l'email e invia il link di recupero password.
   Future<ResetPasswordSubmitResult> sendResetLink() async {
     if (_email.isEmpty) {
       return const ResetPasswordSubmitResult.failure('Inserisci la tua email');

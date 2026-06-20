@@ -5,6 +5,10 @@ import '../widgets/onboarding_action_button.dart';
 import '../widgets/onboarding_dots_indicator.dart';
 import '../widgets/onboarding_slide_card.dart';
 
+/// Palette complessiva della schermata di onboarding.
+///
+/// Aggrega i colori dei componenti interni, mantenendo la configurazione
+/// grafica separata dalla struttura della schermata.
 class OnboardingColors {
   const OnboardingColors({
     this.backgroundColor = const Color(0xFFF7F9FC),
@@ -40,24 +44,24 @@ class OnboardingColors {
     ),
   });
 
-  // Sfondo generale della schermata onboarding.
+  /// Sfondo generale della schermata onboarding.
   final Color backgroundColor;
 
-  // Colore del bottone testuale "Salta".
+  /// Colore del bottone testuale "Salta".
   final Color skipButtonColor;
 
-  // Colore del bottone testuale "Indietro".
+  /// Colore del bottone testuale "Indietro".
   final Color backButtonColor;
 
-  // Colori della card della singola slide.
+  /// Colori della card della singola slide.
   final OnboardingSlideCardColors slideCardColors;
 
-  // Colori del bottone "Avanti / Inizia".
+  /// Colori del bottone "Avanti" o "Inizia".
   final OnboardingActionButtonColors actionButtonColors;
 
-  // Colori dei dots centrali.
+  /// Colori dei dots centrali.
   final OnboardingDotsIndicatorColors dotsColors;
 
-  // Colori del box "Non mostrarla più".
+  /// Colori del box "Non mostrarla più".
   final HideOnboardingPreferenceColors hidePreferenceColors;
 }

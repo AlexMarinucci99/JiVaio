@@ -8,20 +8,17 @@ class NotificationTypeColors {
     required this.iconBorderColor,
   });
 
-  // Colore dell'icona.
   final Color iconColor;
 
-  // Sfondo del box che contiene l'icona.
   final Color iconBackgroundColor;
 
-  // Bordo del box che contiene l'icona.
   final Color iconBorderColor;
 }
 
 /// Palette completa della singola riga del centro notifiche.
 ///
-/// Nessun colore viene definito direttamente nel widget:
-/// tutte le variazioni grafiche sono modificabili da questo file.
+/// Centralizza le variazioni grafiche della riga, comprese
+/// le differenze cromatiche tra categorie di notifica.
 class NotificationItemColors {
   const NotificationItemColors({
     this.transparentColor = Colors.transparent,
@@ -49,36 +46,25 @@ class NotificationItemColors {
     ),
   });
 
-  // Colore trasparente usato dal Material della riga.
   final Color transparentColor;
 
-  // Titolo di una notifica non letta.
   final Color titleColor;
 
-  // Titolo leggermente attenuato di una notifica già letta.
   final Color readTitleColor;
 
-  // Testo descrittivo.
   final Color messageColor;
 
-  // Etichetta temporale.
   final Color timeColor;
 
-  // Pallino che identifica una notifica non letta.
   final Color unreadDotColor;
 
-  // Effetto visivo durante il tap.
   final Color splashColor;
 
-  // Effetto visivo durante la pressione.
   final Color highlightColor;
 
-  // Colori delle notifiche relative ai ritardi.
   final NotificationTypeColors delayColors;
 
-  // Colori delle notifiche mostrate durante il viaggio.
   final NotificationTypeColors tripColors;
 
-  // Colori degli aggiornamenti di orario o viabilità.
   final NotificationTypeColors serviceUpdateColors;
 }

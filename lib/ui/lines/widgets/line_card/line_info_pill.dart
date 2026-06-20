@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../../theme/line_card_colors.dart';
 
+/// Pill informativa usata nella card linea.
+///
+/// Mostra un'icona e un'etichetta, rispettando l'allineamento,
+/// usando la palette della card.
 class LineInfoPill extends StatelessWidget {
   const LineInfoPill({
     super.key,
@@ -11,6 +15,7 @@ class LineInfoPill extends StatelessWidget {
   });
 
   final IconData icon;
+
   final String label;
 
   // Palette propria della pill informativa.

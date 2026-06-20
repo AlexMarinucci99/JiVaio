@@ -4,6 +4,10 @@ import '../../view_model/line_detail_view_model.dart';
 import '../../theme/line_card_colors.dart';
 import '../../theme/line_detail_colors.dart';
 
+/// Card per inviare segnalazioni dalla schermata dettaglio linea.
+///
+/// Gestisce la sola presentazione della sezione demo: posizione dell'utente,
+/// istruzioni operative, pulsanti di segnalazione e feedback dell'ultima azione.
 class LineDetailReportCard extends StatelessWidget {
   const LineDetailReportCard({
     super.key,
@@ -19,13 +23,32 @@ class LineDetailReportCard extends StatelessWidget {
   });
 
   final Color lineColor;
+
+  /// Posizione dichiarata dall'utente per la segnalazione.
+  ///
+  /// È null finché l'utente non sceglie se si trova sulla navetta
+  /// oppure alla fermata
   final LineDetailReportLocation? reportLocation;
+
   final bool requiresStopSelection;
+
+  /// Indica se i pulsanti di segnalazione possono essere attivati.
   final bool canSendReport;
+
+  /// Nome della fermata selezionata per la segnalazione.
+  ///
+  /// È null finché l'utente non seleziona una fermata dall'elenco.
   final String? selectedStopName;
+
+  /// Messaggio mostrato dopo l'invio di una segnalazione demo.
   final String? lastReportMessage;
+
+  /// Callback eseguita quando l'utente dichiara la propria posizione.
   final ValueChanged<LineDetailReportLocation> onLocationChanged;
+
+  /// Callback eseguita quando l'utente invia una tipologia di segnalazione.
   final ValueChanged<LineDetailReportType> onReportPressed;
+
   final LineCardPalette colors;
 
   @override

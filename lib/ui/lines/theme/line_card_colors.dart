@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+/// Palette usata dalle card della feature linee.
+///
+/// Centralizza i colori specifici delle card, evitando che i widget
+/// definiscano direttamente valori cromatici nel layout.
 class LineCardPalette {
   const LineCardPalette({
     this.defaultLineColor = const Color(0xFF2F80ED),
@@ -15,46 +19,52 @@ class LineCardPalette {
     this.shadowBase = const Color(0xFF0F172A),
   });
 
-  // Colore linea di fallback quando il valore GTFS non è valido.
+  /// Colore linea di fallback quando il valore GTFS non è valido.
   final Color defaultLineColor;
 
-  // Colore uniforme degli elementi principali nelle card dell'elenco linee.
+  /// Colore uniforme degli elementi principali nelle card dell'elenco linee.
   final Color listAccent;
 
-  // Colore sfondo card.
+  /// Colore sfondo card.
   final Color surface;
 
-  // Colore bordi.
+  /// Colore bordi.
   final Color border;
 
-  // Colore testo principale.
+  /// Colore testo principale.
   final Color primaryText;
 
-  // Colore testo secondario.
+  /// Colore testo secondario.
   final Color secondaryText;
 
-  // Colore testo meno importante.
+  /// Colore testo meno importante.
   final Color mutedText;
 
-  // Sfondo delle pill informative.
+  /// Sfondo delle pill informative.
   final Color pillBackground;
 
-  // Colore cuore quando la linea è salvata.
+  /// Colore cuore quando la linea è salvata.
   final Color savedHeart;
 
-  // Colore label "Partenza" / "Capolinea".
+  /// Colore label "Partenza" / "Capolinea".
   final Color labelAccent;
 
-  // Colore base ombra.
+  /// Colore base ombra.
   final Color shadowBase;
 }
 
+/// Utility cromatiche condivise dai widget della feature linee.
+///
+/// Espone la palette predefinita e alcune funzioni per convertire
+/// i colori GTFS in valori utilizzabili dalla UI.
 class LineCardColors {
   const LineCardColors._();
 
+  ///Palette predefinita delle card linee.
+  ///Master da modificare in futuro.
   static const LineCardPalette defaultPalette = LineCardPalette();
 
-  // Compatibilità con il codice già esistente.
+  /// Compatibilità con il codice già esistente.
   static const Color defaultLineColor = Color(0xFF2F80ED);
   static const Color surface = Colors.white;
   static const Color border = Color(0xFFE5EAF2);
@@ -66,6 +76,10 @@ class LineCardColors {
   static const Color labelAccent = Color(0xFF2F80ED);
   static const Color shadowBase = Color(0xFF0F172A);
 
+  /// Converte un colore GTFS esadecimale in un [Color] Flutter.
+  ///
+  /// Se il valore non è valido, restituisce il colore di fallback
+  /// definito nella palette.
   static Color parseLineColor(String value, {LineCardPalette? colors}) {
     final palette = colors ?? defaultPalette;
     final normalized = value.replaceAll('#', '').trim();
@@ -81,6 +95,7 @@ class LineCardColors {
     }
   }
 
+  ///Restituisce un colore di testo leggibile su [backgroundColor].
   static Color textOn(Color backgroundColor, {LineCardPalette? colors}) {
     final palette = colors ?? defaultPalette;
 
@@ -89,6 +104,7 @@ class LineCardColors {
         : Colors.white;
   }
 
+  /// Restituisce la decorazione standard della card linea.
   static BoxDecoration cardDecoration({LineCardPalette? colors}) {
     final palette = colors ?? defaultPalette;
 

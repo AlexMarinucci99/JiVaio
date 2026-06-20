@@ -4,7 +4,7 @@ enum RouteStepType { departure, walk, wait, bus, destination }
 /// Risultato completo della pianificazione di un percorso.
 ///
 /// Il modello non dipende da Flutter e può essere utilizzato sia dalla UI
-/// sia da una futura implementazione reale dell'algoritmo di ricerca.
+/// sia da una futura implementazione dell'algoritmo di ricerca.
 class RouteResult {
   RouteResult({
     required String origin,
@@ -25,15 +25,19 @@ class RouteResult {
          alternativeRoutes,
        );
 
+  /// Punto di partenza normalizzato del percorso.
   final String origin;
+
+  /// Destinazione normalizzata del percorso.
   final String destination;
+
+  /// Durata complessiva stimata del percorso.
   final Duration totalDuration;
 
   /// Orari delle prossime navette utili alla fermata iniziale.
   ///
-  /// In questa fase sono stringhe già formattate.
-  /// Durante l'implementazione dell'algoritmo reale potremo valutare
-  /// l'uso di DateTime o di un mapper dedicato.
+  /// In questa fase sono stringhe già formattate. Con l'algoritmo reale
+  /// potranno essere sostituite da valori temporali o da un mapper dedicato.
   final List<String> nextBusTimes;
 
   /// Passaggi ordinati del percorso consigliato.
@@ -55,16 +59,21 @@ class RouteStep {
     this.lineCode,
   }) : assert(title != '');
 
+  /// Tipologia del passaggio.
   final RouteStepType type;
+
+  /// Titolo mostrato nella timeline.
   final String title;
+
+  /// Descrizione opzionale del passaggio.
   final String? subtitle;
 
   /// Durata del passaggio, quando rilevante.
   final Duration? duration;
 
-  /// Orario ufficiale oppure orario previsto.
+  /// Orario ufficiale o previsto del passaggio.
   ///
-  /// In questa fase rimane una stringa già formattata "HH:mm".
+  /// In questa fase rimane una stringa già formattata in formato "HH:mm".
   final String? scheduledTime;
 
   /// Orario stimato in tempo reale.
@@ -72,7 +81,7 @@ class RouteStep {
   /// Rimane null finché il realtime non viene implementato.
   final String? estimatedTime;
 
-  /// Codice della linea utilizzata, ad esempio "4".
+  /// Codice della linea utilizzata nel passaggio.
   final String? lineCode;
 }
 
@@ -87,11 +96,18 @@ class AlternativeRoute {
   }) : assert(lineCode != ''),
        assert(description != '');
 
+  /// Codice della linea proposta come alternativa.
   final String lineCode;
+
+  /// Descrizione sintetica del percorso alternativo.
   final String description;
+
+  /// Durata stimata del percorso alternativo.
   final Duration duration;
 
-  /// Orari già formattati per questa prima iterazione UI.
+  /// Orario di partenza già formattato.
   final String departureTime;
+
+  /// Orario di arrivo già formattato.
   final String arrivalTime;
 }

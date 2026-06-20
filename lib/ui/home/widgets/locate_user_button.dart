@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../theme/home_colors.dart';
 
-// Widget riutilizzabile: gestisce soltanto il rendering del pulsante.
+/// Pulsante che richiede il centramento della mappa sulla posizione utente.
 class LocateUserButton extends StatelessWidget {
   const LocateUserButton({
     super.key,

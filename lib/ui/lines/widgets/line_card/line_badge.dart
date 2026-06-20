@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+/// Badge visivo che identifica una linea urbana.
+///
+/// Mostra il nome breve della linea usando colori ricevuti dall'esterno,
+/// così può essere riutilizzato in card, dettagli e liste.
 class LineBadge extends StatelessWidget {
   const LineBadge({
     super.key,

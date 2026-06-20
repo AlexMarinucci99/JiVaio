@@ -6,9 +6,14 @@ import 'auth_text_field.dart';
 import '../../../data/repositories/auth_repository.dart';
 import '../theme/reset_password_colors.dart';
 
+/// Schermata per il recupero della password.
+///
+/// Gestisce l'inserimento dell'email e delega validazione e invio
+/// del link di recupero a [ResetPasswordViewModel].
 class ResetPasswordScreen extends StatefulWidget {
   const ResetPasswordScreen({super.key, required this.authRepository});
 
+  /// Repository usato dal ViewModel per inviare il link di recupero.
   final AuthRepository authRepository;
 
   @override
@@ -26,8 +31,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     super.initState();
 
     _viewModel = ResetPasswordViewModel(widget.authRepository);
-
-    // Aggiorna il ViewModel quando cambia il testo del campo email.
     _emailController.addListener(_onEmailChanged);
   }
 
@@ -84,7 +87,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 children: [
                   const SizedBox(height: 70),
 
-                  // Titolo schermata.
                   Text(
                     'Password dimenticata?',
                     textAlign: TextAlign.center,
@@ -97,7 +99,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
                   const SizedBox(height: 16),
 
-                  // Descrizione.
                   Text(
                     'Inserisci l’email associata al tuo account. '
                     'Ti invieremo un link per reimpostare la password.',
@@ -111,7 +112,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
                   const SizedBox(height: 40),
 
-                  // Campo email riutilizzabile della feature auth.
                   AuthTextField(
                     controller: _emailController,
                     label: 'La tua email',
@@ -122,7 +122,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
                   const SizedBox(height: 24),
 
-                  // Bottone invio link.
                   AuthActionButton(
                     label: _viewModel.isSubmitting
                         ? 'Invio in corso...'
@@ -136,7 +135,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
                   const SizedBox(height: 32),
 
-                  // Ritorno alla schermata precedente.
                   TextButton.icon(
                     onPressed: _goBack,
                     style: TextButton.styleFrom(

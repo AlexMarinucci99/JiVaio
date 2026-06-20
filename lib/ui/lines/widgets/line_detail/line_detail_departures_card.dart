@@ -4,6 +4,10 @@ import '../../../../domain/models/transit_line.dart';
 import '../../theme/line_card_colors.dart';
 import '../../theme/line_detail_colors.dart';
 
+/// Card che mostra le partenze disponibili nel dettaglio linea.
+///
+/// Espone la fascia oraria selezionata, lo stato di caricamento
+/// e l'elenco delle corse calcolate dal ViewModel.
 class LineDetailDeparturesCard extends StatelessWidget {
   const LineDetailDeparturesCard({
     super.key,
@@ -18,11 +22,24 @@ class LineDetailDeparturesCard extends StatelessWidget {
   });
 
   final String selectedTimeRange;
+
+  /// Partenze disponibili per la direzione e la fascia selezionate.
   final List<TransitLineDeparture> departures;
+
+  /// Identificativo della corsa selezionata.
+  ///
+  /// È null quando non è ancora stata selezionata una corsa.
   final String? selectedTripId;
+
+  /// Indica se il caricamento delle partenze è ancora in corso.
   final bool isLoading;
+
+  /// Messaggio mostrato quando non sono disponibili partenze.
   final String emptyMessage;
+
+  /// Callback eseguita quando l'utente seleziona una nuova fascia oraria.
   final VoidCallback onSelectTimeRange;
+
   final LineCardPalette colors;
 
   @override

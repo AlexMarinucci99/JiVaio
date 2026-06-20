@@ -21,8 +21,11 @@ class RouteResultsScreen extends StatefulWidget {
     required this.destination,
   });
 
+  /// Repository usato per ottenere il percorso da mostrare.
   final RoutePlanningRepository repository;
+
   final String origin;
+
   final String destination;
 
   @override

@@ -4,6 +4,10 @@ import '../../../../domain/models/transit_line.dart';
 import '../../theme/line_card_colors.dart';
 import 'line_central_label.dart';
 
+/// Preview sintetica del percorso mostrata nella card della linea.
+///
+/// Mostra partenza, capolinea, prossime partenze e accesso
+/// alla schermata completa della linea.
 class LineRoutePreview extends StatelessWidget {
   const LineRoutePreview({
     super.key,
@@ -16,11 +20,20 @@ class LineRoutePreview extends StatelessWidget {
     this.colors = LineCardColors.defaultPalette,
   });
 
+  ///Linea rappresentata.
   final TransitLine line;
+
+  ///Direzione attualemnte visualizzata nella card.
   final TransitLineDirection direction;
+
   final Color lineColor;
+
   final bool canSwapDirection;
+
+  /// Callback eseguita quando l'utente inverte la direzione.
   final VoidCallback onSwapDirection;
+
+  /// Callback eseguita quando l'utente apre i dettagli completi della linea.
   final VoidCallback onOpenDetails;
 
   // Palette propria della preview percorso.
@@ -38,7 +51,6 @@ class LineRoutePreview extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Box partenza/capolinea.
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 9),
           decoration: BoxDecoration(
@@ -57,7 +69,6 @@ class LineRoutePreview extends StatelessWidget {
                 ),
               ),
 
-              // Bottone centrale per invertire direzione.
               Material(
                 color: lineColor.withValues(alpha: 0.12),
                 shape: const CircleBorder(),
@@ -93,7 +104,6 @@ class LineRoutePreview extends StatelessWidget {
 
         const SizedBox(height: 14),
 
-        // Titolo prossime partenze.
         Text(
           'Prossime partenze',
           style: Theme.of(context).textTheme.labelLarge?.copyWith(
@@ -106,7 +116,6 @@ class LineRoutePreview extends StatelessWidget {
 
         const SizedBox(height: 8),
 
-        // Lista orari.
         if (direction.hasUpcomingDepartures)
           Wrap(
             spacing: 8,
@@ -154,7 +163,6 @@ class LineRoutePreview extends StatelessWidget {
 
         const SizedBox(height: 14),
 
-        // Bottone apertura schermata interna della linea.
         FilledButton(
           onPressed: onOpenDetails,
           style: FilledButton.styleFrom(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// Palette del box per nascondere l'onboarding nelle aperture successive.
 class HideOnboardingPreferenceColors {
   const HideOnboardingPreferenceColors({
     this.selectedColor = const Color.fromARGB(19, 204, 136, 10),
@@ -13,35 +14,18 @@ class HideOnboardingPreferenceColors {
     this.subtitleColor = const Color(0xFF667085),
   });
 
-  // Colore principale usato quando il box è selezionato.
   final Color selectedColor;
-
-  // Sfondo del box quando è selezionato.
   final Color selectedBackgroundColor;
-
-  // Bordo del box quando è selezionato.
   final Color selectedBorderColor;
-
-  // Sfondo del box quando non è selezionato.
   final Color unselectedBackgroundColor;
-
-  // Bordo del box quando non è selezionato.
   final Color unselectedBorderColor;
-
-  // Bordo della casellina quando non è selezionata.
   final Color unselectedCheckBorderColor;
-
-  // Colore dell'icona check.
   final Color checkIconColor;
-
-  // Colore del titolo.
   final Color titleColor;
-
-  // Colore del sottotitolo.
   final Color subtitleColor;
 }
 
-// Box cliccabile per scegliere se non mostrare più l'onboarding.
+/// Box cliccabile per scegliere se non mostrare più l'onboarding.
 class HideOnboardingPreference extends StatelessWidget {
   const HideOnboardingPreference({
     super.key,
@@ -50,13 +34,13 @@ class HideOnboardingPreference extends StatelessWidget {
     this.colors = const HideOnboardingPreferenceColors(),
   });
 
-  // Stato della casellina: false = non selezionata, true = selezionata.
+  /// Indica se la preferenza è selezionata.
   final bool value;
 
-  // Callback chiamata quando l'utente clicca sul box.
+  /// Callback invocata quando l'utente seleziona il box.
   final VoidCallback onChanged;
 
-  // Palette colori propria del widget.
+  /// Palette colori propria del widget.
   final HideOnboardingPreferenceColors colors;
 
   @override
@@ -64,7 +48,6 @@ class HideOnboardingPreference extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return InkWell(
-      // Click su tutto il box.
       onTap: onChanged,
       borderRadius: BorderRadius.circular(16),
       child: AnimatedContainer(
@@ -73,7 +56,6 @@ class HideOnboardingPreference extends StatelessWidget {
         width: double.infinity,
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
 
-        // Box esterno.
         decoration: BoxDecoration(
           color: value
               ? colors.selectedBackgroundColor
@@ -89,7 +71,6 @@ class HideOnboardingPreference extends StatelessWidget {
 
         child: Row(
           children: [
-            // Casellina sinistra.
             AnimatedContainer(
               duration: const Duration(milliseconds: 180),
               curve: Curves.easeOutCubic,
@@ -107,7 +88,6 @@ class HideOnboardingPreference extends StatelessWidget {
               ),
               alignment: Alignment.center,
 
-              // Icona check dentro la casellina.
               child: value
                   ? Icon(
                       Icons.check_rounded,
@@ -119,7 +99,6 @@ class HideOnboardingPreference extends StatelessWidget {
 
             const SizedBox(width: 14),
 
-            // Testi del box.
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -135,8 +114,6 @@ class HideOnboardingPreference extends StatelessWidget {
                   ),
 
                   const SizedBox(height: 3),
-
-                  // Sottotitolo.
                   Text(
                     'La salteremo la prossima volta',
                     style: textTheme.bodySmall?.copyWith(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// Definisce i colori configurabili del bottone d'azione auth.
 class AuthActionButtonColors {
   const AuthActionButtonColors({
     this.backgroundColor = const Color(0xFFF7F9FC),
@@ -14,8 +15,9 @@ class AuthActionButtonColors {
   final Color disabledForegroundColor;
 }
 
-// Bottone d'azione della feature auth.
-// Usato per Accedi, Registrati e Continua come guest.
+/// Bottone d'azione della feature auth.
+///
+/// Usato per Accedi, Registrati e Continua come guest.
 class AuthActionButton extends StatelessWidget {
   const AuthActionButton({
     super.key,

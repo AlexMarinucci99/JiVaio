@@ -22,9 +22,16 @@ class SettingsTile extends StatelessWidget {
     this.colors = const SettingsScreenColors(),
   });
 
+  /// Icona mostrata a sinistra.
   final IconData icon;
+
+  /// Titolo principale della voce.
   final String title;
+
+  /// Sottotitolo.
   final String subtitle;
+
+  /// Colore dell'icona quando la voce è abilitatà.
   final Color iconColor;
 
   /// Azione comunicata dal widget padre.
@@ -37,10 +44,16 @@ class SettingsTile extends StatelessWidget {
   /// Può essere usato, ad esempio, per visualizzare la versione.
   final Widget? trailing;
 
+  /// Indica se mostrare la freccia laterale.
   final bool showChevron;
+
+  /// Indica se la voce rappresenta un'azione distruttiva.
   final bool isDestructive;
+
+  /// Indica se la voce è interattiva.
   final bool enabled;
 
+  /// Palette di colori usata dalla voce.
   final SettingsScreenColors colors;
 
   @override

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 /// Palette della schermata che mostra l'elenco delle linee.
+///
 /// Mantiene separati i colori specifici della feature
 /// dalla struttura dei widget.
 class LinesScreenColors {

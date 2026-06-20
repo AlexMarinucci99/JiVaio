@@ -12,12 +12,13 @@ class SettingsSection extends StatelessWidget {
     this.colors = const SettingsScreenColors(),
   });
 
-  /// Titolo della sezione, ad esempio ACCOUNT o NOTIFICHE.
+  /// Titolo della sezione, ad esempio Account o Notifiche.
   final String title;
 
   /// Voci visualizzate all'interno della card.
   final List<Widget> children;
 
+  /// Colori della schermata delle impostazioni.
   final SettingsScreenColors colors;
 
   @override

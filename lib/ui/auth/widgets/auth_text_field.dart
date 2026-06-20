@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// Definisce i colori configurabili dei campi input auth.
 class AuthTextFieldColors {
   const AuthTextFieldColors({
     this.primaryColor = const Color(0xFF191970),
@@ -14,7 +15,7 @@ class AuthTextFieldColors {
   final Color iconColor;
 }
 
-// Campo input riutilizzabile della feature auth.
+/// Campo input riutilizzabile della feature auth.
 class AuthTextField extends StatelessWidget {
   const AuthTextField({
     super.key,

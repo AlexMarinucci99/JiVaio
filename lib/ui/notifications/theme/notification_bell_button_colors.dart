@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 
 /// Palette grafica del pulsante che apre il centro notifiche.
 ///
-/// Il widget riceve questa configurazione dall'esterno:
-/// in questo modo i colori possono essere modificati
-/// senza intervenire sulla struttura o sulla logica del componente.
+/// Il widget riceve questa configurazione dall'esterno, così i colori
+/// possono essere modificati senza intervenire sulla struttura del componente.
 class NotificationBellButtonColors {
   const NotificationBellButtonColors({
     this.backgroundColor = const Color(0xCCFFFFFF),
@@ -18,30 +17,21 @@ class NotificationBellButtonColors {
     this.highlightColor = const Color(0x0A17226B),
   });
 
-  // Sfondo del pulsante circolare.
   final Color backgroundColor;
 
-  // Bordo esterno del pulsante.
   final Color borderColor;
 
-  // Colore dell'icona della campanella.
   final Color iconColor;
 
-  // Sfondo del badge numerico.
   final Color badgeBackgroundColor;
 
-  // Bordo del badge numerico.
   final Color badgeBorderColor;
 
-  // Colore del numero nel badge.
   final Color badgeTextColor;
 
-  // Ombra esterna del pulsante.
   final Color shadowColor;
 
-  // Effetto visivo durante il tap.
   final Color splashColor;
 
-  // Effetto visivo durante la pressione prolungata.
   final Color highlightColor;
 }

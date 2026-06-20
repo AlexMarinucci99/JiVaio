@@ -1,3 +1,4 @@
+/// Rappresenta una fermata del trasporto urbano visualizzabile sulla mappa.
 class TransitStop {
   const TransitStop({
     required this.stopId,

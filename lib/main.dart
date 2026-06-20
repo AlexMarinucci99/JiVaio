@@ -5,14 +5,13 @@ import 'app.dart';
 import 'config/app_dependencies.dart';
 import 'firebase_options.dart';
 
+/// Inizializza le dipendenze principali e avvia JiVaio.
 Future<void> main() async {
-  // Necessario perché prima di runApp leggiamo dati locali
-  // e inizializziamo plugin come Firebase.
+  // Serve prima di inizializzare Firebase e leggere preferenze locali.
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  // Le dipendenze vengono costruite dopo l'inizializzazione di Firebase.
   final dependencies = AppDependencies.create();
 
   final shouldSkipOnboarding = await dependencies.onboardingRepository

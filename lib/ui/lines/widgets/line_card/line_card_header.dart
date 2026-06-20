@@ -6,6 +6,10 @@ import '../../theme/line_card_colors.dart';
 import 'line_info_pill.dart';
 import 'line_save_button.dart';
 
+/// Header della card che sintetizza le informazioni principali di una linea.
+///
+/// Mostra badge, nome, descrizione, numero di fermate della direzione
+/// selezionata e azione di salvataggio.
 class LineCardHeader extends StatelessWidget {
   const LineCardHeader({
     super.key,
@@ -16,9 +20,15 @@ class LineCardHeader extends StatelessWidget {
     this.colors = LineCardColors.defaultPalette,
   });
 
+  ///linea rappresentata
   final TransitLine line;
+
+  ///direzione rappresentata usata per visualizzare il numero di fermate.
   final TransitLineDirection direction;
+
   final bool isSaved;
+
+  /// Callback eseguita quando l'utente aggiorna lo stato di salvataggio.
   final VoidCallback onToggleSaved;
 
   // Palette propria dell'header della card.
@@ -44,7 +54,6 @@ class LineCardHeader extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Nome principale linea.
               Text(
                 line.displayName,
                 maxLines: 1,
@@ -58,7 +67,6 @@ class LineCardHeader extends StatelessWidget {
 
               const SizedBox(height: 4),
 
-              // Descrizione linea.
               Text(
                 line.routeLongName,
                 maxLines: 1,
@@ -71,7 +79,6 @@ class LineCardHeader extends StatelessWidget {
 
               const SizedBox(height: 10),
 
-              // Pill numero fermate.
               LineInfoPill(
                 icon: Icons.place_rounded,
                 label: _stopCountLabel(direction.stopCount),
@@ -81,7 +88,6 @@ class LineCardHeader extends StatelessWidget {
           ),
         ),
 
-        // Bottone salva linea.
         LineSaveButton(
           isSaved: isSaved,
           onPressed: onToggleSaved,

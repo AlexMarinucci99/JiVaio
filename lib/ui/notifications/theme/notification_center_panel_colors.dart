@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 /// Palette grafica del pannello flottante delle notifiche.
 ///
-/// Nessun colore del pannello viene definito direttamente
-/// nel relativo widget.
+/// Centralizza i colori del pannello, evitando che il widget definisca
+/// direttamente valori cromatici nella struttura UI.
 class NotificationCenterPanelColors {
   const NotificationCenterPanelColors({
     this.backgroundColor = const Color(0xF2071733),
@@ -24,45 +24,32 @@ class NotificationCenterPanelColors {
     this.errorTextColor = const Color(0xFFFFD2CA),
   });
 
-  // Sfondo del pannello.
   final Color backgroundColor;
 
-  // Bordo esterno del pannello.
   final Color borderColor;
 
-  // Ombra esterna.
   final Color shadowColor;
 
-  // Titolo principale.
   final Color titleColor;
 
-  // Testo secondario, ad esempio il numero di notifiche non lette.
   final Color subtitleColor;
 
-  // Colore del comando attivo "Segna tutte come lette".
   final Color actionTextColor;
 
-  // Colore dello stesso comando quando non è utilizzabile.
   final Color disabledActionTextColor;
 
-  // Colore dell'icona di chiusura.
   final Color closeIconColor;
 
-  // Effetto visivo durante il tap sulla chiusura.
   final Color closeSplashColor;
 
-  // Separatore tra le notifiche.
   final Color dividerColor;
 
-  // Indicatore di caricamento.
   final Color loadingIndicatorColor;
 
-  // Stato vuoto.
   final Color emptyIconColor;
   final Color emptyTitleColor;
   final Color emptyMessageColor;
 
-  // Stato di errore.
   final Color errorIconColor;
   final Color errorTextColor;
 }

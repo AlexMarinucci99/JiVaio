@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// Palette della card usata per mostrare una slide dell'onboarding.
 class OnboardingSlideCardColors {
   const OnboardingSlideCardColors({
     this.imageCardBackgroundColor = Colors.white,
@@ -9,24 +10,26 @@ class OnboardingSlideCardColors {
     this.descriptionColor = const Color.fromARGB(255, 219, 222, 228),
   });
 
-  // Colore dello sfondo della card immagine.
+  /// Colore dello sfondo della card immagine.
   final Color imageCardBackgroundColor;
 
-  // Colore del cerchio dietro l'icona.
+  /// Colore del cerchio dietro l'icona.
   final Color iconBackgroundColor;
 
-  // Colore principale usato per l'icona.
+  /// Colore principale usato per l'icona.
   final Color accentColor;
 
-  // Colore del titolo.
+  /// Colore del titolo.
   final Color titleColor;
 
-  // Colore della descrizione.
+  /// Colore della descrizione.
   final Color descriptionColor;
 }
 
-// StatelessWidget: riceve i dati della singola slide e li mostra.
-// Non gestisce stato, pagine o navigazione.
+/// Card che mostra il contenuto di una singola slide dell'onboarding.
+///
+/// Riceve dati e configurazione grafica dall'esterno, senza gestire
+/// stato, navigazione o avanzamento delle pagine.
 class OnboardingSlideCard extends StatelessWidget {
   const OnboardingSlideCard({
     super.key,
@@ -40,15 +43,20 @@ class OnboardingSlideCard extends StatelessWidget {
   });
 
   final String imagePath;
+
   final String title;
+
   final String description;
 
   final IconData? icon;
 
-  // Mantenuto per compatibilità con il codice già scritto.
-  // Se viene passato, sovrascrive colors.accentColor.
+  /// Colore opzionale che sovrascrive [OnboardingSlideCardColors.accentColor].
+  ///
+  /// Rimane disponibile per permettere alla schermata di assegnare
+  /// un colore diverso a ogni slide.
   final Color? accentColor;
 
+  /// Allineamento dell'immagine dentro la card.
   final Alignment imageAlignment;
 
   // Palette colori propria della slide.
@@ -58,37 +66,25 @@ class OnboardingSlideCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
 
-    // Colore effettivo dell'icona.
     final effectiveAccentColor = accentColor ?? colors.accentColor;
 
     return Padding(
-      // Margine laterale dell'intera slide.
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Spazio superiore.
           const SizedBox(height: 8),
-
-          // Box immagine con proporzioni fisse.
           AspectRatio(
             aspectRatio: 1.55,
             child: Container(
               width: double.infinity,
-
-              // Sfondo e angoli arrotondati della box immagine.
               decoration: BoxDecoration(
                 color: colors.imageCardBackgroundColor,
                 borderRadius: BorderRadius.circular(28),
               ),
-
-              // Mantiene l'immagine dentro gli angoli arrotondati.
               clipBehavior: Clip.antiAlias,
-
-              // Stack: immagine sotto, icona sopra a destra.
               child: Stack(
                 children: [
-                  // Immagine principale della slide.
                   Positioned.fill(
                     child: Image.asset(
                       imagePath,
@@ -98,7 +94,6 @@ class OnboardingSlideCard extends StatelessWidget {
                     ),
                   ),
 
-                  // Icona superiore destra, mostrata solo se presente.
                   if (icon != null)
                     Positioned(
                       top: 18,
@@ -107,7 +102,6 @@ class OnboardingSlideCard extends StatelessWidget {
                         width: 58,
                         height: 58,
                         decoration: BoxDecoration(
-                          // Cerchio dietro l'icona.
                           shape: BoxShape.circle,
                           color: colors.iconBackgroundColor,
                         ),
@@ -123,10 +117,8 @@ class OnboardingSlideCard extends StatelessWidget {
             ),
           ),
 
-          // Spazio tra box immagine e titolo.
           const SizedBox(height: 34),
 
-          // Titolo della slide.
           Text(
             title,
             textAlign: TextAlign.left,
@@ -137,10 +129,8 @@ class OnboardingSlideCard extends StatelessWidget {
             ),
           ),
 
-          // Spazio tra titolo e descrizione.
           const SizedBox(height: 10),
 
-          // Descrizione della slide.
           Text(
             description,
             textAlign: TextAlign.left,

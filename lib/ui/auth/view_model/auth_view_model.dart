@@ -1,22 +1,30 @@
 import 'package:flutter/foundation.dart';
-import '../../../domain/exceptions/auth_failure.dart';
 
+import '../../../domain/exceptions/auth_failure.dart';
 import '../../../data/repositories/auth_repository.dart';
 
+/// Modalità disponibili nel form di autenticazione.
 enum AuthMode { login, register }
 
+/// Risultato prodotto dalla validazione o dall'invio del form auth.
 class AuthSubmitResult {
   const AuthSubmitResult._({required this.isValid, this.message});
 
   final bool isValid;
   final String? message;
 
+  /// Crea un risultato valido.
   const AuthSubmitResult.valid() : this._(isValid: true);
 
+  /// Crea un risultato non valido con [message].
   const AuthSubmitResult.invalid(String message)
     : this._(isValid: false, message: message);
 }
 
+/// Gestisce stato, validazione e invio dei form di autenticazione.
+///
+/// Il ViewModel mantiene la logica fuori dalla View e comunica
+/// con [AuthRepository] senza esporre dettagli del provider esterno.
 class AuthViewModel extends ChangeNotifier {
   AuthViewModel(this._authRepository);
 
@@ -55,6 +63,7 @@ class AuthViewModel extends ChangeNotifier {
         : 'Registrati per personalizzare la tua esperienza.';
   }
 
+  /// Cambia la modalità del form tra login e registrazione.
   void setMode(AuthMode mode) {
     if (_selectedMode == mode || _isSubmitting) {
       return;
@@ -64,16 +73,19 @@ class AuthViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Alterna la visibilità della password.
   void togglePasswordVisibility() {
     _obscurePassword = !_obscurePassword;
     notifyListeners();
   }
 
+  /// Alterna la visibilità del campo conferma password.
   void toggleConfirmPasswordVisibility() {
     _obscureConfirmPassword = !_obscureConfirmPassword;
     notifyListeners();
   }
 
+  /// Valida i dati del form ed esegue login o registrazione.
   Future<AuthSubmitResult> submit({
     required String name,
     required String email,
@@ -118,6 +130,7 @@ class AuthViewModel extends ChangeNotifier {
     }
   }
 
+  /// Valida i dati richiesti dalla modalità auth corrente.
   AuthSubmitResult validateSubmit({
     required String name,
     required String email,
@@ -136,6 +149,7 @@ class AuthViewModel extends ChangeNotifier {
     );
   }
 
+  /// Restituisce il messaggio temporaneo per i provider social non implementati.
   String socialLoginMessage(String provider) {
     return 'Accesso con $provider non ancora implementato';
   }

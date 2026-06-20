@@ -10,6 +10,10 @@ import 'auth_register_form.dart';
 import 'auth_social_buttons.dart';
 import '../theme/auth_choice_colors.dart';
 
+/// Schermata di scelta tra accesso, registrazione e modalità ospite.
+///
+/// Gestisce la View della feature auth e delega stato, validazione
+/// e operazioni di autenticazione ad [AuthViewModel].
 class AuthChoiceScreen extends StatefulWidget {
   const AuthChoiceScreen({
     super.key,
@@ -17,7 +21,10 @@ class AuthChoiceScreen extends StatefulWidget {
     required this.onContinueAsGuest,
   });
 
+  /// Repository usato dal ViewModel per login e registrazione.
   final AuthRepository authRepository;
+
+  /// Callback invocata quando l'utente prosegue senza autenticazione.
   final VoidCallback onContinueAsGuest;
 
   @override
@@ -27,8 +34,7 @@ class AuthChoiceScreen extends StatefulWidget {
 class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
   late final AuthViewModel _viewModel;
 
-  // Controller dei campi del form.
-  // Restano nella View perché sono risorse UI con lifecycle.
+  // I controller restano nella View perché sono risorse UI con lifecycle.
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -77,9 +83,8 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
       _showMessage(result.message ?? 'Dati non validi');
     }
 
-    // Non navighiamo alla Home qui.
-    // Se login/registrazione vanno a buon fine,
-    // Firebase aggiorna authStateChanges() e sarà AuthGate a mostrare la Home.
+    // La navigazione alla Home resta responsabilità di AuthGate.
+    // Firebase aggiorna authStateChanges() dopo login o registrazione.
   }
 
   void _continueAsGuest() {
@@ -123,7 +128,6 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
                 children: [
                   const SizedBox(height: 28),
 
-                  // Titolo schermata.
                   Text(
                     'Come vuoi continuare?',
                     textAlign: TextAlign.center,
@@ -136,7 +140,6 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
 
                   const SizedBox(height: 32),
 
-                  // Switch Accedi / Registrati.
                   AppSegmentedControl<AuthMode>(
                     selectedValue: _viewModel.selectedMode,
                     onChanged: _setMode,
@@ -155,7 +158,6 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
 
                   const SizedBox(height: 36),
 
-                  // Titolo form.
                   Text(
                     _viewModel.formTitle,
                     textAlign: TextAlign.center,
@@ -168,7 +170,6 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
 
                   const SizedBox(height: 10),
 
-                  // Sottotitolo form.
                   Text(
                     _viewModel.formSubtitle,
                     textAlign: TextAlign.center,
@@ -180,7 +181,6 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
 
                   const SizedBox(height: 30),
 
-                  // Form dinamico: login oppure registrazione.
                   if (_viewModel.isLogin)
                     AuthLoginForm(
                       emailController: _emailController,
@@ -209,7 +209,6 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
 
                   const SizedBox(height: 18),
 
-                  // Bottone principale Accedi / Registrati.
                   AuthActionButton(
                     label: _viewModel.primaryButtonText,
                     onPressed: _submit,
@@ -218,7 +217,6 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
 
                   const SizedBox(height: 30),
 
-                  // Separatore.
                   Row(
                     children: [
                       Expanded(child: Divider(color: _colors.dividerColor)),
@@ -235,7 +233,6 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
 
                   const SizedBox(height: 20),
 
-                  // Bottoni social.
                   AuthSocialButtons(
                     colors: _colors.socialButtonsColors,
                     onGooglePressed: () => _fakeSocialLogin('Google'),
@@ -245,7 +242,6 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
 
                   const SizedBox(height: 26),
 
-                  // Bottone guest.
                   AuthActionButton(
                     label: 'Continua come ospite',
                     onPressed: _continueAsGuest,
@@ -257,7 +253,6 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
 
                   const SizedBox(height: 10),
 
-                  // Nota sotto il guest.
                   Text(
                     'Senza salvataggi e notifiche personalizzate',
                     textAlign: TextAlign.center,

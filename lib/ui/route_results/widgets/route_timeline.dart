@@ -10,7 +10,9 @@ import '../theme/route_results_colors.dart';
 class RouteTimeline extends StatelessWidget {
   const RouteTimeline({super.key, required this.steps, required this.colors});
 
+  /// Passaggi ordinati del percorso da mostrare nella timeline.
   final List<RouteStep> steps;
+
   final RouteResultsColors colors;
 
   @override

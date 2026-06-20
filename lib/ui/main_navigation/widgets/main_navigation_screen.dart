@@ -12,8 +12,10 @@ import '../../../data/repositories/route_planning_repository.dart';
 import '../../../domain/models/app_user.dart';
 import '../theme/main_navigation_colors.dart';
 
-// Schermata principale dopo login/registrazione oppure accesso guest.
-// Contiene le sezioni principali dell'app e la navbar inferiore.
+/// Schermata principale mostrata dopo login, registrazione o accesso guest.
+///
+/// Contiene le sezioni principali dell'app e coordina la navigazione
+/// tramite la barra inferiore.
 class MainNavigationScreen extends StatefulWidget {
   const MainNavigationScreen({
     super.key,
@@ -26,24 +28,33 @@ class MainNavigationScreen extends StatefulWidget {
     required this.routePlanningRepository,
   });
 
-  /// Utente autenticato.
+  /// Utente autenticato corrente.
   ///
-  /// Il valore è null quando l'app viene utilizzata
-  /// in modalità guest.
+  /// Il valore è null quando l'app viene utilizzata in modalità guest.
   final AppUser? user;
 
-  /// Restituisce true quando non è presente un utente autenticato.
+  /// Restituisce true quando l'app è usata in modalità guest.
   bool get isGuest => user == null;
 
-  // Azione eseguita dalla schermata impostazioni.
-  // Per utente registrato: logout Firebase.
-  // Per guest: uscita dalla modalità ospite.
+  /// Azione eseguita quando l'utente esce dalla sessione corrente.
+  ///
+  /// Per un utente autenticato esegue il logout, mentre per un guest
+  /// termina la modalità ospite.
   final Future<void> Function() onLogout;
 
+  /// Repository usato dalle schermate che leggono dati del trasporto urbano.
   final TransitRepository transitRepository;
+
+  /// Repository usato dalla Home per posizione e permessi GPS.
   final LocationRepository locationRepository;
+
+  /// Repository usato dalla Home per il centro notifiche.
   final NotificationRepository notificationRepository;
+
+  /// Repository usato dalla schermata linee per i preferiti.
   final SavedLinesRepository savedLinesRepository;
+
+  /// Repository usato dalla Home per aprire i risultati del percorso.
   final RoutePlanningRepository routePlanningRepository;
 
   @override
@@ -51,15 +62,10 @@ class MainNavigationScreen extends StatefulWidget {
 }
 
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
-  // Stato locale della navbar.
   int _selectedIndex = 0;
 
-  // Colori propri della main shell.
   static const MainNavigationColors _colors = MainNavigationColors();
 
-  // Schermate principali dell'app.
-  // Non è static const perché LinesScreen e SettingsScreen
-  // devono ricevere dati dinamici legati allo stato utente.
   List<Widget> get _pages {
     return [
       HomeScreen(
@@ -84,7 +90,6 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     ];
   }
 
-  // Cambio tab navbar.
   void _onItemSelected(int index) {
     if (_selectedIndex == index) return;
 
@@ -96,13 +101,11 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Permette alla navbar flottante di sovrapporsi leggermente al body.
+      // Consente alla navbar flottante di sovrapporsi leggermente al body.
       extendBody: true,
 
-      // Cambia schermata in base al tab selezionato.
       body: IndexedStack(index: _selectedIndex, children: _pages),
 
-      // Navbar inferiore.
       bottomNavigationBar: SafeArea(
         minimum: const EdgeInsets.fromLTRB(16, 0, 16, 16),
         child: BottomNavBar(

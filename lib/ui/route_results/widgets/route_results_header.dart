@@ -16,7 +16,10 @@ class RouteResultsHeader extends StatelessWidget {
   });
 
   final RouteResult result;
+
   final RouteResultsColors colors;
+
+  /// Callback eseguita quando l'utente torna alla schermata precedente.
   final VoidCallback onBack;
 
   @override

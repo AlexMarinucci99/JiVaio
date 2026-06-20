@@ -8,6 +8,10 @@ import 'line_card/line_card.dart';
 import 'line_detail/line_detail_screen.dart';
 import '../theme/lines_screen_colors.dart';
 
+/// Schermata che mostra l'elenco delle linee urbane.
+///
+/// Permette di consultare tutte le linee, filtrare quelle salvate
+/// e aprire il dettaglio di una linea selezionata.
 class LinesScreen extends StatefulWidget {
   const LinesScreen({
     super.key,
@@ -17,16 +21,21 @@ class LinesScreen extends StatefulWidget {
     required this.savedLinesRepository,
   }) : assert(isGuest || userId != null);
 
-  // true = utente ospite: può consultare le linee, ma non salvarle.
-  // false = utente registrato: può salvare/rimuovere linee preferite.
+  /// Indica se la schermata è usata da un utente ospite.
+  ///
+  /// In modalità guest l'utente può consultare le linee,
+  /// ma non può modificarne lo stato di salvataggio.
   final bool isGuest;
 
-  // UID Firebase dell'utente autenticato.
-  // È null soltanto per il guest.
+  /// Identificativo Firebase dell'utente autenticato.
+  ///
+  /// È null soltanto quando [isGuest] è true.
   final String? userId;
 
+  /// Repository usato per recuperare linee e dettagli di percorso.
   final TransitRepository repository;
 
+  /// Repository usato per leggere e aggiornare le linee salvate.
   final SavedLinesRepository savedLinesRepository;
 
   @override
@@ -66,8 +75,6 @@ class _LinesScreenState extends State<LinesScreen> {
     );
   }
 
-  // Gestione salvataggio linea.
-  // Se l'utente è guest, non modifichiamo lo stato dei preferiti.
   Future<void> _toggleSavedLine(String routeId) async {
     if (widget.isGuest) {
       _showGuestSaveMessage();

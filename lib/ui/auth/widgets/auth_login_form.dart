@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'auth_text_field.dart';
 
+/// Form di accesso della feature auth.
 class AuthLoginForm extends StatelessWidget {
   const AuthLoginForm({
     super.key,

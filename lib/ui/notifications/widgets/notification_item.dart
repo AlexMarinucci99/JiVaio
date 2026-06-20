@@ -5,9 +5,8 @@ import '../theme/notification_item_colors.dart';
 
 /// Riga riutilizzabile che visualizza una singola notifica.
 ///
-/// Il widget gestisce esclusivamente il rendering.
-/// Lo stato letto/non letto viene ricevuto dal modello.
-/// Il tap viene inoltrato al componente padre tramite callback.
+/// Riceve il modello da rappresentare e inoltra il tap
+/// al componente padre tramite [onTap].
 class NotificationItem extends StatelessWidget {
   const NotificationItem({
     super.key,
@@ -16,13 +15,13 @@ class NotificationItem extends StatelessWidget {
     this.colors = const NotificationItemColors(),
   });
 
-  // Dato immutabile da rappresentare.
+  /// Notifica da rappresentare nella riga.
   final AppNotification notification;
 
-  // Callback eseguita quando l'utente seleziona la notifica.
+  /// Callback invocata quando l'utente seleziona la notifica.
   final VoidCallback onTap;
 
-  // Palette grafica separata dalla struttura del widget.
+  /// Palette cromatica usata dalla riga.
   final NotificationItemColors colors;
 
   @override
@@ -84,7 +83,6 @@ class NotificationItem extends StatelessWidget {
   }
 }
 
-/// Box quadrato con icona associata alla categoria della notifica.
 class _NotificationIcon extends StatelessWidget {
   const _NotificationIcon({required this.icon, required this.colors});
 
@@ -107,7 +105,6 @@ class _NotificationIcon extends StatelessWidget {
   }
 }
 
-/// Testi della notifica: titolo, orario relativo e descrizione.
 class _NotificationContent extends StatelessWidget {
   const _NotificationContent({
     required this.notification,
@@ -184,7 +181,6 @@ class _NotificationContent extends StatelessWidget {
   }
 }
 
-/// Pallino azzurro visualizzato soltanto per le notifiche non lette.
 class _UnreadIndicator extends StatelessWidget {
   const _UnreadIndicator({required this.isVisible, required this.color});
 
@@ -206,7 +202,6 @@ class _UnreadIndicator extends StatelessWidget {
   }
 }
 
-/// Configurazione grafica derivata dalla categoria della notifica.
 class _NotificationVisual {
   const _NotificationVisual({required this.icon, required this.colors});
 

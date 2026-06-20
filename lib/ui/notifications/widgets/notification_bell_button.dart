@@ -24,7 +24,7 @@ class NotificationBellButton extends StatelessWidget {
   // Callback invocata quando l'utente preme la campanella.
   final VoidCallback onPressed;
 
-  // Palette grafica isolata dal rendering.
+  // Palette grafica usata dal pulsante.
   final NotificationBellButtonColors colors;
 
   @override

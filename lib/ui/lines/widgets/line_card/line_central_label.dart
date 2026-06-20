@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../../theme/line_card_colors.dart';
 
+/// Label testuale usata nella sezione centrale della card linea.
+///
+/// Mostra una didascalia e un valore, rispettando l'allineamento
+/// configurato dal widget padre.
 class LineCentralLabel extends StatelessWidget {
   const LineCentralLabel({
     super.key,
@@ -11,8 +15,13 @@ class LineCentralLabel extends StatelessWidget {
     this.colors = LineCardColors.defaultPalette,
   });
 
+  /// Didascalia mostrata sopra il valore principale.
   final String caption;
+
+  /// Valore principale mostrato sotto la didascalia.
   final String value;
+
+  /// Allineamento del testo.
   final CrossAxisAlignment crossAxisAlignment;
 
   // Palette propria della label centrale.

@@ -18,6 +18,10 @@ import 'home_map.dart';
 import 'locate_user_button.dart';
 import 'route_search_card.dart';
 
+/// Schermata principale della Home.
+///
+/// Mostra la mappa, la ricerca percorso, il pulsante GPS
+/// e il centro notifiche flottante.
 class HomeScreen extends StatefulWidget {
   const HomeScreen({
     super.key,
@@ -27,9 +31,16 @@ class HomeScreen extends StatefulWidget {
     required this.routePlanningRepository,
   });
 
+  /// Repository usato per caricare fermate e dati del trasporto urbano.
   final TransitRepository repository;
+
+  /// Repository usato per permessi e posizione corrente dell'utente.
   final LocationRepository locationRepository;
+
+  /// Repository usato dal centro notifiche.
   final NotificationRepository notificationRepository;
+
+  /// Repository usato per aprire i risultati della ricerca percorso.
   final RoutePlanningRepository routePlanningRepository;
 
   @override
@@ -42,16 +53,14 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   late final HomeMapViewModel _viewModel;
   late final NotificationCenterViewModel _notificationViewModel;
 
-  // Unifica gli aggiornamenti della mappa e delle notifiche.
-  // La Home viene ricostruita quando cambia almeno uno dei due ViewModel.
+  // Unifica gli aggiornamenti di mappa e notifiche in un solo rebuild.
   late final Listenable _screenListenable;
 
   final MapController _mapController = MapController();
 
   bool _isMapReady = false;
 
-  // Diventa true quando apriamo le impostazioni native.
-  // Al ritorno in app viene eseguito un nuovo controllo del GPS.
+  // Permette di ricontrollare il GPS dopo il ritorno dalle impostazioni native.
   bool _retryLocationWhenResumed = false;
 
   @override
@@ -74,7 +83,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     unawaited(_loadStops());
     unawaited(_notificationViewModel.loadNotifications());
 
-    // Il dialog può essere mostrato soltanto dopo il primo frame.
+    // Il dialog dei permessipuò essere mostrato soltanto dopo il primo frame.
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) {
         return;
@@ -268,7 +277,6 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
       builder: (context, child) {
         return Stack(
           children: [
-            // Mappa a tutto schermo con fermate GTFS e posizione utente.
             Positioned.fill(
               child: HomeMap(
                 mapController: _mapController,
@@ -282,7 +290,6 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
               ),
             ),
 
-            // Sfumatura superiore per rendere leggibile la card.
             Positioned.fill(
               child: IgnorePointer(
                 child: DecoratedBox(
@@ -302,7 +309,6 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
               ),
             ),
 
-            // Card ricerca percorso sopra la mappa.
             SafeArea(
               bottom: false,
               child: Padding(
@@ -317,7 +323,6 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
               ),
             ),
 
-            // Pulsante GPS sopra la navbar flottante.
             Positioned(
               right: 18,
               bottom: 104,
@@ -333,10 +338,6 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
               ),
             ),
 
-            // Centro notifiche flottante sopra la mappa.
-            //
-            // Il componente è isolato dalla Home:
-            // qui passiamo soltanto lo stato e le callback del ViewModel.
             Positioned.fill(
               child: NotificationCenterOverlay(
                 notifications: _notificationViewModel.notifications,

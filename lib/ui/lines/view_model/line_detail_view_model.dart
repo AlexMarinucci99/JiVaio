@@ -1,12 +1,18 @@
+import 'package:flutter/foundation.dart';
+
 import '../../../data/repositories/transit_repository.dart';
 import '../../../domain/models/transit_line.dart';
 
-import 'package:flutter/foundation.dart';
-
+/// Posizione dichiarata dall'utente durante una segnalazione.
 enum LineDetailReportLocation { onBus, atStop }
 
+/// Tipo di segnalazione.
 enum LineDetailReportType { delay, crowding }
 
+/// Gestisce stato e azioni della schermata di dettaglio linea.
+///
+/// Coordina la linea selezionata, la direzione attiva, il caricamento
+/// di partenze e fermate, la scelta dell'orario e la segnalazione mock.
 class LineDetailViewModel extends ChangeNotifier {
   LineDetailViewModel({
     required TransitLine line,
@@ -51,6 +57,7 @@ class LineDetailViewModel extends ChangeNotifier {
 
   String? get lastReportMessage => _lastReportMessage;
 
+  /// Ore selezionabili manualmente
   List<int> get manualHours {
     return List<int>.generate(18, (index) => index + 5, growable: false);
   }
@@ -63,10 +70,17 @@ class LineDetailViewModel extends ChangeNotifier {
     return _line.directions.length > 1;
   }
 
+  /// Indica se la direzione può essere cambiata dalla UI.
+  ///
+  /// Le linee monodirezionali possono avere più dati interni, ma nel prototipo
+  /// vengono trattate come direzione unica.
   bool get canToggleDirection {
     return canSwapDirection && !_line.isUnidirectional;
   }
 
+  /// Direzione attualmente selezionata.
+  ///
+  /// Usa la prima direzione come fallback se l'indice salvato non è più valido.
   TransitLineDirection? get selectedDirection {
     if (_line.directions.isEmpty) {
       return null;
@@ -91,6 +105,7 @@ class LineDetailViewModel extends ChangeNotifier {
     return _schedule?.selectedTripId;
   }
 
+  /// Etichetta della fascia oraria mostrata.
   String get timeRangeLabel {
     final schedule = _schedule;
 
@@ -101,6 +116,7 @@ class LineDetailViewModel extends ChangeNotifier {
     return _formatHourRange(_selectedMoment());
   }
 
+  /// Messaggio mostrato quando non sono diponibili partenze.
   String get emptyDeparturesMessage {
     final schedule = _schedule;
 
@@ -119,6 +135,7 @@ class LineDetailViewModel extends ChangeNotifier {
     return _reportLocation != null && _selectedReportStopId != null;
   }
 
+  /// Nome della fermata selezionata per la segnalazione.
   String? get selectedReportStopName {
     final selectedStopId = _selectedReportStopId;
 
@@ -135,6 +152,7 @@ class LineDetailViewModel extends ChangeNotifier {
     return null;
   }
 
+  /// Carica partenze e fermate della direzione selezionata.
   Future<void> loadSchedule() async {
     final direction = selectedDirection;
 
@@ -163,6 +181,7 @@ class LineDetailViewModel extends ChangeNotifier {
     }
   }
 
+  /// Cambia direzione e ricarica gli orari disponibili.
   Future<void> toggleDirection() async {
     if (!canToggleDirection) {
       return;
@@ -177,6 +196,7 @@ class LineDetailViewModel extends ChangeNotifier {
     await loadSchedule();
   }
 
+  /// Ripristina la fascia oraria autmatica e ricarica gli orari.
   Future<void> selectAutomaticTime() async {
     _isAutomaticTime = true;
     _selectedManualHour = null;
@@ -185,6 +205,7 @@ class LineDetailViewModel extends ChangeNotifier {
     await loadSchedule();
   }
 
+  /// Seleziona manualmente [hour] e ricarica gli orari.
   Future<void> selectManualHour(int hour) async {
     _isAutomaticTime = false;
     _selectedManualHour = hour;
@@ -193,6 +214,7 @@ class LineDetailViewModel extends ChangeNotifier {
     await loadSchedule();
   }
 
+  /// Seleziona la posizione da cui l'utente sta segnalando un problema.
   void selectReportLocation(LineDetailReportLocation location) {
     if (_reportLocation == location) {
       return;
@@ -204,6 +226,7 @@ class LineDetailViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Seleziona la fermata associata alla segnalazione.
   void selectReportStop(String stopId) {
     if (!requiresStopSelection) {
       return;
@@ -215,6 +238,10 @@ class LineDetailViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Registra una segnalazione dimostrativa di tipo [type].
+  ///
+  /// In questa fase non invia dati a una sorgente esterna: aggiorna soltanto
+  /// il messaggio mostrato dalla UI.
   void sendFakeReport(LineDetailReportType type) {
     if (!canSendReport) {
       return;

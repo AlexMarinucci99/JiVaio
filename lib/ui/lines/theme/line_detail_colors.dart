@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// Definisce i colori specifici della schermata di dettaglio linea.
 class LineDetailColors {
   const LineDetailColors._();
 

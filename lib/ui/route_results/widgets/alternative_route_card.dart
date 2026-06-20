@@ -15,8 +15,12 @@ class AlternativeRouteCard extends StatelessWidget {
     required this.onDetails,
   });
 
+  /// Percorso alternativo mostrato nella card.
   final AlternativeRoute route;
+
   final RouteResultsColors colors;
+
+  /// Callback eseguita quando l'utente richiede i dettagli del percorso.
   final VoidCallback onDetails;
 
   @override

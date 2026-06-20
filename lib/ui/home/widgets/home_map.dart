@@ -7,8 +7,10 @@ import '../../../domain/models/transit_stop.dart';
 import '../../../domain/models/user_location.dart';
 import '../theme/home_colors.dart';
 
-// Widget della mappa principale della Home.
-// Riceve dati già pronti e si occupa esclusivamente del rendering.
+/// Mappa principale della schermata Home.
+///
+/// Riceve fermate e posizione utente già pronte e si occupa
+/// esclusivamente del rendering tramite Flutter Map.
 class HomeMap extends StatelessWidget {
   const HomeMap({
     super.key,
@@ -19,13 +21,21 @@ class HomeMap extends StatelessWidget {
     this.colors = const HomeMapColors(),
   });
 
+  /// Controller usato dalla schermata padre per muovere la mappa.
   final MapController mapController;
+
+  /// Fermate del trasporto urbano da visualizzare sulla mappa.
   final List<TransitStop> stops;
+
+  /// Posizione corrente dell'utente, se disponibile.
   final UserLocation? userLocation;
+
+  /// Callback invocata quando la mappa è pronta.
   final VoidCallback onMapReady;
+
+  /// Palette cromatica usata per marker e fallback.
   final HomeMapColors colors;
 
-  // Centrato sull'Aquila.
   static const LatLng _initialCenter = LatLng(
     MapConfig.initialLatitude,
     MapConfig.initialLongitude,
@@ -75,7 +85,6 @@ class HomeMap extends StatelessWidget {
               userAgentPackageName: MapConfig.userAgentPackageName,
             ),
 
-            // Fermate GTFS mostrate come pallini verdi.
             if (stops.isNotEmpty)
               CircleLayer(
                 circles: stops
@@ -91,10 +100,10 @@ class HomeMap extends StatelessWidget {
                     .toList(growable: false),
               ),
 
-            // Posizione utente: alone esterno + pallino blu centrale.
             if (currentUserLocation != null)
               CircleLayer(
                 circles: [
+                  // Due marker sovrapposti rendono più leggibile la posizione utente.
                   CircleMarker(
                     point: LatLng(
                       currentUserLocation.latitude,

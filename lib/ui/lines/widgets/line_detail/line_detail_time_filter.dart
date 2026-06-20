@@ -3,18 +3,33 @@ import 'package:flutter/material.dart';
 import '../../theme/line_card_colors.dart';
 import '../../theme/line_detail_colors.dart';
 
+/// Risultato della selezione della fascia oraria nel dettaglio linea.
+///
+/// Può rappresentare la modalità automatica basata sull'ora locale
+/// oppure una fascia manuale scelta dall'utente.
 class LineDetailTimeSelection {
+  /// Crea una selezione automatica basata sull'ora locale del dispositivo.
   const LineDetailTimeSelection.automatic() : isAutomatic = true, hour = null;
 
+  /// Crea una selezione manuale per la fascia che inizia da [hour].
   const LineDetailTimeSelection.manual(this.hour) : isAutomatic = false;
 
   final bool isAutomatic;
+
+  /// Ora iniziale della fascia manuale selezionata.
+  ///
+  /// È null quando [isAutomatic] è true.
   final int? hour;
 }
 
+/// Mostra la bottom sheet per scegliere la fascia oraria del dettaglio linea.
+///
+/// Restituisce una [LineDetailTimeSelection] quando l'utente conferma,
+/// oppure null quando la selezione viene annullata.
 Future<LineDetailTimeSelection?> showLineDetailTimeFilterSheet(
   BuildContext context, {
   required String currentRangeLabel,
+
   required bool isAutomaticSelected,
   required int? selectedManualHour,
   required List<int> manualHours,
@@ -36,6 +51,10 @@ Future<LineDetailTimeSelection?> showLineDetailTimeFilterSheet(
   );
 }
 
+/// Bottom sheet per selezionare la fascia oraria del dettaglio linea.
+///
+/// Mantiene localmente la scelta temporanea e restituisce il risultato
+/// solo quando l'utente preme Conferma.
 class LineDetailTimeFilterSheet extends StatefulWidget {
   const LineDetailTimeFilterSheet({
     super.key,
@@ -46,10 +65,16 @@ class LineDetailTimeFilterSheet extends StatefulWidget {
     this.colors = LineCardColors.defaultPalette,
   });
 
+  /// Etichetta della fascia oraria attualmente applicata.
   final String currentRangeLabel;
+
   final bool isAutomaticSelected;
+
   final int? selectedManualHour;
+
+  /// Ore disponibili per la selezione manuale.
   final List<int> manualHours;
+
   final LineCardPalette colors;
 
   @override

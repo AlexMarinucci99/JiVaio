@@ -10,7 +10,9 @@ import '../theme/route_results_colors.dart';
 class NextBusCard extends StatelessWidget {
   const NextBusCard({super.key, required this.times, required this.colors});
 
+  /// Orari delle prossime navette da mostrare nella card.
   final List<String> times;
+
   final RouteResultsColors colors;
 
   @override

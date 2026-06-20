@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 
+/// Palette dell'indicatore delle pagine dell'oboarding.
 class OnboardingDotsIndicatorColors {
   const OnboardingDotsIndicatorColors({
     this.activeColor = const Color(0x14061A3A),
     this.inactiveColor = const Color(0xFFE1E7F0),
   });
 
-  // Colore del pallino della pagina attiva.
+  /// Colore del pallino della pagina attiva.
   final Color activeColor;
 
-  // Colore dei pallini delle pagine non attive.
+  /// Colore dei pallini delle pagine non attive.
   final Color inactiveColor;
 }
 
-// Mostra i pallini di avanzamento dell'onboarding.
+/// Indicatore delle pagine dell'onboarding.
 class OnboardingDotsIndicator extends StatelessWidget {
   const OnboardingDotsIndicator({
     super.key,
@@ -22,10 +23,13 @@ class OnboardingDotsIndicator extends StatelessWidget {
     this.colors = const OnboardingDotsIndicatorColors(),
   });
 
+  /// Indice della pagina attualmente visibile.
   final int currentIndex;
+
+  /// Numero totale di pagine dell'onboarding.
   final int itemCount;
 
-  // Palette colori propria dei dots.
+  /// Palette colori propria dei dots.
   final OnboardingDotsIndicatorColors colors;
 
   @override

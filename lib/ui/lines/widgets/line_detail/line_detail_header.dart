@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 
 import '../../../../domain/models/transit_line.dart';
-
-// Widget già esistenti della card linea, riutilizzati anche nel dettaglio.
 import '../line_card/line_badge.dart';
 import '../../theme/line_card_colors.dart';
 import '../line_card/line_central_label.dart';
 import '../line_card/line_info_pill.dart';
 
+/// Header della schermata dettaglio linea.
+///
+/// Mostra le informazioni principali della linea, la direzione selezionata
+/// e i controlli per tornare all'elenco o invertire il senso di percorrenza.
 class LineDetailHeader extends StatelessWidget {
   const LineDetailHeader({
     super.key,
@@ -21,20 +23,28 @@ class LineDetailHeader extends StatelessWidget {
   });
 
   final TransitLine line;
+
+  /// Direzione attualmente selezionata.
+  ///
+  /// È null quando la linea non ha una direzione disponibile.
   final TransitLineDirection? direction;
+
   final Color lineColor;
+
+  /// Indica se l'utente può invertire la direzione visualizzata.
   final bool canSwapDirection;
+
+  /// Callback eseguita quando l'utente inverte la direzione.
   final VoidCallback onSwapDirection;
+
+  /// Callback eseguita quando l'utente torna alla schermata precedente.
   final VoidCallback onClose;
 
   // Palette condivisa della feature linee.
-  // Non controlla il colore del badge: il badge continua a usare lineColor.
   final LineCardPalette colors;
 
   @override
   Widget build(BuildContext context) {
-    // Calcola il colore del testo leggibile sopra il colore reale della linea.
-    // Il badge del dettaglio usa lo stesso colore uniforme dell'elenco linee.
     final badgeColor = colors.listAccent;
 
     final badgeTextColor = LineCardColors.textOn(badgeColor, colors: colors);
@@ -51,7 +61,6 @@ class LineDetailHeader extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Bottone freccia per tornare alla schermata elenco linee.
                 Material(
                   color: colors.pillBackground,
                   shape: const CircleBorder(),
@@ -64,10 +73,6 @@ class LineDetailHeader extends StatelessWidget {
                 ),
 
                 const SizedBox(width: 10),
-
-                // Riutilizzo di LineBadge: stesso badge linea già usato nelle card.
-                // Il colore resta quello della linea, non della palette.
-                // Riutilizzo di LineBadge con la stessa palette dell'elenco linee.
                 LineBadge(
                   shortName: line.shortName,
                   backgroundColor: badgeColor,
@@ -76,7 +81,6 @@ class LineDetailHeader extends StatelessWidget {
 
                 const SizedBox(width: 12),
 
-                // Area testuale specifica del dettaglio linea.
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -108,7 +112,6 @@ class LineDetailHeader extends StatelessWidget {
                       if (selectedDirection != null) ...[
                         const SizedBox(height: 10),
 
-                        // Riutilizzo di LineInfoPill: pill informativa già usata nelle card.
                         LineInfoPill(
                           icon: Icons.place_rounded,
                           label: _stopCountLabel(selectedDirection.stopCount),
@@ -122,7 +125,6 @@ class LineDetailHeader extends StatelessWidget {
             ),
           ),
 
-          // Separatore interno dell'header.
           Container(height: 1, color: colors.border),
 
           Padding(
@@ -177,7 +179,6 @@ class _DirectionSwitcherBox extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       decoration: BoxDecoration(
-        // Sfondo bianco del box Partenza / Capolinea.
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: colors.border),
@@ -185,7 +186,6 @@ class _DirectionSwitcherBox extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
-            // Riutilizzo di LineCentralLabel: label già usata anche nella card linea.
             child: LineCentralLabel(
               caption: 'Partenza',
               value: direction.originName,
@@ -193,7 +193,6 @@ class _DirectionSwitcherBox extends StatelessWidget {
             ),
           ),
 
-          // Bottone centrale per invertire la direzione.
           Material(
             color: lineColor.withValues(alpha: 0.12),
             shape: const CircleBorder(),
@@ -216,7 +215,6 @@ class _DirectionSwitcherBox extends StatelessWidget {
           ),
 
           Expanded(
-            // Riutilizzo di LineCentralLabel: stessa struttura per il capolinea.
             child: LineCentralLabel(
               caption: 'Capolinea',
               value: direction.destinationName,

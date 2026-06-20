@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// Definisce i colori configurabili dei bottoni social auth.
 class AuthSocialButtonsColors {
   const AuthSocialButtonsColors({
     this.foregroundColor = const Color(0xFF191970),
@@ -10,7 +11,7 @@ class AuthSocialButtonsColors {
   final Color borderColor;
 }
 
-// Riga dei bottoni social della schermata auth.
+/// Riga dei bottoni social della schermata auth.
 class AuthSocialButtons extends StatelessWidget {
   const AuthSocialButtons({
     super.key,

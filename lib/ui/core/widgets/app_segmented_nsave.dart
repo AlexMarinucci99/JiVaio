@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// Badge compatto mostrato dentro [AppSegmentedControl].
 class AppSegmentedNSave extends StatelessWidget {
   const AppSegmentedNSave({
     super.key,
@@ -8,14 +9,13 @@ class AppSegmentedNSave extends StatelessWidget {
     required this.textColor,
   });
 
-  // Numero o testo mostrato nel badge.
-  // Nel nostro caso sarà il numero di linee salvate.
+  /// Testo mostrato nel badge.
   final String label;
 
-  // Colore dello sfondo del badge.
+  /// Colore dello sfondo del badge.
   final Color backgroundColor;
 
-  // Colore del testo del badge.
+  /// Colore del testo del badge.
   final Color textColor;
 
   @override

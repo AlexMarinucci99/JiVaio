@@ -5,7 +5,10 @@ import '../../theme/line_card_colors.dart';
 import '../../theme/line_detail_colors.dart';
 import 'line_detail_stop_tile.dart';
 
-/// Mostra l'elenco delle fermate della direzione selezionata.
+/// Sezione che mostra le fermate della direzione selezionata.
+///
+/// Supporta anche la selezione di una fermata quando la schermata
+/// dettaglio viene usata per completare una segnalazione.
 class LineDetailRouteSection extends StatelessWidget {
   const LineDetailRouteSection({
     super.key,
@@ -17,11 +20,22 @@ class LineDetailRouteSection extends StatelessWidget {
     this.colors = LineCardColors.defaultPalette,
   });
 
+  /// Fermate ordinate della direzione visualizzata.
   final List<TransitLineStop> stops;
+
   final Color lineColor;
+
+  /// Identificativo della fermata selezionata.
+  ///
+  /// È null quando nessuna fermata è selezionata.
   final String? selectedStopId;
+
+  /// Indica se l'utente può selezionare una fermata dall'elenco.
   final bool isStopSelectionEnabled;
+
+  /// Callback eseguita quando l'utente seleziona una fermata.
   final ValueChanged<String> onStopSelected;
+
   final LineCardPalette colors;
 
   @override

@@ -5,6 +5,10 @@ import '../../theme/line_card_colors.dart';
 import 'line_card_header.dart';
 import 'line_route_preview.dart';
 
+/// Card che mostra una linea urbana nell'elenco linee.
+///
+/// Gestisce localmente la direzione selezionata e delega al chiamante
+/// le azioni di salvataggio e apertura del dettaglio.
 class LineCard extends StatefulWidget {
   const LineCard({
     super.key,
@@ -15,12 +19,18 @@ class LineCard extends StatefulWidget {
     this.colors = LineCardColors.defaultPalette,
   });
 
+  /// Linea da mostrare nella card.
   final TransitLine line;
+
   final bool isSaved;
+
+  /// Callback eseguita quando l'utente aggiorna lo stato di salvataggio.
   final VoidCallback onToggleSaved;
+
+  /// Callback eseguita quando l'utente apre i dettagli della linea.
   final VoidCallback onOpenDetails;
 
-  // Palette propria della card linea.
+  /// Palette propria della card linea.
   final LineCardPalette colors;
 
   @override

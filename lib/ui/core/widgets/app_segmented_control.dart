@@ -23,10 +23,10 @@ class AppSegmentedControlItem<T> {
   final String? badgeLabel;
 }
 
-/// Mostra un controllo segmentato riutilizzabile.
+/// Controllo segmentato riutilizzabile dell'app.
 ///
-/// Il widget supporta da due a quattro opzioni e può essere personalizzato
-/// tramite [colors] oppure tramite override puntuali dei singoli colori.
+/// Supporta da due a quattro opzioni e può essere personalizzato
+/// tramite [colors] oppure tramite override puntuali dei colori.
 class AppSegmentedControl<T> extends StatelessWidget {
   const AppSegmentedControl({
     super.key,

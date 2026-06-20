@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'app_colors.dart';
 
+/// Definisce le palette cromatiche del segmented control condiviso.
 class AppSegmentedControlColors {
   const AppSegmentedControlColors({
     required this.backgroundColor,
@@ -25,8 +26,7 @@ class AppSegmentedControlColors {
   final Color selectedBadgeBackgroundColor;
   final Color selectedBadgeTextColor;
 
-  // Palette standard del segmented control.
-  // Usala nelle schermate normali, come LinesScreen.
+  ///Palette standard del segmented control.
   static const AppSegmentedControlColors primary = AppSegmentedControlColors(
     backgroundColor: AppColors.surfaceMuted,
     selectedColor: Color(0xFF191970),
@@ -39,8 +39,7 @@ class AppSegmentedControlColors {
     selectedBadgeTextColor: AppColors.surface,
   );
 
-  // Palette alternativa per schermate auth
-  // il segmento selezionato bianco su sfondo chiaro.
+  /// Palette alternativa per schermate auth
   static const AppSegmentedControlColors auth = AppSegmentedControlColors(
     backgroundColor: AppColors.fieldBackground,
     selectedColor: AppColors.surface,

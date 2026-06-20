@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import '../../../../domain/models/transit_line.dart';
 import '../../theme/line_card_colors.dart';
 
+/// Tile che rappresenta una fermata nel dettaglio linea.
+///
+/// Mostra nome, ruolo nella tratta, orario ufficiale e stato di selezione
+/// quando la schermata abilita la scelta di una fermata.
 class LineDetailStopTile extends StatelessWidget {
   const LineDetailStopTile({
     super.key,
@@ -16,13 +20,26 @@ class LineDetailStopTile extends StatelessWidget {
     this.colors = LineCardColors.defaultPalette,
   });
 
+  /// Fermata mostrata nella tile.
   final TransitLineStop stop;
+
   final Color lineColor;
+
+  /// Indica se la fermata è la prima della direzione
   final bool isFirst;
+
+  /// ultima in direzione
   final bool isLast;
+
+  ///se è selezionata
   final bool isSelected;
+
+  /// Indica se la tile può essere selezionata.
   final bool isSelectionEnabled;
+
+  /// Callback eseguita quando l'utente seleziona la fermata.
   final VoidCallback onTap;
+
   final LineCardPalette colors;
 
   @override

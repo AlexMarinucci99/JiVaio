@@ -31,7 +31,6 @@ class RouteResultsColors {
     this.arrivalMarkerColor = AppColors.warning,
   });
 
-  // Colori generali della schermata.
   final Color backgroundColor;
   final Color surfaceColor;
   final Color textPrimaryColor;
@@ -40,19 +39,16 @@ class RouteResultsColors {
   final Color borderColor;
   final Color shadowColor;
 
-  // Header.
   final Color headerGradientStartColor;
   final Color headerGradientEndColor;
   final Color headerTextColor;
   final Color headerMutedTextColor;
   final Color backButtonBackgroundColor;
 
-  // Card riepilogativa interna all'header.
   final Color summaryCardBackgroundColor;
   final Color summaryCardBorderColor;
   final Color summaryDividerColor;
 
-  // Elementi distintivi della feature.
   final Color accentColor;
   final Color accentSoftColor;
   final Color accentBorderColor;

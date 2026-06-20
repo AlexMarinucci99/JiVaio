@@ -6,6 +6,11 @@ import '../../../domain/models/location_access_result.dart';
 import '../../../domain/models/transit_stop.dart';
 import '../../../domain/models/user_location.dart';
 
+/// Gestisce stato e dati della mappa nella schermata Home.
+///
+/// Il ViewModel carica le fermate dal repository del trasporto,
+/// coordina l'accesso alla posizione utente e mantiene la View
+/// indipendente dai dettagli di repository e permessi.
 class HomeMapViewModel extends ChangeNotifier {
   HomeMapViewModel({
     required TransitRepository repository,
@@ -38,6 +43,10 @@ class HomeMapViewModel extends ChangeNotifier {
 
   String? get locationErrorMessage => _locationErrorMessage;
 
+  /// Carica le fermate da visualizzare sulla mappa.
+  ///
+  /// Evita richieste duplicate se il caricamento è già in corso
+  /// o se le fermate sono già state recuperate.
   Future<void> loadStops() async {
     if (_isLoading || _stops.isNotEmpty) {
       return;
@@ -57,6 +66,10 @@ class HomeMapViewModel extends ChangeNotifier {
     }
   }
 
+  /// Richiede i permessi necessari e recupera la posizione dell'utente.
+  ///
+  /// Restituisce l'esito dell'accesso alla posizione, così la View può
+  /// decidere se mostrare messaggi, aprire impostazioni o centrare la mappa.
   Future<LocationAccessResult> locateUser() async {
     if (_isLocating) {
       return _userLocation == null
@@ -89,15 +102,18 @@ class HomeMapViewModel extends ChangeNotifier {
     }
   }
 
+  /// Apre le impostazioni di localizzazione del dispositivo.
   Future<bool> openLocationSettings() {
     return _locationRepository.openLocationSettings();
   }
 
+  /// Apre le impostazioni dell'app sul dispositivo.
   Future<bool> openAppSettings() {
     return _locationRepository.openAppSettings();
   }
 
   void _notifyListenersSafely() {
+    // Evita notifiche dopo dispose durante operazioni asincrone ancora attive.
     if (!_isDisposed) {
       notifyListeners();
     }

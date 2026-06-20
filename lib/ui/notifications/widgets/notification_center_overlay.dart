@@ -8,13 +8,8 @@ import 'notification_center_panel.dart';
 
 /// Overlay del centro notifiche mostrato sopra la Home.
 ///
-/// Responsabilità:
-/// - posizionare la campanella in alto a destra;
-/// - mostrare il pannello sotto la campanella;
-/// - chiudere il pannello quando l'utente tocca l'area esterna;
-/// - adattare la larghezza e l'altezza del pannello allo schermo.
-///
-/// Il widget non conserva stato interno e non contiene colori hardcoded.
+/// Posiziona la campanella, mostra il pannello flottante
+/// e chiude il pannello quando l'utente tocca l'area esterna.
 class NotificationCenterOverlay extends StatelessWidget {
   const NotificationCenterOverlay({
     super.key,
@@ -29,31 +24,31 @@ class NotificationCenterOverlay extends StatelessWidget {
     required this.onNotificationTap,
   });
 
-  // Notifiche già ordinate dal ViewModel.
+  /// Notifiche già ordinate dal ViewModel.
   final List<AppNotification> notifications;
 
-  // Numero mostrato nel badge.
+  /// Numero mostrato nel badge.
   final int unreadCount;
 
-  // Stato del caricamento iniziale.
+  /// Stato del caricamento iniziale.
   final bool isLoading;
 
-  // true quando il pannello deve essere visibile.
+  /// Indica se il pannello notifiche è aperto.
   final bool isPanelOpen;
 
-  // Eventuale messaggio restituito dal ViewModel.
+  /// Messaggio di errore esposto dal ViewModel, se presente.
   final String? errorMessage;
 
-  // Apertura o chiusura tramite campanella.
+  /// Callback per aprire o chiudere il pannello dalla campanella.
   final VoidCallback onTogglePanel;
 
-  // Chiusura tramite X oppure tap esterno.
+  /// Callback per chiudere il pannello.
   final VoidCallback onClosePanel;
 
-  // Segna tutte le notifiche come lette.
+  /// Callback per segnare tutte le notifiche come lette.
   final VoidCallback onMarkAllAsRead;
 
-  // Segna come letta una singola notifica.
+  /// Callback per segnare come letta una singola notifica.
   final ValueChanged<String> onNotificationTap;
 
   @override
@@ -70,20 +65,16 @@ class NotificationCenterOverlay extends StatelessWidget {
 
         return Stack(
           children: [
-            // Quando il pannello è aperto, un tap sulla mappa lo chiude.
-            //
-            // Questo livello si trova dietro alla campanella e al pannello:
-            // i tap sui componenti interni continuano quindi a funzionare.
             if (isPanelOpen)
               Positioned.fill(
                 child: GestureDetector(
+                  // Il livello resta dietro ai componenti interni, ma intercetta i tap esterni.
                   behavior: HitTestBehavior.translucent,
                   onTap: onClosePanel,
                   child: const SizedBox.expand(),
                 ),
               ),
 
-            // Campanella e pannello rimangono allineati a destra.
             Positioned(
               top: 0,
               right: 18,

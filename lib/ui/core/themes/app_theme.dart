@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'app_colors.dart';
 
+/// Temi globali dell'app.
 class AppTheme {
   const AppTheme._();
 

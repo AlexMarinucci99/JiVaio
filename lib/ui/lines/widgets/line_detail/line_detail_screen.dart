@@ -11,6 +11,10 @@ import 'line_detail_report_card.dart';
 import 'line_detail_route_section.dart';
 import 'line_detail_time_filter.dart';
 
+/// Schermata di dettaglio di una linea urbana.
+///
+/// Mostra header, partenze, segnalazioni demo e fermate della direzione
+/// selezionata, delegando stato e logica a [LineDetailViewModel].
 class LineDetailScreen extends StatefulWidget {
   const LineDetailScreen({
     super.key,
@@ -18,7 +22,10 @@ class LineDetailScreen extends StatefulWidget {
     required this.repository,
   });
 
+  /// Linea urbana da mostrare nel dettaglio.
   final TransitLine line;
+
+  /// Repository usato per recuperare orari e informazioni della linea.
   final TransitRepository repository;
 
   @override

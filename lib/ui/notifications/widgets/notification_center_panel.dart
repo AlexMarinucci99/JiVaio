@@ -7,8 +7,8 @@ import 'notification_item.dart';
 
 /// Pannello flottante che visualizza il centro notifiche.
 ///
-/// Il widget riceve stato e callback dall'esterno.
-/// Non contiene business logic e non modifica direttamente i dati.
+/// Riceve stato e callback dall'esterno, senza contenere business logic
+/// o modificare direttamente i dati delle notifiche.
 class NotificationCenterPanel extends StatelessWidget {
   const NotificationCenterPanel({
     super.key,
@@ -23,31 +23,31 @@ class NotificationCenterPanel extends StatelessWidget {
     this.itemColors = const NotificationItemColors(),
   });
 
-  // Elenco già ordinato delle notifiche.
+  /// Elenco delle notifiche già ordinato dal ViewModel.
   final List<AppNotification> notifications;
 
-  // Numero di notifiche non ancora lette.
+  /// Numero di notifiche non ancora lette.
   final int unreadCount;
 
-  // Stato di caricamento iniziale.
+  /// Indica se il caricamento iniziale è in corso.
   final bool isLoading;
 
-  // Eventuale errore restituito dal ViewModel.
+  /// Messaggio di errore esposto dal ViewModel, se presente.
   final String? errorMessage;
 
-  // Chiusura del pannello.
+  /// Callback invocata per chiudere il pannello.
   final VoidCallback onClose;
 
-  // Segna tutte le notifiche come lette.
+  /// Callback invocata per segnare tutte le notifiche come lette.
   final VoidCallback onMarkAllAsRead;
 
-  // Segna come letta la notifica selezionata.
+  /// Callback invocata quando l'utente seleziona una notifica.
   final ValueChanged<String> onNotificationTap;
 
-  // Palette del pannello.
+  /// Palette del pannello.
   final NotificationCenterPanelColors colors;
 
-  // Palette delle righe interne.
+  /// Palette delle righe interne.
   final NotificationItemColors itemColors;
 
   @override
@@ -96,9 +96,6 @@ class NotificationCenterPanel extends StatelessWidget {
   }
 }
 
-/// Intestazione del pannello.
-///
-/// Separata dal contenitore principale per evitare un widget troppo annidato.
 class _NotificationPanelHeader extends StatelessWidget {
   const _NotificationPanelHeader({
     required this.unreadCount,
@@ -191,9 +188,6 @@ class _NotificationPanelHeader extends StatelessWidget {
   }
 }
 
-/// Corpo dinamico del pannello.
-///
-/// Mostra caricamento, errore, stato vuoto oppure elenco.
 class _NotificationPanelBody extends StatelessWidget {
   const _NotificationPanelBody({
     required this.notifications,
@@ -248,7 +242,6 @@ class _NotificationPanelBody extends StatelessWidget {
   }
 }
 
-/// Stato mostrato durante il caricamento iniziale.
 class _NotificationLoadingState extends StatelessWidget {
   const _NotificationLoadingState({required this.colors});
 
@@ -272,7 +265,6 @@ class _NotificationLoadingState extends StatelessWidget {
   }
 }
 
-/// Stato mostrato quando non esistono notifiche.
 class _NotificationEmptyState extends StatelessWidget {
   const _NotificationEmptyState({required this.colors});
 
@@ -319,7 +311,6 @@ class _NotificationEmptyState extends StatelessWidget {
   }
 }
 
-/// Stato mostrato quando il caricamento non riesce.
 class _NotificationErrorState extends StatelessWidget {
   const _NotificationErrorState({required this.message, required this.colors});
 

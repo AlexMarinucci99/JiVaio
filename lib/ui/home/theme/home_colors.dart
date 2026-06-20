@@ -16,13 +16,19 @@ class HomeMapColors {
 
   final Color fallbackBackgroundColor;
 
-  // Fermate del trasporto pubblico.
+  /// Colore interno dei marker delle fermate.
   final Color stopMarkerColor;
+
+  /// Colore del bordo dei marker delle fermate.
   final Color stopMarkerBorderColor;
 
-  // Posizione dell'utente.
+  /// Colore dell'alone mostrato attorno alla posizione dell'utente.
   final Color userLocationHaloColor;
+
+  /// Colore interno del marker della posizione dell'utente.
   final Color userLocationMarkerColor;
+
+  /// Colore del bordo del marker della posizione dell'utente.
   final Color userLocationMarkerBorderColor;
 }
 

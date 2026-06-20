@@ -8,10 +8,14 @@ import 'hide_onboarding_preference.dart';
 import 'onboarding_bottom_controls.dart';
 import 'onboarding_slide_card.dart';
 
-// StatefulWidget: schermata principale che contiene le 3 pagine di onboarding.
+/// Schermata principale dell'onboarding.
+///
+/// Mostra le slide introduttive, coordina la navigazione tra pagine
+/// e delega al [OnboardingViewModel] la gestione dello stato e della preferenza.
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key, required this.onboardingRepository});
 
+  /// Repository usato per salvare la preferenza di visualizzazione.
   final OnboardingRepository onboardingRepository;
 
   @override
@@ -23,7 +27,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   late final OnboardingViewModel _viewModel;
 
-  // Palette colori della feature onboarding.
   static const OnboardingColors _colors = OnboardingColors();
 
   static const List<_OnboardingVisualData> _visuals = [
@@ -51,7 +54,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
   }
 
-  // Bottone "Avanti" / "Inizia".
   Future<void> _goNext() async {
     if (_viewModel.isLastPage) {
       await _viewModel.completeOnboarding();
@@ -68,7 +70,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
   }
 
-  // Bottone "Indietro".
   void _goBack() {
     if (_viewModel.currentPage == 0) return;
 
@@ -78,7 +79,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
   }
 
-  // Bottone "Salta" superiore.
   Future<void> _skip() async {
     await _viewModel.skipOnboarding();
 
@@ -104,7 +104,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           body: SafeArea(
             child: Column(
               children: [
-                // Bottone "Salta" superiore destro.
                 Padding(
                   padding: const EdgeInsets.fromLTRB(20, 12, 20, 4),
                   child: Align(
@@ -119,7 +118,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   ),
                 ),
 
-                // PageView con le 3 slide onboarding.
                 Expanded(
                   child: PageView.builder(
                     controller: _pageController,
@@ -142,14 +140,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   ),
                 ),
 
-                // Area inferiore: box opzionale + controlli finali.
                 Padding(
                   padding: const EdgeInsets.fromLTRB(28, 12, 28, 32),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      // Box "Non mostrarla più".
-                      // Compare solo nella terza schermata di onboarding.
                       AnimatedSwitcher(
                         duration: const Duration(milliseconds: 180),
                         switchInCurve: Curves.easeOutCubic,
@@ -169,10 +164,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               ),
                       ),
 
-                      // Spazio tra box e controlli inferiori.
                       if (_viewModel.isLastPage) const SizedBox(height: 16),
 
-                      // Riga inferiore: indietro, dots, avanti/inizia.
                       OnboardingBottomControls(
                         currentIndex: _viewModel.currentPage,
                         itemCount: _viewModel.items.length,

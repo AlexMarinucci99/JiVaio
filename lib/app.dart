@@ -7,6 +7,10 @@ import 'ui/auth/widgets/reset_password_screen.dart';
 import 'ui/core/themes/app_theme.dart';
 import 'ui/onboarding/widgets/onboarding_screen.dart';
 
+/// Configura il widget radice dell'app JiVaio.
+///
+/// Definisce tema, route iniziale e collegamento tra routing
+/// e dipendenze applicative.
 class JiVaioApp extends StatelessWidget {
   const JiVaioApp({
     super.key,
@@ -14,7 +18,10 @@ class JiVaioApp extends StatelessWidget {
     required this.dependencies,
   });
 
+  /// Indica se mostrare l'onboarding come prima schermata.
   final bool showOnboarding;
+
+  /// Dipendenze condivise dalle schermate principali dell'app.
   final AppDependencies dependencies;
 
   @override
@@ -32,8 +39,7 @@ class JiVaioApp extends StatelessWidget {
         ),
         AppRoutes.authChoice: (_) => AuthGate(dependencies: dependencies),
 
-        // Route mantenuta per compatibilità.
-        // Il flusso principale passa da AuthGate.
+        // Manteniamo la route per compatibilità con eventuali navigazioni dirette.
         AppRoutes.home: (_) => AuthGate(dependencies: dependencies),
 
         AppRoutes.resetPassword: (_) =>
