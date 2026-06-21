@@ -1,7 +1,10 @@
 import 'package:flutter/foundation.dart';
 
-import '../../../domain/exceptions/auth_failure.dart';
 import '../../../data/repositories/auth_repository.dart';
+import '../../../domain/exceptions/auth_failure.dart';
+
+const String _safeResetPasswordMessage =
+    'Se l’email è associata a un account JiVaio, riceverai un link per reimpostare la password.';
 
 /// Risultato dell'invio del link di recupero password.
 class ResetPasswordSubmitResult {
@@ -26,7 +29,6 @@ class ResetPasswordSubmitResult {
 ///
 /// Il ViewModel mantiene la logica fuori dalla schermata e delega
 /// l'operazione di recupero ad [AuthRepository].
-
 class ResetPasswordViewModel extends ChangeNotifier {
   ResetPasswordViewModel(this._authRepository);
 
@@ -73,11 +75,11 @@ class ResetPasswordViewModel extends ChangeNotifier {
     try {
       await _authRepository.sendPasswordResetEmail(email: _email);
 
-      return ResetPasswordSubmitResult.success(
-        'Se l’email è associata a un account JiVaio, riceverai un link per reimpostare la password.',
+      return const ResetPasswordSubmitResult.success(
+        _safeResetPasswordMessage,
       );
     } on AuthFailure catch (error) {
-      return ResetPasswordSubmitResult.failure(_mapAuthFailure(error.code));
+      return _mapAuthFailure(error.code);
     } catch (_) {
       return const ResetPasswordSubmitResult.failure(
         'Si è verificato un errore imprevisto. Riprova.',
@@ -93,16 +95,24 @@ class ResetPasswordViewModel extends ChangeNotifier {
     return email.contains('@') && email.contains('.');
   }
 
-  String _mapAuthFailure(AuthFailureCode code) {
+  ResetPasswordSubmitResult _mapAuthFailure(AuthFailureCode code) {
     switch (code) {
       case AuthFailureCode.invalidEmail:
-        return 'Inserisci un indirizzo email valido.';
+        return const ResetPasswordSubmitResult.failure(
+          'Inserisci un indirizzo email valido.',
+        );
       case AuthFailureCode.networkRequestFailed:
-        return 'Controlla la connessione e riprova.';
+        return const ResetPasswordSubmitResult.failure(
+          'Controlla la connessione e riprova.',
+        );
       case AuthFailureCode.tooManyRequests:
-        return 'Troppe richieste in poco tempo. Riprova più tardi.';
+        return const ResetPasswordSubmitResult.failure(
+          'Troppe richieste in poco tempo. Riprova più tardi.',
+        );
       case AuthFailureCode.userNotFound:
-        return 'Se l’email è associata a un account JiVaio, riceverai un link per reimpostare la password.';
+        return const ResetPasswordSubmitResult.success(
+          _safeResetPasswordMessage,
+        );
       case AuthFailureCode.wrongPassword:
       case AuthFailureCode.emailAlreadyInUse:
       case AuthFailureCode.weakPassword:
@@ -110,7 +120,9 @@ class ResetPasswordViewModel extends ChangeNotifier {
       case AuthFailureCode.userDisabled:
       case AuthFailureCode.operationNotAllowed:
       case AuthFailureCode.unknown:
-        return 'Non è stato possibile inviare il link di recupero. Riprova.';
+        return const ResetPasswordSubmitResult.failure(
+          'Non è stato possibile inviare il link di recupero. Riprova.',
+        );
     }
   }
 }

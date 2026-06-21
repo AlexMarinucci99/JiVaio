@@ -165,22 +165,22 @@ void main() {
     expect(viewModel.isSubmitting, isFalse);
   });
 
-  test('gestisce userNotFound con messaggio sicuro', () async {
-    viewModel.updateEmail('utente@jivaio.it');
+  test('gestisce userNotFound con messaggio sicuro senza mostrare errore', () async {
+  viewModel.updateEmail('utente@jivaio.it');
 
-    authRepository.authFailureToThrow = AuthFailure(
-      AuthFailureCode.userNotFound,
-    );
+  authRepository.authFailureToThrow = AuthFailure(
+    AuthFailureCode.userNotFound,
+  );
 
-    final result = await viewModel.sendResetLink();
+  final result = await viewModel.sendResetLink();
 
-    expect(result.isSuccess, isFalse);
-    expect(
-      result.message,
-      'Se l’email è associata a un account JiVaio, riceverai un link per reimpostare la password.',
-    );
-    expect(viewModel.isSubmitting, isFalse);
-  });
+  expect(result.isSuccess, isTrue);
+  expect(
+    result.message,
+    'Se l’email è associata a un account JiVaio, riceverai un link per reimpostare la password.',
+  );
+  expect(viewModel.isSubmitting, isFalse);
+});
 
   test('gestisce errore AuthFailure sconosciuto', () async {
     viewModel.updateEmail('utente@jivaio.it');
