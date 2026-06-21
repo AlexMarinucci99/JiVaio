@@ -24,8 +24,15 @@ void main() {
 
     final fields = find.byType(TextField);
     final fromField = tester.widget<TextField>(fields.at(0));
+    final toField = tester.widget<TextField>(fields.at(1));
 
-    expect(fromField.controller?.text, 'Posizione attuale');
+    expect(fromField.controller?.text, isEmpty);
+    expect(fromField.decoration?.hintText, 'Da dove vuoi partire?');
+
+    expect(toField.controller?.text, isEmpty);
+    expect(toField.decoration?.hintText, 'Dove vuoi andare?');
+
+    expect(find.text('Posizione attuale'), findsNothing);
   });
 
   testWidgets('mostra le icone principali della card', (
@@ -39,7 +46,7 @@ void main() {
   });
 
   testWidgets(
-    'il bottone Cerca percorso è disabilitato se manca la destinazione',
+    'il bottone Cerca percorso è disabilitato se mancano partenza o destinazione',
     (WidgetTester tester) async {
       await tester.pumpWidget(buildTestWidget(onSearch: (_, _) {}));
 
@@ -52,7 +59,43 @@ void main() {
   );
 
   testWidgets(
-    'chiama onSearch con partenza e destinazione quando i campi sono compilati',
+    'il bottone Cerca percorso resta disabilitato se manca la partenza',
+    (WidgetTester tester) async {
+      await tester.pumpWidget(buildTestWidget(onSearch: (_, _) {}));
+
+      final fields = find.byType(TextField);
+
+      await tester.enterText(fields.at(1), 'Università');
+      await tester.pump();
+
+      final button = tester.widget<FilledButton>(
+        find.widgetWithText(FilledButton, 'Cerca percorso'),
+      );
+
+      expect(button.onPressed, isNull);
+    },
+  );
+
+  testWidgets(
+    'il bottone Cerca percorso resta disabilitato se manca la destinazione',
+    (WidgetTester tester) async {
+      await tester.pumpWidget(buildTestWidget(onSearch: (_, _) {}));
+
+      final fields = find.byType(TextField);
+
+      await tester.enterText(fields.at(0), 'Terminal Bus');
+      await tester.pump();
+
+      final button = tester.widget<FilledButton>(
+        find.widgetWithText(FilledButton, 'Cerca percorso'),
+      );
+
+      expect(button.onPressed, isNull);
+    },
+  );
+
+  testWidgets(
+    'chiama onSearch con partenza e destinazione quando entrambi i campi sono compilati',
     (WidgetTester tester) async {
       String? searchedFrom;
       String? searchedTo;
@@ -68,16 +111,44 @@ void main() {
 
       final fields = find.byType(TextField);
 
+      await tester.enterText(fields.at(0), 'Terminal Bus');
       await tester.enterText(fields.at(1), 'Università');
       await tester.pump();
 
-      await tester.tap(find.text('Cerca percorso'));
+      await tester.tap(find.widgetWithText(FilledButton, 'Cerca percorso'));
       await tester.pump();
 
-      expect(searchedFrom, 'Posizione attuale');
+      expect(searchedFrom, 'Terminal Bus');
       expect(searchedTo, 'Università');
     },
   );
+
+  testWidgets('non chiama onSearch se la partenza contiene solo spazi', (
+    WidgetTester tester,
+  ) async {
+    var searchCalled = false;
+
+    await tester.pumpWidget(
+      buildTestWidget(
+        onSearch: (_, _) {
+          searchCalled = true;
+        },
+      ),
+    );
+
+    final fields = find.byType(TextField);
+
+    await tester.enterText(fields.at(0), '   ');
+    await tester.enterText(fields.at(1), 'Università');
+    await tester.pump();
+
+    final button = tester.widget<FilledButton>(
+      find.widgetWithText(FilledButton, 'Cerca percorso'),
+    );
+
+    expect(button.onPressed, isNull);
+    expect(searchCalled, isFalse);
+  });
 
   testWidgets('non chiama onSearch se la destinazione contiene solo spazi', (
     WidgetTester tester,
@@ -94,6 +165,7 @@ void main() {
 
     final fields = find.byType(TextField);
 
+    await tester.enterText(fields.at(0), 'Terminal Bus');
     await tester.enterText(fields.at(1), '   ');
     await tester.pump();
 

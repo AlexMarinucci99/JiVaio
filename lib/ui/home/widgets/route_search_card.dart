@@ -5,7 +5,7 @@ import '../theme/home_colors.dart';
 /// Mostra la card di ricerca del percorso nella home.
 ///
 /// La card raccoglie partenza e destinazione, abilita la ricerca
-/// quando la destinazione è compilata e delega l'azione tramite [onSearch].
+/// quando entrambi i campi sono compilati e delega l'azione tramite [onSearch].
 class RouteSearchCard extends StatefulWidget {
   const RouteSearchCard({
     super.key,
@@ -26,7 +26,7 @@ class RouteSearchCard extends StatefulWidget {
   /// Callback invocata quando l'utente richiede la ricerca del percorso.
   ///
   /// Nel prototipo corrente la card non calcola il percorso.
-  /// Se la partenza è vuota, viene usata la posizione attuale.
+  /// La ricerca viene avviata solo quando partenza e destinazione sono compilate.
   final void Function(String from, String to)? onSearch;
 
   /// Palette cromatica usata dalla card.
@@ -37,13 +37,12 @@ class RouteSearchCard extends StatefulWidget {
 }
 
 class _RouteSearchCardState extends State<RouteSearchCard> {
-  static const String _currentPositionLabel = 'Posizione attuale';
-
   final TextEditingController _fromController = TextEditingController();
   final TextEditingController _toController = TextEditingController();
 
   bool get _canSearch {
-    return _toController.text.trim().isNotEmpty;
+    return _fromController.text.trim().isNotEmpty &&
+        _toController.text.trim().isNotEmpty;
   }
 
   @override
@@ -55,8 +54,12 @@ class _RouteSearchCardState extends State<RouteSearchCard> {
 
   @override
   void dispose() {
+    _fromController.removeListener(_refreshCard);
+    _toController.removeListener(_refreshCard);
+
     _fromController.dispose();
     _toController.dispose();
+
     super.dispose();
   }
 
@@ -65,19 +68,15 @@ class _RouteSearchCardState extends State<RouteSearchCard> {
   }
 
   void _swapFields() {
-    final oldFrom = _fromController.text.trim();
-    final oldTo = _toController.text.trim();
+    final oldFrom = _fromController.text;
+    final oldTo = _toController.text;
 
-    if (oldFrom.isEmpty && oldTo.isEmpty) {
+    if (oldFrom.trim().isEmpty && oldTo.trim().isEmpty) {
       return;
     }
 
-    final effectiveFrom = oldFrom.isEmpty
-        ? _currentPositionLabel
-        : _fromController.text;
-
-    _fromController.text = _toController.text;
-    _toController.text = effectiveFrom;
+    _fromController.text = oldTo;
+    _toController.text = oldFrom;
   }
 
   void _searchRoute() {
@@ -85,10 +84,8 @@ class _RouteSearchCardState extends State<RouteSearchCard> {
       return;
     }
 
-    final from = _fromController.text.trim();
-
     widget.onSearch?.call(
-      from.isEmpty ? _currentPositionLabel : from,
+      _fromController.text.trim(),
       _toController.text.trim(),
     );
   }
@@ -124,6 +121,7 @@ class _RouteSearchCardState extends State<RouteSearchCard> {
             Transform.translate(
               offset: Offset(0, 10 * scale),
               child: _SearchTextField(
+                fieldKey: const Key('route-search-from-field'),
                 label: 'Da',
                 controller: _fromController,
                 icon: Icons.navigation_rounded,
@@ -143,6 +141,7 @@ class _RouteSearchCardState extends State<RouteSearchCard> {
                     ),
                   ),
                   IconButton(
+                    key: const Key('route-search-swap-button'),
                     onPressed: _swapFields,
                     padding: EdgeInsets.zero,
                     constraints: BoxConstraints.tightFor(
@@ -159,6 +158,7 @@ class _RouteSearchCardState extends State<RouteSearchCard> {
               ),
             ),
             _SearchTextField(
+              fieldKey: const Key('route-search-to-field'),
               label: 'A',
               controller: _toController,
               icon: Icons.place_rounded,
@@ -171,6 +171,7 @@ class _RouteSearchCardState extends State<RouteSearchCard> {
               width: double.infinity,
               height: 50 * scale,
               child: FilledButton.icon(
+                key: const Key('route-search-submit-button'),
                 onPressed: _canSearch ? _searchRoute : null,
                 style: FilledButton.styleFrom(
                   backgroundColor: colors.activeButtonColor,
@@ -211,6 +212,7 @@ class _RouteSearchCardState extends State<RouteSearchCard> {
 
 class _SearchTextField extends StatelessWidget {
   const _SearchTextField({
+    required this.fieldKey,
     required this.label,
     required this.controller,
     required this.icon,
@@ -219,6 +221,7 @@ class _SearchTextField extends StatelessWidget {
     required this.colors,
   });
 
+  final Key fieldKey;
   final String label;
   final TextEditingController controller;
   final IconData icon;
@@ -253,6 +256,7 @@ class _SearchTextField extends StatelessWidget {
                 ),
               ),
               TextField(
+                key: fieldKey,
                 controller: controller,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   color: colors.textColor,
