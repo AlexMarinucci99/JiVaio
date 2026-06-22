@@ -3,11 +3,10 @@ import 'package:flutter/material.dart';
 import '../../../domain/models/route_result.dart';
 import '../theme/route_results_colors.dart';
 
-/// Mostra il percorso consigliato in forma semplificata.
+/// Mostra il percorso consigliato in forma sintetica.
 ///
-/// La card mantiene una suddivisione in sezioni, ma sostituisce i
-/// dettagli operativi del mock con descrizioni sintetiche, più coerenti
-/// con lo stato attuale del progetto.
+/// La card legge i dati da [RouteResult] e mantiene la UI indipendente
+/// dalla sorgente che ha prodotto il percorso.
 class PrimaryRouteCard extends StatelessWidget {
   const PrimaryRouteCard({
     super.key,
@@ -16,7 +15,6 @@ class PrimaryRouteCard extends StatelessWidget {
   });
 
   final RouteResult result;
-
   final RouteResultsColors colors;
 
   @override
@@ -46,25 +44,31 @@ class PrimaryRouteCard extends StatelessWidget {
               children: [
                 _PrimaryRouteSection(
                   title: 'Partenza',
-                  description: result.origin,
+                  description: _departureDescription,
                   colors: colors,
                 ),
                 const SizedBox(height: 12),
                 _PrimaryRouteSection(
                   title: 'Fermata iniziale',
-                  description: 'Fermata X.',
+                  description: _boardingStopDescription,
                   colors: colors,
                 ),
                 const SizedBox(height: 12),
                 _PrimaryRouteSection(
                   title: 'Linea consigliata',
-                  description: 'Nav. Y.',
+                  description: _recommendedLineDescription,
+                  colors: colors,
+                ),
+                const SizedBox(height: 12),
+                _PrimaryRouteSection(
+                  title: 'Durata stimata',
+                  description: _formatDuration(result.totalDuration),
                   colors: colors,
                 ),
                 const SizedBox(height: 12),
                 _PrimaryRouteSection(
                   title: 'Arrivo',
-                  description: result.destination,
+                  description: _arrivalDescription,
                   colors: colors,
                 ),
               ],
@@ -73,6 +77,93 @@ class PrimaryRouteCard extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String get _departureDescription {
+    final departureStep = _firstStepOfType(RouteStepType.departure);
+    final scheduledTime = departureStep?.scheduledTime;
+
+    if (scheduledTime == null || scheduledTime.isEmpty) {
+      return result.origin;
+    }
+
+    return '${result.origin}\nPartenza prevista: $scheduledTime';
+  }
+
+  String get _boardingStopDescription {
+    final walkStep = _firstStepOfType(RouteStepType.walk);
+    final subtitle = walkStep?.subtitle;
+
+    if (subtitle == null || subtitle.isEmpty) {
+      return 'Fermata non disponibile.';
+    }
+
+    return subtitle.replaceFirst(RegExp(r'^Fermata:\s*'), '');
+  }
+
+  String get _recommendedLineDescription {
+    final lineCode = _firstLineCode;
+    final nextBusTime = result.nextBusTimes.isEmpty
+        ? null
+        : result.nextBusTimes.first;
+
+    if (lineCode == null || lineCode.isEmpty) {
+      return 'Linea non disponibile.';
+    }
+
+    if (nextBusTime == null || nextBusTime.isEmpty) {
+      return 'Linea $lineCode';
+    }
+
+    return 'Linea $lineCode\nProssima corsa: $nextBusTime';
+  }
+
+  String get _arrivalDescription {
+    final destinationStep = _firstStepOfType(RouteStepType.destination);
+    final scheduledTime = destinationStep?.scheduledTime;
+
+    if (scheduledTime == null || scheduledTime.isEmpty) {
+      return result.destination;
+    }
+
+    return '${result.destination}\nArrivo previsto: $scheduledTime';
+  }
+
+  String? get _firstLineCode {
+    for (final step in result.recommendedSteps) {
+      final lineCode = step.lineCode;
+
+      if (lineCode != null && lineCode.isNotEmpty) {
+        return lineCode;
+      }
+    }
+
+    return null;
+  }
+
+  RouteStep? _firstStepOfType(RouteStepType type) {
+    for (final step in result.recommendedSteps) {
+      if (step.type == type) {
+        return step;
+      }
+    }
+
+    return null;
+  }
+
+  String _formatDuration(Duration duration) {
+    final hours = duration.inHours;
+    final minutes = duration.inMinutes.remainder(60);
+
+    if (hours > 0 && minutes > 0) {
+      return '$hours h $minutes min';
+    }
+
+    if (hours > 0) {
+      return '$hours h';
+    }
+
+    return '$minutes min';
   }
 }
 

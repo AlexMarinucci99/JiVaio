@@ -10,9 +10,10 @@ import 'route_results_header.dart';
 
 /// Schermata dei risultati della ricerca percorso.
 ///
-/// Per ora mostra dati mock provenienti da [RoutePlanningRepository].
-/// In futuro potrà ricevere risultati prodotti dall'algoritmo reale
-/// senza modificare la struttura della UI.
+/// Per ora mostra una sintesi dimostrativa basata sui dati mock
+/// provenienti da [RoutePlanningRepository]. In futuro potrà integrare
+/// timeline completa, alternative e navigazione assistita senza modificare
+/// la struttura generale della feature.
 class RouteResultsScreen extends StatefulWidget {
   const RouteResultsScreen({
     super.key,

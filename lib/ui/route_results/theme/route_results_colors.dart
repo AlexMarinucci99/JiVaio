@@ -6,14 +6,13 @@ import '../../core/themes/app_colors.dart';
 ///
 /// I colori globali dell'app vengono riutilizzati da [AppColors].
 /// Rimangono definiti qui soltanto i colori specifici della feature:
-/// gradiente dell'header, timeline e chip informativi.
+/// gradiente dell'header, riepilogo e sezioni informative.
 class RouteResultsColors {
   const RouteResultsColors({
     this.backgroundColor = AppColors.background,
     this.surfaceColor = AppColors.surface,
     this.textPrimaryColor = AppColors.textPrimary,
     this.textSecondaryColor = AppColors.textSecondary,
-    this.textMutedColor = AppColors.textMuted,
     this.borderColor = AppColors.border,
     this.shadowColor = const Color(0x14000000),
     this.headerGradientStartColor = const Color(0xFF17226B),
@@ -27,15 +26,12 @@ class RouteResultsColors {
     this.accentColor = const Color(0xFF2D7FF9),
     this.accentSoftColor = const Color(0xFFEAF2FF),
     this.accentBorderColor = const Color(0xFFD6E4FC),
-    this.departureMarkerColor = AppColors.success,
-    this.arrivalMarkerColor = AppColors.warning,
   });
 
   final Color backgroundColor;
   final Color surfaceColor;
   final Color textPrimaryColor;
   final Color textSecondaryColor;
-  final Color textMutedColor;
   final Color borderColor;
   final Color shadowColor;
 
@@ -52,6 +48,4 @@ class RouteResultsColors {
   final Color accentColor;
   final Color accentSoftColor;
   final Color accentBorderColor;
-  final Color departureMarkerColor;
-  final Color arrivalMarkerColor;
 }
