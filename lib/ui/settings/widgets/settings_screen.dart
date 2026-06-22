@@ -209,7 +209,7 @@ class SettingsScreen extends StatelessWidget {
         SettingsTile(
           icon: Icons.groups_outlined,
           title: 'Team di sviluppo',
-          subtitle: 'Rasputeam',
+          subtitle: 'Master Mobile Devs',
           iconColor: _colors.primaryAction,
           colors: _colors,
           showChevron: false,

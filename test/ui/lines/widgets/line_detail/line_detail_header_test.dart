@@ -144,9 +144,11 @@ void main() {
       ),
     );
 
-    expect(find.byType(IconButton), findsAtLeastNWidgets(2));
+    final swapButton = find.byTooltip('Inverti direzione');
 
-    await tester.tap(find.byType(IconButton).last);
+    expect(swapButton, findsOneWidget);
+
+    await tester.tap(swapButton);
     await tester.pump();
 
     expect(swapCalled, isFalse);
@@ -167,10 +169,12 @@ void main() {
       ),
     );
 
-    expect(find.text('Linea 2U'), findsOneWidget);
-    expect(find.byType(IconButton), findsAtLeastNWidgets(2));
+    final swapButton = find.byTooltip('Inverti direzione');
 
-    await tester.tap(find.byType(IconButton).last);
+    expect(find.text('Linea 2U'), findsOneWidget);
+    expect(swapButton, findsOneWidget);
+
+    await tester.tap(swapButton);
     await tester.pump();
 
     expect(swapCalled, isFalse);
