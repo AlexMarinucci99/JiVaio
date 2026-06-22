@@ -130,6 +130,7 @@ void main() {
       final viewModel = buildViewModel();
 
       expect(viewModel.hasDirections, isTrue);
+      expect(viewModel.hasMultipleDirections, isTrue);
       expect(viewModel.canSwapDirection, isTrue);
       expect(viewModel.canToggleDirection, isTrue);
 
@@ -256,7 +257,40 @@ void main() {
           repository: repository,
         );
 
-        expect(viewModel.canSwapDirection, isTrue);
+        expect(viewModel.hasMultipleDirections, isTrue);
+        expect(viewModel.canSwapDirection, isFalse);
+        expect(viewModel.canToggleDirection, isFalse);
+
+        await viewModel.toggleDirection();
+
+        expect(viewModel.selectedDirectionIndex, 0);
+        expect(repository.getScheduleCallCount, 0);
+
+        viewModel.dispose();
+      },
+    );
+
+    test(
+      'toggleDirection non cambia nulla per linea unidirezionale 2UT',
+      () async {
+        const oneWayLine = TransitLine(
+          routeId: 'line-2ut',
+          shortName: '2UT',
+          displayName: 'Linea 2UT',
+          routeLongName: 'Globo - Terminal',
+          routeColor: '0B7A55',
+          directions: [outboundDirection, returnDirection],
+        );
+
+        final repository = FakeTransitRepository();
+
+        final viewModel = buildViewModel(
+          line: oneWayLine,
+          repository: repository,
+        );
+
+        expect(viewModel.hasMultipleDirections, isTrue);
+        expect(viewModel.canSwapDirection, isFalse);
         expect(viewModel.canToggleDirection, isFalse);
 
         await viewModel.toggleDirection();

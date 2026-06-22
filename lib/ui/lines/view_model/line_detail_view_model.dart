@@ -66,16 +66,22 @@ class LineDetailViewModel extends ChangeNotifier {
     return _line.directions.isNotEmpty;
   }
 
-  bool get canSwapDirection {
+  /// Indica se la linea espone più direzioni nei dati interni.
+  bool get hasMultipleDirections {
     return _line.directions.length > 1;
   }
 
-  /// Indica se la direzione può essere cambiata dalla UI.
+  /// Indica se l'utente può invertire la direzione dalla UI.
   ///
-  /// Le linee monodirezionali possono avere più dati interni, ma nel prototipo
-  /// vengono trattate come direzione unica.
+  /// Le linee monodirezionali possono avere più direzioni nei dati,
+  /// ma nel prototipo non devono mostrare il cambio direzione.
+  bool get canSwapDirection {
+    return hasMultipleDirections && !_line.isUnidirectional;
+  }
+
+  /// Indica se la direzione può essere cambiata dalla UI.
   bool get canToggleDirection {
-    return canSwapDirection && !_line.isUnidirectional;
+    return canSwapDirection;
   }
 
   /// Direzione attualmente selezionata.

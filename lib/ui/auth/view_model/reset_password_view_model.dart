@@ -75,9 +75,7 @@ class ResetPasswordViewModel extends ChangeNotifier {
     try {
       await _authRepository.sendPasswordResetEmail(email: _email);
 
-      return const ResetPasswordSubmitResult.success(
-        _safeResetPasswordMessage,
-      );
+      return const ResetPasswordSubmitResult.success(_safeResetPasswordMessage);
     } on AuthFailure catch (error) {
       return _mapAuthFailure(error.code);
     } catch (_) {
