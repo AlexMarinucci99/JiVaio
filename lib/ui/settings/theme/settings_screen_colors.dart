@@ -20,10 +20,6 @@ class SettingsScreenColors {
     this.primaryAction = AppColors.primary,
     this.dangerAction = AppColors.error,
     this.iconBackground = const Color(0xFFEAF0FA),
-    this.profileGradientStart = AppColors.primary,
-    this.profileGradientEnd = const Color(0xFF3347A0),
-    this.profileForeground = Colors.white,
-    this.profileSecondaryText = const Color(0xFFDCE5FF),
   });
 
   final Color pageBackground;
@@ -42,9 +38,4 @@ class SettingsScreenColors {
   final Color primaryAction;
   final Color dangerAction;
   final Color iconBackground;
-
-  final Color profileGradientStart;
-  final Color profileGradientEnd;
-  final Color profileForeground;
-  final Color profileSecondaryText;
 }

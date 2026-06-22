@@ -138,6 +138,15 @@ class _NotificationPanelHeader extends StatelessWidget {
                     fontSize: 11.5,
                   ),
                 ),
+                const SizedBox(height: 3),
+                Text(
+                  'Dati dimostrativi del prototipo',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: colors.subtitleColor,
+                    fontSize: 10.5,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
                 const SizedBox(height: 10),
                 TextButton(
                   onPressed: hasUnreadNotifications ? onMarkAllAsRead : null,

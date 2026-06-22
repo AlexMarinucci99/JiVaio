@@ -92,18 +92,18 @@ class _OnboardingBackButton extends StatelessWidget {
   final VoidCallback onPressed;
   final Color color;
 
- @override
-Widget build(BuildContext context) {
-  return TextButton.icon(
-    onPressed: onPressed,
-    icon: const Icon(Icons.chevron_left_rounded, size: 18),
-    label: const Text('Indietro'),
-    style: TextButton.styleFrom(
-      foregroundColor: color,
-      padding: const EdgeInsets.symmetric(horizontal: 12),
-      minimumSize: const Size(48, 48),
-      tapTargetSize: MaterialTapTargetSize.padded,
-    ),
-  );
-}
+  @override
+  Widget build(BuildContext context) {
+    return TextButton.icon(
+      onPressed: onPressed,
+      icon: const Icon(Icons.chevron_left_rounded, size: 18),
+      label: const Text('Indietro'),
+      style: TextButton.styleFrom(
+        foregroundColor: color,
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        minimumSize: const Size(48, 48),
+        tapTargetSize: MaterialTapTargetSize.padded,
+      ),
+    );
+  }
 }

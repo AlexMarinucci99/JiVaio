@@ -29,17 +29,7 @@ class AuthChoiceColors {
   final Color backButtonColor = const Color(0xFF6B7280);
 
   final AppSegmentedControlColors segmentedControlColors =
-      const AppSegmentedControlColors(
-        backgroundColor: Color(0xFFF1F4FA),
-        selectedColor: Colors.white,
-        borderColor: Color(0xFFE1E7F0),
-        selectedTextColor: Color(0xFF191970),
-        unselectedTextColor: Color(0xFF4B5563),
-        badgeBackgroundColor: Color(0xFFE8EAFF),
-        badgeTextColor: Color(0xFF191970),
-        selectedBadgeBackgroundColor: Color(0x2EFFFFFF),
-        selectedBadgeTextColor: Color(0xFF191970),
-      );
+      AppSegmentedControlColors.auth;
 
   final AuthTextFieldColors textFieldColors = const AuthTextFieldColors(
     primaryColor: Color(0xFF191970),

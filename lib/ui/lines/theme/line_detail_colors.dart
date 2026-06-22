@@ -11,6 +11,7 @@ class LineDetailColors {
   static const Color successText = Color(0xFF047857);
 
   static const Color warningSurface = Color(0xFFFFF7ED);
+  //Da aggiustare in futuro-Master
   static const Color warningText = Color.fromARGB(255, 52, 3, 167);
 
   static const Color disabledSurface = Color(0xFFF4F6FA);

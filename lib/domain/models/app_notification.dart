@@ -1,11 +1,11 @@
 enum AppNotificationType {
-  // Ritardi delle linee o delle singole corse.
+  /// Ritardi delle linee o delle singole corse.
   delay,
 
-  // Informazioni utili mentre l'utente sta viaggiando.
+  /// Informazioni utili mentre l'utente sta viaggiando.
   trip,
 
-  // Modifiche a orari, fermate, linee o viabilità.
+  /// Modifiche a orari, fermate, linee o viabilità.
   serviceUpdate,
 }
 
@@ -19,22 +19,22 @@ class AppNotification {
     this.isRead = false,
   });
 
-  // Identificativo univoco della notifica.
+  /// Identificativo univoco della notifica.
   final String id;
 
-  // Categoria della notifica.
+  /// Categoria della notifica.
   final AppNotificationType type;
 
-  // Titolo breve mostrato nell'iterfaccia.
+  /// Titolo breve mostrato nell'iterfaccia.
   final String title;
 
-  // Descrizione completa dell'avviso.
+  /// Descrizione completa dell'avviso.
   final String message;
 
-  // Data e ora di generazione.
+  /// Data e ora di generazione.
   final DateTime createdAt;
 
-  // true quando l'utente ha già aperto la notifica.
+  /// true quando l'utente ha già aperto la notifica.
   final bool isRead;
 
   AppNotification copyWith({

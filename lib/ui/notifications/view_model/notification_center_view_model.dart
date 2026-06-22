@@ -7,6 +7,7 @@ import '../../../domain/models/app_notification.dart';
 ///
 /// La UI legge i dati esposti da questa classe e richiama i suoi metodi
 /// quando l'utente apre il pannello oppure segna gli avvisi come letti.
+/// Con il repository mock, lo stato di lettura resta locale alla sessione.
 class NotificationCenterViewModel extends ChangeNotifier {
   NotificationCenterViewModel({required NotificationRepository repository})
     : _repository = repository;

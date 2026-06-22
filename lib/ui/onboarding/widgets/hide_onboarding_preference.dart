@@ -3,13 +3,20 @@ import 'package:flutter/material.dart';
 /// Palette del box per nascondere l'onboarding nelle aperture successive.
 class HideOnboardingPreferenceColors {
   const HideOnboardingPreferenceColors({
-    this.selectedColor = const Color.fromARGB(19, 204, 136, 10),
+    //Da modificare in futuro-Master
+    this.selectedColor = const Color.from(
+      alpha: 0.075,
+      red: 0.8,
+      green: 0.533,
+      blue: 0.039,
+    ),
     this.selectedBackgroundColor = const Color(0x14061A3A),
     this.selectedBorderColor = const Color(0x6B061A3A),
     this.unselectedBackgroundColor = const Color(0xFFFAFBFF),
     this.unselectedBorderColor = const Color(0xFFE4E9F2),
     this.unselectedCheckBorderColor = const Color(0xFFC5CCD8),
     this.checkIconColor = Colors.white,
+    //Da modificare in futuro-Master
     this.titleColor = const Color.fromARGB(255, 177, 149, 26),
     this.subtitleColor = const Color(0xFF667085),
   });

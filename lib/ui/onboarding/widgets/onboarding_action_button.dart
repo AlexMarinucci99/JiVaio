@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 /// Palette del bottone principale dell'onboarding.
 class OnboardingActionButtonColors {
   const OnboardingActionButtonColors({
+    //Da modificare in futuro-Master
     this.backgroundColor = const Color.fromARGB(19, 167, 2, 106),
     this.foregroundColor = Colors.white,
     this.disabledBackgroundColor = const Color(0xFFE5E7EB),
