@@ -7,19 +7,22 @@ import 'package:jivaio/ui/notifications/widgets/notification_center_overlay.dart
 import 'package:jivaio/ui/notifications/widgets/notification_center_panel.dart';
 
 void main() {
+  final testNotificationCreatedAt = DateTime(2026, 1, 1, 12);
+
   AppNotification buildNotification({
     required String id,
     required String title,
     String message = 'Messaggio di test.',
     AppNotificationType type = AppNotificationType.serviceUpdate,
     bool isRead = false,
+    DateTime? createdAt,
   }) {
     return AppNotification(
       id: id,
       title: title,
       message: message,
       type: type,
-      createdAt: DateTime.now(),
+      createdAt: createdAt ?? testNotificationCreatedAt,
       isRead: isRead,
     );
   }
@@ -61,6 +64,20 @@ void main() {
       of: find.byType(NotificationBellButton),
       matching: find.byType(InkWell),
     );
+  }
+
+  Future<void> tapOutsideNotificationPanel(WidgetTester tester) async {
+    final overlayRect = tester.getRect(find.byType(NotificationCenterOverlay));
+    final panelRect = tester.getRect(find.byType(NotificationCenterPanel));
+
+    expect(panelRect.left, greaterThan(overlayRect.left));
+
+    final outsideTapPosition = Offset(
+      overlayRect.left + (panelRect.left - overlayRect.left) / 2,
+      panelRect.center.dy,
+    );
+
+    await tester.tapAt(outsideTapPosition);
   }
 
   testWidgets('mostra sempre la campanella notifiche', (
@@ -163,7 +180,7 @@ void main() {
       ),
     );
 
-    await tester.tapAt(const Offset(24, 360));
+    await tapOutsideNotificationPanel(tester);
     await tester.pump();
 
     expect(closed, isTrue);

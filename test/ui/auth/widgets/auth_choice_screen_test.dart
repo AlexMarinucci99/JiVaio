@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:jivaio/data/repositories/auth_repository.dart';
+import 'package:jivaio/ui/auth/widgets/auth_action_button.dart';
 import 'package:jivaio/ui/auth/widgets/auth_choice_screen.dart';
+import 'package:jivaio/ui/auth/widgets/auth_login_form.dart';
+import 'package:jivaio/ui/auth/widgets/auth_register_form.dart';
 
 class FakeAuthRepository implements AuthRepository {
   bool loginCalled = false;
@@ -59,18 +62,59 @@ void main() {
     );
   }
 
-  Future<void> tapVisibleText(
+  Future<void> tapVisibleFinder(
     WidgetTester tester,
-    String text, {
-    bool last = false,
+    Finder finder, {
+    bool settle = false,
   }) async {
-    final finder = last ? find.text(text).last : find.text(text).first;
+    expect(finder, findsOneWidget);
 
     await tester.ensureVisible(finder);
     await tester.pump();
 
     await tester.tap(finder);
-    await tester.pump();
+
+    if (settle) {
+      await tester.pumpAndSettle();
+    } else {
+      await tester.pump();
+    }
+  }
+
+  Future<void> tapVisibleText(WidgetTester tester, String text) async {
+    await tapVisibleFinder(tester, find.text(text));
+  }
+
+  Future<void> tapAuthActionButton(
+    WidgetTester tester,
+    String label, {
+    bool settle = false,
+  }) async {
+    await tapVisibleFinder(
+      tester,
+      find.widgetWithText(AuthActionButton, label),
+      settle: settle,
+    );
+  }
+
+  Finder findLoginTextFields() {
+    final fields = find.descendant(
+      of: find.byType(AuthLoginForm),
+      matching: find.byType(TextField),
+    );
+
+    expect(fields, findsNWidgets(2));
+    return fields;
+  }
+
+  Finder findRegisterTextFields() {
+    final fields = find.descendant(
+      of: find.byType(AuthRegisterForm),
+      matching: find.byType(TextField),
+    );
+
+    expect(fields, findsNWidgets(4));
+    return fields;
   }
 
   testWidgets('mostra la schermata iniziale in modalità login', (
@@ -127,7 +171,7 @@ void main() {
       ),
     );
 
-    await tapVisibleText(tester, 'Continua come ospite');
+    await tapAuthActionButton(tester, 'Continua come ospite');
 
     expect(guestCalled, isTrue);
   });
@@ -166,12 +210,13 @@ void main() {
 
     await tester.pumpWidget(buildTestWidget(authRepository: authRepository));
 
-    await tester.enterText(find.byType(TextField).at(0), 'utente@jivaio.it');
-    await tester.enterText(find.byType(TextField).at(1), 'password123');
+    final fields = findLoginTextFields();
 
-    await tapVisibleText(tester, 'Accedi', last: true);
-
+    await tester.enterText(fields.at(0), 'utente@jivaio.it');
+    await tester.enterText(fields.at(1), 'password123');
     await tester.pump();
+
+    await tapAuthActionButton(tester, 'Accedi');
 
     expect(authRepository.loginCalled, isTrue);
     expect(authRepository.lastEmail, 'utente@jivaio.it');
@@ -187,14 +232,15 @@ void main() {
 
     await tapVisibleText(tester, 'Registrati');
 
-    await tester.enterText(find.byType(TextField).at(0), 'Mario Rossi');
-    await tester.enterText(find.byType(TextField).at(1), 'mario@jivaio.it');
-    await tester.enterText(find.byType(TextField).at(2), 'password123');
-    await tester.enterText(find.byType(TextField).at(3), 'password123');
+    final fields = findRegisterTextFields();
 
-    await tapVisibleText(tester, 'Registrati', last: true);
-
+    await tester.enterText(fields.at(0), 'Mario Rossi');
+    await tester.enterText(fields.at(1), 'mario@jivaio.it');
+    await tester.enterText(fields.at(2), 'password123');
+    await tester.enterText(fields.at(3), 'password123');
     await tester.pump();
+
+    await tapAuthActionButton(tester, 'Registrati');
 
     expect(authRepository.registerCalled, isTrue);
     expect(authRepository.lastName, 'Mario Rossi');
