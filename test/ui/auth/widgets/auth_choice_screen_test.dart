@@ -10,6 +10,7 @@ import 'package:jivaio/ui/auth/widgets/auth_register_form.dart';
 class FakeAuthRepository implements AuthRepository {
   bool loginCalled = false;
   bool registerCalled = false;
+  bool loginWithGoogleCalled = false;
 
   String? lastEmail;
   String? lastPassword;
@@ -21,6 +22,11 @@ class FakeAuthRepository implements AuthRepository {
     lastEmail = email;
     lastPassword = password;
   }
+  
+  @override
+Future<void> loginWithGoogle() async {
+  loginWithGoogleCalled = true;
+}
 
   @override
   Future<void> register({
@@ -176,21 +182,22 @@ void main() {
     expect(guestCalled, isTrue);
   });
 
-  testWidgets('mostra snackbar quando si preme login con Google', (
-    WidgetTester tester,
-  ) async {
-    final authRepository = FakeAuthRepository();
+  testWidgets('avvia il login con Google quando si preme il bottone Google', (
+  WidgetTester tester,
+) async {
+  final authRepository = FakeAuthRepository();
 
-    await tester.pumpWidget(buildTestWidget(authRepository: authRepository));
+  await tester.pumpWidget(buildTestWidget(authRepository: authRepository));
 
-    await tapVisibleText(tester, 'Google');
-    await tester.pump();
+  await tapVisibleText(tester, 'Google');
+  await tester.pumpAndSettle();
 
-    expect(
-      find.text('Accesso con Google non ancora implementato'),
-      findsOneWidget,
-    );
-  });
+  expect(authRepository.loginWithGoogleCalled, isTrue);
+  expect(
+    find.text('Accesso con Google non ancora implementato'),
+    findsNothing,
+  );
+});
 
   testWidgets('apre la schermata reset password', (WidgetTester tester) async {
     final authRepository = FakeAuthRepository();
