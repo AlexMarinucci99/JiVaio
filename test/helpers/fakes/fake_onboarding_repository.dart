@@ -1,5 +1,6 @@
 import 'package:jivaio/data/repositories/onboarding_repository.dart';
 
+/// Repository fake usato per isolare i test dell'onboarding.
 class FakeOnboardingRepository implements OnboardingRepository {
   bool? lastSkipOnboardingValue;
   int setSkipOnboardingCallCount = 0;

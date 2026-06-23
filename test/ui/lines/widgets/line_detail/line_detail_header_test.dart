@@ -130,7 +130,7 @@ void main() {
     },
   );
 
-  testWidgets('non esegue onSwapDirection quando canSwapDirection è false', (
+  testWidgets('disabilita il cambio direzione quando canSwapDirection è false', (
     WidgetTester tester,
   ) async {
     var swapCalled = false;
@@ -144,17 +144,17 @@ void main() {
       ),
     );
 
-    final swapButton = find.byTooltip('Inverti direzione');
+    final disabledSwapButtons = tester
+        .widgetList<IconButton>(find.byType(IconButton))
+        .where((button) => button.tooltip == 'Direzione unica')
+        .toList();
 
-    expect(swapButton, findsOneWidget);
-
-    await tester.tap(swapButton);
-    await tester.pump();
-
+    expect(disabledSwapButtons, hasLength(1));
+    expect(disabledSwapButtons.single.onPressed, isNull);
     expect(swapCalled, isFalse);
   });
 
-  testWidgets('non esegue onSwapDirection per una linea a direzione unica', (
+  testWidgets('disabilita il cambio direzione per una linea a direzione unica', (
     WidgetTester tester,
   ) async {
     var swapCalled = false;
@@ -169,14 +169,14 @@ void main() {
       ),
     );
 
-    final swapButton = find.byTooltip('Inverti direzione');
+    final disabledSwapButtons = tester
+        .widgetList<IconButton>(find.byType(IconButton))
+        .where((button) => button.tooltip == 'Direzione unica')
+        .toList();
 
     expect(find.text('Linea 2U'), findsOneWidget);
-    expect(swapButton, findsOneWidget);
-
-    await tester.tap(swapButton);
-    await tester.pump();
-
+    expect(disabledSwapButtons, hasLength(1));
+    expect(disabledSwapButtons.single.onPressed, isNull);
     expect(swapCalled, isFalse);
   });
 
