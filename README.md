@@ -362,8 +362,8 @@ Progetto sviluppato dal team **Master Mobile Devs**.
 Componenti:
 
 * Alessandro Marinucci
-* Matteo Accurti **[@MattAcc03](https://github.com/MattAcc03)***
-* Luca Salvi **[@LucaSalvi1999](https://github.com/LucaSalvi1999)***
+* Matteo Accurti **[@MattAcc03](https://github.com/MattAcc03)**
+* Luca Salvi **[@LucaSalvi1999](https://github.com/LucaSalvi1999)**
 
 Corso: **Sviluppo di Applicazioni Mobili**
 Anno accademico: **2025/2026**
