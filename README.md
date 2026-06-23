@@ -95,11 +95,11 @@ Sono state implementate le funzionalità principali legate a consultazione, aute
 | ---------------------- | ----------------- | --------------------------------------------------------------------------------------------------------------------------- |
 | Onboarding             | Implementata      | Schermate introduttive che presentano lo scopo dell’app.                                                                    |
 | Accesso guest          | Implementata      | Permette di entrare nell’app senza registrazione.                                                                           |
-| Registrazione e login  | Implementata      | Accesso tramite email e password.                                                                                           |
+| Registrazione e login  | Implementata      | Accesso tramite email e password e Google.                                                                                           |
 | Recupero password      | Implementata      | Invio email per reimpostare la password.                                                                                    |
 | Navigazione principale | Implementata      | Bottom navigation per spostarsi tra le sezioni principali.                                                                  |
 | Home con mappa         | Implementata      | Visualizzazione della mappa e delle fermate disponibili.                                                                    |
-| Geolocalizzazione      | Implementata      | Recupero della posizione dell’utente previa autorizzazione.                                                                 |
+| Geolocalizzazione      | Implementata      | Recupero della posizione dell’utente tramite autorizzazione.                                                                 |
 | Elenco linee           | Implementata      | Lista delle linee urbane disponibili.                                                                                       |
 | Dettaglio linea        | Implementata      | Visualizzazione di fermate, direzioni, orari e informazioni della linea.                                                    |
 | Linee salvate          | Implementata      | Salvataggio persistente delle linee preferite per utenti registrati.                                                        |
@@ -164,33 +164,54 @@ L’organizzazione generale è ispirata a un approccio di tipo MVVM, con:
 * **Service** per interazioni con Firebase, sorgenti locali o servizi esterni;
 * **Model** per rappresentare le entità principali del dominio.
 
-Struttura indicativa:
+
+NOTA: La struttura seguente mostra le directory più rilevanti per comprendere l’organizzazione generale del progetto. Il repository completo contiene anche altri file e cartelle di configurazione, piattaforma e supporto allo sviluppo.
+
 
 ```text
-lib/
-├── config/
-├── data/
-│   ├── repositories/
-│   └── services/
-├── domain/
-│   └── models/
-├── routing/
-├── ui/
-│   ├── core/
-│   ├── auth/
-│   ├── home/
-│   ├── lines/
-│   ├── notifications/
-│   ├── onboarding/
-│   ├── route_results/
-│   └── settings/
-└── utils/
+JiVaio/
+|
+├── lib/
+│   ├── main.dart
+│   ├── config/
+│   ├── data/
+│   │   ├── repositories/
+│   │   └── services/
+│   ├── domain/
+│   │   └── models/
+│   ├── routing/
+│   ├── ui/
+│   │   ├── core/
+│   │   │   ├── themes/
+│   │   │   └── widgets/
+│   │   ├── auth/
+│   │   │   ├── view_model/
+│   │   │   └── widgets/
+│   │   ├── home/
+│   │   │   ├── view_model/
+│   │   │   └── widgets/
+│   │   ├── lines/
+│   │   │   ├── view_model/
+│   │   │   └── widgets/
+│   │   ├── notifications/
+│   │   │   ├── view_model/
+│   │   │   └── widgets/
+│   │   ├── onboarding/
+│   │   │   └── widgets/
+│   │   ├── route_results/
+│   │   │   ├── view_model/
+│   │   │   └── widgets/
+│   │   └── settings/
+│   │       └── widgets/
+│   └── utils/
+├── test/
+│   ├── data/
+│   ├── domain/
+│   ├── ui/
+│   └── utils/
+|
+└── README.md
 
-test/
-├── data/
-├── domain/
-├── ui/
-└── utils/
 ```
 
 <p align="right">(<a href="#readme-top">torna su</a>)</p>
