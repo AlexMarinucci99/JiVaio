@@ -103,7 +103,30 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
     _viewModel.setMode(mode);
   }
 
+  Future<void> _signInWithGoogle() async {
+    if (_viewModel.isSubmitting) {
+      return;
+    }
+
+    final result = await _viewModel.signInWithGoogle();
+
+    if (!mounted) {
+      return;
+    }
+
+    if (!result.isValid) {
+      _showMessage(result.message ?? 'Accesso con Google non riuscito.');
+    }
+
+    // La navigazione alla Home resta responsabilità di AuthGate.
+    // Firebase aggiorna authStateChanges() dopo il login Google.
+  }
+
   void _fakeSocialLogin(String provider) {
+    if (_viewModel.isSubmitting) {
+      return;
+    }
+
     _showMessage(_viewModel.socialLoginMessage(provider));
   }
 
@@ -211,7 +234,7 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
 
                   AuthActionButton(
                     label: _viewModel.primaryButtonText,
-                    onPressed: _submit,
+                    onPressed: _viewModel.isSubmitting ? null : _submit,
                     colors: _colors.actionButtonColors,
                   ),
 
@@ -235,7 +258,7 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
 
                   AuthSocialButtons(
                     colors: _colors.socialButtonsColors,
-                    onGooglePressed: () => _fakeSocialLogin('Google'),
+                    onGooglePressed: _signInWithGoogle,
                     onApplePressed: () => _fakeSocialLogin('Apple'),
                     onFacebookPressed: () => _fakeSocialLogin('Facebook'),
                   ),
@@ -244,7 +267,7 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
 
                   AuthActionButton(
                     label: 'Continua come ospite',
-                    onPressed: _continueAsGuest,
+                    onPressed: _viewModel.isSubmitting ? null : _continueAsGuest,
                     height: 54,
                     fontSize: 17,
                     borderRadius: 26,

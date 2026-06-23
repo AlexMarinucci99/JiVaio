@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../domain/exceptions/auth_failure.dart';
 import '../../domain/models/app_user.dart';
@@ -9,10 +10,16 @@ import 'auth_service.dart';
 /// Questo service è l'unico punto dell'app che dipende direttamente
 /// da [FirebaseAuth] e traduce gli errori Firebase in errori di dominio.
 class FirebaseAuthService implements AuthService {
-  FirebaseAuthService({FirebaseAuth? firebaseAuth})
-    : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance;
+  FirebaseAuthService({
+    FirebaseAuth? firebaseAuth,
+    GoogleSignIn? googleSignIn,
+  }) : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance,
+       _googleSignIn = googleSignIn ?? GoogleSignIn.instance;
 
   final FirebaseAuth _firebaseAuth;
+  final GoogleSignIn _googleSignIn;
+
+  Future<void>? _googleSignInInitialization;
 
   @override
   AppUser? get currentUser {
@@ -35,6 +42,28 @@ class FirebaseAuthService implements AuthService {
   }
 
   @override
+  Future<void> loginWithGoogle() async {
+    await _runGoogleOperation(() async {
+      await _ensureGoogleSignInInitialized();
+
+      if (!_googleSignIn.supportsAuthenticate()) {
+        throw const AuthFailure(AuthFailureCode.operationNotAllowed);
+      }
+
+      final googleUser = await _googleSignIn.authenticate();
+      final googleAuth = googleUser.authentication;
+      final idToken = googleAuth.idToken;
+
+      if (idToken == null) {
+        throw const AuthFailure(AuthFailureCode.invalidCredential);
+      }
+
+      final credential = GoogleAuthProvider.credential(idToken: idToken);
+      await _firebaseAuth.signInWithCredential(credential);
+    });
+  }
+
+  @override
   Future<void> register({
     required String name,
     required String email,
@@ -53,6 +82,7 @@ class FirebaseAuthService implements AuthService {
   @override
   Future<void> logout() async {
     await _runFirebaseOperation(_firebaseAuth.signOut);
+    await _signOutFromGoogle();
   }
 
   @override
@@ -62,11 +92,36 @@ class FirebaseAuthService implements AuthService {
     );
   }
 
+  Future<void> _ensureGoogleSignInInitialized() {
+    return _googleSignInInitialization ??= _googleSignIn.initialize();
+  }
+
   Future<T> _runFirebaseOperation<T>(Future<T> Function() operation) async {
     try {
       return await operation();
     } on FirebaseAuthException catch (error) {
       throw AuthFailure(_mapFirebaseAuthFailureCode(error.code));
+    }
+  }
+
+  Future<T> _runGoogleOperation<T>(Future<T> Function() operation) async {
+    try {
+      return await operation();
+    } on AuthFailure {
+      rethrow;
+    } on FirebaseAuthException catch (error) {
+      throw AuthFailure(_mapFirebaseAuthFailureCode(error.code));
+    } on GoogleSignInException catch (error) {
+      throw AuthFailure(_mapGoogleSignInFailureCode(error.code));
+    }
+  }
+
+  Future<void> _signOutFromGoogle() async {
+    try {
+      await _ensureGoogleSignInInitialized();
+      await _googleSignIn.signOut();
+    } on GoogleSignInException {
+      // Il logout Firebase resta valido anche se il provider Google non è disponibile.
     }
   }
 
@@ -105,6 +160,23 @@ class FirebaseAuthService implements AuthService {
       case 'operation-not-allowed':
         return AuthFailureCode.operationNotAllowed;
       default:
+        return AuthFailureCode.unknown;
+    }
+  }
+
+  AuthFailureCode _mapGoogleSignInFailureCode(GoogleSignInExceptionCode code) {
+    switch (code) {
+      case GoogleSignInExceptionCode.canceled:
+        return AuthFailureCode.cancelled;
+      case GoogleSignInExceptionCode.clientConfigurationError:
+      case GoogleSignInExceptionCode.providerConfigurationError:
+      case GoogleSignInExceptionCode.uiUnavailable:
+        return AuthFailureCode.operationNotAllowed;
+      case GoogleSignInExceptionCode.interrupted:
+        return AuthFailureCode.networkRequestFailed;
+      case GoogleSignInExceptionCode.userMismatch:
+        return AuthFailureCode.invalidCredential;
+      case GoogleSignInExceptionCode.unknownError:
         return AuthFailureCode.unknown;
     }
   }

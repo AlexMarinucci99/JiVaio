@@ -1,7 +1,7 @@
 /// Tipologie di errore applicative legate all'autenticazione.
 ///
 /// I livelli superiori non devono conoscere i codici specifici
-/// restituiti da Firebase.
+/// restituiti dal provider esterno.
 enum AuthFailureCode {
   invalidEmail,
   userNotFound,
@@ -13,6 +13,7 @@ enum AuthFailureCode {
   tooManyRequests,
   userDisabled,
   operationNotAllowed,
+  cancelled,
   unknown,
 }
 

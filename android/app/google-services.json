@@ -12,7 +12,12 @@
           "package_name": "com.example.jivaio_app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "982072526552-ikj504o5q9md75bcqs6hfg2ck81h7gf0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCsf40eRXWCo39bcFzr9kQ9CiESycx0kZM"
@@ -23,7 +28,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "982072526552-ikj504o5q9md75bcqs6hfg2ck81h7gf0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "982072526552-ah49mdk1so1hstvnjb0n9kr1356vjpde.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.App"
+              }
+            }
+          ]
         }
       }
     },
@@ -34,7 +51,20 @@
           "package_name": "com.progetto.jivaio_app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "982072526552-2fet4erp1bfnsc6ophkqpbs02f9e7b91.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.progetto.jivaio_app",
+            "certificate_hash": "b06a427d7244d2f9aa0e68e6e841609029b81f5d"
+          }
+        },
+        {
+          "client_id": "982072526552-ikj504o5q9md75bcqs6hfg2ck81h7gf0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCsf40eRXWCo39bcFzr9kQ9CiESycx0kZM"
@@ -45,7 +75,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "982072526552-ikj504o5q9md75bcqs6hfg2ck81h7gf0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "982072526552-ah49mdk1so1hstvnjb0n9kr1356vjpde.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.App"
+              }
+            }
+          ]
         }
       }
     }

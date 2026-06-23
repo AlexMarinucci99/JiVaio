@@ -130,6 +130,32 @@ class AuthViewModel extends ChangeNotifier {
     }
   }
 
+  /// Esegue l'accesso tramite account Google.
+  Future<AuthSubmitResult> signInWithGoogle() async {
+    if (_isSubmitting) {
+      return const AuthSubmitResult.invalid(
+        'Attendi il completamento dell’operazione in corso.',
+      );
+    }
+
+    _isSubmitting = true;
+    notifyListeners();
+
+    try {
+      await _authRepository.loginWithGoogle();
+      return const AuthSubmitResult.valid();
+    } on AuthFailure catch (error) {
+      return AuthSubmitResult.invalid(_mapAuthFailure(error.code));
+    } catch (_) {
+      return const AuthSubmitResult.invalid(
+        'Accesso con Google non riuscito. Riprova.',
+      );
+    } finally {
+      _isSubmitting = false;
+      notifyListeners();
+    }
+  }
+
   /// Valida i dati richiesti dalla modalità auth corrente.
   AuthSubmitResult validateSubmit({
     required String name,
@@ -230,6 +256,8 @@ class AuthViewModel extends ChangeNotifier {
         return 'Questo account è stato disabilitato.';
       case AuthFailureCode.operationNotAllowed:
         return 'Operazione non disponibile. Riprova più tardi.';
+      case AuthFailureCode.cancelled:
+        return 'Accesso con Google annullato.';
       case AuthFailureCode.unknown:
         return 'Autenticazione non riuscita. Riprova.';
     }

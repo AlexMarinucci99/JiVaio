@@ -94,33 +94,34 @@ class ResetPasswordViewModel extends ChangeNotifier {
   }
 
   ResetPasswordSubmitResult _mapAuthFailure(AuthFailureCode code) {
-    switch (code) {
-      case AuthFailureCode.invalidEmail:
-        return const ResetPasswordSubmitResult.failure(
-          'Inserisci un indirizzo email valido.',
-        );
-      case AuthFailureCode.networkRequestFailed:
-        return const ResetPasswordSubmitResult.failure(
-          'Controlla la connessione e riprova.',
-        );
-      case AuthFailureCode.tooManyRequests:
-        return const ResetPasswordSubmitResult.failure(
-          'Troppe richieste in poco tempo. Riprova più tardi.',
-        );
-      case AuthFailureCode.userNotFound:
-        return const ResetPasswordSubmitResult.success(
-          _safeResetPasswordMessage,
-        );
-      case AuthFailureCode.wrongPassword:
-      case AuthFailureCode.emailAlreadyInUse:
-      case AuthFailureCode.weakPassword:
-      case AuthFailureCode.invalidCredential:
-      case AuthFailureCode.userDisabled:
-      case AuthFailureCode.operationNotAllowed:
-      case AuthFailureCode.unknown:
-        return const ResetPasswordSubmitResult.failure(
-          'Non è stato possibile inviare il link di recupero. Riprova.',
-        );
-    }
+  switch (code) {
+    case AuthFailureCode.invalidEmail:
+      return const ResetPasswordSubmitResult.failure(
+        'Inserisci un indirizzo email valido.',
+      );
+    case AuthFailureCode.networkRequestFailed:
+      return const ResetPasswordSubmitResult.failure(
+        'Controlla la connessione e riprova.',
+      );
+    case AuthFailureCode.tooManyRequests:
+      return const ResetPasswordSubmitResult.failure(
+        'Troppe richieste in poco tempo. Riprova più tardi.',
+      );
+    case AuthFailureCode.userNotFound:
+      return const ResetPasswordSubmitResult.success(
+        _safeResetPasswordMessage,
+      );
+    case AuthFailureCode.wrongPassword:
+    case AuthFailureCode.emailAlreadyInUse:
+    case AuthFailureCode.weakPassword:
+    case AuthFailureCode.invalidCredential:
+    case AuthFailureCode.userDisabled:
+    case AuthFailureCode.operationNotAllowed:
+    case AuthFailureCode.cancelled:
+    case AuthFailureCode.unknown:
+      return const ResetPasswordSubmitResult.failure(
+        'Non è stato possibile inviare il link di recupero. Riprova.',
+      );
   }
+}
 }

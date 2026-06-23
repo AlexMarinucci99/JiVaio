@@ -22,6 +22,10 @@ class AuthRepository {
     return _authService.login(email: email, password: password);
   }
 
+  Future<void> loginWithGoogle() {
+    return _authService.loginWithGoogle();
+  }
+
   Future<void> register({
     required String name,
     required String email,

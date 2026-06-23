@@ -14,6 +14,9 @@ abstract class AuthService {
   /// Effettua l'accesso con email e password.
   Future<void> login({required String email, required String password});
 
+  /// Effettua l'accesso tramite account Google.
+  Future<void> loginWithGoogle();
+
   /// Registra un nuovo utente con nome, email e password.
   Future<void> register({
     required String name,
