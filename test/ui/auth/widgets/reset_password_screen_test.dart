@@ -94,8 +94,7 @@ void main() {
     await tester.pump();
 
     await tester.tap(find.text('Invia link di recupero'));
-    await tester.pump();
-    await tester.pump(const Duration(milliseconds: 500));
+    await tester.pumpAndSettle();
 
     expect(authRepository.sendPasswordResetEmailCalled, isTrue);
     expect(authRepository.lastEmail, 'utente@jivaio.it');
@@ -114,8 +113,7 @@ void main() {
     await tester.pump();
 
     await tester.tap(find.text('Invia link di recupero'));
-    await tester.pump();
-    await tester.pump(const Duration(milliseconds: 500));
+    await tester.pumpAndSettle();
 
     expect(authRepository.sendPasswordResetEmailCalled, isFalse);
     expect(find.text('Inserisci un indirizzo email valido'), findsOneWidget);

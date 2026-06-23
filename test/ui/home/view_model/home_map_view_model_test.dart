@@ -192,6 +192,25 @@ void main() {
     },
   );
 
+  test('locateUser salva la posizione quando il permesso è concesso', () async {
+    const location = UserLocation(
+      latitude: 42.3498,
+      longitude: 13.3995,
+    );
+
+    locationRepository.accessResult = LocationAccessResult.granted;
+    locationRepository.currentLocation = location;
+
+    final result = await viewModel.locateUser();
+
+    expect(result, LocationAccessResult.granted);
+    expect(locationRepository.ensureLocationAccessCalled, isTrue);
+    expect(locationRepository.getCurrentLocationCalled, isTrue);
+    expect(viewModel.isLocating, isFalse);
+    expect(viewModel.userLocation, location);
+    expect(viewModel.locationErrorMessage, isNull);
+  });
+
   test('locateUser gestisce errore durante il recupero posizione', () async {
     locationRepository.accessResult = LocationAccessResult.granted;
     locationRepository.shouldThrowOnCurrentLocation = true;
