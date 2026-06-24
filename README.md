@@ -21,6 +21,7 @@
   <ol>
     <li><a href="#obiettivo-del-progetto">Obiettivo del progetto</a></li>
     <li><a href="#stato-del-progetto">Stato del progetto</a></li>
+    <li><a href="#demo-dellapp">Demo dell’app</a></li>
     <li><a href="#funzionalità-principali">Funzionalità principali</a></li>
     <li>
       <a href="#profili-utente">Profili utente</a>
@@ -84,6 +85,20 @@ JiVaio non nasce come alternativa generica a servizi come Google Maps o Moovit, 
 JiVaio è attualmente un **prototipo funzionante**, non ancora un prodotto pronto per il rilascio pubblico.
 
 Sono state implementate le funzionalità principali legate a consultazione, autenticazione, mappa, geolocalizzazione e preferiti. Alcune funzionalità più avanzate sono state predisposte a livello di interfaccia o lasciate come sviluppo futuro.
+
+<p align="right">(<a href="#readme-top">torna su</a>)</p>
+
+---
+
+## Demo dell’app
+
+Il seguente video mostra una breve demo del prototipo JiVaio, evidenziando il flusso principale dell’applicazione e le funzionalità implementate.
+
+Il file video è incluso nel repository e può essere aperto direttamente dal README.
+
+<p align="center">
+  <a href="assets/readme/jivaio_demo.mp4"><strong>Guarda la demo dell’app</strong></a>
+</p>
 
 <p align="right">(<a href="#readme-top">torna su</a>)</p>
 
