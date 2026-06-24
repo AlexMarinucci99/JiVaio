@@ -94,13 +94,13 @@ Sono state implementate le funzionalità principali legate a consultazione, aute
 
 Il seguente video mostra una breve demo del prototipo JiVaio, evidenziando il flusso principale dell’applicazione e le funzionalità implementate.
 
-Il file video è incluso nel repository e può essere aperto direttamente dal README.
-
 <p align="center">
-  <a href="assets/readme/jivaio_demo.mp4"><strong>Guarda la demo dell’app</strong></a>
+  <a href="https://github.com/AlexMarinucci99/JiVaio/raw/main/assets/readme/jivaio_demo.mp4">
+    Guarda la demo dell’app
+  </a>
 </p>
 
-<p align="right">(<a href="#readme-top">torna su</a>)</p>
+<p align="right">(<a href="#readme-top">torna su</a>)</p
 
 ---
 
