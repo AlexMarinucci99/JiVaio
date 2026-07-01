@@ -380,7 +380,7 @@ Componenti:
 * Matteo Accurti **[@MattAcc03](https://github.com/MattAcc03)**
 * Luca Salvi **[@LucaSalvi1999](https://github.com/LucaSalvi1999)**
 
-Corso: **Sviluppo di Applicazioni Mobili**
+Corso: **Applicazioi per Dispositivi Mobili**
 Anno accademico: **2025/2026**
 
 <p align="right">(<a href="#readme-top">torna su</a>)</p>
