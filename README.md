@@ -68,11 +68,11 @@ Il problema principale affrontato da JiVaio riguarda la difficoltà, spesso risc
 
 In particolare, l’app punta a ridurre l’incertezza legata a:
 
-* quale linea prendere;
-* quale fermata raggiungere;
-* in quale direzione attendere il bus;
-* quali orari e corse consultare;
-* come ritrovare rapidamente le linee usate più spesso.
+- quale linea prendere;
+- quale fermata raggiungere;
+- in quale direzione attendere il bus;
+- quali orari e corse consultare;
+- come ritrovare rapidamente le linee usate più spesso.
 
 JiVaio non nasce come alternativa generica a servizi come Google Maps o Moovit, ma come soluzione focalizzata sul contesto aquilano e sulle esigenze locali degli utenti.
 
@@ -110,11 +110,11 @@ Il seguente video mostra una breve demo del prototipo JiVaio, evidenziando il fl
 | ---------------------- | ----------------- | --------------------------------------------------------------------------------------------------------------------------- |
 | Onboarding             | Implementata      | Schermate introduttive che presentano lo scopo dell’app.                                                                    |
 | Accesso guest          | Implementata      | Permette di entrare nell’app senza registrazione.                                                                           |
-| Registrazione e login  | Implementata      | Accesso tramite email e password e Google.                                                                                           |
+| Registrazione e login  | Implementata      | Accesso tramite email e password e Google.                                                                                  |
 | Recupero password      | Implementata      | Invio email per reimpostare la password.                                                                                    |
 | Navigazione principale | Implementata      | Bottom navigation per spostarsi tra le sezioni principali.                                                                  |
 | Home con mappa         | Implementata      | Visualizzazione della mappa e delle fermate disponibili.                                                                    |
-| Geolocalizzazione      | Implementata      | Recupero della posizione dell’utente tramite autorizzazione.                                                                 |
+| Geolocalizzazione      | Implementata      | Recupero della posizione dell’utente tramite autorizzazione.                                                                |
 | Elenco linee           | Implementata      | Lista delle linee urbane disponibili.                                                                                       |
 | Dettaglio linea        | Implementata      | Visualizzazione di fermate, direzioni, orari e informazioni della linea.                                                    |
 | Linee salvate          | Implementata      | Salvataggio persistente delle linee preferite per utenti registrati.                                                        |
@@ -154,14 +154,14 @@ Questa modalità è pensata soprattutto per studenti, pendolari e utenti abitual
 
 Il progetto è stato sviluppato con:
 
-* **Flutter** per la realizzazione dell’app mobile cross-platform;
-* **Dart** come linguaggio di programmazione;
-* **Firebase Authentication** per registrazione, login e recupero password;
-* **Cloud Firestore** per il salvataggio persistente dei dati utente, come le linee preferite;
-* **Mappe e geolocalizzazione** per mostrare fermate e posizione dell’utente;
-* **Provider / ChangeNotifier** per la gestione dello stato;
-* **Figma** per la progettazione dei mockup;
-* **Git e GitHub** per versionamento e collaborazione.
+- **Flutter** per la realizzazione dell’app mobile cross-platform;
+- **Dart** come linguaggio di programmazione;
+- **Firebase Authentication** per registrazione, login e recupero password;
+- **Cloud Firestore** per il salvataggio persistente dei dati utente, come le linee preferite;
+- **Mappe e geolocalizzazione** per mostrare fermate e posizione dell’utente;
+- **Provider / ChangeNotifier** per la gestione dello stato;
+- **Figma** per la progettazione dei mockup;
+- **Git e GitHub** per versionamento e collaborazione.
 
 <p align="right">(<a href="#readme-top">torna su</a>)</p>
 
@@ -173,15 +173,13 @@ Il progetto segue una struttura modulare basata sulla separazione tra interfacci
 
 L’organizzazione generale è ispirata a un approccio di tipo MVVM, con:
 
-* **View / Widget** per la parte grafica;
-* **ViewModel** per stato e logica della UI;
-* **Repository** come livello intermedio per l’accesso ai dati;
-* **Service** per interazioni con Firebase, sorgenti locali o servizi esterni;
-* **Model** per rappresentare le entità principali del dominio.
-
+- **View / Widget** per la parte grafica;
+- **ViewModel** per stato e logica della UI;
+- **Repository** come livello intermedio per l’accesso ai dati;
+- **Service** per interazioni con Firebase, sorgenti locali o servizi esterni;
+- **Model** per rappresentare le entità principali del dominio.
 
 NOTA: La struttura seguente mostra le directory più rilevanti per comprendere l’organizzazione generale del progetto. Il repository completo contiene anche altri file e cartelle di configurazione, piattaforma e supporto allo sviluppo.
-
 
 ```text
 JiVaio/
@@ -239,11 +237,11 @@ JiVaio/
 
 Prima di avviare il progetto è necessario avere installati:
 
-* Flutter SDK;
-* Dart SDK;
-* Android Studio oppure Visual Studio Code;
-* un emulatore Android/iOS oppure un dispositivo fisico;
-* Firebase configurato per le funzionalità di autenticazione e Firestore.
+- Flutter SDK;
+- Dart SDK;
+- Android Studio oppure Visual Studio Code;
+- un emulatore Android/iOS oppure un dispositivo fisico;
+- Firebase configurato per le funzionalità di autenticazione e Firestore.
 
 <p align="right">(<a href="#readme-top">torna su</a>)</p>
 
@@ -296,17 +294,17 @@ Il progetto include una suite di test automatici composta da unit test e widget 
 
 I test coprono principalmente:
 
-* modelli di dominio;
-* ViewModel;
-* autenticazione;
-* recupero password;
-* onboarding;
-* ricerca percorso a livello di UI;
-* elenco linee;
-* dettaglio linea;
-* pulsanti di salvataggio;
-* centro notifiche;
-* componenti principali dell’interfaccia.
+- modelli di dominio;
+- ViewModel;
+- autenticazione;
+- recupero password;
+- onboarding;
+- ricerca percorso a livello di UI;
+- elenco linee;
+- dettaglio linea;
+- pulsanti di salvataggio;
+- centro notifiche;
+- componenti principali dell’interfaccia.
 
 Eseguire tutti i test:
 
@@ -320,7 +318,7 @@ Generare il report di copertura:
 flutter test --coverage
 ```
 
-Nella versione documentata del progetto sono presenti **194 test automatici eseguiti con successo**, con una copertura complessiva pari al **79,43%**.
+Nell’ultima esecuzione sono stati completati con successo 202 casi di test automatici. Il comando flutter test --coverage ha generato un report LCOV con 1.854 righe coperte su 2.385, corrispondenti a una copertura delle righe pari al 77,74%.
 
 <p align="right">(<a href="#readme-top">torna su</a>)</p>
 
@@ -342,12 +340,12 @@ La qualità dei dati è un aspetto centrale del progetto: informazioni non aggio
 
 JiVaio è un prototipo accademico e presenta alcune limitazioni:
 
-* la ricerca percorso non utilizza ancora un algoritmo reale di calcolo;
-* il sistema non confronta automaticamente più alternative di viaggio;
-* il centro notifiche è predisposto, ma non è ancora collegato a un sistema completo di notifiche push;
-* le segnalazioni utenti richiedono ancora meccanismi di conferma, moderazione e scadenza;
-* i dati su linee, fermate e orari richiederebbero aggiornamenti continui da fonti ufficiali;
-* la validazione con utenti reali è stata limitata a test informali.
+- la ricerca percorso non utilizza ancora un algoritmo reale di calcolo;
+- il sistema non confronta automaticamente più alternative di viaggio;
+- il centro notifiche è predisposto, ma non è ancora collegato a un sistema completo di notifiche push;
+- le segnalazioni utenti richiedono ancora meccanismi di conferma, moderazione e scadenza;
+- i dati su linee, fermate e orari richiederebbero aggiornamenti continui da fonti ufficiali;
+- la validazione con utenti reali è stata limitata a test informali.
 
 <p align="right">(<a href="#readme-top">torna su</a>)</p>
 
@@ -357,14 +355,14 @@ JiVaio è un prototipo accademico e presenta alcune limitazioni:
 
 Possibili sviluppi futuri:
 
-* implementazione di un vero algoritmo di pianificazione percorso;
-* integrazione più completa con dati ufficiali o aggiornati in tempo reale;
-* notifiche push personalizzate in base alle linee salvate;
-* avvisi su deviazioni, lavori e modifiche temporanee alla viabilità;
-* sistema di segnalazioni con conferme da parte della community;
-* moderazione e validazione delle segnalazioni;
-* estensione del progetto ad altri contesti locali;
-* miglioramento dell’accessibilità e dell’esperienza utente.
+- implementazione di un vero algoritmo di pianificazione percorso;
+- integrazione più completa con dati ufficiali o aggiornati in tempo reale;
+- notifiche push personalizzate in base alle linee salvate;
+- avvisi su deviazioni, lavori e modifiche temporanee alla viabilità;
+- sistema di segnalazioni con conferme da parte della community;
+- moderazione e validazione delle segnalazioni;
+- estensione del progetto ad altri contesti locali;
+- miglioramento dell’accessibilità e dell’esperienza utente.
 
 <p align="right">(<a href="#readme-top">torna su</a>)</p>
 
@@ -376,9 +374,9 @@ Progetto sviluppato dal team **Master Mobile Devs**.
 
 Componenti:
 
-* Alessandro Marinucci
-* Matteo Accurti **[@MattAcc03](https://github.com/MattAcc03)**
-* Luca Salvi **[@LucaSalvi1999](https://github.com/LucaSalvi1999)**
+- Alessandro Marinucci
+- Matteo Accurti **[@MattAcc03](https://github.com/MattAcc03)**
+- Luca Salvi **[@LucaSalvi1999](https://github.com/LucaSalvi1999)**
 
 Corso: **Applicazioi per Dispositivi Mobili**
 Anno accademico: **2025/2026**
