@@ -193,10 +193,7 @@ void main() {
   );
 
   test('locateUser salva la posizione quando il permesso è concesso', () async {
-    const location = UserLocation(
-      latitude: 42.3498,
-      longitude: 13.3995,
-    );
+    const location = UserLocation(latitude: 42.3498, longitude: 13.3995);
 
     locationRepository.accessResult = LocationAccessResult.granted;
     locationRepository.currentLocation = location;

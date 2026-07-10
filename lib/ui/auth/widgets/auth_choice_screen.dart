@@ -267,7 +267,9 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
 
                   AuthActionButton(
                     label: 'Continua come ospite',
-                    onPressed: _viewModel.isSubmitting ? null : _continueAsGuest,
+                    onPressed: _viewModel.isSubmitting
+                        ? null
+                        : _continueAsGuest,
                     height: 54,
                     fontSize: 17,
                     borderRadius: 26,

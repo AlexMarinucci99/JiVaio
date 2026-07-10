@@ -22,11 +22,11 @@ class FakeAuthRepository implements AuthRepository {
     lastEmail = email;
     lastPassword = password;
   }
-  
+
   @override
-Future<void> loginWithGoogle() async {
-  loginWithGoogleCalled = true;
-}
+  Future<void> loginWithGoogle() async {
+    loginWithGoogleCalled = true;
+  }
 
   @override
   Future<void> register({
@@ -183,21 +183,21 @@ void main() {
   });
 
   testWidgets('avvia il login con Google quando si preme il bottone Google', (
-  WidgetTester tester,
-) async {
-  final authRepository = FakeAuthRepository();
+    WidgetTester tester,
+  ) async {
+    final authRepository = FakeAuthRepository();
 
-  await tester.pumpWidget(buildTestWidget(authRepository: authRepository));
+    await tester.pumpWidget(buildTestWidget(authRepository: authRepository));
 
-  await tapVisibleText(tester, 'Google');
-  await tester.pumpAndSettle();
+    await tapVisibleText(tester, 'Google');
+    await tester.pumpAndSettle();
 
-  expect(authRepository.loginWithGoogleCalled, isTrue);
-  expect(
-    find.text('Accesso con Google non ancora implementato'),
-    findsNothing,
-  );
-});
+    expect(authRepository.loginWithGoogleCalled, isTrue);
+    expect(
+      find.text('Accesso con Google non ancora implementato'),
+      findsNothing,
+    );
+  });
 
   testWidgets('apre la schermata reset password', (WidgetTester tester) async {
     final authRepository = FakeAuthRepository();

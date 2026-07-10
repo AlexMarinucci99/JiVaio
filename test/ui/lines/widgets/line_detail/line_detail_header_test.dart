@@ -130,55 +130,57 @@ void main() {
     },
   );
 
-  testWidgets('disabilita il cambio direzione quando canSwapDirection è false', (
-    WidgetTester tester,
-  ) async {
-    var swapCalled = false;
+  testWidgets(
+    'disabilita il cambio direzione quando canSwapDirection è false',
+    (WidgetTester tester) async {
+      var swapCalled = false;
 
-    await tester.pumpWidget(
-      buildTestWidget(
-        canSwapDirection: false,
-        onSwapDirection: () {
-          swapCalled = true;
-        },
-      ),
-    );
+      await tester.pumpWidget(
+        buildTestWidget(
+          canSwapDirection: false,
+          onSwapDirection: () {
+            swapCalled = true;
+          },
+        ),
+      );
 
-    final disabledSwapButtons = tester
-        .widgetList<IconButton>(find.byType(IconButton))
-        .where((button) => button.tooltip == 'Direzione unica')
-        .toList();
+      final disabledSwapButtons = tester
+          .widgetList<IconButton>(find.byType(IconButton))
+          .where((button) => button.tooltip == 'Direzione unica')
+          .toList();
 
-    expect(disabledSwapButtons, hasLength(1));
-    expect(disabledSwapButtons.single.onPressed, isNull);
-    expect(swapCalled, isFalse);
-  });
+      expect(disabledSwapButtons, hasLength(1));
+      expect(disabledSwapButtons.single.onPressed, isNull);
+      expect(swapCalled, isFalse);
+    },
+  );
 
-  testWidgets('disabilita il cambio direzione per una linea a direzione unica', (
-    WidgetTester tester,
-  ) async {
-    var swapCalled = false;
+  testWidgets(
+    'disabilita il cambio direzione per una linea a direzione unica',
+    (WidgetTester tester) async {
+      var swapCalled = false;
 
-    await tester.pumpWidget(
-      buildTestWidget(
-        line: testUnidirectionalLine,
-        canSwapDirection: true,
-        onSwapDirection: () {
-          swapCalled = true;
-        },
-      ),
-    );
+      await tester.pumpWidget(
+        buildTestWidget(
+          line: testUnidirectionalLine,
+          canSwapDirection: true,
+          onSwapDirection: () {
+            swapCalled = true;
+          },
+        ),
+      );
 
-    final disabledSwapButtons = tester
-        .widgetList<IconButton>(find.byType(IconButton))
-        .where((button) => button.tooltip == 'Direzione unica')
-        .toList();
+      final disabledSwapButtons = tester
+          .widgetList<IconButton>(find.byType(IconButton))
+          .where((button) => button.tooltip == 'Direzione unica')
+          .toList();
 
-    expect(find.text('Linea 2U'), findsOneWidget);
-    expect(disabledSwapButtons, hasLength(1));
-    expect(disabledSwapButtons.single.onPressed, isNull);
-    expect(swapCalled, isFalse);
-  });
+      expect(find.text('Linea 2U'), findsOneWidget);
+      expect(disabledSwapButtons, hasLength(1));
+      expect(disabledSwapButtons.single.onPressed, isNull);
+      expect(swapCalled, isFalse);
+    },
+  );
 
   testWidgets('mostra messaggio quando la direzione non è disponibile', (
     WidgetTester tester,

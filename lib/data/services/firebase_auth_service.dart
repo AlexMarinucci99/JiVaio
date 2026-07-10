@@ -10,11 +10,9 @@ import 'auth_service.dart';
 /// Questo service è l'unico punto dell'app che dipende direttamente
 /// da [FirebaseAuth] e traduce gli errori Firebase in errori di dominio.
 class FirebaseAuthService implements AuthService {
-  FirebaseAuthService({
-    FirebaseAuth? firebaseAuth,
-    GoogleSignIn? googleSignIn,
-  }) : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance,
-       _googleSignIn = googleSignIn ?? GoogleSignIn.instance;
+  FirebaseAuthService({FirebaseAuth? firebaseAuth, GoogleSignIn? googleSignIn})
+    : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance,
+      _googleSignIn = googleSignIn ?? GoogleSignIn.instance;
 
   final FirebaseAuth _firebaseAuth;
   final GoogleSignIn _googleSignIn;
