@@ -56,7 +56,7 @@ JiVaio è un’app mobile Flutter dedicata al trasporto pubblico urbano dell’A
 
 L’app nasce con l’obiettivo di rendere più semplice, chiara e immediata la consultazione di linee, fermate, orari e direzioni, aiutando studenti, pendolari, cittadini e visitatori a orientarsi meglio nella rete urbana.
 
-Il progetto è stato sviluppato come prototipo accademico per il corso di Sviluppo di Applicazioni Mobili.
+Il progetto è stato realizzato come prototipo accademico nell’ambito del corso di Applicazioni per Dispositivi Mobili del Corso di Laurea in Informatica dell’Università degli Studi dell’Aquila.
 
 <p align="right">(<a href="#readme-top">torna su</a>)</p>
 
