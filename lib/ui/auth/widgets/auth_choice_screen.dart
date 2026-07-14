@@ -34,7 +34,7 @@ class AuthChoiceScreen extends StatefulWidget {
 class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
   late final AuthViewModel _viewModel;
 
-  // I controller restano nella View perché sono risorse UI con lifecycle.
+  /// I controller restano nella View perché sono risorse UI con lifecycle.
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();

@@ -101,7 +101,6 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Consente alla navbar flottante di sovrapporsi leggermente al body.
       extendBody: true,
 
       body: IndexedStack(index: _selectedIndex, children: _pages),

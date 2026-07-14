@@ -68,7 +68,6 @@ class NotificationCenterOverlay extends StatelessWidget {
             if (isPanelOpen)
               Positioned.fill(
                 child: GestureDetector(
-                  // Il livello resta dietro ai componenti interni, ma intercetta i tap esterni.
                   behavior: HitTestBehavior.translucent,
                   onTap: onClosePanel,
                   child: const SizedBox.expand(),

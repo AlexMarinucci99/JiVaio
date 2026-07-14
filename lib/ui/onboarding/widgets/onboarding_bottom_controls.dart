@@ -51,7 +51,6 @@ class OnboardingBottomControls extends StatelessWidget {
       child: Stack(
         alignment: Alignment.center,
         children: [
-          // Dots centrati.
           Center(
             child: OnboardingDotsIndicator(
               currentIndex: currentIndex,
