@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../../../data/repositories/transit_repository.dart';
+import '../../../config/app_dependencies.dart';
+import '../../../domain/models/app_user.dart';
 import '../../core/widgets/bottom_nav_bar.dart';
 import '../../home/widgets/home_screen.dart';
 import '../../lines/widgets/lines_screen.dart';
 import '../../settings/widgets/settings_screen.dart';
-import '../../../data/repositories/location_repository.dart';
-import '../../../data/repositories/notification_repository.dart';
-import '../../../data/repositories/saved_lines_repository.dart';
-import '../../../data/repositories/route_planning_repository.dart';
-import '../../../domain/models/app_user.dart';
 import '../theme/main_navigation_colors.dart';
 
 /// Schermata principale mostrata dopo login, registrazione o accesso guest.
@@ -21,11 +17,7 @@ class MainNavigationScreen extends StatefulWidget {
     super.key,
     required this.user,
     required this.onLogout,
-    required this.transitRepository,
-    required this.locationRepository,
-    required this.notificationRepository,
-    required this.savedLinesRepository,
-    required this.routePlanningRepository,
+    required this.dependencies,
   });
 
   /// Utente autenticato corrente.
@@ -42,20 +34,8 @@ class MainNavigationScreen extends StatefulWidget {
   /// termina la modalità ospite.
   final Future<void> Function() onLogout;
 
-  /// Repository usato dalle schermate che leggono dati del trasporto urbano.
-  final TransitRepository transitRepository;
-
-  /// Repository usato dalla Home per posizione e permessi GPS.
-  final LocationRepository locationRepository;
-
-  /// Repository usato dalla Home per il centro notifiche.
-  final NotificationRepository notificationRepository;
-
-  /// Repository usato dalla schermata linee per i preferiti.
-  final SavedLinesRepository savedLinesRepository;
-
-  /// Repository usato dalla Home per aprire i risultati del percorso.
-  final RoutePlanningRepository routePlanningRepository;
+  /// Dipendenze condivise dalle sezioni principali dell'app.
+  final AppDependencies dependencies;
 
   @override
   State<MainNavigationScreen> createState() => _MainNavigationScreenState();
@@ -70,17 +50,17 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     return [
       HomeScreen(
         key: const PageStorageKey<String>('home-screen'),
-        repository: widget.transitRepository,
-        locationRepository: widget.locationRepository,
-        notificationRepository: widget.notificationRepository,
-        routePlanningRepository: widget.routePlanningRepository,
+        repository: widget.dependencies.transitRepository,
+        locationRepository: widget.dependencies.locationRepository,
+        notificationRepository: widget.dependencies.notificationRepository,
+        routePlanningRepository: widget.dependencies.routePlanningRepository,
       ),
       LinesScreen(
         key: const PageStorageKey<String>('lines-screen'),
         isGuest: widget.isGuest,
         userId: widget.user?.id,
-        repository: widget.transitRepository,
-        savedLinesRepository: widget.savedLinesRepository,
+        repository: widget.dependencies.transitRepository,
+        savedLinesRepository: widget.dependencies.savedLinesRepository,
       ),
       SettingsScreen(
         key: const PageStorageKey<String>('settings-screen'),
@@ -102,9 +82,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-
       body: IndexedStack(index: _selectedIndex, children: _pages),
-
       bottomNavigationBar: SafeArea(
         minimum: const EdgeInsets.fromLTRB(16, 0, 16, 16),
         child: BottomNavBar(

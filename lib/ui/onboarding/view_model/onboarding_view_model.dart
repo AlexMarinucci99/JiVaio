@@ -62,12 +62,6 @@ class OnboardingViewModel extends ChangeNotifier {
     return _onboardingRepository.setSkipOnboarding(_hideOnboardingNextTime);
   }
 
-  /// Salta l'onboarding solo quando l'utente si trova sull'ultima slide.
-  Future<void> skipOnboarding() async {
-    if (!isLastPage) return;
-
-    await completeOnboarding();
-  }
 }
 
 ///Contenuto di una slide della schermata onboarding.

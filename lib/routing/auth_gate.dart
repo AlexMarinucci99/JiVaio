@@ -49,11 +49,7 @@ class _AuthGateState extends State<AuthGate> {
       return MainNavigationScreen(
         user: null,
         onLogout: _exitGuestMode,
-        transitRepository: widget.dependencies.transitRepository,
-        locationRepository: widget.dependencies.locationRepository,
-        notificationRepository: widget.dependencies.notificationRepository,
-        savedLinesRepository: widget.dependencies.savedLinesRepository,
-        routePlanningRepository: widget.dependencies.routePlanningRepository,
+        dependencies: widget.dependencies,
       );
     }
 
@@ -67,12 +63,7 @@ class _AuthGateState extends State<AuthGate> {
           return MainNavigationScreen(
             user: user,
             onLogout: _logout,
-            transitRepository: widget.dependencies.transitRepository,
-            locationRepository: widget.dependencies.locationRepository,
-            notificationRepository: widget.dependencies.notificationRepository,
-            savedLinesRepository: widget.dependencies.savedLinesRepository,
-            routePlanningRepository:
-                widget.dependencies.routePlanningRepository,
+            dependencies: widget.dependencies,
           );
         }
 

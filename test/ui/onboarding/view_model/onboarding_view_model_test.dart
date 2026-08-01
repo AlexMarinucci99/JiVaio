@@ -11,7 +11,9 @@ void main() {
   setUp(() {
     onboardingRepository = FakeOnboardingRepository();
 
-    viewModel = OnboardingViewModel(onboardingRepository: onboardingRepository);
+    viewModel = OnboardingViewModel(
+      onboardingRepository: onboardingRepository,
+    );
   });
 
   tearDown(() {
@@ -137,22 +139,4 @@ void main() {
       expect(onboardingRepository.lastSkipOnboardingValue, isTrue);
     },
   );
-
-  test('skipOnboarding non salva prima dell’ultima pagina', () async {
-    await viewModel.skipOnboarding();
-
-    expect(onboardingRepository.setSkipOnboardingCallCount, 0);
-    expect(onboardingRepository.lastSkipOnboardingValue, isNull);
-  });
-
-  test('skipOnboarding completa il salvataggio nell’ultima pagina', () async {
-    viewModel.updatePage(2);
-    viewModel.toggleHideOnboardingNextTime();
-
-    await viewModel.skipOnboarding();
-
-    expect(viewModel.isLastPage, isTrue);
-    expect(onboardingRepository.setSkipOnboardingCallCount, 1);
-    expect(onboardingRepository.lastSkipOnboardingValue, isTrue);
-  });
 }
