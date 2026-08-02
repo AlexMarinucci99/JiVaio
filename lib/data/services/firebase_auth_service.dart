@@ -20,62 +20,53 @@ class FirebaseAuthService implements AuthService {
   Future<void>? _googleSignInInitialization;
 
   @override
-  AppUser? get currentUser {
-    return _mapUser(_firebaseAuth.currentUser);
-  }
+  AppUser? get currentUser => _mapUser(_firebaseAuth.currentUser);
 
   @override
-  Stream<AppUser?> authStateChanges() {
-    return _firebaseAuth.authStateChanges().map(_mapUser);
-  }
+  Stream<AppUser?> authStateChanges() =>
+      _firebaseAuth.authStateChanges().map(_mapUser);
 
   @override
-  Future<void> login({required String email, required String password}) async {
-    await _runFirebaseOperation(
-      () => _firebaseAuth.signInWithEmailAndPassword(
-        email: email.trim(),
-        password: password,
-      ),
-    );
-  }
+  Future<void> login({required String email, required String password}) =>
+      _runFirebaseOperation(() async {
+        await _firebaseAuth.signInWithEmailAndPassword(
+          email: email.trim(),
+          password: password,
+        );
+      });
 
   @override
-  Future<void> loginWithGoogle() async {
-    await _runGoogleOperation(() async {
-      await _ensureGoogleSignInInitialized();
+  Future<void> loginWithGoogle() => _runGoogleOperation(() async {
+    await _ensureGoogleSignInInitialized();
 
-      if (!_googleSignIn.supportsAuthenticate()) {
-        throw const AuthFailure(AuthFailureCode.operationNotAllowed);
-      }
+    if (!_googleSignIn.supportsAuthenticate()) {
+      throw const AuthFailure(AuthFailureCode.operationNotAllowed);
+    }
 
-      final googleUser = await _googleSignIn.authenticate();
-      final googleAuth = googleUser.authentication;
-      final idToken = googleAuth.idToken;
+    final googleUser = await _googleSignIn.authenticate();
+    final idToken = googleUser.authentication.idToken;
 
-      if (idToken == null) {
-        throw const AuthFailure(AuthFailureCode.invalidCredential);
-      }
+    if (idToken == null) {
+      throw const AuthFailure(AuthFailureCode.invalidCredential);
+    }
 
-      final credential = GoogleAuthProvider.credential(idToken: idToken);
-      await _firebaseAuth.signInWithCredential(credential);
-    });
-  }
+    final credential = GoogleAuthProvider.credential(idToken: idToken);
+    await _firebaseAuth.signInWithCredential(credential);
+  });
 
   @override
   Future<void> register({
     required String name,
     required String email,
     required String password,
-  }) async {
-    await _runFirebaseOperation(() async {
-      final credential = await _firebaseAuth.createUserWithEmailAndPassword(
-        email: email.trim(),
-        password: password,
-      );
+  }) => _runFirebaseOperation(() async {
+    final credential = await _firebaseAuth.createUserWithEmailAndPassword(
+      email: email.trim(),
+      password: password,
+    );
 
-      await credential.user?.updateDisplayName(name.trim());
-    });
-  }
+    await credential.user?.updateDisplayName(name.trim());
+  });
 
   @override
   Future<void> logout() async {
@@ -84,15 +75,13 @@ class FirebaseAuthService implements AuthService {
   }
 
   @override
-  Future<void> sendPasswordResetEmail({required String email}) async {
-    await _runFirebaseOperation(
-      () => _firebaseAuth.sendPasswordResetEmail(email: email.trim()),
-    );
-  }
+  Future<void> sendPasswordResetEmail({required String email}) =>
+      _runFirebaseOperation(
+        () => _firebaseAuth.sendPasswordResetEmail(email: email.trim()),
+      );
 
-  Future<void> _ensureGoogleSignInInitialized() {
-    return _googleSignInInitialization ??= _googleSignIn.initialize();
-  }
+  Future<void> _ensureGoogleSignInInitialized() =>
+      _googleSignInInitialization ??= _googleSignIn.initialize();
 
   Future<T> _runFirebaseOperation<T>(Future<T> Function() operation) async {
     try {
@@ -119,63 +108,39 @@ class FirebaseAuthService implements AuthService {
       await _ensureGoogleSignInInitialized();
       await _googleSignIn.signOut();
     } on GoogleSignInException {
-      // Il logout Firebase resta valido anche se il provider Google non è disponibile.
+      // Il logout Firebase resta valido anche se Google non è disponibile.
     }
   }
 
-  AppUser? _mapUser(User? user) {
-    if (user == null) {
-      return null;
-    }
+  AppUser? _mapUser(User? user) => user == null
+      ? null
+      : AppUser(id: user.uid, email: user.email, displayName: user.displayName);
 
-    return AppUser(
-      id: user.uid,
-      email: user.email,
-      displayName: user.displayName,
-    );
-  }
+  AuthFailureCode _mapFirebaseAuthFailureCode(String code) => switch (code) {
+    'invalid-email' => AuthFailureCode.invalidEmail,
+    'user-not-found' => AuthFailureCode.userNotFound,
+    'wrong-password' => AuthFailureCode.wrongPassword,
+    'email-already-in-use' => AuthFailureCode.emailAlreadyInUse,
+    'weak-password' => AuthFailureCode.weakPassword,
+    'network-request-failed' => AuthFailureCode.networkRequestFailed,
+    'invalid-credential' => AuthFailureCode.invalidCredential,
+    'too-many-requests' => AuthFailureCode.tooManyRequests,
+    'user-disabled' => AuthFailureCode.userDisabled,
+    'operation-not-allowed' => AuthFailureCode.operationNotAllowed,
+    _ => AuthFailureCode.unknown,
+  };
 
-  AuthFailureCode _mapFirebaseAuthFailureCode(String code) {
-    switch (code) {
-      case 'invalid-email':
-        return AuthFailureCode.invalidEmail;
-      case 'user-not-found':
-        return AuthFailureCode.userNotFound;
-      case 'wrong-password':
-        return AuthFailureCode.wrongPassword;
-      case 'email-already-in-use':
-        return AuthFailureCode.emailAlreadyInUse;
-      case 'weak-password':
-        return AuthFailureCode.weakPassword;
-      case 'network-request-failed':
-        return AuthFailureCode.networkRequestFailed;
-      case 'invalid-credential':
-        return AuthFailureCode.invalidCredential;
-      case 'too-many-requests':
-        return AuthFailureCode.tooManyRequests;
-      case 'user-disabled':
-        return AuthFailureCode.userDisabled;
-      case 'operation-not-allowed':
-        return AuthFailureCode.operationNotAllowed;
-      default:
-        return AuthFailureCode.unknown;
-    }
-  }
-
-  AuthFailureCode _mapGoogleSignInFailureCode(GoogleSignInExceptionCode code) {
-    switch (code) {
-      case GoogleSignInExceptionCode.canceled:
-        return AuthFailureCode.cancelled;
-      case GoogleSignInExceptionCode.clientConfigurationError:
-      case GoogleSignInExceptionCode.providerConfigurationError:
-      case GoogleSignInExceptionCode.uiUnavailable:
-        return AuthFailureCode.operationNotAllowed;
-      case GoogleSignInExceptionCode.interrupted:
-        return AuthFailureCode.networkRequestFailed;
-      case GoogleSignInExceptionCode.userMismatch:
-        return AuthFailureCode.invalidCredential;
-      case GoogleSignInExceptionCode.unknownError:
-        return AuthFailureCode.unknown;
-    }
-  }
+  AuthFailureCode _mapGoogleSignInFailureCode(GoogleSignInExceptionCode code) =>
+      switch (code) {
+        GoogleSignInExceptionCode.canceled => AuthFailureCode.cancelled,
+        GoogleSignInExceptionCode.clientConfigurationError ||
+        GoogleSignInExceptionCode.providerConfigurationError ||
+        GoogleSignInExceptionCode.uiUnavailable =>
+          AuthFailureCode.operationNotAllowed,
+        GoogleSignInExceptionCode.interrupted =>
+          AuthFailureCode.networkRequestFailed,
+        GoogleSignInExceptionCode.userMismatch =>
+          AuthFailureCode.invalidCredential,
+        GoogleSignInExceptionCode.unknownError => AuthFailureCode.unknown,
+      };
 }

@@ -3,8 +3,8 @@ import '../services/route_planning_service.dart';
 
 /// Gestisce l'accesso alla pianificazione dei percorsi.
 ///
-/// Espone ai ViewModel un'API stabile e nasconde se la pianificazione
-/// viene prodotta da mock, (algoritmo locale, database o API esterna in futuro).
+/// Espone ai ViewModel un'API stabile e nasconde se il percorso
+/// viene prodotto da un mock, un algoritmo locale o un'API esterna.
 class RoutePlanningRepository {
   const RoutePlanningRepository(this._service);
 
@@ -12,8 +12,8 @@ class RoutePlanningRepository {
 
   /// Pianifica un percorso tra [origin] e [destination].
   ///
-  /// Normalizza gli input ricevuti dalla UI e blocca richieste prive
-  /// di partenza o destinazione prima di delegare al service.
+  /// Normalizza gli input e impedisce richieste prive
+  /// di partenza o destinazione.
   Future<RouteResult> planRoute({
     required String origin,
     required String destination,

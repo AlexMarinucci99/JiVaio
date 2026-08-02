@@ -14,9 +14,7 @@ class GeolocatorLocationService implements LocationService {
 
   @override
   Future<LocationAccessResult> ensureLocationAccess() async {
-    final isServiceEnabled = await Geolocator.isLocationServiceEnabled();
-
-    if (!isServiceEnabled) {
+    if (!await Geolocator.isLocationServiceEnabled()) {
       return LocationAccessResult.serviceDisabled;
     }
 
@@ -26,36 +24,31 @@ class GeolocatorLocationService implements LocationService {
       permission = await Geolocator.requestPermission();
     }
 
-    if (permission == LocationPermission.denied) {
-      return LocationAccessResult.permissionDenied;
-    }
-
-    if (permission == LocationPermission.deniedForever) {
-      return LocationAccessResult.permissionDeniedForever;
-    }
-
-    return LocationAccessResult.granted;
+    return switch (permission) {
+      LocationPermission.denied => LocationAccessResult.permissionDenied,
+      LocationPermission.deniedForever =>
+        LocationAccessResult.permissionDeniedForever,
+      _ => LocationAccessResult.granted,
+    };
   }
 
   @override
   Future<UserLocation> getCurrentLocation() async {
     try {
-      final position = await _getFreshPosition();
-
-      return _toUserLocation(position);
+      return _toUserLocation(await _getFreshPosition());
     } catch (error, stackTrace) {
       debugPrint(
-        '[GeolocatorLocationService] Recupero posizione corrente fallito: $error',
+        '[GeolocatorLocationService] '
+        'Recupero posizione corrente fallito: $error',
       );
       debugPrintStack(stackTrace: stackTrace);
 
-      // Manteniamo il fallback perché il fix GPS può richiedere più tempo
-      // del previsto su alcuni dispositivi Android.
       final lastKnownPosition = await Geolocator.getLastKnownPosition();
 
       if (lastKnownPosition != null) {
         debugPrint(
-          '[GeolocatorLocationService] Utilizzo ultima posizione nota disponibile.',
+          '[GeolocatorLocationService] '
+          'Utilizzo ultima posizione nota disponibile.',
         );
 
         return _toUserLocation(lastKnownPosition);
@@ -83,8 +76,7 @@ class GeolocatorLocationService implements LocationService {
         rethrow;
       }
 
-      // Su Android usiamo un secondo tentativo perché emulatori e alcuni
-      // dispositivi possono gestire male il provider fused.
+      // Secondo tentativo Android tramite il Location Manager tradizionale.
       return Geolocator.getCurrentPosition(
         locationSettings: AndroidSettings(
           accuracy: LocationAccuracy.high,
@@ -95,20 +87,12 @@ class GeolocatorLocationService implements LocationService {
     }
   }
 
-  UserLocation _toUserLocation(Position position) {
-    return UserLocation(
-      latitude: position.latitude,
-      longitude: position.longitude,
-    );
-  }
+  UserLocation _toUserLocation(Position position) =>
+      UserLocation(latitude: position.latitude, longitude: position.longitude);
 
   @override
-  Future<bool> openLocationSettings() {
-    return Geolocator.openLocationSettings();
-  }
+  Future<bool> openLocationSettings() => Geolocator.openLocationSettings();
 
   @override
-  Future<bool> openAppSettings() {
-    return Geolocator.openAppSettings();
-  }
+  Future<bool> openAppSettings() => Geolocator.openAppSettings();
 }

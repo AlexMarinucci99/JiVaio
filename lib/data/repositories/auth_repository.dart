@@ -10,35 +10,23 @@ class AuthRepository {
 
   final AuthService _authService;
 
-  AppUser? get currentUser {
-    return _authService.currentUser;
-  }
+  AppUser? get currentUser => _authService.currentUser;
 
-  Stream<AppUser?> get authStateChanges {
-    return _authService.authStateChanges();
-  }
+  Stream<AppUser?> get authStateChanges => _authService.authStateChanges();
 
-  Future<void> login({required String email, required String password}) {
-    return _authService.login(email: email, password: password);
-  }
+  Future<void> login({required String email, required String password}) =>
+      _authService.login(email: email, password: password);
 
-  Future<void> loginWithGoogle() {
-    return _authService.loginWithGoogle();
-  }
+  Future<void> loginWithGoogle() => _authService.loginWithGoogle();
 
   Future<void> register({
     required String name,
     required String email,
     required String password,
-  }) {
-    return _authService.register(name: name, email: email, password: password);
-  }
+  }) => _authService.register(name: name, email: email, password: password);
 
-  Future<void> logout() {
-    return _authService.logout();
-  }
+  Future<void> logout() => _authService.logout();
 
-  Future<void> sendPasswordResetEmail({required String email}) {
-    return _authService.sendPasswordResetEmail(email: email);
-  }
+  Future<void> sendPasswordResetEmail({required String email}) =>
+      _authService.sendPasswordResetEmail(email: email);
 }

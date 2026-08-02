@@ -12,19 +12,12 @@ class LocationRepository {
 
   final LocationService _service;
 
-  Future<LocationAccessResult> ensureLocationAccess() {
-    return _service.ensureLocationAccess();
-  }
+  Future<LocationAccessResult> ensureLocationAccess() =>
+      _service.ensureLocationAccess();
 
-  Future<UserLocation> getCurrentLocation() {
-    return _service.getCurrentLocation();
-  }
+  Future<UserLocation> getCurrentLocation() => _service.getCurrentLocation();
 
-  Future<bool> openLocationSettings() {
-    return _service.openLocationSettings();
-  }
+  Future<bool> openLocationSettings() => _service.openLocationSettings();
 
-  Future<bool> openAppSettings() {
-    return _service.openAppSettings();
-  }
+  Future<bool> openAppSettings() => _service.openAppSettings();
 }

@@ -10,12 +10,10 @@ class OnboardingPreferencesService {
   final SharedPreferencesAsync _preferences = SharedPreferencesAsync();
 
   /// Restituisce true se l'utente ha scelto di saltare l'onboarding.
-  Future<bool> shouldSkipOnboarding() async {
-    return await _preferences.getBool(_skipOnboardingKey) ?? false;
-  }
+  Future<bool> shouldSkipOnboarding() async =>
+      await _preferences.getBool(_skipOnboardingKey) ?? false;
 
   /// Salva la scelta dell'utente sulla visualizzazione dell'onboarding.
-  Future<void> setSkipOnboarding(bool value) async {
-    await _preferences.setBool(_skipOnboardingKey, value);
-  }
+  Future<void> setSkipOnboarding(bool value) =>
+      _preferences.setBool(_skipOnboardingKey, value);
 }

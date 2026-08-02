@@ -31,25 +31,21 @@ class AppDependencies {
   ///
   /// Mantiene in un solo punto l'associazione tra repository e service,
   /// compresi i mock usati per funzionalità non ancora collegate a dati reali.
-factory AppDependencies.create() => AppDependencies(
-  authRepository: AuthRepository(FirebaseAuthService()),
-  transitRepository: TransitRepository(),
-  locationRepository: const LocationRepository(
-    service: GeolocatorLocationService(),
-  ),
-  notificationRepository: const NotificationRepository(
-    service: MockNotificationService(),
-  ),
-  savedLinesRepository: SavedLinesRepository(
-    FirestoreSavedLinesService(),
-  ),
-  routePlanningRepository: const RoutePlanningRepository(
-    MockRoutePlanningService(),
-  ),
-  onboardingRepository: OnboardingRepository(
-    OnboardingPreferencesService(),
-  ),
-);
+  factory AppDependencies.create() => AppDependencies(
+    authRepository: AuthRepository(FirebaseAuthService()),
+    transitRepository: TransitRepository(),
+    locationRepository: const LocationRepository(
+      service: GeolocatorLocationService(),
+    ),
+    notificationRepository: const NotificationRepository(
+      service: MockNotificationService(),
+    ),
+    savedLinesRepository: SavedLinesRepository(FirestoreSavedLinesService()),
+    routePlanningRepository: const RoutePlanningRepository(
+      MockRoutePlanningService(),
+    ),
+    onboardingRepository: OnboardingRepository(OnboardingPreferencesService()),
+  );
 
   final AuthRepository authRepository;
   final TransitRepository transitRepository;

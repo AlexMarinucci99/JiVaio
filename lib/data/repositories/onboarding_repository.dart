@@ -9,11 +9,9 @@ class OnboardingRepository {
 
   final OnboardingPreferencesService _preferencesService;
 
-  Future<bool> shouldSkipOnboarding() {
-    return _preferencesService.shouldSkipOnboarding();
-  }
+  Future<bool> shouldSkipOnboarding() =>
+      _preferencesService.shouldSkipOnboarding();
 
-  Future<void> setSkipOnboarding(bool value) {
-    return _preferencesService.setSkipOnboarding(value);
-  }
+  Future<void> setSkipOnboarding(bool value) =>
+      _preferencesService.setSkipOnboarding(value);
 }

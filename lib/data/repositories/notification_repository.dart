@@ -11,7 +11,6 @@ class NotificationRepository {
 
   final NotificationService _service;
 
-  Future<List<AppNotification>> getNotifications() {
-    return _service.fetchNotifications();
-  }
+  Future<List<AppNotification>> getNotifications() =>
+      _service.fetchNotifications();
 }

@@ -11,9 +11,7 @@ void main() {
   setUp(() {
     onboardingRepository = FakeOnboardingRepository();
 
-    viewModel = OnboardingViewModel(
-      onboardingRepository: onboardingRepository,
-    );
+    viewModel = OnboardingViewModel(onboardingRepository: onboardingRepository);
   });
 
   tearDown(() {

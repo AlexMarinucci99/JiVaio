@@ -79,9 +79,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
   }
 
- void _skip() {
-  Navigator.pushReplacementNamed(context, AppRoutes.authChoice);
-}
+  void _skip() {
+    Navigator.pushReplacementNamed(context, AppRoutes.authChoice);
+  }
 
   @override
   void dispose() {
@@ -100,20 +100,20 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           body: SafeArea(
             child: Column(
               children: [
-        if (!_viewModel.isLastPage)
-  Padding(
-    padding: const EdgeInsets.fromLTRB(20, 12, 20, 4),
-    child: Align(
-      alignment: Alignment.centerRight,
-      child: TextButton(
-        onPressed: _skip,
-        style: TextButton.styleFrom(
-          foregroundColor: _colors.skipButtonColor,
-        ),
-        child: const Text('Salta'),
-      ),
-    ),
-  ),
+                if (!_viewModel.isLastPage)
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 12, 20, 4),
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButton(
+                        onPressed: _skip,
+                        style: TextButton.styleFrom(
+                          foregroundColor: _colors.skipButtonColor,
+                        ),
+                        child: const Text('Salta'),
+                      ),
+                    ),
+                  ),
                 Expanded(
                   child: PageView.builder(
                     controller: _pageController,

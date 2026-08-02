@@ -61,7 +61,6 @@ class OnboardingViewModel extends ChangeNotifier {
   Future<void> completeOnboarding() {
     return _onboardingRepository.setSkipOnboarding(_hideOnboardingNextTime);
   }
-
 }
 
 ///Contenuto di una slide della schermata onboarding.

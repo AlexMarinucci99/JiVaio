@@ -9,9 +9,8 @@ class SavedLinesRepository {
 
   final SavedLinesService _service;
 
-  Stream<Set<String>> watchSavedLineIds({required String userId}) {
-    return _service.watchSavedLineIds(userId: userId);
-  }
+  Stream<Set<String>> watchSavedLineIds({required String userId}) =>
+      _service.watchSavedLineIds(userId: userId);
 
   /// Aggiorna lo stato di salvataggio della linea [routeId].
   ///
@@ -21,12 +20,7 @@ class SavedLinesRepository {
     required String userId,
     required String routeId,
     required bool isSaved,
-  }) async {
-    if (isSaved) {
-      await _service.saveLine(userId: userId, routeId: routeId);
-      return;
-    }
-
-    await _service.removeLine(userId: userId, routeId: routeId);
-  }
+  }) => isSaved
+      ? _service.saveLine(userId: userId, routeId: routeId)
+      : _service.removeLine(userId: userId, routeId: routeId);
 }

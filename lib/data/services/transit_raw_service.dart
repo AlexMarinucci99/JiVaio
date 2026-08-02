@@ -39,7 +39,7 @@ class TransitRawBundle {
 class TransitRawService {
   const TransitRawService();
 
-  static const String _basePath = 'assets/gtfs/raw';
+  static const _basePath = 'assets/gtfs/raw';
 
   /// Restituisce il bundle completo dei dati GTFS grezzi.
   Future<TransitRawBundle> loadBundle() async {
@@ -63,8 +63,7 @@ class TransitRawService {
   }
 
   Future<List<Map<String, dynamic>>> _loadJsonList(String path) async {
-    final rawContent = await rootBundle.loadString(path);
-    final decoded = jsonDecode(rawContent);
+    final decoded = jsonDecode(await rootBundle.loadString(path));
 
     if (decoded is! List) {
       throw FormatException('Il file $path non contiene una lista JSON.');
