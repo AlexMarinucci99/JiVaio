@@ -27,7 +27,5 @@ class AuthFailure implements Exception {
   final AuthFailureCode code;
 
   @override
-  String toString() {
-    return 'AuthFailure(code: $code)';
-  }
+  String toString() => 'AuthFailure(code: $code)';
 }

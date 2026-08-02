@@ -9,6 +9,7 @@ enum AppNotificationType {
   serviceUpdate,
 }
 
+///Notifica mostrata nel centro notifiche dell'app.
 class AppNotification {
   const AppNotification({
     required this.id,
@@ -19,22 +20,11 @@ class AppNotification {
     this.isRead = false,
   });
 
-  /// Identificativo univoco della notifica.
   final String id;
-
-  /// Categoria della notifica.
   final AppNotificationType type;
-
-  /// Titolo breve mostrato nell'iterfaccia.
   final String title;
-
-  /// Descrizione completa dell'avviso.
   final String message;
-
-  /// Data e ora di generazione.
   final DateTime createdAt;
-
-  /// true quando l'utente ha già aperto la notifica.
   final bool isRead;
 
   AppNotification copyWith({
@@ -44,14 +34,12 @@ class AppNotification {
     String? message,
     DateTime? createdAt,
     bool? isRead,
-  }) {
-    return AppNotification(
-      id: id ?? this.id,
-      type: type ?? this.type,
-      title: title ?? this.title,
-      message: message ?? this.message,
-      createdAt: createdAt ?? this.createdAt,
-      isRead: isRead ?? this.isRead,
-    );
-  }
+  }) => AppNotification(
+    id: id ?? this.id,
+    type: type ?? this.type,
+    title: title ?? this.title,
+    message: message ?? this.message,
+    createdAt: createdAt ?? this.createdAt,
+    isRead: isRead ?? this.isRead,
+  );
 }

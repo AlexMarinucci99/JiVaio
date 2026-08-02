@@ -30,13 +30,8 @@ class TransitLine {
   TransitLineDirection get primaryDirection => directions.first;
 
   /// Indica se la linea viene trattata come monodirezionale nel prototipo.
-  bool get isUnidirectional {
-    const knownUnidirectionalShortNames = <String>{'2U', '2UT'};
-
-    return knownUnidirectionalShortNames.contains(
-      shortName.trim().toUpperCase(),
-    );
-  }
+  bool get isUnidirectional =>
+      const {'2U', '2UT'}.contains(shortName.trim().toUpperCase());
 }
 
 /// Descrive una direzione di percorrenza associata a una linea.
@@ -71,13 +66,9 @@ class TransitLineDirection {
   bool get hasUpcomingDepartures => upcomingDepartures.isNotEmpty;
 
   /// Restituisce il messaggio da mostrare quando non ci sono partenze.
-  String get emptyStateMessage {
-    if (!hasServiceToday) {
-      return 'Nessuna corsa attiva per oggi.';
-    }
-
-    return 'Nessuna altra partenza disponibile per oggi.';
-  }
+  String get emptyStateMessage => hasServiceToday
+      ? 'Nessuna altra partenza disponibile per oggi.'
+      : 'Nessuna corsa attiva per oggi.';
 }
 
 /// Raccoglie orari e fermate per una specifica direzione.
@@ -118,13 +109,9 @@ class TransitLineDirectionSchedule {
   bool get hasStops => stops.isNotEmpty;
 
   /// Restituisce il messaggio da mostrare quando non ci sono corse.
-  String get emptyDeparturesMessage {
-    if (!hasServiceToday) {
-      return 'Nessuna corsa attiva per oggi.';
-    }
-
-    return 'Non ci sono bus in questa fascia oraria.';
-  }
+  String get emptyDeparturesMessage => hasServiceToday
+      ? 'Non ci sono bus in questa fascia oraria.'
+      : 'Nessuna corsa attiva per oggi.';
 }
 
 /// Descrive una corsa disponibile per una linea.
@@ -162,8 +149,5 @@ class TransitLineStop {
   /// Orario ufficiale della fermata per la corsa selezionata.
   final String? officialTime;
 
-  bool get hasOfficialTime {
-    final value = officialTime;
-    return value != null && value.trim().isNotEmpty;
-  }
+  bool get hasOfficialTime => officialTime?.trim().isNotEmpty ?? false;
 }

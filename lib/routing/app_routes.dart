@@ -1,7 +1,7 @@
 /// Definisce i percorsi nominati usati dal router dell'app.
-class AppRoutes {
-  static const String onboarding = '/onboarding';
-  static const String authChoice = '/auth-choice';
-  static const String home = '/home';
-  static const String resetPassword = '/reset-password';
+abstract final class AppRoutes {
+  static const onboarding = '/onboarding';
+  static const authChoice = '/auth-choice';
+  static const home = '/home';
+  static const resetPassword = '/reset-password';
 }
