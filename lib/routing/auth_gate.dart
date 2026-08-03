@@ -11,10 +11,7 @@ import '../ui/main_navigation/widgets/main_navigation_screen.dart';
 /// Mostra la schermata principale per utenti autenticati o guest,
 /// altrimenti rimanda alla scelta tra login, registrazione e accesso ospite.
 class AuthGate extends StatefulWidget {
-  const AuthGate({
-    super.key,
-    required this.dependencies,
-  });
+  const AuthGate({super.key, required this.dependencies});
 
   /// Dipendenze applicative necessarie alle schermate raggiunte dal gate.
   final AppDependencies dependencies;
@@ -26,14 +23,11 @@ class AuthGate extends StatefulWidget {
 class _AuthGateState extends State<AuthGate> {
   bool _isGuest = false;
 
-  AuthRepository get _authRepository =>
-      widget.dependencies.authRepository;
+  AuthRepository get _authRepository => widget.dependencies.authRepository;
 
-  void _continueAsGuest() =>
-      setState(() => _isGuest = true);
+  void _continueAsGuest() => setState(() => _isGuest = true);
 
-  Future<void> _exitGuestMode() async =>
-      setState(() => _isGuest = false);
+  Future<void> _exitGuestMode() async => setState(() => _isGuest = false);
 
   Future<void> _logout() => _authRepository.logout();
 

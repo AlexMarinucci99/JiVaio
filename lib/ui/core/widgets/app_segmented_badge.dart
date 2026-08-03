@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-/// Badge compatto mostrato dentro [AppSegmentedControl].
-class AppSegmentedNSave extends StatelessWidget {
-  const AppSegmentedNSave({
+/// Badge compatto mostrato all'interno del controllo segmentato.
+class AppSegmentedBadge extends StatelessWidget {
+  const AppSegmentedBadge({
     super.key,
     required this.label,
     required this.backgroundColor,
@@ -12,17 +12,16 @@ class AppSegmentedNSave extends StatelessWidget {
   /// Testo mostrato nel badge.
   final String label;
 
-  /// Colore dello sfondo del badge.
+  /// Colore dello sfondo.
   final Color backgroundColor;
 
-  /// Colore del testo del badge.
+  /// Colore del testo.
   final Color textColor;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 24,
-      height: 24,
+      constraints: const BoxConstraints(minWidth: 24, minHeight: 24),
       padding: const EdgeInsets.symmetric(horizontal: 7),
       alignment: Alignment.center,
       decoration: BoxDecoration(

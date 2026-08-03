@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../core/themes/app_colors.dart';
 import '../../core/themes/app_segmented_control_colors.dart';
 import '../widgets/auth_action_button.dart';
 import '../widgets/auth_social_buttons.dart';
@@ -29,7 +30,13 @@ class AuthChoiceColors {
   final Color backButtonColor = const Color(0xFF6B7280);
 
   final AppSegmentedControlColors segmentedControlColors =
-      AppSegmentedControlColors.auth;
+      const AppSegmentedControlColors(
+        backgroundColor: AppColors.fieldBackground,
+        selectedColor: AppColors.surface,
+        borderColor: AppColors.borderSoft,
+        selectedTextColor: AppColors.primary,
+        selectedBadgeTextColor: AppColors.primary,
+      );
 
   final AuthTextFieldColors textFieldColors = const AuthTextFieldColors(
     primaryColor: Color(0xFF191970),

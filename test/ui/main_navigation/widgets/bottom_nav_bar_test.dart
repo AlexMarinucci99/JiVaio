@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:jivaio/ui/core/widgets/bottom_nav_bar.dart';
+import 'package:jivaio/ui/main_navigation/widgets/bottom_nav_bar.dart';
 
 void main() {
   testWidgets('chiama la callback quando si preme una voce della navbar', (

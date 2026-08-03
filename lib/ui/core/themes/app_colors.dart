@@ -20,9 +20,6 @@ class AppColors {
   static const Color border = Color(0xFFDCE5F2);
   static const Color borderSoft = Color(0xFFE1E7F0);
 
-  static const Color badgeBackground = Color(0xFFDCEBFF);
-  static const Color selectedBadgeBackground = Color(0x2EFFFFFF);
-
   static const Color success = Color(0xFF2E7D32);
   static const Color warning = Color(0xFFF59E0B);
   static const Color error = Color(0xFFD32F2F);

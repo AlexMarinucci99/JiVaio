@@ -6,11 +6,9 @@ import 'app_colors.dart';
 class AppTheme {
   const AppTheme._();
 
-  static ThemeData get lightTheme {
-    return ThemeData(
-      useMaterial3: true,
-      colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primary),
-      scaffoldBackgroundColor: AppColors.background,
-    );
-  }
+  static final ThemeData lightTheme = ThemeData(
+    useMaterial3: true,
+    colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primary),
+    scaffoldBackgroundColor: AppColors.background,
+  );
 }

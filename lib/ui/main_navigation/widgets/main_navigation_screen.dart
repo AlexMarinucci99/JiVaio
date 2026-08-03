@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../../../config/app_dependencies.dart';
 import '../../../domain/models/app_user.dart';
-import '../../core/widgets/bottom_nav_bar.dart';
 import '../../home/widgets/home_screen.dart';
 import '../../lines/widgets/lines_screen.dart';
 import '../../settings/widgets/settings_screen.dart';
-import '../theme/main_navigation_colors.dart';
+import 'bottom_nav_bar.dart';
 
 /// Schermata principale mostrata dopo login, registrazione o accesso guest.
 ///
@@ -43,8 +42,6 @@ class MainNavigationScreen extends StatefulWidget {
 
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
   int _selectedIndex = 0;
-
-  static const MainNavigationColors _colors = MainNavigationColors();
 
   List<Widget> get _pages {
     return [
@@ -88,7 +85,6 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
         child: BottomNavBar(
           selectedIndex: _selectedIndex,
           onItemSelected: _onItemSelected,
-          colors: _colors.bottomNavBarColors,
         ),
       ),
     );

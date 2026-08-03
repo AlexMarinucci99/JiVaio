@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../core/themes/app_segmented_control_colors.dart';
+
 /// Palette della schermata che mostra l'elenco delle linee.
 ///
 /// Mantiene separati i colori specifici della feature
@@ -27,4 +29,7 @@ class LinesScreenColors {
   final Color cardBackground;
   final Color cardBorder;
   final Color cardShadow;
+
+  final AppSegmentedControlColors segmentedControlColors =
+      const AppSegmentedControlColors();
 }

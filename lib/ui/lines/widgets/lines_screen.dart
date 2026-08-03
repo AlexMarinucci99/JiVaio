@@ -146,7 +146,7 @@ class _LinesScreenState extends State<LinesScreen> {
                         AppSegmentedControl<LinesScope>(
                           selectedValue: _viewModel.scope,
                           onChanged: _viewModel.setScope,
-
+                          colors: _colors.segmentedControlColors,
                           items: [
                             const AppSegmentedControlItem(
                               value: LinesScope.all,
