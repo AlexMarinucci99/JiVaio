@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../theme/onboarding_colors.dart';
 import 'onboarding_action_button.dart';
 import 'onboarding_dots_indicator.dart';
 
@@ -12,7 +13,6 @@ class OnboardingBottomControls extends StatelessWidget {
     super.key,
     required this.currentIndex,
     required this.itemCount,
-    required this.isLastPage,
     required this.onBack,
     required this.onNext,
     this.actionButtonColors = const OnboardingActionButtonColors(),
@@ -20,25 +20,22 @@ class OnboardingBottomControls extends StatelessWidget {
     this.backButtonColor = const Color(0xFF191970),
   });
 
-  /// Indice della pagina attualemtnte visibile.
+  /// Indice della pagina attualmente visibile.
   final int currentIndex;
 
-  /// Numero totale di pagine onboarding.
+  /// Numero totale delle pagine dell'onboarding.
   final int itemCount;
-
-  /// Indice se l'utente si trova sull'ultima pagina.
-  final bool isLastPage;
 
   /// Callback invocata dal bottone "Indietro".
   final VoidCallback onBack;
 
-  /// Callback invocata dal bottone "Avanti" / "Inizia".
+  /// Callback invocata dal bottone "Avanti" o "Inizia".
   final VoidCallback onNext;
 
   /// Palette del bottone principale.
   final OnboardingActionButtonColors actionButtonColors;
 
-  /// Palette dei pallini centrali.
+  /// Palette dell'indicatore delle pagine.
   final OnboardingDotsIndicatorColors dotsColors;
 
   /// Colore del bottone testuale "Indietro".
@@ -46,19 +43,18 @@ class OnboardingBottomControls extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isLastPage = currentIndex == itemCount - 1;
+
     return SizedBox(
       height: 52,
       child: Stack(
         alignment: Alignment.center,
         children: [
-          Center(
-            child: OnboardingDotsIndicator(
-              currentIndex: currentIndex,
-              itemCount: itemCount,
-              colors: dotsColors,
-            ),
+          OnboardingDotsIndicator(
+            currentIndex: currentIndex,
+            itemCount: itemCount,
+            colors: dotsColors,
           ),
-
           if (currentIndex > 0)
             Align(
               alignment: Alignment.centerLeft,
@@ -67,7 +63,6 @@ class OnboardingBottomControls extends StatelessWidget {
                 color: backButtonColor,
               ),
             ),
-
           Align(
             alignment: Alignment.centerRight,
             child: SizedBox(

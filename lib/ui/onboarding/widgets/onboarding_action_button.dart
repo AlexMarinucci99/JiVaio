@@ -1,57 +1,31 @@
 import 'package:flutter/material.dart';
 
-/// Palette del bottone principale dell'onboarding.
-class OnboardingActionButtonColors {
-  const OnboardingActionButtonColors({
-    //Da modificare in futuro-Master
-    this.backgroundColor = const Color.fromARGB(19, 167, 2, 106),
-    this.foregroundColor = Colors.white,
-    this.disabledBackgroundColor = const Color(0xFFE5E7EB),
-    this.disabledForegroundColor = const Color(0xFF9CA3AF),
-  });
+import '../theme/onboarding_colors.dart';
 
-  /// Colore di sfondo del bottone attivo.
-  final Color backgroundColor;
-
-  /// Colore del testo del bottone attivo.
-  final Color foregroundColor;
-
-  /// Colore di sfondo quando il bottone è disabilitato.
-  final Color disabledBackgroundColor;
-
-  /// Colore del testo quando il bottone è disabilitato.
-  final Color disabledForegroundColor;
-}
-
-/// Bottone d'azione principale della schermata onboarding
+/// Pulsante d'azione principale dell'onboarding.
 class OnboardingActionButton extends StatelessWidget {
   const OnboardingActionButton({
     super.key,
     required this.label,
     required this.onPressed,
-    this.height = 52,
     this.colors = const OnboardingActionButtonColors(),
   });
 
-  ///Testo mostrato nel bottone.
+  /// Testo mostrato nel pulsante.
   final String label;
 
-  /// Callback invocata alla pressione del bottone.
+  /// Callback invocata alla pressione.
   ///
-  /// Se è null, il bottone viene mostrato come disabilitato.
+  /// Se è null, il pulsante viene mostrato come disabilitato.
   final VoidCallback? onPressed;
 
-  /// Altezza del bottone.
-  final double height;
-
-  /// Palette colori propria del bottone.
+  /// Palette cromatica del pulsante.
   final OnboardingActionButtonColors colors;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: double.infinity,
-      height: height,
+      height: 52,
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(

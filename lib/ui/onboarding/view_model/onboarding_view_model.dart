@@ -8,9 +8,9 @@ import '../../../data/repositories/onboarding_repository.dart';
 /// corrente e salva la preferenza scelta dall'utente tramite repository.
 class OnboardingViewModel extends ChangeNotifier {
   OnboardingViewModel({required OnboardingRepository onboardingRepository})
-    : _onboardingRepository = onboardingRepository;
+    : _repository = onboardingRepository;
 
-  final OnboardingRepository _onboardingRepository;
+  final OnboardingRepository _repository;
 
   final List<OnboardingItem> items = const [
     OnboardingItem(
@@ -51,16 +51,15 @@ class OnboardingViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Alterna l'onboarding salvando la preferenza selezionata.
+  /// Alterna la preferenza per le aperture successive.
   void toggleHideOnboardingNextTime() {
     _hideOnboardingNextTime = !_hideOnboardingNextTime;
     notifyListeners();
   }
 
   /// Completa l'onboarding e salva la preferenza selezionata.
-  Future<void> completeOnboarding() {
-    return _onboardingRepository.setSkipOnboarding(_hideOnboardingNextTime);
-  }
+  Future<void> completeOnboarding() =>
+      _repository.setSkipOnboarding(_hideOnboardingNextTime);
 }
 
 ///Contenuto di una slide della schermata onboarding.
@@ -72,8 +71,6 @@ class OnboardingItem {
   });
 
   final String imagePath;
-
   final String title;
-
   final String description;
 }

@@ -1,18 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// Palette dell'indicatore delle pagine dell'oboarding.
-class OnboardingDotsIndicatorColors {
-  const OnboardingDotsIndicatorColors({
-    this.activeColor = const Color(0x14061A3A),
-    this.inactiveColor = const Color(0xFFE1E7F0),
-  });
-
-  /// Colore del pallino della pagina attiva.
-  final Color activeColor;
-
-  /// Colore dei pallini delle pagine non attive.
-  final Color inactiveColor;
-}
+import '../theme/onboarding_colors.dart';
 
 /// Indicatore delle pagine dell'onboarding.
 class OnboardingDotsIndicator extends StatelessWidget {

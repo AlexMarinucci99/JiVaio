@@ -1,30 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// Palette della card usata per mostrare una slide dell'onboarding.
-class OnboardingSlideCardColors {
-  const OnboardingSlideCardColors({
-    this.imageCardBackgroundColor = Colors.white,
-    this.iconBackgroundColor = const Color(0xE0FFFFFF),
-    this.accentColor = const Color.fromARGB(255, 224, 224, 230),
-    this.titleColor = const Color.fromARGB(255, 210, 214, 223),
-    this.descriptionColor = const Color.fromARGB(255, 219, 222, 228),
-  });
-
-  /// Colore dello sfondo della card immagine.
-  final Color imageCardBackgroundColor;
-
-  /// Colore del cerchio dietro l'icona.
-  final Color iconBackgroundColor;
-
-  /// Colore principale usato per l'icona.
-  final Color accentColor;
-
-  /// Colore del titolo.
-  final Color titleColor;
-
-  /// Colore della descrizione.
-  final Color descriptionColor;
-}
+import '../theme/onboarding_colors.dart';
 
 /// Card che mostra il contenuto di una singola slide dell'onboarding.
 ///
@@ -36,8 +12,8 @@ class OnboardingSlideCard extends StatelessWidget {
     required this.imagePath,
     required this.title,
     required this.description,
-    this.icon,
-    this.accentColor,
+    required this.icon,
+    required this.accentColor,
     this.imageAlignment = Alignment.center,
     this.colors = const OnboardingSlideCardColors(),
   });
@@ -48,13 +24,11 @@ class OnboardingSlideCard extends StatelessWidget {
 
   final String description;
 
-  final IconData? icon;
+  /// Icona rappresentativa della slide.
+  final IconData icon;
 
-  /// Colore opzionale che sovrascrive [OnboardingSlideCardColors.accentColor].
-  ///
-  /// Rimane disponibile per permettere alla schermata di assegnare
-  /// un colore diverso a ogni slide.
-  final Color? accentColor;
+  /// Colore specifico dell'icona della slide.
+  final Color accentColor;
 
   /// Allineamento dell'immagine dentro la card.
   final Alignment imageAlignment;
@@ -66,8 +40,6 @@ class OnboardingSlideCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
 
-    final effectiveAccentColor = accentColor ?? colors.accentColor;
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Column(
@@ -77,7 +49,6 @@ class OnboardingSlideCard extends StatelessWidget {
           AspectRatio(
             aspectRatio: 1.55,
             child: Container(
-              width: double.infinity,
               decoration: BoxDecoration(
                 color: colors.imageCardBackgroundColor,
                 borderRadius: BorderRadius.circular(28),
@@ -94,24 +65,19 @@ class OnboardingSlideCard extends StatelessWidget {
                     ),
                   ),
 
-                  if (icon != null)
-                    Positioned(
-                      top: 18,
-                      right: 18,
-                      child: Container(
-                        width: 58,
-                        height: 58,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: colors.iconBackgroundColor,
-                        ),
-                        child: Icon(
-                          icon,
-                          color: effectiveAccentColor,
-                          size: 28,
-                        ),
+                  Positioned(
+                    top: 18,
+                    right: 18,
+                    child: Container(
+                      width: 58,
+                      height: 58,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: colors.iconBackgroundColor,
                       ),
+                      child: Icon(icon, color: accentColor, size: 28),
                     ),
+                  ),
                 ],
               ),
             ),

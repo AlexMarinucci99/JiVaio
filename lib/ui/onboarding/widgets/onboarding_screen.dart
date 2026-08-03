@@ -27,6 +27,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   late final OnboardingViewModel _viewModel;
 
+  bool _isCompleting = false;
+
   static const OnboardingColors _colors = OnboardingColors();
 
   static const List<_OnboardingVisualData> _visuals = [
@@ -52,22 +54,42 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     _viewModel = OnboardingViewModel(
       onboardingRepository: widget.onboardingRepository,
     );
+    assert(_visuals.length == _viewModel.items.length);
   }
 
   Future<void> _goNext() async {
-    if (_viewModel.isLastPage) {
-      await _viewModel.completeOnboarding();
-
-      if (!mounted) return;
-
-      Navigator.pushReplacementNamed(context, AppRoutes.authChoice);
+    if (!_viewModel.isLastPage) {
+      await _pageController.nextPage(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOutCubic,
+      );
       return;
     }
 
-    await _pageController.nextPage(
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeOutCubic,
-    );
+    if (_isCompleting) return;
+
+    _isCompleting = true;
+
+    try {
+      await _viewModel.completeOnboarding();
+    } catch (error) {
+      debugPrint('Errore durante il salvataggio dell’onboarding: $error');
+
+      if (mounted && _viewModel.hideOnboardingNextTime) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'Non è stato possibile salvare la preferenza. '
+              'L’onboarding potrebbe essere mostrato di nuovo.',
+            ),
+          ),
+        );
+      }
+    }
+
+    if (!mounted) return;
+
+    _openAuth();
   }
 
   void _goBack() {
@@ -79,7 +101,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
   }
 
-  void _skip() {
+  void _openAuth() {
     Navigator.pushReplacementNamed(context, AppRoutes.authChoice);
   }
 
@@ -95,18 +117,25 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     return AnimatedBuilder(
       animation: _viewModel,
       builder: (context, _) {
+        final items = _viewModel.items;
+        final isLastPage = _viewModel.isLastPage;
+
         return Scaffold(
           backgroundColor: _colors.backgroundColor,
           body: SafeArea(
             child: Column(
               children: [
-                if (!_viewModel.isLastPage)
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 12, 20, 4),
-                    child: Align(
-                      alignment: Alignment.centerRight,
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 12, 20, 4),
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: Visibility(
+                      visible: !isLastPage,
+                      maintainSize: true,
+                      maintainAnimation: true,
+                      maintainState: true,
                       child: TextButton(
-                        onPressed: _skip,
+                        onPressed: _openAuth,
                         style: TextButton.styleFrom(
                           foregroundColor: _colors.skipButtonColor,
                         ),
@@ -114,13 +143,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       ),
                     ),
                   ),
+                ),
                 Expanded(
                   child: PageView.builder(
                     controller: _pageController,
-                    itemCount: _viewModel.items.length,
+                    itemCount: items.length,
                     onPageChanged: _viewModel.updatePage,
                     itemBuilder: (context, index) {
-                      final item = _viewModel.items[index];
+                      final item = items[index];
                       final visual = _visuals[index];
 
                       return OnboardingSlideCard(
@@ -145,14 +175,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         duration: const Duration(milliseconds: 180),
                         switchInCurve: Curves.easeOutCubic,
                         switchOutCurve: Curves.easeOutCubic,
-                        child: _viewModel.isLastPage
+                        child: isLastPage
                             ? HideOnboardingPreference(
                                 key: const ValueKey(
                                   'hide_onboarding_preference',
                                 ),
                                 value: _viewModel.hideOnboardingNextTime,
                                 colors: _colors.hidePreferenceColors,
-                                onChanged:
+                                onToggle:
                                     _viewModel.toggleHideOnboardingNextTime,
                               )
                             : const SizedBox.shrink(
@@ -160,12 +190,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               ),
                       ),
 
-                      if (_viewModel.isLastPage) const SizedBox(height: 16),
+                      if (isLastPage) const SizedBox(height: 16),
 
                       OnboardingBottomControls(
                         currentIndex: _viewModel.currentPage,
-                        itemCount: _viewModel.items.length,
-                        isLastPage: _viewModel.isLastPage,
+                        itemCount: items.length,
                         onBack: _goBack,
                         onNext: _goNext,
                         actionButtonColors: _colors.actionButtonColors,
