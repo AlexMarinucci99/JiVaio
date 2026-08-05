@@ -30,9 +30,9 @@ class ResetPasswordSubmitResult {
 /// Il ViewModel mantiene la logica fuori dalla schermata e delega
 /// l'operazione di recupero ad [AuthRepository].
 class ResetPasswordViewModel extends ChangeNotifier {
-  ResetPasswordViewModel(this._authRepository);
+  ResetPasswordViewModel(this._repository);
 
-  final AuthRepository _authRepository;
+  final AuthRepository _repository;
 
   String _email = '';
   bool _isSubmitting = false;
@@ -41,17 +41,13 @@ class ResetPasswordViewModel extends ChangeNotifier {
 
   bool get isSubmitting => _isSubmitting;
 
-  bool get canSubmit {
-    return _email.trim().isNotEmpty && !_isSubmitting;
-  }
+  bool get canSubmit => _email.isNotEmpty && !_isSubmitting;
 
   /// Aggiorna l'email corrente normalizzando il valore inserito dalla View.
   void updateEmail(String value) {
     final normalizedEmail = value.trim();
 
-    if (_email == normalizedEmail) {
-      return;
-    }
+    if (_email == normalizedEmail) return;
 
     _email = normalizedEmail;
     notifyListeners();
@@ -73,7 +69,7 @@ class ResetPasswordViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
-      await _authRepository.sendPasswordResetEmail(email: _email);
+      await _repository.sendPasswordResetEmail(email: _email);
 
       return const ResetPasswordSubmitResult.success(_safeResetPasswordMessage);
     } on AuthFailure catch (error) {
@@ -88,40 +84,27 @@ class ResetPasswordViewModel extends ChangeNotifier {
     }
   }
 
-  bool _isValidEmail(String value) {
-    final email = value.trim();
-    return email.contains('@') && email.contains('.');
-  }
+  bool _isValidEmail(String value) =>
+      value.contains('@') && value.contains('.');
 
-  ResetPasswordSubmitResult _mapAuthFailure(AuthFailureCode code) {
-    switch (code) {
-      case AuthFailureCode.invalidEmail:
-        return const ResetPasswordSubmitResult.failure(
+  ResetPasswordSubmitResult _mapAuthFailure(AuthFailureCode code) =>
+      switch (code) {
+        AuthFailureCode.invalidEmail => const ResetPasswordSubmitResult.failure(
           'Inserisci un indirizzo email valido.',
-        );
-      case AuthFailureCode.networkRequestFailed:
-        return const ResetPasswordSubmitResult.failure(
-          'Controlla la connessione e riprova.',
-        );
-      case AuthFailureCode.tooManyRequests:
-        return const ResetPasswordSubmitResult.failure(
-          'Troppe richieste in poco tempo. Riprova più tardi.',
-        );
-      case AuthFailureCode.userNotFound:
-        return const ResetPasswordSubmitResult.success(
+        ),
+        AuthFailureCode.networkRequestFailed =>
+          const ResetPasswordSubmitResult.failure(
+            'Controlla la connessione e riprova.',
+          ),
+        AuthFailureCode.tooManyRequests =>
+          const ResetPasswordSubmitResult.failure(
+            'Troppe richieste in poco tempo. Riprova più tardi.',
+          ),
+        AuthFailureCode.userNotFound => const ResetPasswordSubmitResult.success(
           _safeResetPasswordMessage,
-        );
-      case AuthFailureCode.wrongPassword:
-      case AuthFailureCode.emailAlreadyInUse:
-      case AuthFailureCode.weakPassword:
-      case AuthFailureCode.invalidCredential:
-      case AuthFailureCode.userDisabled:
-      case AuthFailureCode.operationNotAllowed:
-      case AuthFailureCode.cancelled:
-      case AuthFailureCode.unknown:
-        return const ResetPasswordSubmitResult.failure(
+        ),
+        _ => const ResetPasswordSubmitResult.failure(
           'Non è stato possibile inviare il link di recupero. Riprova.',
-        );
-    }
-  }
+        ),
+      };
 }

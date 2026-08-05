@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../../../data/repositories/auth_repository.dart';
+import '../theme/auth_colors.dart';
 import '../view_model/reset_password_view_model.dart';
 import 'auth_action_button.dart';
 import 'auth_text_field.dart';
-import '../../../data/repositories/auth_repository.dart';
-import '../theme/reset_password_colors.dart';
 
 /// Schermata per il recupero della password.
 ///
@@ -31,27 +31,19 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     super.initState();
 
     _viewModel = ResetPasswordViewModel(widget.authRepository);
-    _emailController.addListener(_onEmailChanged);
   }
 
   @override
   void dispose() {
-    _emailController.removeListener(_onEmailChanged);
     _emailController.dispose();
     _viewModel.dispose();
     super.dispose();
   }
 
-  void _onEmailChanged() {
-    _viewModel.updateEmail(_emailController.text);
-  }
-
   Future<void> _sendResetLink() async {
     final result = await _viewModel.sendResetLink();
 
-    if (!mounted) {
-      return;
-    }
+    if (!mounted) return;
 
     _showMessage(result.message);
   }
@@ -68,15 +60,13 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     );
   }
 
-  void _goBack() {
-    Navigator.pop(context);
-  }
+  void _goBack() => Navigator.pop(context);
 
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: _viewModel,
-      builder: (context, child) {
+      builder: (context, _) {
         return Scaffold(
           backgroundColor: _colors.backgroundColor,
           body: SafeArea(
@@ -114,6 +104,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
                   AuthTextField(
                     controller: _emailController,
+                    onChanged: _viewModel.updateEmail,
                     label: 'La tua email',
                     icon: Icons.email_outlined,
                     keyboardType: TextInputType.emailAddress,

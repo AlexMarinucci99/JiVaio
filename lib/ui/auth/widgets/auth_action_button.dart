@@ -1,19 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// Definisce i colori configurabili del bottone d'azione auth.
-class AuthActionButtonColors {
-  const AuthActionButtonColors({
-    this.backgroundColor = const Color(0xFFF7F9FC),
-    this.foregroundColor = const Color(0xFF191970),
-    this.disabledBackgroundColor = const Color(0xFFE5E7EB),
-    this.disabledForegroundColor = const Color(0xFF9CA3AF),
-  });
-
-  final Color backgroundColor;
-  final Color foregroundColor;
-  final Color disabledBackgroundColor;
-  final Color disabledForegroundColor;
-}
+import '../theme/auth_colors.dart';
 
 /// Bottone d'azione della feature auth.
 ///

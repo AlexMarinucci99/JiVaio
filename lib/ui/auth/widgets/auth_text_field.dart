@@ -1,19 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// Definisce i colori configurabili dei campi input auth.
-class AuthTextFieldColors {
-  const AuthTextFieldColors({
-    this.primaryColor = const Color(0xFF191970),
-    this.backgroundColor = const Color(0xFFF1F4FA),
-    this.labelColor = const Color(0xFF4B5563),
-    this.iconColor = const Color(0xFF5D6675),
-  });
-
-  final Color primaryColor;
-  final Color backgroundColor;
-  final Color labelColor;
-  final Color iconColor;
-}
+import '../theme/auth_colors.dart';
 
 /// Campo input riutilizzabile della feature auth.
 class AuthTextField extends StatelessWidget {
@@ -24,7 +11,8 @@ class AuthTextField extends StatelessWidget {
     required this.icon,
     this.keyboardType,
     this.obscureText = false,
-    this.suffixIcon,
+    this.onChanged,
+    this.onToggleObscureText,
     this.colors = const AuthTextFieldColors(),
   });
 
@@ -33,13 +21,15 @@ class AuthTextField extends StatelessWidget {
   final IconData icon;
   final TextInputType? keyboardType;
   final bool obscureText;
-  final Widget? suffixIcon;
+  final VoidCallback? onToggleObscureText;
   final AuthTextFieldColors colors;
+  final ValueChanged<String>? onChanged;
 
   @override
   Widget build(BuildContext context) {
     return TextField(
       controller: controller,
+      onChanged: onChanged,
       keyboardType: keyboardType,
       obscureText: obscureText,
       cursorColor: colors.primaryColor,
@@ -47,7 +37,17 @@ class AuthTextField extends StatelessWidget {
         labelText: label,
         labelStyle: TextStyle(color: colors.labelColor),
         prefixIcon: Icon(icon, color: colors.iconColor),
-        suffixIcon: suffixIcon,
+        suffixIcon: onToggleObscureText == null
+            ? null
+            : IconButton(
+                tooltip: obscureText ? 'Mostra password' : 'Nascondi password',
+                onPressed: onToggleObscureText,
+                icon: Icon(
+                  obscureText
+                      ? Icons.visibility_outlined
+                      : Icons.visibility_off_outlined,
+                ),
+              ),
         suffixIconColor: colors.iconColor,
         filled: true,
         fillColor: colors.backgroundColor,

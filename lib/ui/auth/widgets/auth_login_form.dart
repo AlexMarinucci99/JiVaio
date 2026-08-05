@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../theme/auth_colors.dart';
 import 'auth_text_field.dart';
 
 /// Form di accesso della feature auth.
@@ -11,8 +12,8 @@ class AuthLoginForm extends StatelessWidget {
     required this.obscurePassword,
     required this.onTogglePasswordVisibility,
     required this.onForgotPassword,
+    required this.linkColor,
     this.textFieldColors = const AuthTextFieldColors(),
-    this.linkColor = const Color(0xFF191970),
   });
 
   final TextEditingController emailController;
@@ -43,14 +44,7 @@ class AuthLoginForm extends StatelessWidget {
           icon: Icons.lock_outline,
           obscureText: obscurePassword,
           colors: textFieldColors,
-          suffixIcon: IconButton(
-            icon: Icon(
-              obscurePassword
-                  ? Icons.visibility_outlined
-                  : Icons.visibility_off_outlined,
-            ),
-            onPressed: onTogglePasswordVisibility,
-          ),
+          onToggleObscureText: onTogglePasswordVisibility,
         ),
 
         const SizedBox(height: 16),

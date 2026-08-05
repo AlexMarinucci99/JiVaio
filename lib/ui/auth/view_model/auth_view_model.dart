@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 
-import '../../../domain/exceptions/auth_failure.dart';
 import '../../../data/repositories/auth_repository.dart';
+import '../../../domain/exceptions/auth_failure.dart';
 
 /// Modalità disponibili nel form di autenticazione.
 enum AuthMode { login, register }
@@ -26,9 +26,9 @@ class AuthSubmitResult {
 /// Il ViewModel mantiene la logica fuori dalla View e comunica
 /// con [AuthRepository] senza esporre dettagli del provider esterno.
 class AuthViewModel extends ChangeNotifier {
-  AuthViewModel(this._authRepository);
+  AuthViewModel(this._repository);
 
-  final AuthRepository _authRepository;
+  final AuthRepository _repository;
 
   AuthMode _selectedMode = AuthMode.login;
   bool _obscurePassword = true;
@@ -53,21 +53,15 @@ class AuthViewModel extends ChangeNotifier {
     return isLogin ? 'Accedi' : 'Registrati';
   }
 
-  String get formTitle {
-    return isLogin ? 'Bentornato' : 'Crea account';
-  }
+  String get formTitle => isLogin ? 'Bentornato' : 'Crea account';
 
-  String get formSubtitle {
-    return isLogin
-        ? 'Accedi per salvare linee e ricevere notifiche.'
-        : 'Registrati per personalizzare la tua esperienza.';
-  }
+  String get formSubtitle => isLogin
+      ? 'Accedi per salvare linee e ricevere notifiche.'
+      : 'Registrati per personalizzare la tua esperienza.';
 
   /// Cambia la modalità del form tra login e registrazione.
   void setMode(AuthMode mode) {
-    if (_selectedMode == mode || _isSubmitting) {
-      return;
-    }
+    if (_selectedMode == mode || _isSubmitting) return;
 
     _selectedMode = mode;
     notifyListeners();
@@ -99,39 +93,27 @@ class AuthViewModel extends ChangeNotifier {
       confirmPassword: confirmPassword,
     );
 
-    if (!validationResult.isValid) {
-      return validationResult;
-    }
+    if (!validationResult.isValid) return validationResult;
 
-    _isSubmitting = true;
-    notifyListeners();
-
-    try {
-      if (isLogin) {
-        await _authRepository.login(email: email, password: password);
-      } else {
-        await _authRepository.register(
-          name: name,
-          email: email,
-          password: password,
-        );
-      }
-
-      return const AuthSubmitResult.valid();
-    } on AuthFailure catch (error) {
-      return AuthSubmitResult.invalid(_mapAuthFailure(error.code));
-    } catch (_) {
-      return const AuthSubmitResult.invalid(
-        'Si è verificato un errore imprevisto. Riprova.',
-      );
-    } finally {
-      _isSubmitting = false;
-      notifyListeners();
-    }
+    return _runSubmission(
+      () => isLogin
+          ? _repository.login(email: email, password: password)
+          : _repository.register(name: name, email: email, password: password),
+      unexpectedError: 'Si è verificato un errore imprevisto. Riprova.',
+    );
   }
 
   /// Esegue l'accesso tramite account Google.
-  Future<AuthSubmitResult> signInWithGoogle() async {
+  Future<AuthSubmitResult> signInWithGoogle() => _runSubmission(
+    _repository.loginWithGoogle,
+    unexpectedError: 'Accesso con Google non riuscito. Riprova.',
+  );
+
+  /// Esegue una richiesta auth gestendo caricamento ed errori comuni.
+  Future<AuthSubmitResult> _runSubmission(
+    Future<void> Function() action, {
+    required String unexpectedError,
+  }) async {
     if (_isSubmitting) {
       return const AuthSubmitResult.invalid(
         'Attendi il completamento dell’operazione in corso.',
@@ -142,14 +124,12 @@ class AuthViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
-      await _authRepository.loginWithGoogle();
+      await action();
       return const AuthSubmitResult.valid();
     } on AuthFailure catch (error) {
       return AuthSubmitResult.invalid(_mapAuthFailure(error.code));
     } catch (_) {
-      return const AuthSubmitResult.invalid(
-        'Accesso con Google non riuscito. Riprova.',
-      );
+      return AuthSubmitResult.invalid(unexpectedError);
     } finally {
       _isSubmitting = false;
       notifyListeners();
@@ -162,23 +142,18 @@ class AuthViewModel extends ChangeNotifier {
     required String email,
     required String password,
     required String confirmPassword,
-  }) {
-    if (isLogin) {
-      return _validateLogin(email: email, password: password);
-    }
-
-    return _validateRegister(
-      name: name,
-      email: email,
-      password: password,
-      confirmPassword: confirmPassword,
-    );
-  }
+  }) => isLogin
+      ? _validateLogin(email: email, password: password)
+      : _validateRegister(
+          name: name,
+          email: email,
+          password: password,
+          confirmPassword: confirmPassword,
+        );
 
   /// Restituisce il messaggio temporaneo per i provider social non implementati.
-  String socialLoginMessage(String provider) {
-    return 'Accesso con $provider non ancora implementato';
-  }
+  String socialLoginMessage(String provider) =>
+      'Accesso con $provider non ancora implementato';
 
   AuthSubmitResult _validateLogin({
     required String email,
@@ -229,37 +204,25 @@ class AuthViewModel extends ChangeNotifier {
     return const AuthSubmitResult.valid();
   }
 
-  bool _isValidEmail(String value) {
-    final email = value.trim();
-    return email.contains('@') && email.contains('.');
-  }
+  bool _isValidEmail(String value) =>
+      value.contains('@') && value.contains('.');
 
-  String _mapAuthFailure(AuthFailureCode code) {
-    switch (code) {
-      case AuthFailureCode.invalidEmail:
-        return 'Email non valida.';
-      case AuthFailureCode.userNotFound:
-        return 'Nessun account trovato con questa email.';
-      case AuthFailureCode.wrongPassword:
-        return 'Password non corretta.';
-      case AuthFailureCode.emailAlreadyInUse:
-        return 'Questa email è già associata a un account.';
-      case AuthFailureCode.weakPassword:
-        return 'La password è troppo debole.';
-      case AuthFailureCode.networkRequestFailed:
-        return 'Controlla la connessione e riprova.';
-      case AuthFailureCode.invalidCredential:
-        return 'Credenziali non valide.';
-      case AuthFailureCode.tooManyRequests:
-        return 'Troppe richieste in poco tempo. Riprova più tardi.';
-      case AuthFailureCode.userDisabled:
-        return 'Questo account è stato disabilitato.';
-      case AuthFailureCode.operationNotAllowed:
-        return 'Operazione non disponibile. Riprova più tardi.';
-      case AuthFailureCode.cancelled:
-        return 'Accesso con Google annullato.';
-      case AuthFailureCode.unknown:
-        return 'Autenticazione non riuscita. Riprova.';
-    }
-  }
+  String _mapAuthFailure(AuthFailureCode code) => switch (code) {
+    AuthFailureCode.invalidEmail => 'Email non valida.',
+    AuthFailureCode.userNotFound => 'Nessun account trovato con questa email.',
+    AuthFailureCode.wrongPassword => 'Password non corretta.',
+    AuthFailureCode.emailAlreadyInUse =>
+      'Questa email è già associata a un account.',
+    AuthFailureCode.weakPassword => 'La password è troppo debole.',
+    AuthFailureCode.networkRequestFailed =>
+      'Controlla la connessione e riprova.',
+    AuthFailureCode.invalidCredential => 'Credenziali non valide.',
+    AuthFailureCode.tooManyRequests =>
+      'Troppe richieste in poco tempo. Riprova più tardi.',
+    AuthFailureCode.userDisabled => 'Questo account è stato disabilitato.',
+    AuthFailureCode.operationNotAllowed =>
+      'Operazione non disponibile. Riprova più tardi.',
+    AuthFailureCode.cancelled => 'Accesso con Google annullato.',
+    AuthFailureCode.unknown => 'Autenticazione non riuscita. Riprova.',
+  };
 }

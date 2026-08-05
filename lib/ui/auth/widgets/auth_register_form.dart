@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../theme/auth_colors.dart';
 import 'auth_text_field.dart';
 
 /// Form di registrazione della feature auth.
@@ -56,14 +57,7 @@ class AuthRegisterForm extends StatelessWidget {
           icon: Icons.lock_outline,
           obscureText: obscurePassword,
           colors: textFieldColors,
-          suffixIcon: IconButton(
-            icon: Icon(
-              obscurePassword
-                  ? Icons.visibility_outlined
-                  : Icons.visibility_off_outlined,
-            ),
-            onPressed: onTogglePasswordVisibility,
-          ),
+          onToggleObscureText: onTogglePasswordVisibility,
         ),
 
         const SizedBox(height: 16),
@@ -74,14 +68,7 @@ class AuthRegisterForm extends StatelessWidget {
           icon: Icons.lock_outline,
           obscureText: obscureConfirmPassword,
           colors: textFieldColors,
-          suffixIcon: IconButton(
-            icon: Icon(
-              obscureConfirmPassword
-                  ? Icons.visibility_outlined
-                  : Icons.visibility_off_outlined,
-            ),
-            onPressed: onToggleConfirmPasswordVisibility,
-          ),
+          onToggleObscureText: onToggleConfirmPasswordVisibility,
         ),
       ],
     );

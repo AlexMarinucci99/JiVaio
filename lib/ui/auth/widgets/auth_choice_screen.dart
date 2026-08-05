@@ -8,7 +8,7 @@ import 'auth_action_button.dart';
 import 'auth_login_form.dart';
 import 'auth_register_form.dart';
 import 'auth_social_buttons.dart';
-import '../theme/auth_choice_colors.dart';
+import '../theme/auth_colors.dart';
 
 /// Schermata di scelta tra accesso, registrazione e modalità ospite.
 ///
