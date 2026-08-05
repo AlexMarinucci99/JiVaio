@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../theme/settings_screen_colors.dart';
+import '../theme/settings_colors.dart';
 
 /// Singola voce visualizzata all'interno
 /// di una sezione delle impostazioni.
@@ -19,7 +19,7 @@ class SettingsTile extends StatelessWidget {
     this.showChevron = true,
     this.isDestructive = false,
     this.enabled = true,
-    this.colors = const SettingsScreenColors(),
+    this.colors = const SettingsColors(),
   });
 
   /// Icona mostrata a sinistra.
@@ -31,7 +31,7 @@ class SettingsTile extends StatelessWidget {
   /// Sottotitolo.
   final String subtitle;
 
-  /// Colore dell'icona quando la voce è abilitatà.
+  /// Colore dell'icona quando la voce è abilitata.
   final Color iconColor;
 
   /// Azione comunicata dal widget padre.
@@ -54,12 +54,21 @@ class SettingsTile extends StatelessWidget {
   final bool enabled;
 
   /// Palette di colori usata dalla voce.
-  final SettingsScreenColors colors;
+  final SettingsColors colors;
 
   @override
   Widget build(BuildContext context) {
-    final effectiveIconColor = _effectiveIconColor;
-    final effectiveTitleColor = _effectiveTitleColor;
+    final disabledColor = colors.secondaryText.withValues(alpha: 0.55);
+    final effectiveIconColor = !enabled
+        ? disabledColor
+        : isDestructive
+        ? colors.dangerAction
+        : iconColor;
+    final effectiveTitleColor = !enabled
+        ? disabledColor
+        : isDestructive
+        ? colors.dangerAction
+        : colors.titleText;
 
     return Semantics(
       button: onTap != null,
@@ -98,9 +107,7 @@ class SettingsTile extends StatelessWidget {
                     Text(
                       subtitle,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: enabled
-                            ? colors.secondaryText
-                            : colors.secondaryText.withValues(alpha: 0.55),
+                        color: enabled ? colors.secondaryText : disabledColor,
                         fontSize: 11.5,
                         height: 1.3,
                         fontWeight: FontWeight.w500,
@@ -125,29 +132,5 @@ class SettingsTile extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  Color get _effectiveIconColor {
-    if (!enabled) {
-      return colors.secondaryText.withValues(alpha: 0.55);
-    }
-
-    if (isDestructive) {
-      return colors.dangerAction;
-    }
-
-    return iconColor;
-  }
-
-  Color get _effectiveTitleColor {
-    if (!enabled) {
-      return colors.secondaryText.withValues(alpha: 0.55);
-    }
-
-    if (isDestructive) {
-      return colors.dangerAction;
-    }
-
-    return colors.titleText;
   }
 }

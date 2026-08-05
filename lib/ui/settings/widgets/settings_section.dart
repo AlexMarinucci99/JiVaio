@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../theme/settings_screen_colors.dart';
+import '../theme/settings_colors.dart';
 
 /// Raggruppa un insieme di voci appartenenti
 /// alla stessa categoria delle impostazioni.
@@ -9,7 +9,7 @@ class SettingsSection extends StatelessWidget {
     super.key,
     required this.title,
     required this.children,
-    this.colors = const SettingsScreenColors(),
+    this.colors = const SettingsColors(),
   });
 
   /// Titolo della sezione, ad esempio Account o Notifiche.
@@ -19,7 +19,7 @@ class SettingsSection extends StatelessWidget {
   final List<Widget> children;
 
   /// Colori della schermata delle impostazioni.
-  final SettingsScreenColors colors;
+  final SettingsColors colors;
 
   @override
   Widget build(BuildContext context) {
@@ -72,24 +72,11 @@ class SettingsSection extends StatelessWidget {
     );
   }
 
-  List<Widget> _buildChildrenWithDividers() {
-    final widgets = <Widget>[];
-
-    for (var index = 0; index < children.length; index++) {
-      widgets.add(children[index]);
-
-      if (index < children.length - 1) {
-        widgets.add(
-          Divider(
-            height: 1,
-            thickness: 1,
-            indent: 68,
-            color: colors.cardBorder,
-          ),
-        );
-      }
-    }
-
-    return widgets;
-  }
+  List<Widget> _buildChildrenWithDividers() => [
+    for (var index = 0; index < children.length; index++) ...[
+      if (index > 0)
+        Divider(height: 1, thickness: 1, indent: 68, color: colors.cardBorder),
+      children[index],
+    ],
+  ];
 }

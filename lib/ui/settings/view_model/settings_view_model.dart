@@ -1,55 +1,30 @@
 import '../../../domain/models/app_user.dart';
 
-/// Gestisce i dati necessari alla schermata Impostazioni.
-///
-/// Riceve il modello applicativo dell'utente e lo trasforma
-/// in informazioni direttamente utilizzabili dalla UI.
+/// Prepara i dati dell'utente per la schermata Impostazioni.
 class SettingsViewModel {
   const SettingsViewModel({required this.user});
 
-  /// Utente autenticato.
-  ///
-  /// È null quando JiVaio viene utilizzata in modalità guest.
+  /// Utente autenticato, oppure null in modalità guest.
   final AppUser? user;
 
   /// Indica se l'app è utilizzata senza autenticazione.
   bool get isGuest => user == null;
 
-  /// Le operazioni di gestione account sono disponibili
-  /// soltanto per un utente autenticato.
-  bool get canManageAccount => user != null;
-
   /// Titolo mostrato nella card superiore.
-  String get profileTitle {
-    final currentUser = user;
-
-    if (currentUser == null) {
-      return 'Modalità ospite';
-    }
-
-    final displayName = currentUser.displayName?.trim();
-
-    if (displayName != null && displayName.isNotEmpty) {
-      return displayName;
-    }
-
-    return 'Account personale';
-  }
+  String get profileTitle => isGuest
+      ? 'Modalità ospite'
+      : _valueOrFallback(user?.displayName, 'Account personale');
 
   /// Descrizione mostrata sotto il titolo della card.
-  String get profileSubtitle {
-    final currentUser = user;
+  String get profileSubtitle => isGuest
+      ? 'Accedi per personalizzare la tua esperienza.'
+      : _valueOrFallback(user?.email, 'Account autenticato');
 
-    if (currentUser == null) {
-      return 'Accedi per personalizzare la tua esperienza.';
-    }
+  static String _valueOrFallback(String? value, String fallback) {
+    final normalizedValue = value?.trim();
 
-    final email = currentUser.email?.trim();
-
-    if (email != null && email.isNotEmpty) {
-      return email;
-    }
-
-    return 'Account autenticato';
+    return normalizedValue == null || normalizedValue.isEmpty
+        ? fallback
+        : normalizedValue;
   }
 }

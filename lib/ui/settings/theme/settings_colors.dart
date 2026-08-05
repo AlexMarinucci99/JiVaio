@@ -2,12 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../../core/themes/app_colors.dart';
 
-/// Palette della schermata Impostazioni.
-///
-/// Mantiene separati i colori specifici della feature
-/// dalla struttura dei widget.
-class SettingsScreenColors {
-  const SettingsScreenColors({
+/// Palette condivisa dalla feature Impostazioni.
+class SettingsColors {
+  const SettingsColors({
     this.pageBackground = const Color(0xFFF6FAFF),
     this.gradientStart = const Color(0xFFF6FAFF),
     this.gradientEnd = const Color(0xFFF2F6FC),

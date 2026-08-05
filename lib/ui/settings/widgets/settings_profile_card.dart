@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../theme/settings_screen_colors.dart';
+import '../theme/settings_colors.dart';
 
 /// Card che mostra le informazioni principali dell'utente.
 ///
@@ -12,13 +12,13 @@ class SettingsProfileCard extends StatelessWidget {
     required this.title,
     required this.subtitle,
     required this.isGuest,
-    this.colors = const SettingsScreenColors(),
+    this.colors = const SettingsColors(),
   });
 
   final String title;
   final String subtitle;
   final bool isGuest;
-  final SettingsScreenColors colors;
+  final SettingsColors colors;
 
   @override
   Widget build(BuildContext context) {
