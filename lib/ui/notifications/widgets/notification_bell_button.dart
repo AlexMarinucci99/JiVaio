@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../theme/notification_bell_button_colors.dart';
+import '../theme/notification_colors.dart';
 
 /// Pulsante circolare per aprire e chiudere il centro notifiche.
 ///
@@ -50,15 +50,12 @@ class NotificationBellButton extends StatelessWidget {
               splashColor: colors.splashColor,
               highlightColor: colors.highlightColor,
               onTap: onPressed,
-              child: SizedBox(
-                width: 52,
-                height: 52,
-                child: Center(
-                  child: Icon(
-                    Icons.notifications_none_rounded,
-                    size: 25,
-                    color: colors.iconColor,
-                  ),
+              child: SizedBox.square(
+                dimension: 52,
+                child: Icon(
+                  Icons.notifications_none_rounded,
+                  size: 25,
+                  color: colors.iconColor,
                 ),
               ),
             ),

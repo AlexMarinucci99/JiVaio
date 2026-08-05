@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../domain/models/app_notification.dart';
-import '../theme/notification_center_panel_colors.dart';
-import '../theme/notification_item_colors.dart';
+import '../theme/notification_colors.dart';
 import 'notification_item.dart';
 
 /// Pannello flottante che visualizza il centro notifiche.
@@ -184,17 +183,11 @@ class _NotificationPanelHeader extends StatelessWidget {
     );
   }
 
-  String _unreadLabel(int unreadCount) {
-    if (unreadCount == 0) {
-      return 'Nessuna notifica non letta';
-    }
-
-    if (unreadCount == 1) {
-      return '1 notifica non letta';
-    }
-
-    return '$unreadCount notifiche non lette';
-  }
+  String _unreadLabel(int unreadCount) => switch (unreadCount) {
+    0 => 'Nessuna notifica non letta',
+    1 => '1 notifica non letta',
+    _ => '$unreadCount notifiche non lette',
+  };
 }
 
 class _NotificationPanelBody extends StatelessWidget {
@@ -232,9 +225,8 @@ class _NotificationPanelBody extends StatelessWidget {
       shrinkWrap: true,
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
       itemCount: notifications.length,
-      separatorBuilder: (context, index) {
-        return Divider(height: 1, thickness: 1, color: colors.dividerColor);
-      },
+      separatorBuilder: (_, _) =>
+          Divider(height: 1, thickness: 1, color: colors.dividerColor),
       itemBuilder: (context, index) {
         final notification = notifications[index];
 
@@ -242,9 +234,7 @@ class _NotificationPanelBody extends StatelessWidget {
           key: ValueKey(notification.id),
           notification: notification,
           colors: itemColors,
-          onTap: () {
-            onNotificationTap(notification.id);
-          },
+          onTap: () => onNotificationTap(notification.id),
         );
       },
     );
@@ -261,9 +251,8 @@ class _NotificationLoadingState extends StatelessWidget {
     return SizedBox(
       height: 150,
       child: Center(
-        child: SizedBox(
-          width: 24,
-          height: 24,
+        child: SizedBox.square(
+          dimension: 24,
           child: CircularProgressIndicator(
             strokeWidth: 2.4,
             color: colors.loadingIndicatorColor,

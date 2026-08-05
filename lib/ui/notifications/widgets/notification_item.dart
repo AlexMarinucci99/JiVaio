@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../domain/models/app_notification.dart';
-import '../theme/notification_item_colors.dart';
+import '../theme/notification_colors.dart';
 
 /// Riga riutilizzabile che visualizza una singola notifica.
 ///
@@ -26,7 +26,17 @@ class NotificationItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final visual = _visualForType(notification.type);
+    final (icon, iconColors) = switch (notification.type) {
+      AppNotificationType.delay => (Icons.schedule_rounded, colors.delayColors),
+      AppNotificationType.trip => (
+        Icons.notifications_active_rounded,
+        colors.tripColors,
+      ),
+      AppNotificationType.serviceUpdate => (
+        Icons.alt_route_rounded,
+        colors.serviceUpdateColors,
+      ),
+    };
 
     return Material(
       color: colors.transparentColor,
@@ -40,7 +50,7 @@ class NotificationItem extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _NotificationIcon(icon: visual.icon, colors: visual.colors),
+              _NotificationIcon(icon: icon, colors: iconColors),
               const SizedBox(width: 12),
               Expanded(
                 child: _NotificationContent(
@@ -58,28 +68,6 @@ class NotificationItem extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  _NotificationVisual _visualForType(AppNotificationType type) {
-    switch (type) {
-      case AppNotificationType.delay:
-        return _NotificationVisual(
-          icon: Icons.schedule_rounded,
-          colors: colors.delayColors,
-        );
-
-      case AppNotificationType.trip:
-        return _NotificationVisual(
-          icon: Icons.notifications_active_rounded,
-          colors: colors.tripColors,
-        );
-
-      case AppNotificationType.serviceUpdate:
-        return _NotificationVisual(
-          icon: Icons.alt_route_rounded,
-          colors: colors.serviceUpdateColors,
-        );
-    }
   }
 }
 
@@ -200,11 +188,4 @@ class _UnreadIndicator extends StatelessWidget {
       ),
     );
   }
-}
-
-class _NotificationVisual {
-  const _NotificationVisual({required this.icon, required this.colors});
-
-  final IconData icon;
-  final NotificationTypeColors colors;
 }

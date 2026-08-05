@@ -1,5 +1,3 @@
-import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
 
 import '../../../domain/models/app_notification.dart';
@@ -55,12 +53,12 @@ class NotificationCenterOverlay extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final panelWidth = math
-            .min(360.0, math.max(0.0, constraints.maxWidth - 36))
+        final panelWidth = (constraints.maxWidth - 36)
+            .clamp(0.0, 360.0)
             .toDouble();
 
-        final panelMaxHeight = math
-            .min(430.0, math.max(140.0, constraints.maxHeight - 130))
+        final panelMaxHeight = (constraints.maxHeight - 130)
+            .clamp(140.0, 430.0)
             .toDouble();
 
         return Stack(
@@ -70,7 +68,6 @@ class NotificationCenterOverlay extends StatelessWidget {
                 child: GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: onClosePanel,
-                  child: const SizedBox.expand(),
                 ),
               ),
 

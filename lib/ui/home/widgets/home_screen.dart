@@ -222,7 +222,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
 
-    if (state != AppLifecycleState.resumed || !_retryLocationWhenResumed) return;
+    if (state != AppLifecycleState.resumed || !_retryLocationWhenResumed)return;
 
     _retryLocationWhenResumed = false;
 

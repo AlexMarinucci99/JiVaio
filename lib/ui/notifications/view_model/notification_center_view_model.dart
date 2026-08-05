@@ -30,9 +30,8 @@ class NotificationCenterViewModel extends ChangeNotifier {
 
   String? get errorMessage => _errorMessage;
 
-  int get unreadCount {
-    return _notifications.where((notification) => !notification.isRead).length;
-  }
+  int get unreadCount =>
+      _notifications.where((notification) => !notification.isRead).length;
 
   bool get hasUnreadNotifications => unreadCount > 0;
 
@@ -105,13 +104,11 @@ class NotificationCenterViewModel extends ChangeNotifier {
     }
 
     _notifications = List<AppNotification>.unmodifiable(
-      _notifications.map((notification) {
-        if (notification.isRead) {
-          return notification;
-        }
-
-        return notification.copyWith(isRead: true);
-      }),
+      _notifications.map(
+        (notification) => notification.isRead
+            ? notification
+            : notification.copyWith(isRead: true),
+      ),
     );
 
     _notifyListenersSafely();
