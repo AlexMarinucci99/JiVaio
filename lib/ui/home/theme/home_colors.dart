@@ -88,47 +88,26 @@ class RouteSearchCardColors {
 ///
 /// Aggrega le palette dei componenti interni, mantenendo la configurazione
 /// grafica della feature in un unico file.
-class HomeScreenColors {
-  const HomeScreenColors();
+class HomeColors {
+  const HomeColors({
+    this.overlayColorStrong = const Color(0x8F0B0F3A),
+    this.overlayColorSoft = const Color(0x330B0F3A),
+    this.overlayColorTransparent = Colors.transparent,
+    this.snackBarBackgroundColor = const Color(0xFF061A3A),
+    this.snackBarTextColor = Colors.white,
+    this.mapColors = const HomeMapColors(),
+    this.locateUserButtonColors = const LocateUserButtonColors(),
+    this.routeSearchCardColors = const RouteSearchCardColors(),
+  });
 
-  final Color overlayColorStrong = const Color(0x8F0B0F3A);
-  final Color overlayColorSoft = const Color(0x330B0F3A);
-  final Color overlayColorTransparent = Colors.transparent;
+  final Color overlayColorStrong;
+  final Color overlayColorSoft;
+  final Color overlayColorTransparent;
 
-  final Color snackBarBackgroundColor = const Color(0xFF061A3A);
-  final Color snackBarTextColor = Colors.white;
+  final Color snackBarBackgroundColor;
+  final Color snackBarTextColor;
 
-  final HomeMapColors mapColors = const HomeMapColors(
-    fallbackBackgroundColor: Color(0xFFF7F9FC),
-    stopMarkerColor: Color(0xFF0B7A55),
-    stopMarkerBorderColor: Colors.white,
-    userLocationHaloColor: Color(0x332D7FF9),
-    userLocationMarkerColor: Color(0xFF2D7FF9),
-    userLocationMarkerBorderColor: Colors.white,
-  );
-
-  final LocateUserButtonColors locateUserButtonColors =
-      const LocateUserButtonColors(
-        backgroundColor: Colors.white,
-        iconColor: Color(0xFF17226B),
-        progressColor: Color(0xFF17226B),
-        shadowColor: Color(0x26000000),
-      );
-
-  final RouteSearchCardColors routeSearchCardColors =
-      const RouteSearchCardColors(
-        cardColor: Colors.white,
-        textColor: Color(0xFF20232D),
-        labelColor: Color(0xFF5C5F6D),
-        dividerColor: Color(0xFFE7E8EE),
-        activeButtonColor: Color(0xFF17226B),
-        activeButtonTextColor: Colors.white,
-        inactiveButtonColor: Color(0xFFE9E7F0),
-        inactiveTextColor: Color(0xFF4F4D59),
-        iconBackgroundColor: Color(0xFFF0F1F6),
-        iconColor: Color(0xFF59609A),
-        swapIconColor: Color(0xFF59609A),
-        hintColor: Color(0xFF777986),
-        shadowColor: Color(0x1F000000),
-      );
+  final HomeMapColors mapColors;
+  final LocateUserButtonColors locateUserButtonColors;
+  final RouteSearchCardColors routeSearchCardColors;
 }

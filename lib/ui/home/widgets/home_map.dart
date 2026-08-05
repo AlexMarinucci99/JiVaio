@@ -49,16 +49,14 @@ class HomeMap extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final currentUserLocation = userLocation;
-
+    final currentUserPoint = currentUserLocation == null
+        ? null
+        : LatLng(currentUserLocation.latitude, currentUserLocation.longitude);
     return LayoutBuilder(
       builder: (context, constraints) {
-        final hasValidSize =
-            constraints.maxWidth.isFinite &&
-            constraints.maxHeight.isFinite &&
-            constraints.maxWidth > 0 &&
-            constraints.maxHeight > 0;
+        final size = constraints.biggest;
 
-        if (!hasValidSize) {
+        if (!size.isFinite || size.isEmpty) {
           return ColoredBox(color: colors.fallbackBackgroundColor);
         }
 
@@ -100,23 +98,17 @@ class HomeMap extends StatelessWidget {
                     .toList(growable: false),
               ),
 
-            if (currentUserLocation != null)
+            if (currentUserPoint != null)
               CircleLayer(
                 circles: [
                   // Due marker sovrapposti rendono più leggibile la posizione utente.
                   CircleMarker(
-                    point: LatLng(
-                      currentUserLocation.latitude,
-                      currentUserLocation.longitude,
-                    ),
+                    point: currentUserPoint,
                     radius: 16,
                     color: colors.userLocationHaloColor,
                   ),
                   CircleMarker(
-                    point: LatLng(
-                      currentUserLocation.latitude,
-                      currentUserLocation.longitude,
-                    ),
+                    point: currentUserPoint,
                     radius: 7,
                     color: colors.userLocationMarkerColor,
                     borderColor: colors.userLocationMarkerBorderColor,

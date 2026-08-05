@@ -40,10 +40,9 @@ class _RouteSearchCardState extends State<RouteSearchCard> {
   final TextEditingController _fromController = TextEditingController();
   final TextEditingController _toController = TextEditingController();
 
-  bool get _canSearch {
-    return _fromController.text.trim().isNotEmpty &&
-        _toController.text.trim().isNotEmpty;
-  }
+  bool get _canSearch =>
+      _fromController.text.trim().isNotEmpty &&
+      _toController.text.trim().isNotEmpty;
 
   @override
   void initState() {
@@ -54,18 +53,12 @@ class _RouteSearchCardState extends State<RouteSearchCard> {
 
   @override
   void dispose() {
-    _fromController.removeListener(_refreshCard);
-    _toController.removeListener(_refreshCard);
-
     _fromController.dispose();
     _toController.dispose();
-
     super.dispose();
   }
 
-  void _refreshCard() {
-    setState(() {});
-  }
+  void _refreshCard() => setState(() {});
 
   void _swapFields() {
     final oldFrom = _fromController.text;
@@ -80,131 +73,127 @@ class _RouteSearchCardState extends State<RouteSearchCard> {
   }
 
   void _searchRoute() {
-    if (!_canSearch) {
-      return;
-    }
+    final from = _fromController.text.trim();
+    final to = _toController.text.trim();
 
-    widget.onSearch?.call(
-      _fromController.text.trim(),
-      _toController.text.trim(),
-    );
+    if (from.isEmpty || to.isEmpty) return;
+
+    widget.onSearch?.call(from, to);
   }
 
   @override
   Widget build(BuildContext context) {
     final scale = widget.contentScale;
     final colors = widget.colors;
+    final canSearch = _canSearch;
 
-    return SizedBox(
+    return Container(
       width: widget.width,
-      child: Container(
-        padding: EdgeInsets.fromLTRB(
-          14 * scale,
-          0 * scale,
-          14 * scale,
-          13 * scale,
-        ),
-        decoration: BoxDecoration(
-          color: colors.cardColor,
-          borderRadius: BorderRadius.circular(22 * scale),
-          boxShadow: [
-            BoxShadow(
-              color: colors.shadowColor,
-              blurRadius: 24 * scale,
-              offset: Offset(0, 10 * scale),
-            ),
-          ],
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Transform.translate(
-              offset: Offset(0, 10 * scale),
-              child: _SearchTextField(
-                fieldKey: const Key('route-search-from-field'),
-                label: 'Da',
-                controller: _fromController,
-                icon: Icons.navigation_rounded,
-                hintText: 'Da dove vuoi partire?',
-                scale: scale,
-                colors: colors,
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 5 * scale),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Divider(
-                      height: 28 * scale,
-                      color: colors.dividerColor,
-                    ),
-                  ),
-                  IconButton(
-                    key: const Key('route-search-swap-button'),
-                    onPressed: _swapFields,
-                    padding: EdgeInsets.zero,
-                    constraints: BoxConstraints.tightFor(
-                      width: 40 * scale,
-                      height: 40 * scale,
-                    ),
-                    icon: Icon(
-                      Icons.swap_vert_rounded,
-                      size: 20 * scale,
-                      color: colors.swapIconColor,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            _SearchTextField(
-              fieldKey: const Key('route-search-to-field'),
-              label: 'A',
-              controller: _toController,
-              icon: Icons.place_rounded,
-              hintText: 'Dove vuoi andare?',
+      padding: EdgeInsets.only(
+        left: 14 * scale,
+        right: 14 * scale,
+        bottom: 13 * scale,
+      ),
+      decoration: BoxDecoration(
+        color: colors.cardColor,
+        borderRadius: BorderRadius.circular(22 * scale),
+        boxShadow: [
+          BoxShadow(
+            color: colors.shadowColor,
+            blurRadius: 24 * scale,
+            offset: Offset(0, 10 * scale),
+          ),
+        ],
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Transform.translate(
+            offset: Offset(0, 10 * scale),
+            child: _SearchTextField(
+              fieldKey: const Key('route-search-from-field'),
+              label: 'Da',
+              controller: _fromController,
+              icon: Icons.navigation_rounded,
+              hintText: 'Da dove vuoi partire?',
               scale: scale,
               colors: colors,
             ),
-            SizedBox(height: 12 * scale),
-            SizedBox(
-              width: double.infinity,
-              height: 50 * scale,
-              child: FilledButton.icon(
-                key: const Key('route-search-submit-button'),
-                onPressed: _canSearch ? _searchRoute : null,
-                style: FilledButton.styleFrom(
-                  backgroundColor: colors.activeButtonColor,
-                  foregroundColor: colors.activeButtonTextColor,
-                  disabledBackgroundColor: colors.inactiveButtonColor,
-                  disabledForegroundColor: colors.inactiveTextColor,
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  visualDensity: VisualDensity.compact,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16 * scale),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 5 * scale),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Divider(
+                    height: 28 * scale,
+                    color: colors.dividerColor,
                   ),
                 ),
-                icon: Icon(
-                  Icons.navigation_rounded,
-                  size: 18 * scale,
-                  color: _canSearch
+                IconButton(
+                  key: const Key('route-search-swap-button'),
+                  onPressed: _swapFields,
+                  padding: EdgeInsets.zero,
+                  constraints: BoxConstraints.tightFor(
+                    width: 40 * scale,
+                    height: 40 * scale,
+                  ),
+                  icon: Icon(
+                    Icons.swap_vert_rounded,
+                    size: 20 * scale,
+                    color: colors.swapIconColor,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          _SearchTextField(
+            fieldKey: const Key('route-search-to-field'),
+            label: 'A',
+            controller: _toController,
+            icon: Icons.place_rounded,
+            hintText: 'Dove vuoi andare?',
+            scale: scale,
+            colors: colors,
+          ),
+          SizedBox(height: 12 * scale),
+          SizedBox(
+            width: double.infinity,
+            height: 50 * scale,
+            child: FilledButton.icon(
+              key: const Key('route-search-submit-button'),
+              onPressed: canSearch ? _searchRoute : null,
+              style: FilledButton.styleFrom(
+                backgroundColor: colors.activeButtonColor,
+                foregroundColor: colors.activeButtonTextColor,
+                disabledBackgroundColor: colors.inactiveButtonColor,
+                disabledForegroundColor: colors.inactiveTextColor,
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                visualDensity: VisualDensity.compact,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16 * scale),
+                ),
+              ),
+              icon: Icon(
+                Icons.navigation_rounded,
+                size: 18 * scale,
+                color: canSearch
+                    ? colors.activeButtonTextColor
+                    : colors.inactiveTextColor,
+              ),
+              label: Text(
+                'Cerca percorso',
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  fontSize: 14 * scale,
+                  fontWeight: FontWeight.w700,
+                  color: canSearch
                       ? colors.activeButtonTextColor
                       : colors.inactiveTextColor,
                 ),
-                label: Text(
-                  'Cerca percorso',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontSize: 14 * scale,
-                    fontWeight: FontWeight.w700,
-                    color: _canSearch
-                        ? colors.activeButtonTextColor
-                        : colors.inactiveTextColor,
-                  ),
-                ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

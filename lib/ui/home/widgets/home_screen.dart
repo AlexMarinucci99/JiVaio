@@ -48,7 +48,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
-  static const HomeScreenColors _colors = HomeScreenColors();
+  static const HomeColors _colors = HomeColors();
 
   late final HomeMapViewModel _viewModel;
   late final NotificationCenterViewModel _notificationViewModel;
@@ -83,11 +83,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     unawaited(_loadStops());
     unawaited(_notificationViewModel.loadNotifications());
 
-    // Il dialog dei permessipuò essere mostrato soltanto dopo il primo frame.
+    // Il dialog dei permessi può essere mostrato soltanto dopo il primo frame.
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted) {
-        return;
-      }
+      if (!mounted) return;
 
       unawaited(_locateUser());
     });
@@ -96,9 +94,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   Future<void> _loadStops() async {
     await _viewModel.loadStops();
 
-    if (!mounted || _viewModel.errorMessage == null) {
-      return;
-    }
+    if (!mounted || _viewModel.errorMessage == null) return;
 
     _showSnackBar(_viewModel.errorMessage!);
   }
@@ -106,9 +102,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   Future<void> _locateUser() async {
     final result = await _viewModel.locateUser();
 
-    if (!mounted) {
-      return;
-    }
+    if (!mounted) return;
 
     if (result == LocationAccessResult.granted) {
       _centerMapOnUser();
@@ -142,9 +136,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   void _centerMapOnUser() {
     final userLocation = _viewModel.userLocation;
 
-    if (!_isMapReady || userLocation == null) {
-      return;
-    }
+    if (!_isMapReady || userLocation == null) return;
 
     _mapController.move(
       LatLng(userLocation.latitude, userLocation.longitude),
@@ -152,71 +144,55 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     );
   }
 
-  Future<void> _showLocationServiceDialog() async {
-    await showDialog<void>(
-      context: context,
-      builder: (dialogContext) {
-        return AlertDialog(
-          title: const Text('Attiva la geolocalizzazione'),
-          content: const Text(
-            'Per mostrarti sulla mappa, JiVaio ha bisogno che '
-            'la geolocalizzazione del dispositivo sia attiva.',
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(dialogContext).pop();
-              },
-              child: const Text('Non ora'),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(dialogContext).pop();
+  Future<void> _showLocationServiceDialog() => showDialog<void>(
+    context: context,
+    builder: (dialogContext) => AlertDialog(
+      title: const Text('Attiva la geolocalizzazione'),
+      content: const Text(
+        'Per mostrarti sulla mappa, JiVaio ha bisogno che '
+        'la geolocalizzazione del dispositivo sia attiva.',
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(dialogContext).pop(),
+          child: const Text('Non ora'),
+        ),
+        TextButton(
+          onPressed: () {
+            Navigator.of(dialogContext).pop();
+            _retryLocationWhenResumed = true;
+            unawaited(_viewModel.openLocationSettings());
+          },
+          child: const Text('Apri impostazioni'),
+        ),
+      ],
+    ),
+  );
 
-                _retryLocationWhenResumed = true;
-
-                unawaited(_viewModel.openLocationSettings());
-              },
-              child: const Text('Apri impostazioni'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Future<void> _showPermissionDeniedForeverDialog() async {
-    await showDialog<void>(
-      context: context,
-      builder: (dialogContext) {
-        return AlertDialog(
-          title: const Text('Permesso necessario'),
-          content: const Text(
-            'Il permesso di geolocalizzazione è stato bloccato. '
-            'Apri le impostazioni dell’app e abilitalo manualmente.',
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(dialogContext).pop();
-              },
-              child: const Text('Annulla'),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(dialogContext).pop();
-
-                _retryLocationWhenResumed = true;
-
-                unawaited(_viewModel.openAppSettings());
-              },
-              child: const Text('Apri impostazioni'),
-            ),
-          ],
-        );
-      },
-    );
-  }
+  Future<void> _showPermissionDeniedForeverDialog() => showDialog<void>(
+    context: context,
+    builder: (dialogContext) => AlertDialog(
+      title: const Text('Permesso necessario'),
+      content: const Text(
+        'Il permesso di geolocalizzazione è stato bloccato. '
+        'Apri le impostazioni dell’app e abilitalo manualmente.',
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(dialogContext).pop(),
+          child: const Text('Annulla'),
+        ),
+        TextButton(
+          onPressed: () {
+            Navigator.of(dialogContext).pop();
+            _retryLocationWhenResumed = true;
+            unawaited(_viewModel.openAppSettings());
+          },
+          child: const Text('Apri impostazioni'),
+        ),
+      ],
+    ),
+  );
 
   void _showSnackBar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -230,29 +206,23 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     );
   }
 
-  void _openRouteResults(String origin, String destination) {
-    unawaited(
-      Navigator.of(context).push<void>(
-        MaterialPageRoute<void>(
-          builder: (_) {
-            return RouteResultsScreen(
-              repository: widget.routePlanningRepository,
-              origin: origin,
-              destination: destination,
-            );
-          },
+  void _openRouteResults(String origin, String destination) => unawaited(
+    Navigator.of(context).push<void>(
+      MaterialPageRoute<void>(
+        builder: (_) => RouteResultsScreen(
+          repository: widget.routePlanningRepository,
+          origin: origin,
+          destination: destination,
         ),
       ),
-    );
-  }
+    ),
+  );
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
 
-    if (state != AppLifecycleState.resumed || !_retryLocationWhenResumed) {
-      return;
-    }
+    if (state != AppLifecycleState.resumed || !_retryLocationWhenResumed) return;
 
     _retryLocationWhenResumed = false;
 
@@ -331,9 +301,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                 child: LocateUserButton(
                   isLoading: _viewModel.isLocating,
                   colors: _colors.locateUserButtonColors,
-                  onPressed: () {
-                    unawaited(_locateUser());
-                  },
+                  onPressed: () => unawaited(_locateUser()),
                 ),
               ),
             ),
