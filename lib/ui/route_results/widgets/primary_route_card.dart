@@ -36,36 +36,42 @@ class PrimaryRouteCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _PrimaryRouteHeader(colors: colors),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(18, 18, 18, 16),
+            child: Text(
+              'Percorso consigliato',
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                color: colors.textPrimaryColor,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+          ),
           Divider(height: 1, color: colors.borderColor),
           Padding(
             padding: const EdgeInsets.fromLTRB(18, 18, 18, 20),
             child: Column(
+              spacing: 12,
               children: [
                 _PrimaryRouteSection(
                   title: 'Partenza',
                   description: _departureDescription,
                   colors: colors,
                 ),
-                const SizedBox(height: 12),
                 _PrimaryRouteSection(
                   title: 'Fermata iniziale',
                   description: _boardingStopDescription,
                   colors: colors,
                 ),
-                const SizedBox(height: 12),
                 _PrimaryRouteSection(
                   title: 'Linea consigliata',
                   description: _recommendedLineDescription,
                   colors: colors,
                 ),
-                const SizedBox(height: 12),
                 _PrimaryRouteSection(
                   title: 'Durata stimata',
                   description: _formatDuration(result.totalDuration),
                   colors: colors,
                 ),
-                const SizedBox(height: 12),
                 _PrimaryRouteSection(
                   title: 'Arrivo',
                   description: _arrivalDescription,
@@ -167,26 +173,6 @@ class PrimaryRouteCard extends StatelessWidget {
   }
 }
 
-class _PrimaryRouteHeader extends StatelessWidget {
-  const _PrimaryRouteHeader({required this.colors});
-
-  final RouteResultsColors colors;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(18, 18, 18, 16),
-      child: Text(
-        'Percorso consigliato',
-        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-          color: colors.textPrimaryColor,
-          fontWeight: FontWeight.w800,
-        ),
-      ),
-    );
-  }
-}
-
 class _PrimaryRouteSection extends StatelessWidget {
   const _PrimaryRouteSection({
     required this.title,
@@ -202,7 +188,7 @@ class _PrimaryRouteSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
+      padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
         color: colors.accentSoftColor,
         borderRadius: BorderRadius.circular(16),

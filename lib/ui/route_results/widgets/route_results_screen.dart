@@ -35,7 +35,7 @@ class RouteResultsScreen extends StatefulWidget {
 
 class _RouteResultsScreenState extends State<RouteResultsScreen> {
   late final RouteResultsViewModel _viewModel;
-  final RouteResultsColors _colors = const RouteResultsColors();
+  static const RouteResultsColors _colors = RouteResultsColors();
 
   @override
   void initState() {
@@ -96,19 +96,10 @@ class _RouteResultsScreenState extends State<RouteResultsScreen> {
 
     final errorMessage = _viewModel.errorMessage;
 
-    if (errorMessage != null) {
+    if (errorMessage != null || result == null) {
       return _ErrorRouteResultsView(
         colors: _colors,
-        message: errorMessage,
-        onBack: _handleBack,
-        onRetry: _viewModel.loadRoute,
-      );
-    }
-
-    if (result == null) {
-      return _ErrorRouteResultsView(
-        colors: _colors,
-        message: 'Nessun percorso disponibile.',
+        message: errorMessage ?? 'Nessun percorso disponibile.',
         onBack: _handleBack,
         onRetry: _viewModel.loadRoute,
       );
@@ -143,7 +134,7 @@ class _LoadedRouteResultsView extends StatelessWidget {
         RouteResultsHeader(result: result, colors: colors, onBack: onBack),
         Expanded(
           child: ListView(
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+            padding: const EdgeInsets.all(20),
             children: [PrimaryRouteCard(result: result, colors: colors)],
           ),
         ),
@@ -172,10 +163,10 @@ class _LoadingRouteResultsView extends StatelessWidget {
     return SafeArea(
       child: Center(
         child: Column(
+          spacing: 18,
           mainAxisSize: MainAxisSize.min,
           children: [
             CircularProgressIndicator(color: colors.accentColor),
-            const SizedBox(height: 18),
             Text(
               'Caricamento percorso...',
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(

@@ -40,9 +40,11 @@ class RouteResultsHeader extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.fromLTRB(20, 18, 20, 24),
           child: Column(
+            spacing: 18,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
+                spacing: 14,
                 children: [
                   Material(
                     color: colors.backButtonBackgroundColor,
@@ -56,7 +58,6 @@ class RouteResultsHeader extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 14),
                   Expanded(
                     child: Text(
                       'Risultati percorso',
@@ -68,7 +69,6 @@ class RouteResultsHeader extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 18),
               _RouteSummaryCard(result: result, colors: colors),
             ],
           ),
@@ -104,7 +104,6 @@ class _RouteSummaryCard extends StatelessWidget {
             border: Border.all(color: colors.summaryCardBorderColor),
           ),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Expanded(
                 child: _SummaryLocations(result: result, colors: colors),
@@ -136,6 +135,7 @@ class _SummaryLocations extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      spacing: 14,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _SummaryLocationText(
@@ -143,7 +143,6 @@ class _SummaryLocations extends StatelessWidget {
           value: result.origin,
           colors: colors,
         ),
-        const SizedBox(height: 14),
         _SummaryLocationText(
           label: 'Destinazione',
           value: result.destination,
@@ -168,6 +167,7 @@ class _SummaryLocationText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      spacing: 3,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
@@ -177,7 +177,6 @@ class _SummaryLocationText extends StatelessWidget {
             fontWeight: FontWeight.w600,
           ),
         ),
-        const SizedBox(height: 3),
         Text(
           value,
           maxLines: 2,
