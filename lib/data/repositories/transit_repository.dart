@@ -68,14 +68,7 @@ class TransitRepository {
         continue;
       }
 
-      mapStops.add(
-        TransitStop(
-          stopId: stopId,
-          name: gtfsStopName(rawStop),
-          latitude: latitude,
-          longitude: longitude,
-        ),
-      );
+      mapStops.add(TransitStop(latitude: latitude, longitude: longitude));
     }
 
     final result = List<TransitStop>.unmodifiable(mapStops);
@@ -192,7 +185,6 @@ class TransitRepository {
         })
         .toList(growable: false);
 
-    final hourStart = DateTime(now.year, now.month, now.day, now.hour);
     final rangeStartMinutes = now.hour * 60;
     final rangeEndMinutes = rangeStartMinutes + 60;
 
@@ -222,9 +214,9 @@ class TransitRepository {
           );
 
     return TransitLineDirectionSchedule(
-      routeId: line.routeId,
-      directionKey: direction.key,
-      timeRangeLabel: gtfsFormatHourRange(hourStart),
+      timeRangeLabel:
+          '${now.hour.toString().padLeft(2, '0')}:00 - '
+          '${(now.hour + 1).toString().padLeft(2, '0')}:00',
       departures: departures,
       stops: stops,
       selectedTripId: selectedTripId,
@@ -373,7 +365,6 @@ class TransitRepository {
           return TransitLineStop(
             stopId: stopId,
             name: gtfsStopName(stop),
-            sequence: gtfsIntValue(stopTime, 'stop_sequence'),
             officialTime: includeOfficialTimes
                 ? gtfsFormatTime(gtfsStringValue(stopTime, 'arrival_time'))
                 : null,

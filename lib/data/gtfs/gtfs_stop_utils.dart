@@ -13,18 +13,8 @@ String gtfsStopName(GtfsRawMap? stop) {
     return 'Fermata non disponibile';
   }
 
-  return gtfsNormalizeStopName(name);
-}
-
-/// Normalizza il nome di una fermata GTFS.
-String gtfsNormalizeStopName(String value) {
-  final lower = value.toLowerCase();
-
-  if (lower.isEmpty) {
-    return value;
-  }
-
-  return lower
+  return name
+      .toLowerCase()
       .split(' ')
       .where((part) => part.trim().isNotEmpty)
       .map((part) {

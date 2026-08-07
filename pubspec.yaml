@@ -63,7 +63,12 @@ flutter:
   assets:
     - assets/onboarding/
     - assets/icon/
-    - assets/gtfs/raw/
+    - assets/gtfs/raw/calendar.json
+    - assets/gtfs/raw/calendar_dates.json
+    - assets/gtfs/raw/routes.json
+    - assets/gtfs/raw/stops.json
+    - assets/gtfs/raw/stop_times.json
+    - assets/gtfs/raw/trips.json
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

@@ -10,11 +10,9 @@ Map<String, List<GtfsRawMap>> gtfsGroupBy(List<GtfsRawMap> rows, String key) {
   for (final row in rows) {
     final value = gtfsStringValue(row, key);
 
-    if (value.isEmpty) {
-      continue;
+    if (value.isNotEmpty) {
+      grouped.putIfAbsent(value, () => <GtfsRawMap>[]).add(row);
     }
-
-    grouped.putIfAbsent(value, () => <GtfsRawMap>[]).add(row);
   }
 
   return grouped;
@@ -27,11 +25,9 @@ Map<String, GtfsRawMap> gtfsMapById(List<GtfsRawMap> rows, String key) {
   for (final row in rows) {
     final value = gtfsStringValue(row, key);
 
-    if (value.isEmpty) {
-      continue;
+    if (value.isNotEmpty) {
+      mapped[value] = row;
     }
-
-    mapped[value] = row;
   }
 
   return mapped;
@@ -44,12 +40,12 @@ Map<String, List<GtfsRawMap>> gtfsGroupStopTimesByTrip(
   final grouped = gtfsGroupBy(stopTimes, 'trip_id');
 
   for (final entry in grouped.entries) {
-    entry.value.sort((a, b) {
-      return gtfsIntValue(
+    entry.value.sort(
+      (a, b) => gtfsIntValue(
         a,
         'stop_sequence',
-      ).compareTo(gtfsIntValue(b, 'stop_sequence'));
-    });
+      ).compareTo(gtfsIntValue(b, 'stop_sequence')),
+    );
   }
 
   return grouped;

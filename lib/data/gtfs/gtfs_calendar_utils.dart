@@ -9,23 +9,10 @@ bool gtfsIsTripActiveOnDate({
   required DateTime date,
 }) {
   final serviceId = gtfsStringValue(trip, 'service_id');
-
-  return gtfsIsServiceActiveOnDate(
-    serviceId: serviceId,
-    calendar: calendar,
-    calendarDates: calendarDates,
-    date: date,
-  );
-}
-
-/// Verifica se un servizio GTFS è attivo nella data [date].
-bool gtfsIsServiceActiveOnDate({
-  required String serviceId,
-  required List<GtfsRawMap> calendar,
-  required List<GtfsRawMap> calendarDates,
-  required DateTime date,
-}) {
-  final dateKey = gtfsFormatDate(date);
+  final dateKey =
+      '${date.year.toString().padLeft(4, '0')}'
+      '${date.month.toString().padLeft(2, '0')}'
+      '${date.day.toString().padLeft(2, '0')}';
 
   for (final calendarDate in calendarDates) {
     if (gtfsStringValue(calendarDate, 'service_id') != serviceId) {
@@ -67,6 +54,15 @@ bool gtfsIsServiceActiveOnDate({
     return false;
   }
 
-  final weekdayKey = gtfsWeekdayKey(date);
-  return gtfsStringValue(calendarRow, weekdayKey) == '1';
+  return gtfsStringValue(calendarRow, _weekdayKeys[date.weekday - 1]) == '1';
 }
+
+const _weekdayKeys = [
+  'monday',
+  'tuesday',
+  'wednesday',
+  'thursday',
+  'friday',
+  'saturday',
+  'sunday',
+];

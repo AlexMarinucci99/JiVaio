@@ -27,8 +27,6 @@ class TransitLine {
   /// Direzioni disponibili per la linea.
   final List<TransitLineDirection> directions;
 
-  TransitLineDirection get primaryDirection => directions.first;
-
   /// Indica se la linea viene trattata come monodirezionale nel prototipo.
   bool get isUnidirectional =>
       const {'2U', '2UT'}.contains(shortName.trim().toUpperCase());
@@ -74,20 +72,12 @@ class TransitLineDirection {
 /// Raccoglie orari e fermate per una specifica direzione.
 class TransitLineDirectionSchedule {
   const TransitLineDirectionSchedule({
-    required this.routeId,
-    required this.directionKey,
     required this.timeRangeLabel,
     required this.departures,
     required this.stops,
     this.selectedTripId,
     this.hasServiceToday = true,
   });
-
-  /// Identificativo della linea associata allo schedule.
-  final String routeId;
-
-  /// Chiave della direzione selezionata.
-  final String directionKey;
 
   /// Fascia oraria mostrata nella sezione partenze.
   final String timeRangeLabel;
@@ -103,10 +93,6 @@ class TransitLineDirectionSchedule {
 
   /// Indica se la linea ha servizio nella giornata corrente.
   final bool hasServiceToday;
-
-  bool get hasDepartures => departures.isNotEmpty;
-
-  bool get hasStops => stops.isNotEmpty;
 
   /// Restituisce il messaggio da mostrare quando non ci sono corse.
   String get emptyDeparturesMessage => hasServiceToday
@@ -133,7 +119,6 @@ class TransitLineStop {
   const TransitLineStop({
     required this.stopId,
     required this.name,
-    required this.sequence,
     this.officialTime,
   });
 
@@ -142,9 +127,6 @@ class TransitLineStop {
 
   /// Nome della fermata mostrato nella timeline.
   final String name;
-
-  /// Posizione della fermata nella sequenza della direzione.
-  final int sequence;
 
   /// Orario ufficiale della fermata per la corsa selezionata.
   final String? officialTime;
