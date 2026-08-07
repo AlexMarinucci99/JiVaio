@@ -97,11 +97,6 @@ class LineCardHeader extends StatelessWidget {
     );
   }
 
-  String _stopCountLabel(int count) {
-    if (count == 1) {
-      return '1 fermata';
-    }
-
-    return '$count fermate';
-  }
+  String _stopCountLabel(int count) =>
+      count == 1 ? '1 fermata' : '$count fermate';
 }

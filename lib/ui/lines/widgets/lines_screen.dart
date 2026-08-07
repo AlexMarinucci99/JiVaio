@@ -127,7 +127,7 @@ class _LinesScreenState extends State<LinesScreen> {
                           'Elenco Linee',
                           style: Theme.of(context).textTheme.headlineSmall
                               ?.copyWith(
-                                color: _colors.titleText,
+                                color: _colors.primaryText,
                                 fontSize: 22,
                                 fontWeight: FontWeight.w800,
                               ),
@@ -180,17 +180,31 @@ class _LinesScreenState extends State<LinesScreen> {
     }
 
     if (_viewModel.errorMessage != null && _viewModel.allLines.isEmpty) {
-      return _ErrorLinesArea(
+      return _LinesStateArea(
+        key: const ValueKey('lines-error-state'),
+        title: 'Errore caricamento linee',
         message: _viewModel.errorMessage!,
-        onRetry: _viewModel.loadLines,
         colors: _colors,
+        action: FilledButton(
+          onPressed: _viewModel.loadLines,
+          child: const Text('Riprova'),
+        ),
       );
     }
 
     final lines = _viewModel.visibleLines;
 
     if (lines.isEmpty) {
-      return _SavedLinesEmptyArea(isGuest: widget.isGuest, colors: _colors);
+      return _LinesStateArea(
+        key: const ValueKey('lines-empty-state'),
+        title: widget.isGuest
+            ? 'Preferiti disponibili dopo l’accesso'
+            : 'Nessuna linea salvata',
+        message: widget.isGuest
+            ? 'Accedi o registrati per salvare le linee che usi più spesso.'
+            : 'Tocca il cuore su una linea nella tab Tutte per ritrovarla qui.',
+        colors: _colors,
+      );
     }
 
     return ListView.separated(
@@ -213,32 +227,37 @@ class _LinesScreenState extends State<LinesScreen> {
   }
 }
 
-class _ErrorLinesArea extends StatelessWidget {
-  const _ErrorLinesArea({
+class _LinesStateArea extends StatelessWidget {
+  const _LinesStateArea({
+    super.key,
+    required this.title,
     required this.message,
-    required this.onRetry,
     required this.colors,
+    this.action,
   });
 
+  final String title;
   final String message;
-  final Future<void> Function() onRetry;
   final LinesScreenColors colors;
+  final Widget? action;
 
   @override
   Widget build(BuildContext context) {
+    final action = this.action;
+
     return ListView(
       physics: const AlwaysScrollableScrollPhysics(),
       padding: const EdgeInsets.fromLTRB(22, 32, 22, 120),
       children: [
         Container(
-          padding: const EdgeInsets.fromLTRB(18, 18, 18, 18),
+          padding: const EdgeInsets.all(18),
           decoration: BoxDecoration(
-            color: colors.cardBackground,
+            color: colors.stateCardBackground,
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: colors.cardBorder),
+            border: Border.all(color: colors.stateCardBorder),
             boxShadow: [
               BoxShadow(
-                color: colors.cardShadow.withValues(alpha: 0.06),
+                color: colors.stateCardShadow.withValues(alpha: 0.06),
                 blurRadius: 18,
                 offset: const Offset(0, 8),
               ),
@@ -248,9 +267,9 @@ class _ErrorLinesArea extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Errore caricamento linee',
+                title,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: colors.titleText,
+                  color: colors.primaryText,
                   fontSize: 14,
                   fontWeight: FontWeight.w800,
                 ),
@@ -264,91 +283,14 @@ class _ErrorLinesArea extends StatelessWidget {
                   height: 1.5,
                 ),
               ),
-              const SizedBox(height: 14),
-              FilledButton(onPressed: onRetry, child: const Text('Riprova')),
+              if (action != null) ...[
+                const SizedBox(height: 14),
+                action,
+              ],
             ],
           ),
         ),
       ],
-    );
-  }
-}
-
-class _SavedLinesEmptyArea extends StatelessWidget {
-  const _SavedLinesEmptyArea({required this.isGuest, required this.colors});
-
-  final bool isGuest;
-  final LinesScreenColors colors;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView(
-      physics: const AlwaysScrollableScrollPhysics(),
-      padding: const EdgeInsets.fromLTRB(22, 32, 22, 120),
-      children: [
-        _MessageCard(
-          title: isGuest
-              ? 'Preferiti disponibili dopo l’accesso'
-              : 'Nessuna linea salvata',
-          body: isGuest
-              ? 'Accedi o registrati per salvare le linee che usi più spesso.'
-              : 'Tocca il cuore su una linea nella tab Tutte per ritrovarla qui.',
-          colors: colors,
-        ),
-      ],
-    );
-  }
-}
-
-class _MessageCard extends StatelessWidget {
-  const _MessageCard({
-    required this.title,
-    required this.body,
-    required this.colors,
-  });
-
-  final String title;
-  final String body;
-  final LinesScreenColors colors;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(18, 18, 18, 18),
-      decoration: BoxDecoration(
-        color: colors.cardBackground,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: colors.cardBorder),
-        boxShadow: [
-          BoxShadow(
-            color: colors.cardShadow.withValues(alpha: 0.06),
-            blurRadius: 18,
-            offset: const Offset(0, 8),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            title,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              color: colors.titleText,
-              fontSize: 14,
-              fontWeight: FontWeight.w800,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            body,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: colors.secondaryText,
-              fontSize: 12.5,
-              height: 1.5,
-            ),
-          ),
-        ],
-      ),
     );
   }
 }

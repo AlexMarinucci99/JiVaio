@@ -13,7 +13,6 @@ class LineDetailRouteSection extends StatelessWidget {
   const LineDetailRouteSection({
     super.key,
     required this.stops,
-    required this.lineColor,
     required this.selectedStopId,
     required this.isStopSelectionEnabled,
     required this.onStopSelected,
@@ -22,8 +21,6 @@ class LineDetailRouteSection extends StatelessWidget {
 
   /// Fermate ordinate della direzione visualizzata.
   final List<TransitLineStop> stops;
-
-  final Color lineColor;
 
   /// Identificativo della fermata selezionata.
   ///
@@ -40,6 +37,8 @@ class LineDetailRouteSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
     return Container(
       decoration: LineCardColors.cardDecoration(colors: colors),
       padding: const EdgeInsets.fromLTRB(14, 14, 14, 6),
@@ -48,7 +47,7 @@ class LineDetailRouteSection extends StatelessWidget {
         children: [
           Text(
             'Elenco fermate',
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+            style: textTheme.titleMedium?.copyWith(
               color: colors.primaryText,
               fontSize: 13,
               fontWeight: FontWeight.w800,
@@ -57,7 +56,7 @@ class LineDetailRouteSection extends StatelessWidget {
           const SizedBox(height: 5),
           Text(
             'Fermate ordinate della tratta selezionata.',
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+            style: textTheme.bodySmall?.copyWith(
               color: colors.secondaryText,
               fontSize: 12,
               height: 1.35,
@@ -65,25 +64,19 @@ class LineDetailRouteSection extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 14),
-          if (stops.isEmpty)
-            _EmptyRouteBox(colors: colors)
-          else
-            ...stops.asMap().entries.map((entry) {
-              final index = entry.key;
-              final stop = entry.value;
-
-              return LineDetailStopTile(
-                key: ValueKey('route-stop-$index-${stop.stopId}'),
-                stop: stop,
-                lineColor: lineColor,
-                isFirst: index == 0,
-                isLast: index == stops.length - 1,
-                isSelected: selectedStopId == stop.stopId,
-                isSelectionEnabled: isStopSelectionEnabled,
-                onTap: () => onStopSelected(stop.stopId),
-                colors: colors,
-              );
-            }),
+          if (stops.isEmpty) const _EmptyRouteBox(),
+          for (final (index, stop) in stops.indexed)
+            LineDetailStopTile(
+              key: ValueKey('route-stop-$index-${stop.stopId}'),
+              stop: stop,
+              isFirst: index == 0,
+              isLast: index == stops.length - 1,
+              isSelected: selectedStopId == stop.stopId,
+              onTap: isStopSelectionEnabled
+                  ? () => onStopSelected(stop.stopId)
+                  : null,
+              colors: colors,
+            ),
         ],
       ),
     );
@@ -91,15 +84,13 @@ class LineDetailRouteSection extends StatelessWidget {
 }
 
 class _EmptyRouteBox extends StatelessWidget {
-  const _EmptyRouteBox({required this.colors});
-
-  final LineCardPalette colors;
+  const _EmptyRouteBox();
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(12, 11, 12, 11),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 11),
       decoration: BoxDecoration(
         color: LineDetailColors.warningSurface,
         borderRadius: BorderRadius.circular(14),
@@ -107,7 +98,7 @@ class _EmptyRouteBox extends StatelessWidget {
       child: Text(
         'Fermate non disponibili per questa direzione.',
         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-          color: const Color.fromARGB(255, 4, 11, 117),
+          color: LineDetailColors.emptyRouteText,
           fontSize: 12,
           height: 1.35,
           fontWeight: FontWeight.w600,

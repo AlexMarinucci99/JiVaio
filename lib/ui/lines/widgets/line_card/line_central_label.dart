@@ -32,6 +32,7 @@ class LineCentralLabel extends StatelessWidget {
     final isEnd = crossAxisAlignment == CrossAxisAlignment.end;
 
     return Column(
+      spacing: 3,
       crossAxisAlignment: crossAxisAlignment,
       children: [
         Text(
@@ -43,9 +44,6 @@ class LineCentralLabel extends StatelessWidget {
             fontWeight: FontWeight.w800,
           ),
         ),
-
-        const SizedBox(height: 3),
-
         Text(
           value,
           maxLines: 1,

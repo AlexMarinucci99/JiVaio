@@ -11,7 +11,6 @@ import '../../theme/line_detail_colors.dart';
 class LineDetailDeparturesCard extends StatelessWidget {
   const LineDetailDeparturesCard({
     super.key,
-
     required this.selectedTimeRange,
     required this.departures,
     required this.selectedTripId,
@@ -44,37 +43,36 @@ class LineDetailDeparturesCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final departureAccent = colors.listAccent;
+    final textTheme = Theme.of(context).textTheme;
 
-    final textOnDepartureAccent = LineCardColors.textOn(
-      departureAccent,
+    final sectionLabelStyle = textTheme.labelLarge?.copyWith(
+      color: colors.mutedText,
+      fontSize: 10.2,
+      fontWeight: FontWeight.w700,
+      letterSpacing: 0.5,
+    );
+
+    final selectedDepartureTextColor = LineCardColors.textOn(
+      colors.listAccent,
       colors: colors,
     );
 
     return Container(
       decoration: LineCardColors.cardDecoration(colors: colors),
-      padding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
+      padding: const EdgeInsets.all(14),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             'Prossime partenze',
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+            style: textTheme.titleMedium?.copyWith(
               color: colors.primaryText,
               fontSize: 13,
               fontWeight: FontWeight.w800,
             ),
           ),
           const SizedBox(height: 12),
-          Text(
-            'Fascia oraria',
-            style: Theme.of(context).textTheme.labelLarge?.copyWith(
-              color: colors.mutedText,
-              fontSize: 10.2,
-              fontWeight: FontWeight.w700,
-              letterSpacing: 0.5,
-            ),
-          ),
+          Text('Fascia oraria', style: sectionLabelStyle),
           const SizedBox(height: 6),
           _TimeRangeSelector(
             colors: colors,
@@ -82,40 +80,28 @@ class LineDetailDeparturesCard extends StatelessWidget {
             onTap: onSelectTimeRange,
           ),
           const SizedBox(height: 12),
-          Text(
-            'Corse disponibili',
-            style: Theme.of(context).textTheme.labelLarge?.copyWith(
-              color: colors.mutedText,
-              fontSize: 10.2,
-              fontWeight: FontWeight.w700,
-              letterSpacing: 0.5,
-            ),
-          ),
+          Text('Corse disponibili', style: sectionLabelStyle),
           const SizedBox(height: 8),
           if (isLoading)
-            const _DeparturesLoadingBox()
+            _departuresLoadingBox
           else if (departures.isEmpty)
-            _EmptyDeparturesBox(message: emptyMessage, colors: colors)
+            _EmptyDeparturesBox(message: emptyMessage)
           else
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
-                children: departures
-                    .map((departure) {
-                      final isSelected = departure.tripId == selectedTripId;
-
-                      return Padding(
-                        padding: const EdgeInsets.only(right: 8),
-                        child: _DepartureChip(
-                          label: departure.departureTime,
-                          isSelected: isSelected,
-                          accentColor: departureAccent,
-                          selectedTextColor: textOnDepartureAccent,
-                          colors: colors,
-                        ),
-                      );
-                    })
-                    .toList(growable: false),
+                children: [
+                  for (final departure in departures)
+                    Padding(
+                      padding: const EdgeInsets.only(right: 8),
+                      child: _DepartureChip(
+                        label: departure.departureTime,
+                        isSelected: departure.tripId == selectedTripId,
+                        selectedTextColor: selectedDepartureTextColor,
+                        colors: colors,
+                      ),
+                    ),
+                ],
               ),
             ),
         ],
@@ -137,17 +123,18 @@ class _TimeRangeSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const borderRadius = BorderRadius.all(Radius.circular(16));
     return Material(
       color: LineDetailColors.softSurface,
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: borderRadius,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: borderRadius,
         child: Ink(
           width: double.infinity,
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: borderRadius,
             border: Border.all(color: colors.border),
           ),
           child: Row(
@@ -185,19 +172,19 @@ class _DepartureChip extends StatelessWidget {
   const _DepartureChip({
     required this.label,
     required this.isSelected,
-    required this.accentColor,
     required this.selectedTextColor,
     required this.colors,
   });
 
   final String label;
   final bool isSelected;
-  final Color accentColor;
   final Color selectedTextColor;
   final LineCardPalette colors;
 
   @override
   Widget build(BuildContext context) {
+    final accentColor = colors.listAccent;
+
     final backgroundColor = isSelected
         ? accentColor
         : accentColor.withValues(alpha: 0.08);
@@ -227,36 +214,28 @@ class _DepartureChip extends StatelessWidget {
   }
 }
 
-class _DeparturesLoadingBox extends StatelessWidget {
-  const _DeparturesLoadingBox();
-
-  @override
-  Widget build(BuildContext context) {
-    return const SizedBox(
-      height: 38,
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: SizedBox(
-          width: 22,
-          height: 22,
-          child: CircularProgressIndicator(strokeWidth: 2.4),
-        ),
-      ),
-    );
-  }
-}
+const _departuresLoadingBox = SizedBox(
+  height: 38,
+  child: Align(
+    alignment: Alignment.centerLeft,
+    child: SizedBox(
+      width: 22,
+      height: 22,
+      child: CircularProgressIndicator(strokeWidth: 2.4),
+    ),
+  ),
+);
 
 class _EmptyDeparturesBox extends StatelessWidget {
-  const _EmptyDeparturesBox({required this.message, required this.colors});
+  const _EmptyDeparturesBox({required this.message});
 
   final String message;
-  final LineCardPalette colors;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(12, 11, 12, 11),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 11),
       decoration: BoxDecoration(
         color: LineDetailColors.warningSurface,
         borderRadius: BorderRadius.circular(14),
@@ -264,7 +243,7 @@ class _EmptyDeparturesBox extends StatelessWidget {
       child: Text(
         message,
         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-          color: const Color.fromARGB(255, 56, 4, 139),
+          color: LineDetailColors.emptyDeparturesText,
           fontSize: 12,
           height: 1.35,
           fontWeight: FontWeight.w600,

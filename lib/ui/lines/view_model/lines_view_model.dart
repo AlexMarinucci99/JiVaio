@@ -56,15 +56,11 @@ class LinesViewModel extends ChangeNotifier {
   int get savedLinesCount => _savedLineIds.length;
 
   /// Linee da mostrare in base all'ambito selezionato.
-  List<TransitLine> get visibleLines {
-    if (_scope == LinesScope.all) {
-      return _lines;
-    }
-
-    return _lines
-        .where((line) => _savedLineIds.contains(line.routeId))
-        .toList(growable: false);
-  }
+  List<TransitLine> get visibleLines => _scope == LinesScope.all
+      ? _lines
+      : _lines
+            .where((line) => _savedLineIds.contains(line.routeId))
+            .toList(growable: false);
 
   /// Sottotitolo descrittivo mostrato nella schermata.
   String get subtitle {
@@ -77,22 +73,18 @@ class LinesViewModel extends ChangeNotifier {
     }
 
     if (_scope == LinesScope.saved) {
-      if (savedLinesCount == 0) {
-        return 'Salva le linee che usi di più per ritrovarle qui.';
-      }
-
-      return savedLinesCount == 1
-          ? '1 linea salvata'
-          : '$savedLinesCount linee salvate';
+      return switch (savedLinesCount) {
+        0 => 'Salva le linee che usi di più per ritrovarle qui.',
+        1 => '1 linea salvata',
+        final count => '$count linee salvate',
+      };
     }
 
     return 'Consulta tutte le linee disponibili e apri dettaglio completo';
   }
 
   /// Indica se la linea [routeId] è salvata dall'utente.
-  bool isLineSaved(String routeId) {
-    return _savedLineIds.contains(routeId);
-  }
+  bool isLineSaved(String routeId) => _savedLineIds.contains(routeId);
 
   /// Carica l'elenco delle linee disponibili.
   Future<void> loadLines() async {
@@ -135,14 +127,12 @@ class LinesViewModel extends ChangeNotifier {
       return false;
     }
 
-    if (_pendingSavedLineIds.contains(routeId)) {
+    if (!_pendingSavedLineIds.add(routeId)) {
       return true;
     }
 
     final wasSaved = _savedLineIds.contains(routeId);
     final shouldSave = !wasSaved;
-
-    _pendingSavedLineIds.add(routeId);
     _setSavedLocally(routeId: routeId, isSaved: shouldSave);
     notifyListeners();
 
@@ -187,10 +177,9 @@ class LinesViewModel extends ChangeNotifier {
   void _setSavedLocally({required String routeId, required bool isSaved}) {
     if (isSaved) {
       _savedLineIds.add(routeId);
-      return;
+    } else {
+      _savedLineIds.remove(routeId);
     }
-
-    _savedLineIds.remove(routeId);
   }
 
   @override

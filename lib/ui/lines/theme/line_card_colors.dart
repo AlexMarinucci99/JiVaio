@@ -13,6 +13,9 @@ class LineCardPalette {
     this.primaryText = const Color(0xFF191970),
     this.secondaryText = const Color(0xFF5D6675),
     this.mutedText = const Color(0xFF8A94A6),
+    this.directionButtonBackground = const Color.fromARGB(31, 241, 3, 15),
+    this.directionButtonForeground = const Color(0xFF2F80ED),
+    this.directionButtonDisabledForeground = const Color(0xFF8A94A6),
     this.pillBackground = const Color(0xFFF5F7FB),
     this.savedHeart = const Color(0xFFEF4444),
     this.labelAccent = const Color(0xFF2F80ED),
@@ -40,6 +43,15 @@ class LineCardPalette {
   /// Colore testo meno importante.
   final Color mutedText;
 
+  /// Sfondo del controllo per il cambio di direzione.
+  final Color directionButtonBackground;
+
+  /// Colore dell'icona quando il controllo è evidenziato.
+  final Color directionButtonForeground;
+
+  /// Colore dell'icona quando lo swap non è disponibile.
+  final Color directionButtonDisabledForeground;
+
   /// Sfondo delle pill informative.
   final Color pillBackground;
 
@@ -60,21 +72,8 @@ class LineCardPalette {
 class LineCardColors {
   const LineCardColors._();
 
-  ///Palette predefinita delle card linee.
-  ///Master da modificare in futuro.
+  /// Palette predefinita condivisa dalla feature linee.
   static const LineCardPalette defaultPalette = LineCardPalette();
-
-  /// Compatibilità con il codice già esistente.
-  static const Color defaultLineColor = Color(0xFF2F80ED);
-  static const Color surface = Colors.white;
-  static const Color border = Color(0xFFE5EAF2);
-  static const Color primaryText = Color(0xFF111827);
-  static const Color secondaryText = Color(0xFF5D6675);
-  static const Color mutedText = Color(0xFF8A94A6);
-  static const Color pillBackground = Color(0xFFF5F7FB);
-  static const Color savedHeart = Color(0xFFEF4444);
-  static const Color labelAccent = Color(0xFF2F80ED);
-  static const Color shadowBase = Color(0xFF0F172A);
 
   /// Converte un colore GTFS esadecimale in un [Color] Flutter.
   ///
@@ -95,7 +94,7 @@ class LineCardColors {
     }
   }
 
-  ///Restituisce un colore di testo leggibile su [backgroundColor].
+  /// Restituisce un colore di testo leggibile su [backgroundColor].
   static Color textOn(Color backgroundColor, {LineCardPalette? colors}) {
     final palette = colors ?? defaultPalette;
 

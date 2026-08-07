@@ -40,9 +40,8 @@ class LineCard extends StatefulWidget {
 class _LineCardState extends State<LineCard> {
   int _selectedDirectionIndex = 0;
 
-  TransitLineDirection get _selectedDirection {
-    return widget.line.directions[_selectedDirectionIndex];
-  }
+  TransitLineDirection get _selectedDirection =>
+      widget.line.directions[_selectedDirectionIndex];
 
   void _toggleDirection() {
     if (widget.line.directions.length < 2) {
@@ -58,12 +57,8 @@ class _LineCardState extends State<LineCard> {
   void didUpdateWidget(covariant LineCard oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    if (oldWidget.line.routeId != widget.line.routeId) {
-      _selectedDirectionIndex = 0;
-      return;
-    }
-
-    if (_selectedDirectionIndex >= widget.line.directions.length) {
+    if (oldWidget.line.routeId != widget.line.routeId ||
+        _selectedDirectionIndex >= widget.line.directions.length) {
       _selectedDirectionIndex = 0;
     }
   }
@@ -74,26 +69,22 @@ class _LineCardState extends State<LineCard> {
       widget.line.routeColor,
       colors: widget.colors,
     );
-
     final direction = _selectedDirection;
 
     return Container(
       decoration: LineCardColors.cardDecoration(colors: widget.colors),
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
+        padding: const EdgeInsets.all(14),
         child: Column(
+          spacing: 14,
           children: [
             LineCardHeader(
               line: widget.line,
               direction: direction,
-
               isSaved: widget.isSaved,
               onToggleSaved: widget.onToggleSaved,
               colors: widget.colors,
             ),
-
-            const SizedBox(height: 14),
-
             LineRoutePreview(
               line: widget.line,
               direction: direction,

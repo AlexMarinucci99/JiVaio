@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../../../../domain/models/transit_line.dart';
 import '../../theme/line_card_colors.dart';
+import '../../theme/line_detail_colors.dart';
+
+const _routeAccentColor = LineDetailColors.routeAccent;
 
 /// Tile che rappresenta una fermata nel dettaglio linea.
 ///
@@ -11,11 +14,9 @@ class LineDetailStopTile extends StatelessWidget {
   const LineDetailStopTile({
     super.key,
     required this.stop,
-    required this.lineColor,
     required this.isFirst,
     required this.isLast,
     required this.isSelected,
-    required this.isSelectionEnabled,
     required this.onTap,
     this.colors = LineCardColors.defaultPalette,
   });
@@ -23,50 +24,51 @@ class LineDetailStopTile extends StatelessWidget {
   /// Fermata mostrata nella tile.
   final TransitLineStop stop;
 
-  final Color lineColor;
-
-  /// Indica se la fermata è la prima della direzione
+  /// Indica se la fermata è la prima della direzione.
   final bool isFirst;
 
-  /// ultima in direzione
+  /// Indica se la fermata è l'ultima della direzione.
   final bool isLast;
 
-  ///se è selezionata
+  /// Indica se la fermata è selezionata.
   final bool isSelected;
 
-  /// Indica se la tile può essere selezionata.
-  final bool isSelectionEnabled;
-
-  /// Callback eseguita quando l'utente seleziona la fermata.
-  final VoidCallback onTap;
+  /// Callback eseguita quando la fermata può essere selezionata.
+  final VoidCallback? onTap;
 
   final LineCardPalette colors;
 
   @override
   Widget build(BuildContext context) {
+    final isTerminal = isFirst || isLast;
+
     final borderColor = isSelected
-        ? lineColor.withValues(alpha: 0.42)
-        : _terminalBorderColor();
+        ? _routeAccentColor.withValues(alpha: 0.42)
+        : isTerminal
+        ? _routeAccentColor.withValues(alpha: 0.28)
+        : colors.border;
 
     final backgroundColor = isSelected
-        ? lineColor.withValues(alpha: 0.06)
-        : Colors.white;
+        ? _routeAccentColor.withValues(alpha: 0.06)
+        : LineDetailColors.surface;
+
+    const borderRadius = BorderRadius.all(Radius.circular(18));
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Material(
-        color: Colors.transparent,
+        color: LineDetailColors.transparent,
         child: InkWell(
-          onTap: isSelectionEnabled ? onTap : null,
-          borderRadius: BorderRadius.circular(18),
+          onTap: onTap,
+          borderRadius: borderRadius,
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 160),
             curve: Curves.easeOutCubic,
             width: double.infinity,
-            padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
             decoration: BoxDecoration(
               color: backgroundColor,
-              borderRadius: BorderRadius.circular(18),
+              borderRadius: borderRadius,
               border: Border.all(
                 color: borderColor,
                 width: isSelected ? 1.4 : 1,
@@ -87,30 +89,26 @@ class LineDetailStopTile extends StatelessWidget {
                   isFirst: isFirst,
                   isLast: isLast,
                   isSelected: isSelected,
-                  lineColor: lineColor,
                   colors: colors,
                 ),
                 const SizedBox(height: 12),
-                _OfficialTimeLine(
-                  officialTime: stop.officialTime,
-                  colors: colors,
-                ),
+                _OfficialTimeLine(stop: stop, colors: colors),
                 const SizedBox(height: 6),
-                _EstimatedTimeUnavailable(colors: colors),
+                Text(
+                  'Orario stimato non disponibile',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    fontSize: 10.6,
+                    color: colors.secondaryText,
+                    height: 1.35,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
               ],
             ),
           ),
         ),
       ),
     );
-  }
-
-  Color _terminalBorderColor() {
-    if (isFirst || isLast) {
-      return lineColor.withValues(alpha: 0.28);
-    }
-
-    return colors.border;
   }
 }
 
@@ -120,7 +118,6 @@ class _StopHeader extends StatelessWidget {
     required this.isFirst,
     required this.isLast,
     required this.isSelected,
-    required this.lineColor,
     required this.colors,
   });
 
@@ -128,11 +125,11 @@ class _StopHeader extends StatelessWidget {
   final bool isFirst;
   final bool isLast;
   final bool isSelected;
-  final Color lineColor;
   final LineCardPalette colors;
 
   @override
   Widget build(BuildContext context) {
+    final isTerminal = isFirst || isLast;
     final badgeLabel = isFirst
         ? 'Partenza'
         : isLast
@@ -149,21 +146,21 @@ class _StopHeader extends StatelessWidget {
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
             color: colors.primaryText,
             fontSize: 13.5,
-            fontWeight: isFirst || isLast ? FontWeight.w800 : FontWeight.w700,
+            fontWeight: isTerminal ? FontWeight.w800 : FontWeight.w700,
             height: 1.2,
           ),
         ),
         if (badgeLabel != null)
           _StopBadge(
             label: badgeLabel,
-            backgroundColor: lineColor,
-            textColor: LineCardColors.textOn(lineColor, colors: colors),
+            backgroundColor: _routeAccentColor,
+            textColor: LineCardColors.textOn(_routeAccentColor, colors: colors),
           ),
         if (isSelected)
           _StopBadge(
             label: 'Selezionata',
-            backgroundColor: lineColor.withValues(alpha: 0.16),
-            textColor: lineColor,
+            backgroundColor: _routeAccentColor.withValues(alpha: 0.16),
+            textColor: _routeAccentColor,
           ),
       ],
     );
@@ -171,21 +168,23 @@ class _StopHeader extends StatelessWidget {
 }
 
 class _OfficialTimeLine extends StatelessWidget {
-  const _OfficialTimeLine({required this.officialTime, required this.colors});
+  const _OfficialTimeLine({required this.stop, required this.colors});
 
-  final String? officialTime;
+  final TransitLineStop stop;
   final LineCardPalette colors;
 
   @override
   Widget build(BuildContext context) {
-    final labelStyle = Theme.of(context).textTheme.bodySmall?.copyWith(
+    final textTheme = Theme.of(context).textTheme;
+
+    final labelStyle = textTheme.bodySmall?.copyWith(
       fontSize: 10.6,
       color: colors.secondaryText,
       height: 1.25,
       fontWeight: FontWeight.w500,
     );
 
-    final valueStyle = Theme.of(context).textTheme.titleMedium?.copyWith(
+    final valueStyle = textTheme.titleMedium?.copyWith(
       fontSize: 12.6,
       color: colors.primaryText,
       height: 1.2,
@@ -198,40 +197,11 @@ class _OfficialTimeLine extends StatelessWidget {
         Expanded(child: Text('Orario ufficiale', style: labelStyle)),
         const SizedBox(width: 12),
         Text(
-          _displayOfficialTime,
+          stop.hasOfficialTime ? stop.officialTime! : '--:--',
           style: valueStyle,
           textAlign: TextAlign.right,
         ),
       ],
-    );
-  }
-
-  String get _displayOfficialTime {
-    final value = officialTime;
-
-    if (value == null || value.trim().isEmpty) {
-      return '--:--';
-    }
-
-    return value;
-  }
-}
-
-class _EstimatedTimeUnavailable extends StatelessWidget {
-  const _EstimatedTimeUnavailable({required this.colors});
-
-  final LineCardPalette colors;
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      'Orario stimato non disponibile',
-      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-        fontSize: 10.6,
-        color: colors.secondaryText,
-        height: 1.35,
-        fontWeight: FontWeight.w500,
-      ),
     );
   }
 }

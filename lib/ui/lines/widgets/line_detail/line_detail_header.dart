@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
 import '../../../../domain/models/transit_line.dart';
-import '../line_card/line_badge.dart';
 import '../../theme/line_card_colors.dart';
+import '../../theme/line_detail_colors.dart';
+import '../line_card/line_badge.dart';
 import '../line_card/line_central_label.dart';
+import '../line_card/line_direction_button.dart';
 import '../line_card/line_info_pill.dart';
 
 /// Header della schermata dettaglio linea.
@@ -15,7 +17,6 @@ class LineDetailHeader extends StatelessWidget {
     super.key,
     required this.line,
     required this.direction,
-    required this.lineColor,
     required this.canSwapDirection,
     required this.onSwapDirection,
     required this.onClose,
@@ -28,8 +29,6 @@ class LineDetailHeader extends StatelessWidget {
   ///
   /// È null quando la linea non ha una direzione disponibile.
   final TransitLineDirection? direction;
-
-  final Color lineColor;
 
   /// Indica se l'utente può invertire la direzione visualizzata.
   final bool canSwapDirection;
@@ -133,7 +132,6 @@ class LineDetailHeader extends StatelessWidget {
                 ? _DirectionUnavailableBox(colors: colors)
                 : _DirectionSwitcherBox(
                     direction: selectedDirection,
-                    lineColor: lineColor,
                     isUnidirectional: line.isUnidirectional,
                     canSwapDirection: canSwapDirection,
                     onSwapDirection: onSwapDirection,
@@ -157,7 +155,6 @@ class LineDetailHeader extends StatelessWidget {
 class _DirectionSwitcherBox extends StatelessWidget {
   const _DirectionSwitcherBox({
     required this.direction,
-    required this.lineColor,
     required this.isUnidirectional,
     required this.canSwapDirection,
     required this.onSwapDirection,
@@ -165,7 +162,6 @@ class _DirectionSwitcherBox extends StatelessWidget {
   });
 
   final TransitLineDirection direction;
-  final Color lineColor;
   final bool isUnidirectional;
   final bool canSwapDirection;
   final VoidCallback onSwapDirection;
@@ -173,13 +169,10 @@ class _DirectionSwitcherBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final supportsDirectionSwap = canSwapDirection && !isUnidirectional;
-    final showsOneWayDirection = isUnidirectional;
-
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: LineDetailColors.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: colors.border),
       ),
@@ -193,25 +186,12 @@ class _DirectionSwitcherBox extends StatelessWidget {
             ),
           ),
 
-          Material(
-            color: lineColor.withValues(alpha: 0.12),
-            shape: const CircleBorder(),
-            child: IconButton(
-              visualDensity: VisualDensity.compact,
-              onPressed: supportsDirectionSwap ? onSwapDirection : null,
-              icon: Icon(
-                showsOneWayDirection
-                    ? Icons.arrow_forward_rounded
-                    : Icons.swap_horiz_rounded,
-                color: supportsDirectionSwap || showsOneWayDirection
-                    ? lineColor
-                    : colors.mutedText,
-                size: 20,
-              ),
-              tooltip: supportsDirectionSwap
-                  ? 'Inverti direzione'
-                  : 'Direzione unica',
-            ),
+          LineDirectionButton(
+            isUnidirectional: isUnidirectional,
+            canSwapDirection: canSwapDirection,
+            onSwapDirection: onSwapDirection,
+            iconSize: 20,
+            colors: colors,
           ),
 
           Expanded(

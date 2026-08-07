@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../../../../data/repositories/transit_repository.dart';
 import '../../../../domain/models/transit_line.dart';
-import '../../view_model/line_detail_view_model.dart';
 import '../../theme/line_card_colors.dart';
 import '../../theme/line_detail_colors.dart';
+import '../../view_model/line_detail_view_model.dart';
 import 'line_detail_departures_card.dart';
 import 'line_detail_header.dart';
 import 'line_detail_report_card.dart';
@@ -33,8 +33,6 @@ class LineDetailScreen extends StatefulWidget {
 }
 
 class _LineDetailScreenState extends State<LineDetailScreen> {
-  static const LineCardPalette _colors = LineCardColors.defaultPalette;
-
   late final LineDetailViewModel _viewModel;
 
   @override
@@ -59,38 +57,29 @@ class _LineDetailScreenState extends State<LineDetailScreen> {
     final selection = await showLineDetailTimeFilterSheet(
       context,
       currentRangeLabel: _viewModel.timeRangeLabel,
-      isAutomaticSelected: _viewModel.isAutomaticTime,
       selectedManualHour: _viewModel.selectedManualHour,
       manualHours: _viewModel.manualHours,
-      colors: _colors,
     );
 
     if (!mounted || selection == null) {
       return;
     }
 
-    if (selection.isAutomatic) {
+    final selectedHour = selection.hour;
+
+    if (selectedHour == null) {
       await _viewModel.selectAutomaticTime();
       return;
     }
 
-    final selectedHour = selection.hour;
-
-    if (selectedHour != null) {
-      await _viewModel.selectManualHour(selectedHour);
-    }
+    await _viewModel.selectManualHour(selectedHour);
   }
 
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: _viewModel,
-      builder: (context, child) {
-        final lineColor = LineCardColors.parseLineColor(
-          _viewModel.line.routeColor,
-          colors: _colors,
-        );
-
+      builder: (context, _) {
         return Scaffold(
           backgroundColor: LineDetailColors.pageBackground,
           body: SafeArea(
@@ -100,11 +89,9 @@ class _LineDetailScreenState extends State<LineDetailScreen> {
                 LineDetailHeader(
                   line: _viewModel.line,
                   direction: _viewModel.selectedDirection,
-                  lineColor: lineColor,
                   canSwapDirection: _viewModel.canSwapDirection,
-                  onSwapDirection: () => _viewModel.toggleDirection(),
+                  onSwapDirection: _viewModel.toggleDirection,
                   onClose: () => Navigator.of(context).pop(),
-                  colors: _colors,
                 ),
                 const SizedBox(height: 12),
                 Expanded(
@@ -115,7 +102,6 @@ class _LineDetailScreenState extends State<LineDetailScreen> {
                         _LineDetailErrorCard(
                           message: _viewModel.errorMessage!,
                           onRetry: _viewModel.loadSchedule,
-                          colors: _colors,
                         ),
                         const SizedBox(height: 14),
                       ],
@@ -126,29 +112,24 @@ class _LineDetailScreenState extends State<LineDetailScreen> {
                         isLoading: _viewModel.isLoadingSchedule,
                         emptyMessage: _viewModel.emptyDeparturesMessage,
                         onSelectTimeRange: _openTimeFilterSheet,
-                        colors: _colors,
                       ),
                       const SizedBox(height: 14),
                       LineDetailReportCard(
-                        lineColor: lineColor,
+                        lineColor: LineDetailColors.reportAccent,
                         reportLocation: _viewModel.reportLocation,
-                        requiresStopSelection: _viewModel.requiresStopSelection,
                         canSendReport: _viewModel.canSendReport,
                         selectedStopName: _viewModel.selectedReportStopName,
                         lastReportMessage: _viewModel.lastReportMessage,
                         onLocationChanged: _viewModel.selectReportLocation,
                         onReportPressed: _viewModel.sendFakeReport,
-                        colors: _colors,
                       ),
                       const SizedBox(height: 14),
                       LineDetailRouteSection(
                         stops: _viewModel.stops,
-                        lineColor: lineColor,
                         selectedStopId: _viewModel.selectedReportStopId,
                         isStopSelectionEnabled:
                             _viewModel.requiresStopSelection,
                         onStopSelected: _viewModel.selectReportStop,
-                        colors: _colors,
                       ),
                     ],
                   ),
@@ -163,27 +144,25 @@ class _LineDetailScreenState extends State<LineDetailScreen> {
 }
 
 class _LineDetailErrorCard extends StatelessWidget {
-  const _LineDetailErrorCard({
-    required this.message,
-    required this.onRetry,
-    required this.colors,
-  });
+  const _LineDetailErrorCard({required this.message, required this.onRetry});
 
   final String message;
   final Future<void> Function() onRetry;
-  final LineCardPalette colors;
 
   @override
   Widget build(BuildContext context) {
+    const colors = LineCardColors.defaultPalette;
+    final textTheme = Theme.of(context).textTheme;
+
     return Container(
       decoration: LineCardColors.cardDecoration(colors: colors),
-      padding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
+      padding: const EdgeInsets.all(14),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             'Errore caricamento dettaglio',
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+            style: textTheme.titleMedium?.copyWith(
               color: colors.primaryText,
               fontSize: 13,
               fontWeight: FontWeight.w800,
@@ -192,7 +171,7 @@ class _LineDetailErrorCard extends StatelessWidget {
           const SizedBox(height: 6),
           Text(
             message,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+            style: textTheme.bodySmall?.copyWith(
               color: colors.secondaryText,
               fontSize: 12,
               height: 1.35,

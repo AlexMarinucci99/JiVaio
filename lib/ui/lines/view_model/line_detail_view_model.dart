@@ -15,12 +15,11 @@ enum LineDetailReportType { delay, crowding }
 /// di partenze e fermate, la scelta dell'orario e la segnalazione mock.
 class LineDetailViewModel extends ChangeNotifier {
   LineDetailViewModel({
-    required TransitLine line,
+    required this.line,
     required TransitRepository repository,
-  }) : _line = line,
-       _repository = repository;
+  }) : _repository = repository;
 
-  final TransitLine _line;
+  final TransitLine line;
   final TransitRepository _repository;
 
   int _selectedDirectionIndex = 0;
@@ -30,24 +29,15 @@ class LineDetailViewModel extends ChangeNotifier {
   bool _isLoadingSchedule = false;
   String? _errorMessage;
 
-  bool _isAutomaticTime = true;
   int? _selectedManualHour;
 
   LineDetailReportLocation? _reportLocation;
   String? _selectedReportStopId;
   String? _lastReportMessage;
 
-  TransitLine get line => _line;
-
-  int get selectedDirectionIndex => _selectedDirectionIndex;
-
-  TransitLineDirectionSchedule? get schedule => _schedule;
-
   bool get isLoadingSchedule => _isLoadingSchedule;
 
   String? get errorMessage => _errorMessage;
-
-  bool get isAutomaticTime => _isAutomaticTime;
 
   int? get selectedManualHour => _selectedManualHour;
 
@@ -57,89 +47,54 @@ class LineDetailViewModel extends ChangeNotifier {
 
   String? get lastReportMessage => _lastReportMessage;
 
-  /// Ore selezionabili manualmente
-  List<int> get manualHours {
-    return List<int>.generate(18, (index) => index + 5, growable: false);
-  }
-
-  bool get hasDirections {
-    return _line.directions.isNotEmpty;
-  }
-
-  /// Indica se la linea espone più direzioni nei dati interni.
-  bool get hasMultipleDirections {
-    return _line.directions.length > 1;
-  }
+  /// Ore selezionabili manualmente.
+  List<int> get manualHours =>
+      List<int>.generate(18, (index) => index + 5, growable: false);
 
   /// Indica se l'utente può invertire la direzione dalla UI.
   ///
   /// Le linee monodirezionali possono avere più direzioni nei dati,
   /// ma nel prototipo non devono mostrare il cambio direzione.
-  bool get canSwapDirection {
-    return hasMultipleDirections && !_line.isUnidirectional;
-  }
-
-  /// Indica se la direzione può essere cambiata dalla UI.
-  bool get canToggleDirection {
-    return canSwapDirection;
-  }
+  bool get canSwapDirection =>
+      line.directions.length > 1 && !line.isUnidirectional;
 
   /// Direzione attualmente selezionata.
   ///
   /// Usa la prima direzione come fallback se l'indice salvato non è più valido.
   TransitLineDirection? get selectedDirection {
-    if (_line.directions.isEmpty) {
+    final directions = line.directions;
+
+    if (directions.isEmpty) {
       return null;
     }
 
-    if (_selectedDirectionIndex >= _line.directions.length) {
-      return _line.directions.first;
+    if (_selectedDirectionIndex >= directions.length) {
+      return directions.first;
     }
 
-    return _line.directions[_selectedDirectionIndex];
+    return directions[_selectedDirectionIndex];
   }
 
-  List<TransitLineDeparture> get departures {
-    return _schedule?.departures ?? const <TransitLineDeparture>[];
-  }
+  List<TransitLineDeparture> get departures =>
+      _schedule?.departures ?? const <TransitLineDeparture>[];
 
-  List<TransitLineStop> get stops {
-    return _schedule?.stops ?? const <TransitLineStop>[];
-  }
+  List<TransitLineStop> get stops =>
+      _schedule?.stops ?? const <TransitLineStop>[];
 
-  String? get selectedTripId {
-    return _schedule?.selectedTripId;
-  }
+  String? get selectedTripId => _schedule?.selectedTripId;
 
   /// Etichetta della fascia oraria mostrata.
-  String get timeRangeLabel {
-    final schedule = _schedule;
+  String get timeRangeLabel =>
+      _schedule?.timeRangeLabel ?? _formatHourRange(_selectedMoment());
 
-    if (schedule != null) {
-      return schedule.timeRangeLabel;
-    }
+  /// Messaggio mostrato quando non sono disponibili partenze.
+  String get emptyDeparturesMessage =>
+      _schedule?.emptyDeparturesMessage ?? 'Partenze non ancora caricate.';
 
-    return _formatHourRange(_selectedMoment());
-  }
+  bool get requiresStopSelection => _reportLocation != null;
 
-  /// Messaggio mostrato quando non sono diponibili partenze.
-  String get emptyDeparturesMessage {
-    final schedule = _schedule;
-
-    if (schedule == null) {
-      return 'Partenze non ancora caricate.';
-    }
-
-    return schedule.emptyDeparturesMessage;
-  }
-
-  bool get requiresStopSelection {
-    return _reportLocation != null;
-  }
-
-  bool get canSendReport {
-    return _reportLocation != null && _selectedReportStopId != null;
-  }
+  bool get canSendReport =>
+      _reportLocation != null && _selectedReportStopId != null;
 
   /// Nome della fermata selezionata per la segnalazione.
   String? get selectedReportStopName {
@@ -175,7 +130,7 @@ class LineDetailViewModel extends ChangeNotifier {
 
     try {
       _schedule = await _repository.getLineDirectionSchedule(
-        line: _line,
+        line: line,
         direction: direction,
         moment: _selectedMoment(),
       );
@@ -189,12 +144,12 @@ class LineDetailViewModel extends ChangeNotifier {
 
   /// Cambia direzione e ricarica gli orari disponibili.
   Future<void> toggleDirection() async {
-    if (!canToggleDirection) {
+    if (!canSwapDirection) {
       return;
     }
 
     _selectedDirectionIndex =
-        (_selectedDirectionIndex + 1) % _line.directions.length;
+        (_selectedDirectionIndex + 1) % line.directions.length;
 
     _selectedReportStopId = null;
     _lastReportMessage = null;
@@ -202,18 +157,13 @@ class LineDetailViewModel extends ChangeNotifier {
     await loadSchedule();
   }
 
-  /// Ripristina la fascia oraria autmatica e ricarica gli orari.
-  Future<void> selectAutomaticTime() async {
-    _isAutomaticTime = true;
-    _selectedManualHour = null;
-    _lastReportMessage = null;
-
-    await loadSchedule();
-  }
+  /// Ripristina la fascia oraria automatica e ricarica gli orari.
+  Future<void> selectAutomaticTime() => _selectTime();
 
   /// Seleziona manualmente [hour] e ricarica gli orari.
-  Future<void> selectManualHour(int hour) async {
-    _isAutomaticTime = false;
+  Future<void> selectManualHour(int hour) => _selectTime(hour);
+
+  Future<void> _selectTime([int? hour]) async {
     _selectedManualHour = hour;
     _lastReportMessage = null;
 
@@ -271,17 +221,16 @@ class LineDetailViewModel extends ChangeNotifier {
 
   DateTime _selectedMoment() {
     final now = DateTime.now();
+    final selectedHour = _selectedManualHour;
 
-    if (_isAutomaticTime) {
+    if (selectedHour == null) {
       return now;
     }
-
-    final selectedHour = _selectedManualHour ?? now.hour;
 
     return DateTime(now.year, now.month, now.day, selectedHour);
   }
 
-  String _formatHourRange(DateTime hourStart) {
+  static String _formatHourRange(DateTime hourStart) {
     final startHour = hourStart.hour;
     final endHour = startHour + 1;
 

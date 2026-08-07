@@ -31,10 +31,10 @@ class LineInfoPill extends StatelessWidget {
         border: Border.all(color: colors.border),
       ),
       child: Row(
+        spacing: 4,
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(icon, size: 13, color: colors.secondaryText),
-          const SizedBox(width: 4),
           Text(
             label,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(

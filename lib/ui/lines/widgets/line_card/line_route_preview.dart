@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../domain/models/transit_line.dart';
 import '../../theme/line_card_colors.dart';
 import 'line_central_label.dart';
+import 'line_direction_button.dart';
 
 /// Preview sintetica del percorso mostrata nella card della linea.
 ///
@@ -42,11 +43,7 @@ class LineRoutePreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final actionColor = colors.listAccent;
-
     final actionTextColor = LineCardColors.textOn(actionColor, colors: colors);
-
-    final supportsDirectionSwap = canSwapDirection && !line.isUnidirectional;
-    final showsOneWayDirection = line.isUnidirectional;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -69,25 +66,11 @@ class LineRoutePreview extends StatelessWidget {
                 ),
               ),
 
-              Material(
-                color: lineColor.withValues(alpha: 0.12),
-                shape: const CircleBorder(),
-                child: IconButton(
-                  visualDensity: VisualDensity.compact,
-                  onPressed: supportsDirectionSwap ? onSwapDirection : null,
-                  icon: Icon(
-                    showsOneWayDirection
-                        ? Icons.arrow_forward_rounded
-                        : Icons.swap_horiz_rounded,
-                    color: supportsDirectionSwap || showsOneWayDirection
-                        ? lineColor
-                        : colors.mutedText,
-                    size: 18,
-                  ),
-                  tooltip: supportsDirectionSwap
-                      ? 'Inverti direzione'
-                      : 'Direzione unica',
-                ),
+              LineDirectionButton(
+                isUnidirectional: line.isUnidirectional,
+                canSwapDirection: canSwapDirection,
+                onSwapDirection: onSwapDirection,
+                colors: colors,
               ),
 
               Expanded(
@@ -120,28 +103,27 @@ class LineRoutePreview extends StatelessWidget {
           Wrap(
             spacing: 8,
             runSpacing: 8,
-            children: direction.upcomingDepartures
-                .map((departure) {
-                  return Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 6,
+            children: [
+              for (final departure in direction.upcomingDepartures)
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 6,
+                  ),
+                  decoration: BoxDecoration(
+                    color: actionColor,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Text(
+                    departure,
+                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                      color: actionTextColor,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700,
                     ),
-                    decoration: BoxDecoration(
-                      color: actionColor,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Text(
-                      departure,
-                      style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                        color: actionTextColor,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  );
-                })
-                .toList(growable: false),
+                  ),
+                ),
+            ],
           )
         else
           Container(
@@ -174,10 +156,10 @@ class LineRoutePreview extends StatelessWidget {
             ),
           ),
           child: const Row(
+            spacing: 8,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(Icons.open_in_new_rounded, size: 18),
-              SizedBox(width: 8),
               Text(
                 'Apri linea completa',
                 style: TextStyle(fontWeight: FontWeight.w800),
