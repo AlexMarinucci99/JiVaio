@@ -102,7 +102,7 @@ class LinesViewModel extends ChangeNotifier {
       _errorMessage = 'Impossibile caricare i dati delle linee.';
     } finally {
       _isLoading = false;
-      notifyListeners();
+      if (hasListeners) notifyListeners();
     }
   }
 
@@ -149,7 +149,7 @@ class LinesViewModel extends ChangeNotifier {
       return false;
     } finally {
       _pendingSavedLineIds.remove(routeId);
-      notifyListeners();
+      if (hasListeners) notifyListeners();
     }
   }
 
@@ -165,7 +165,7 @@ class LinesViewModel extends ChangeNotifier {
         .listen(
           (savedLineIds) {
             _savedLineIds = savedLineIds;
-            notifyListeners();
+            if (hasListeners) notifyListeners();
           },
           onError: (_) {
             // Le linee restano consultabili anche se Firestore

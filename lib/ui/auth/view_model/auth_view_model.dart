@@ -132,7 +132,7 @@ class AuthViewModel extends ChangeNotifier {
       return AuthSubmitResult.invalid(unexpectedError);
     } finally {
       _isSubmitting = false;
-      notifyListeners();
+      if (hasListeners) notifyListeners();
     }
   }
 

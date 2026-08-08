@@ -138,7 +138,7 @@ class LineDetailViewModel extends ChangeNotifier {
       _errorMessage = 'Impossibile caricare partenze e fermate.';
     } finally {
       _isLoadingSchedule = false;
-      notifyListeners();
+      if (hasListeners) notifyListeners();
     }
   }
 

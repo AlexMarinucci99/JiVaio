@@ -28,7 +28,7 @@ class NotificationBellButtonColors {
 /// Palette grafica del pannello flottante delle notifiche.
 class NotificationCenterPanelColors {
   const NotificationCenterPanelColors({
-    this.backgroundColor = const Color(0xF2071733),
+    this.backgroundColor = const Color.fromARGB(240, 3, 67, 83),
     this.borderColor = const Color(0x334E6A92),
     this.shadowColor = const Color(0x4D000000),
     this.titleColor = Colors.white,

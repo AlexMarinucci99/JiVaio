@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter/foundation.dart' show compute;
 
 /// Contiene i dati GTFS grezzi caricati dagli asset locali.
 class TransitRawBundle {
@@ -63,7 +64,8 @@ class TransitRawService {
   }
 
   Future<List<Map<String, dynamic>>> _loadJsonList(String path) async {
-    final decoded = jsonDecode(await rootBundle.loadString(path));
+    final source = await rootBundle.loadString(path);
+    final decoded = await compute(jsonDecode, source);
 
     if (decoded is! List) {
       throw FormatException('Il file $path non contiene una lista JSON.');

@@ -21,7 +21,7 @@ class TransitRepository {
 
   final TransitRawService _rawService;
 
-  TransitRawBundle? _cachedBundle;
+  Future<TransitRawBundle>? _bundleFuture;
   List<TransitStop>? _cachedMapStops;
 
   /// Restituisce le fermate visualizzabili sulla mappa.
@@ -225,15 +225,17 @@ class TransitRepository {
   }
 
   Future<TransitRawBundle> _loadBundle() async {
-    final cached = _cachedBundle;
+    final future = _bundleFuture ??= _rawService.loadBundle();
 
-    if (cached != null) {
-      return cached;
+    try {
+      return await future;
+    } catch (_) {
+      if (identical(_bundleFuture, future)) {
+        _bundleFuture = null;
+      }
+
+      rethrow;
     }
-
-    final loaded = await _rawService.loadBundle();
-    _cachedBundle = loaded;
-    return loaded;
   }
 
   List<TransitLineDirection> _normalizeDirections({

@@ -80,7 +80,7 @@ class ResetPasswordViewModel extends ChangeNotifier {
       );
     } finally {
       _isSubmitting = false;
-      notifyListeners();
+      if (hasListeners) notifyListeners();
     }
   }
 
