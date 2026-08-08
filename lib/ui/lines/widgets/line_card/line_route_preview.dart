@@ -40,6 +40,10 @@ class LineRoutePreview extends StatelessWidget {
   // Palette propria della preview percorso.
   final LineCardPalette colors;
 
+  String get _emptyStateMessage => direction.hasServiceToday
+      ? 'Nessuna altra partenza disponibile per oggi.'
+      : 'Nessuna corsa attiva per oggi.';
+
   @override
   Widget build(BuildContext context) {
     final actionColor = colors.listAccent;
@@ -135,7 +139,7 @@ class LineRoutePreview extends StatelessWidget {
               border: Border.all(color: lineColor.withValues(alpha: 0.16)),
             ),
             child: Text(
-              direction.emptyStateMessage,
+              _emptyStateMessage,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 fontSize: 11.5,
                 color: colors.secondaryText,

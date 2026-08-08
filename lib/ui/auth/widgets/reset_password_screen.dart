@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import '../../../data/repositories/auth_repository.dart';
 import '../theme/auth_colors.dart';
 import '../view_model/reset_password_view_model.dart';
 import 'auth_action_button.dart';
@@ -11,32 +11,22 @@ import 'auth_text_field.dart';
 /// Gestisce l'inserimento dell'email e delega validazione e invio
 /// del link di recupero a [ResetPasswordViewModel].
 class ResetPasswordScreen extends StatefulWidget {
-  const ResetPasswordScreen({super.key, required this.authRepository});
-
-  /// Repository usato dal ViewModel per inviare il link di recupero.
-  final AuthRepository authRepository;
+  const ResetPasswordScreen({super.key});
 
   @override
   State<ResetPasswordScreen> createState() => _ResetPasswordScreenState();
 }
 
 class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
-  late final ResetPasswordViewModel _viewModel;
+  ResetPasswordViewModel get _viewModel =>
+      context.read<ResetPasswordViewModel>();
   final TextEditingController _emailController = TextEditingController();
 
   static const ResetPasswordColors _colors = ResetPasswordColors();
 
   @override
-  void initState() {
-    super.initState();
-
-    _viewModel = ResetPasswordViewModel(widget.authRepository);
-  }
-
-  @override
   void dispose() {
     _emailController.dispose();
-    _viewModel.dispose();
     super.dispose();
   }
 
@@ -64,9 +54,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _viewModel,
-      builder: (context, _) {
+    return Consumer<ResetPasswordViewModel>(
+      builder: (context, viewModel, child) {
         return Scaffold(
           backgroundColor: _colors.backgroundColor,
           body: SafeArea(
@@ -104,7 +93,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
                   AuthTextField(
                     controller: _emailController,
-                    onChanged: _viewModel.updateEmail,
+                    onChanged: viewModel.updateEmail,
                     label: 'La tua email',
                     icon: Icons.email_outlined,
                     keyboardType: TextInputType.emailAddress,
@@ -114,10 +103,10 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   const SizedBox(height: 24),
 
                   AuthActionButton(
-                    label: _viewModel.isSubmitting
+                    label: viewModel.isSubmitting
                         ? 'Invio in corso...'
                         : 'Invia link di recupero',
-                    onPressed: _viewModel.canSubmit ? _sendResetLink : null,
+                    onPressed: viewModel.canSubmit ? _sendResetLink : null,
                     height: 56,
                     fontSize: 17,
                     borderRadius: 18,

@@ -1,89 +1,47 @@
 import 'package:flutter/material.dart';
-import '../../../data/repositories/saved_lines_repository.dart';
-import '../../../data/repositories/transit_repository.dart';
+import 'package:provider/provider.dart';
+
 import '../../../domain/models/transit_line.dart';
 import '../../core/widgets/app_segmented_control.dart';
+import '../theme/lines_screen_colors.dart';
+import '../view_model/line_detail_view_model.dart';
 import '../view_model/lines_view_model.dart';
 import 'line_card/line_card.dart';
 import 'line_detail/line_detail_screen.dart';
-import '../theme/lines_screen_colors.dart';
 
-/// Schermata che mostra l'elenco delle linee urbane.
-///
-/// Permette di consultare tutte le linee, filtrare quelle salvate
-/// e aprire il dettaglio di una linea selezionata.
-class LinesScreen extends StatefulWidget {
-  const LinesScreen({
-    super.key,
-    required this.isGuest,
-    required this.userId,
-    required this.repository,
-    required this.savedLinesRepository,
-  }) : assert(isGuest || userId != null);
+/// Mostra tutte le linee e quelle salvate dall'utente.
+class LinesScreen extends StatelessWidget {
+  const LinesScreen({super.key});
 
-  /// Indica se la schermata è usata da un utente ospite.
-  ///
-  /// In modalità guest l'utente può consultare le linee,
-  /// ma non può modificarne lo stato di salvataggio.
-  final bool isGuest;
-
-  /// Identificativo Firebase dell'utente autenticato.
-  ///
-  /// È null soltanto quando [isGuest] è true.
-  final String? userId;
-
-  /// Repository usato per recuperare linee e dettagli di percorso.
-  final TransitRepository repository;
-
-  /// Repository usato per leggere e aggiornare le linee salvate.
-  final SavedLinesRepository savedLinesRepository;
-
-  @override
-  State<LinesScreen> createState() => _LinesScreenState();
-}
-
-class _LinesScreenState extends State<LinesScreen> {
   static const LinesScreenColors _colors = LinesScreenColors();
 
-  late final LinesViewModel _viewModel;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _viewModel = LinesViewModel(
-      transitRepository: widget.repository,
-      savedLinesRepository: widget.savedLinesRepository,
-      userId: widget.userId,
-    );
-
-    _viewModel.loadLines();
-  }
-
-  @override
-  void dispose() {
-    _viewModel.dispose();
-    super.dispose();
-  }
-
-  void _openLineDetails(TransitLine line) {
+  void _openLineDetails(BuildContext context, TransitLine line) {
     Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (_) =>
-            LineDetailScreen(line: line, repository: widget.repository),
+      MaterialPageRoute(
+        builder: (context) => ChangeNotifierProvider<LineDetailViewModel>(
+          create: (context) =>
+              LineDetailViewModel(line: line, repository: context.read())
+                ..loadSchedule(),
+          child: const LineDetailScreen(),
+        ),
       ),
     );
   }
 
-  Future<void> _toggleSavedLine(String routeId) async {
-    if (widget.isGuest) {
-      _showGuestSaveMessage();
+  Future<void> _toggleSavedLine(
+    BuildContext context,
+    LinesViewModel viewModel,
+    String routeId,
+  ) async {
+    if (viewModel.userId == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Accedi per salvare le linee preferite.')),
+      );
       return;
     }
 
-    final success = await _viewModel.toggleSavedLine(routeId);
-
-    if (!success && mounted) {
+    final success = await viewModel.toggleSavedLine(routeId);
+    if (!success && context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Impossibile aggiornare le linee salvate. Riprova.'),
@@ -92,17 +50,10 @@ class _LinesScreenState extends State<LinesScreen> {
     }
   }
 
-  void _showGuestSaveMessage() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Accedi per salvare le linee preferite.')),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _viewModel,
-      builder: (context, child) {
+    return Consumer<LinesViewModel>(
+      builder: (context, viewModel, child) {
         return Scaffold(
           backgroundColor: _colors.pageBackground,
           body: DecoratedBox(
@@ -134,7 +85,7 @@ class _LinesScreenState extends State<LinesScreen> {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          _viewModel.subtitle,
+                          viewModel.subtitle,
                           style: Theme.of(context).textTheme.bodyMedium
                               ?.copyWith(
                                 color: _colors.secondaryText,
@@ -144,8 +95,8 @@ class _LinesScreenState extends State<LinesScreen> {
                         ),
                         const SizedBox(height: 18),
                         AppSegmentedControl<LinesScope>(
-                          selectedValue: _viewModel.scope,
-                          onChanged: _viewModel.setScope,
+                          selectedValue: viewModel.scope,
+                          onChanged: viewModel.setScope,
                           colors: _colors.segmentedControlColors,
                           items: [
                             const AppSegmentedControlItem(
@@ -155,8 +106,8 @@ class _LinesScreenState extends State<LinesScreen> {
                             AppSegmentedControlItem(
                               value: LinesScope.saved,
                               label: 'Salvate',
-                              badgeLabel: _viewModel.savedLinesCount > 0
-                                  ? '${_viewModel.savedLinesCount}'
+                              badgeLabel: viewModel.savedLinesCount > 0
+                                  ? '${viewModel.savedLinesCount}'
                                   : null,
                             ),
                           ],
@@ -164,7 +115,7 @@ class _LinesScreenState extends State<LinesScreen> {
                       ],
                     ),
                   ),
-                  Expanded(child: _buildSelectedContent()),
+                  Expanded(child: _buildSelectedContent(context, viewModel)),
                 ],
               ),
             ),
@@ -174,33 +125,33 @@ class _LinesScreenState extends State<LinesScreen> {
     );
   }
 
-  Widget _buildSelectedContent() {
-    if (_viewModel.isLoading && _viewModel.allLines.isEmpty) {
+  Widget _buildSelectedContent(BuildContext context, LinesViewModel viewModel) {
+    if (viewModel.isLoading && viewModel.allLines.isEmpty) {
       return const Center(child: CircularProgressIndicator());
     }
 
-    if (_viewModel.errorMessage != null && _viewModel.allLines.isEmpty) {
+    if (viewModel.errorMessage != null && viewModel.allLines.isEmpty) {
       return _LinesStateArea(
         key: const ValueKey('lines-error-state'),
         title: 'Errore caricamento linee',
-        message: _viewModel.errorMessage!,
+        message: viewModel.errorMessage!,
         colors: _colors,
         action: FilledButton(
-          onPressed: _viewModel.loadLines,
+          onPressed: viewModel.loadLines,
           child: const Text('Riprova'),
         ),
       );
     }
 
-    final lines = _viewModel.visibleLines;
-
+    final lines = viewModel.visibleLines;
     if (lines.isEmpty) {
+      final isGuest = viewModel.userId == null;
       return _LinesStateArea(
         key: const ValueKey('lines-empty-state'),
-        title: widget.isGuest
+        title: isGuest
             ? 'Preferiti disponibili dopo l’accesso'
             : 'Nessuna linea salvata',
-        message: widget.isGuest
+        message: isGuest
             ? 'Accedi o registrati per salvare le linee che usi più spesso.'
             : 'Tocca il cuore su una linea nella tab Tutte per ritrovarla qui.',
         colors: _colors,
@@ -214,13 +165,13 @@ class _LinesScreenState extends State<LinesScreen> {
       separatorBuilder: (context, index) => const SizedBox(height: 14),
       itemBuilder: (context, index) {
         final line = lines[index];
-
         return LineCard(
           key: ValueKey(line.routeId),
           line: line,
-          isSaved: _viewModel.isLineSaved(line.routeId),
-          onToggleSaved: () => _toggleSavedLine(line.routeId),
-          onOpenDetails: () => _openLineDetails(line),
+          isSaved: viewModel.isLineSaved(line.routeId),
+          onToggleSaved: () =>
+              _toggleSavedLine(context, viewModel, line.routeId),
+          onOpenDetails: () => _openLineDetails(context, line),
         );
       },
     );
@@ -283,10 +234,7 @@ class _LinesStateArea extends StatelessWidget {
                   height: 1.5,
                 ),
               ),
-              if (action != null) ...[
-                const SizedBox(height: 14),
-                action,
-              ],
+              if (action != null) ...[const SizedBox(height: 14), action],
             ],
           ),
         ),

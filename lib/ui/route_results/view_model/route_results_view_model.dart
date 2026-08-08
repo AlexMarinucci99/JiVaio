@@ -3,10 +3,7 @@ import 'package:flutter/foundation.dart';
 import '../../../data/repositories/route_planning_repository.dart';
 import '../../../domain/models/route_result.dart';
 
-/// Gestisce lo stato della schermata dei risultati.
-///
-/// Non contiene widget e non decide come renderizzare i dati.
-/// Espone esclusivamente stato e azioni utilizzabili dalla View.
+/// Gestisce caricamento e stato già pronto per la schermata risultati.
 class RouteResultsViewModel extends ChangeNotifier {
   RouteResultsViewModel({
     required RoutePlanningRepository repository,
@@ -31,14 +28,43 @@ class RouteResultsViewModel extends ChangeNotifier {
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
 
-  /// Carica il percorso richiesto dalla schermata.
-  ///
-  /// Evita chiamate concorrenti e aggiorna lo stato esposto alla View
-  /// durante caricamento, successo o errore.
+  RouteResult get _loadedResult => _result!;
+
+  String get departureDescription {
+    final time = _loadedResult.departureTime;
+    return time == null || time.isEmpty
+        ? _loadedResult.origin
+        : '${_loadedResult.origin}\nPartenza prevista: $time';
+  }
+
+  String get boardingStopDescription => _loadedResult.boardingStopName;
+
+  String get recommendedLineDescription {
+    final times = _loadedResult.nextBusTimes;
+    final nextTime = times.isEmpty ? null : times.first;
+    return nextTime == null || nextTime.isEmpty
+        ? 'Linea ${_loadedResult.lineCode}'
+        : 'Linea ${_loadedResult.lineCode}\nProssima corsa: $nextTime';
+  }
+
+  String get durationDescription {
+    final duration = _loadedResult.totalDuration;
+    final hours = duration.inHours;
+    final minutes = duration.inMinutes.remainder(60);
+    if (hours > 0 && minutes > 0) return '$hours h $minutes min';
+    if (hours > 0) return '$hours h';
+    return '$minutes min';
+  }
+
+  String get arrivalDescription {
+    final time = _loadedResult.arrivalTime;
+    return time == null || time.isEmpty
+        ? _loadedResult.destination
+        : '${_loadedResult.destination}\nArrivo previsto: $time';
+  }
+
   Future<void> loadRoute() async {
-    if (_isDisposed || _isLoading) {
-      return;
-    }
+    if (_isDisposed || _isLoading) return;
 
     _isLoading = true;
     _result = null;
@@ -60,9 +86,7 @@ class RouteResultsViewModel extends ChangeNotifier {
   }
 
   void _notifyListenersSafely() {
-    if (!_isDisposed) {
-      notifyListeners();
-    }
+    if (!_isDisposed) notifyListeners();
   }
 
   @override

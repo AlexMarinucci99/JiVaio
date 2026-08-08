@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import '../../../../data/repositories/transit_repository.dart';
-import '../../../../domain/models/transit_line.dart';
 import '../../theme/line_card_colors.dart';
 import '../../theme/line_detail_colors.dart';
 import '../../view_model/line_detail_view_model.dart';
@@ -11,75 +10,32 @@ import 'line_detail_report_card.dart';
 import 'line_detail_route_section.dart';
 import 'line_detail_time_filter.dart';
 
-/// Schermata di dettaglio di una linea urbana.
-///
-/// Mostra header, partenze, segnalazioni demo e fermate della direzione
-/// selezionata, delegando stato e logica a [LineDetailViewModel].
-class LineDetailScreen extends StatefulWidget {
-  const LineDetailScreen({
-    super.key,
-    required this.line,
-    required this.repository,
-  });
+/// Mostra il dettaglio della linea esposto da [LineDetailViewModel].
+class LineDetailScreen extends StatelessWidget {
+  const LineDetailScreen({super.key});
 
-  /// Linea urbana da mostrare nel dettaglio.
-  final TransitLine line;
-
-  /// Repository usato per recuperare orari e informazioni della linea.
-  final TransitRepository repository;
-
-  @override
-  State<LineDetailScreen> createState() => _LineDetailScreenState();
-}
-
-class _LineDetailScreenState extends State<LineDetailScreen> {
-  late final LineDetailViewModel _viewModel;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _viewModel = LineDetailViewModel(
-      line: widget.line,
-      repository: widget.repository,
-    );
-
-    _viewModel.loadSchedule();
-  }
-
-  @override
-  void dispose() {
-    _viewModel.dispose();
-    super.dispose();
-  }
-
-  Future<void> _openTimeFilterSheet() async {
+  Future<void> _openTimeFilterSheet(
+    BuildContext context,
+    LineDetailViewModel viewModel,
+  ) async {
     final selection = await showLineDetailTimeFilterSheet(
       context,
-      currentRangeLabel: _viewModel.timeRangeLabel,
-      selectedManualHour: _viewModel.selectedManualHour,
-      manualHours: _viewModel.manualHours,
+      currentRangeLabel: viewModel.timeRangeLabel,
+      selectedManualHour: viewModel.selectedManualHour,
+      manualHours: viewModel.manualHours,
     );
 
-    if (!mounted || selection == null) {
-      return;
-    }
-
+    if (!context.mounted || selection == null) return;
     final selectedHour = selection.hour;
-
-    if (selectedHour == null) {
-      await _viewModel.selectAutomaticTime();
-      return;
-    }
-
-    await _viewModel.selectManualHour(selectedHour);
+    await (selectedHour == null
+        ? viewModel.selectAutomaticTime()
+        : viewModel.selectManualHour(selectedHour));
   }
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _viewModel,
-      builder: (context, _) {
+    return Consumer<LineDetailViewModel>(
+      builder: (context, viewModel, child) {
         return Scaffold(
           backgroundColor: LineDetailColors.pageBackground,
           body: SafeArea(
@@ -87,10 +43,10 @@ class _LineDetailScreenState extends State<LineDetailScreen> {
             child: Column(
               children: [
                 LineDetailHeader(
-                  line: _viewModel.line,
-                  direction: _viewModel.selectedDirection,
-                  canSwapDirection: _viewModel.canSwapDirection,
-                  onSwapDirection: _viewModel.toggleDirection,
+                  line: viewModel.line,
+                  direction: viewModel.selectedDirection,
+                  canSwapDirection: viewModel.canSwapDirection,
+                  onSwapDirection: viewModel.toggleDirection,
                   onClose: () => Navigator.of(context).pop(),
                 ),
                 const SizedBox(height: 12),
@@ -98,38 +54,38 @@ class _LineDetailScreenState extends State<LineDetailScreen> {
                   child: ListView(
                     padding: const EdgeInsets.fromLTRB(22, 8, 22, 120),
                     children: [
-                      if (_viewModel.errorMessage != null) ...[
+                      if (viewModel.errorMessage != null) ...[
                         _LineDetailErrorCard(
-                          message: _viewModel.errorMessage!,
-                          onRetry: _viewModel.loadSchedule,
+                          message: viewModel.errorMessage!,
+                          onRetry: viewModel.loadSchedule,
                         ),
                         const SizedBox(height: 14),
                       ],
                       LineDetailDeparturesCard(
-                        selectedTimeRange: _viewModel.timeRangeLabel,
-                        departures: _viewModel.departures,
-                        selectedTripId: _viewModel.selectedTripId,
-                        isLoading: _viewModel.isLoadingSchedule,
-                        emptyMessage: _viewModel.emptyDeparturesMessage,
-                        onSelectTimeRange: _openTimeFilterSheet,
+                        selectedTimeRange: viewModel.timeRangeLabel,
+                        departures: viewModel.departures,
+                        selectedTripId: viewModel.selectedTripId,
+                        isLoading: viewModel.isLoadingSchedule,
+                        emptyMessage: viewModel.emptyDeparturesMessage,
+                        onSelectTimeRange: () =>
+                            _openTimeFilterSheet(context, viewModel),
                       ),
                       const SizedBox(height: 14),
                       LineDetailReportCard(
                         lineColor: LineDetailColors.reportAccent,
-                        reportLocation: _viewModel.reportLocation,
-                        canSendReport: _viewModel.canSendReport,
-                        selectedStopName: _viewModel.selectedReportStopName,
-                        lastReportMessage: _viewModel.lastReportMessage,
-                        onLocationChanged: _viewModel.selectReportLocation,
-                        onReportPressed: _viewModel.sendFakeReport,
+                        reportLocation: viewModel.reportLocation,
+                        canSendReport: viewModel.canSendReport,
+                        selectedStopName: viewModel.selectedReportStopName,
+                        lastReportMessage: viewModel.lastReportMessage,
+                        onLocationChanged: viewModel.selectReportLocation,
+                        onReportPressed: viewModel.sendFakeReport,
                       ),
                       const SizedBox(height: 14),
                       LineDetailRouteSection(
-                        stops: _viewModel.stops,
-                        selectedStopId: _viewModel.selectedReportStopId,
-                        isStopSelectionEnabled:
-                            _viewModel.requiresStopSelection,
-                        onStopSelected: _viewModel.selectReportStop,
+                        stops: viewModel.stops,
+                        selectedStopId: viewModel.selectedReportStopId,
+                        isStopSelectionEnabled: viewModel.requiresStopSelection,
+                        onStopSelected: viewModel.selectReportStop,
                       ),
                     ],
                   ),

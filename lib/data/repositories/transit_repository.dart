@@ -214,9 +214,6 @@ class TransitRepository {
           );
 
     return TransitLineDirectionSchedule(
-      timeRangeLabel:
-          '${now.hour.toString().padLeft(2, '0')}:00 - '
-          '${(now.hour + 1).toString().padLeft(2, '0')}:00',
       departures: departures,
       stops: stops,
       selectedTripId: selectedTripId,

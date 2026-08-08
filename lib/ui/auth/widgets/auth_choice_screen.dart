@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import '../../../data/repositories/auth_repository.dart';
 import '../../../routing/app_routes.dart';
 import '../../core/widgets/app_segmented_control.dart';
 import '../view_model/auth_view_model.dart';
@@ -15,16 +15,8 @@ import '../theme/auth_colors.dart';
 /// Gestisce la View della feature auth e delega stato, validazione
 /// e operazioni di autenticazione ad [AuthViewModel].
 class AuthChoiceScreen extends StatefulWidget {
-  const AuthChoiceScreen({
-    super.key,
-    required this.authRepository,
-    required this.onContinueAsGuest,
-  });
+  const AuthChoiceScreen({super.key, required this.onContinueAsGuest});
 
-  /// Repository usato dal ViewModel per login e registrazione.
-  final AuthRepository authRepository;
-
-  /// Callback invocata quando l'utente prosegue senza autenticazione.
   final VoidCallback onContinueAsGuest;
 
   @override
@@ -32,7 +24,7 @@ class AuthChoiceScreen extends StatefulWidget {
 }
 
 class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
-  late final AuthViewModel _viewModel;
+  AuthViewModel get _viewModel => context.read<AuthViewModel>();
 
   /// I controller restano nella View perché sono risorse UI con lifecycle.
   final TextEditingController _nameController = TextEditingController();
@@ -44,14 +36,7 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
   static const AuthChoiceColors _colors = AuthChoiceColors();
 
   @override
-  void initState() {
-    super.initState();
-    _viewModel = AuthViewModel(widget.authRepository);
-  }
-
-  @override
   void dispose() {
-    _viewModel.dispose();
     _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
@@ -138,9 +123,8 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _viewModel,
-      builder: (context, child) {
+    return Consumer<AuthViewModel>(
+      builder: (context, viewModel, child) {
         return Scaffold(
           backgroundColor: _colors.backgroundColor,
           body: SafeArea(
@@ -164,7 +148,7 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
                   const SizedBox(height: 32),
 
                   AppSegmentedControl<AuthMode>(
-                    selectedValue: _viewModel.selectedMode,
+                    selectedValue: viewModel.selectedMode,
                     onChanged: _setMode,
                     colors: _colors.segmentedControlColors,
                     items: const [
@@ -182,7 +166,7 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
                   const SizedBox(height: 36),
 
                   Text(
-                    _viewModel.formTitle,
+                    viewModel.formTitle,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 30,
@@ -194,7 +178,7 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
                   const SizedBox(height: 10),
 
                   Text(
-                    _viewModel.formSubtitle,
+                    viewModel.formSubtitle,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: _colors.subtitleColor,
@@ -204,13 +188,13 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
 
                   const SizedBox(height: 30),
 
-                  if (_viewModel.isLogin)
+                  if (viewModel.isLogin)
                     AuthLoginForm(
                       emailController: _emailController,
                       passwordController: _passwordController,
-                      obscurePassword: _viewModel.obscurePassword,
+                      obscurePassword: viewModel.obscurePassword,
                       onTogglePasswordVisibility:
-                          _viewModel.togglePasswordVisibility,
+                          viewModel.togglePasswordVisibility,
                       onForgotPassword: _openResetPassword,
                       textFieldColors: _colors.textFieldColors,
                       linkColor: _colors.primaryColor,
@@ -221,20 +205,20 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
                       emailController: _emailController,
                       passwordController: _passwordController,
                       confirmPasswordController: _confirmPasswordController,
-                      obscurePassword: _viewModel.obscurePassword,
-                      obscureConfirmPassword: _viewModel.obscureConfirmPassword,
+                      obscurePassword: viewModel.obscurePassword,
+                      obscureConfirmPassword: viewModel.obscureConfirmPassword,
                       onTogglePasswordVisibility:
-                          _viewModel.togglePasswordVisibility,
+                          viewModel.togglePasswordVisibility,
                       onToggleConfirmPasswordVisibility:
-                          _viewModel.toggleConfirmPasswordVisibility,
+                          viewModel.toggleConfirmPasswordVisibility,
                       textFieldColors: _colors.textFieldColors,
                     ),
 
                   const SizedBox(height: 18),
 
                   AuthActionButton(
-                    label: _viewModel.primaryButtonText,
-                    onPressed: _viewModel.isSubmitting ? null : _submit,
+                    label: viewModel.primaryButtonText,
+                    onPressed: viewModel.isSubmitting ? null : _submit,
                     colors: _colors.actionButtonColors,
                   ),
 
@@ -267,9 +251,7 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
 
                   AuthActionButton(
                     label: 'Continua come ospite',
-                    onPressed: _viewModel.isSubmitting
-                        ? null
-                        : _continueAsGuest,
+                    onPressed: viewModel.isSubmitting ? null : _continueAsGuest,
                     height: 54,
                     fontSize: 17,
                     borderRadius: 26,

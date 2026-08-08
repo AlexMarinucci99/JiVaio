@@ -62,25 +62,16 @@ class TransitLineDirection {
   final bool hasServiceToday;
 
   bool get hasUpcomingDepartures => upcomingDepartures.isNotEmpty;
-
-  /// Restituisce il messaggio da mostrare quando non ci sono partenze.
-  String get emptyStateMessage => hasServiceToday
-      ? 'Nessuna altra partenza disponibile per oggi.'
-      : 'Nessuna corsa attiva per oggi.';
 }
 
 /// Raccoglie orari e fermate per una specifica direzione.
 class TransitLineDirectionSchedule {
   const TransitLineDirectionSchedule({
-    required this.timeRangeLabel,
     required this.departures,
     required this.stops,
     this.selectedTripId,
     this.hasServiceToday = true,
   });
-
-  /// Fascia oraria mostrata nella sezione partenze.
-  final String timeRangeLabel;
 
   /// Corse disponibili nella fascia oraria.
   final List<TransitLineDeparture> departures;
@@ -93,11 +84,6 @@ class TransitLineDirectionSchedule {
 
   /// Indica se la linea ha servizio nella giornata corrente.
   final bool hasServiceToday;
-
-  /// Restituisce il messaggio da mostrare quando non ci sono corse.
-  String get emptyDeparturesMessage => hasServiceToday
-      ? 'Non ci sono bus in questa fascia oraria.'
-      : 'Nessuna corsa attiva per oggi.';
 }
 
 /// Descrive una corsa disponibile per una linea.

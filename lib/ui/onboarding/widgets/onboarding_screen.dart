@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import '../../../data/repositories/onboarding_repository.dart';
 import '../../../routing/app_routes.dart';
 import '../theme/onboarding_colors.dart';
 import '../view_model/onboarding_view_model.dart';
@@ -13,10 +13,7 @@ import 'onboarding_slide_card.dart';
 /// Mostra le slide introduttive, coordina la navigazione tra pagine
 /// e delega al [OnboardingViewModel] la gestione dello stato e della preferenza.
 class OnboardingScreen extends StatefulWidget {
-  const OnboardingScreen({super.key, required this.onboardingRepository});
-
-  /// Repository usato per salvare la preferenza di visualizzazione.
-  final OnboardingRepository onboardingRepository;
+  const OnboardingScreen({super.key});
 
   @override
   State<OnboardingScreen> createState() => _OnboardingScreenState();
@@ -25,7 +22,7 @@ class OnboardingScreen extends StatefulWidget {
 class _OnboardingScreenState extends State<OnboardingScreen> {
   final PageController _pageController = PageController();
 
-  late final OnboardingViewModel _viewModel;
+  OnboardingViewModel get _viewModel => context.read<OnboardingViewModel>();
 
   bool _isCompleting = false;
 
@@ -50,10 +47,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   void initState() {
     super.initState();
-
-    _viewModel = OnboardingViewModel(
-      onboardingRepository: widget.onboardingRepository,
-    );
     assert(_visuals.length == _viewModel.items.length);
   }
 
@@ -108,18 +101,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   void dispose() {
     _pageController.dispose();
-    _viewModel.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _viewModel,
-      builder: (context, _) {
-        final items = _viewModel.items;
-        final isLastPage = _viewModel.isLastPage;
-
+    return Consumer<OnboardingViewModel>(
+      builder: (context, viewModel, child) {
+        final items = viewModel.items;
+        final isLastPage = viewModel.isLastPage;
         return Scaffold(
           backgroundColor: _colors.backgroundColor,
           body: SafeArea(
@@ -148,7 +138,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   child: PageView.builder(
                     controller: _pageController,
                     itemCount: items.length,
-                    onPageChanged: _viewModel.updatePage,
+                    onPageChanged: viewModel.updatePage,
                     itemBuilder: (context, index) {
                       final item = items[index];
                       final visual = _visuals[index];
@@ -180,10 +170,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                 key: const ValueKey(
                                   'hide_onboarding_preference',
                                 ),
-                                value: _viewModel.hideOnboardingNextTime,
+                                value: viewModel.hideOnboardingNextTime,
                                 colors: _colors.hidePreferenceColors,
                                 onToggle:
-                                    _viewModel.toggleHideOnboardingNextTime,
+                                    viewModel.toggleHideOnboardingNextTime,
                               )
                             : const SizedBox.shrink(
                                 key: ValueKey('empty_onboarding_preference'),
@@ -193,7 +183,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       if (isLastPage) const SizedBox(height: 16),
 
                       OnboardingBottomControls(
-                        currentIndex: _viewModel.currentPage,
+                        currentIndex: viewModel.currentPage,
                         itemCount: items.length,
                         onBack: _goBack,
                         onNext: _goNext,

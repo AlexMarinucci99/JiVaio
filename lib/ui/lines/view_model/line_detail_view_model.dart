@@ -84,12 +84,16 @@ class LineDetailViewModel extends ChangeNotifier {
   String? get selectedTripId => _schedule?.selectedTripId;
 
   /// Etichetta della fascia oraria mostrata.
-  String get timeRangeLabel =>
-      _schedule?.timeRangeLabel ?? _formatHourRange(_selectedMoment());
+  String get timeRangeLabel => _formatHourRange(_selectedMoment());
 
   /// Messaggio mostrato quando non sono disponibili partenze.
-  String get emptyDeparturesMessage =>
-      _schedule?.emptyDeparturesMessage ?? 'Partenze non ancora caricate.';
+  String get emptyDeparturesMessage {
+    final schedule = _schedule;
+    if (schedule == null) return 'Partenze non ancora caricate.';
+    return schedule.hasServiceToday
+        ? 'Non ci sono bus in questa fascia oraria.'
+        : 'Nessuna corsa attiva per oggi.';
+  }
 
   bool get requiresStopSelection => _reportLocation != null;
 

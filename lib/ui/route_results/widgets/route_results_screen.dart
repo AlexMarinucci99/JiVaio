@@ -1,128 +1,74 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import '../../../data/repositories/route_planning_repository.dart';
-import '../../../domain/models/route_result.dart';
 import '../theme/route_results_colors.dart';
 import '../view_model/route_results_view_model.dart';
 import 'primary_route_card.dart';
 import 'route_navigation_button.dart';
 import 'route_results_header.dart';
 
-/// Schermata dei risultati della ricerca percorso.
-///
-/// Per ora mostra una sintesi dimostrativa basata sui dati mock
-/// provenienti da [RoutePlanningRepository]. In futuro potrà integrare
-/// timeline completa, alternative e navigazione assistita senza modificare
-/// la struttura generale della feature.
-class RouteResultsScreen extends StatefulWidget {
-  const RouteResultsScreen({
-    super.key,
-    required this.repository,
-    required this.origin,
-    required this.destination,
-  });
+/// Mostra il risultato di percorso esposto dal ViewModel scoped alla route.
+class RouteResultsScreen extends StatelessWidget {
+  const RouteResultsScreen({super.key});
 
-  /// Repository usato per ottenere il percorso da mostrare.
-  final RoutePlanningRepository repository;
-
-  final String origin;
-
-  final String destination;
-
-  @override
-  State<RouteResultsScreen> createState() => _RouteResultsScreenState();
-}
-
-class _RouteResultsScreenState extends State<RouteResultsScreen> {
-  late final RouteResultsViewModel _viewModel;
   static const RouteResultsColors _colors = RouteResultsColors();
 
-  @override
-  void initState() {
-    super.initState();
-
-    _viewModel = RouteResultsViewModel(
-      repository: widget.repository,
-      origin: widget.origin,
-      destination: widget.destination,
-    );
-
-    _viewModel.loadRoute();
-  }
-
-  @override
-  void dispose() {
-    _viewModel.dispose();
-    super.dispose();
-  }
-
-  void _handleBack() {
-    Navigator.of(context).pop();
-  }
-
-  void _showFeatureNotReadyMessage(String message) {
+  void _showFeatureNotReadyMessage(BuildContext context) {
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
       ..showSnackBar(
-        SnackBar(content: Text(message), behavior: SnackBarBehavior.floating),
+        const SnackBar(
+          content: Text('Navigazione percorso non ancora implementata.'),
+          behavior: SnackBarBehavior.floating,
+        ),
       );
-  }
-
-  void _handleStartNavigation() {
-    _showFeatureNotReadyMessage(
-      'Navigazione percorso non ancora implementata.',
-    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _viewModel,
-      builder: (context, _) {
-        final result = _viewModel.result;
-
+    return Consumer<RouteResultsViewModel>(
+      builder: (context, viewModel, child) {
         return Scaffold(
           backgroundColor: _colors.backgroundColor,
-          body: _buildBody(result),
+          body: _buildBody(context, viewModel),
         );
       },
     );
   }
 
-  Widget _buildBody(RouteResult? result) {
-    if (_viewModel.isLoading) {
-      return _LoadingRouteResultsView(colors: _colors);
+  Widget _buildBody(BuildContext context, RouteResultsViewModel viewModel) {
+    if (viewModel.isLoading) {
+      return const _LoadingRouteResultsView(colors: _colors);
     }
 
-    final errorMessage = _viewModel.errorMessage;
-
-    if (errorMessage != null || result == null) {
+    final result = viewModel.result;
+    if (viewModel.errorMessage != null || result == null) {
       return _ErrorRouteResultsView(
         colors: _colors,
-        message: errorMessage ?? 'Nessun percorso disponibile.',
-        onBack: _handleBack,
-        onRetry: _viewModel.loadRoute,
+        message: viewModel.errorMessage ?? 'Nessun percorso disponibile.',
+        onBack: () => Navigator.of(context).pop(),
+        onRetry: viewModel.loadRoute,
       );
     }
 
     return _LoadedRouteResultsView(
-      result: result,
+      viewModel: viewModel,
       colors: _colors,
-      onBack: _handleBack,
-      onStartNavigation: _handleStartNavigation,
+      onBack: () => Navigator.of(context).pop(),
+      onStartNavigation: () => _showFeatureNotReadyMessage(context),
     );
   }
 }
 
 class _LoadedRouteResultsView extends StatelessWidget {
   const _LoadedRouteResultsView({
-    required this.result,
+    required this.viewModel,
     required this.colors,
     required this.onBack,
     required this.onStartNavigation,
   });
 
-  final RouteResult result;
+  final RouteResultsViewModel viewModel;
   final RouteResultsColors colors;
   final VoidCallback onBack;
   final VoidCallback onStartNavigation;
@@ -131,11 +77,25 @@ class _LoadedRouteResultsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        RouteResultsHeader(result: result, colors: colors, onBack: onBack),
+        RouteResultsHeader(
+          result: viewModel.result!,
+          colors: colors,
+          onBack: onBack,
+        ),
         Expanded(
           child: ListView(
             padding: const EdgeInsets.all(20),
-            children: [PrimaryRouteCard(result: result, colors: colors)],
+            children: [
+              PrimaryRouteCard(
+                departureDescription: viewModel.departureDescription,
+                boardingStopDescription: viewModel.boardingStopDescription,
+                recommendedLineDescription:
+                    viewModel.recommendedLineDescription,
+                durationDescription: viewModel.durationDescription,
+                arrivalDescription: viewModel.arrivalDescription,
+                colors: colors,
+              ),
+            ],
           ),
         ),
         SafeArea(

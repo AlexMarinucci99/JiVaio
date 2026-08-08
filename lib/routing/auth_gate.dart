@@ -1,65 +1,63 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import '../config/app_dependencies.dart';
-import '../data/repositories/auth_repository.dart';
 import '../domain/models/app_user.dart';
+import '../ui/auth/view_model/session_view_model.dart';
 import '../ui/auth/widgets/auth_choice_screen.dart';
+import '../ui/home/view_model/home_map_view_model.dart';
+import '../ui/lines/view_model/lines_view_model.dart';
 import '../ui/main_navigation/widgets/main_navigation_screen.dart';
+import '../ui/notifications/view_model/notification_center_view_model.dart';
 
-/// Gestisce l'accesso iniziale all'app in base allo stato di autenticazione.
-///
-/// Mostra la schermata principale per utenti autenticati o guest,
-/// altrimenti rimanda alla scelta tra login, registrazione e accesso ospite.
-class AuthGate extends StatefulWidget {
-  const AuthGate({super.key, required this.dependencies});
+/// Mostra autenticazione o contenuto principale in base alla sessione.
+class AuthGate extends StatelessWidget {
+  const AuthGate({super.key});
 
-  /// Dipendenze applicative necessarie alle schermate raggiunte dal gate.
-  final AppDependencies dependencies;
-
-  @override
-  State<AuthGate> createState() => _AuthGateState();
-}
-
-class _AuthGateState extends State<AuthGate> {
-  bool _isGuest = false;
-
-  AuthRepository get _authRepository => widget.dependencies.authRepository;
-
-  void _continueAsGuest() => setState(() => _isGuest = true);
-
-  Future<void> _exitGuestMode() async => setState(() => _isGuest = false);
-
-  Future<void> _logout() => _authRepository.logout();
+  Widget _buildMainNavigation({
+    required AppUser? user,
+    required Future<void> Function() onLogout,
+  }) {
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => HomeMapViewModel(
+            repository: context.read(),
+            locationRepository: context.read(),
+          ),
+        ),
+        ChangeNotifierProvider(
+          create: (context) =>
+              NotificationCenterViewModel(repository: context.read())
+                ..loadNotifications(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => LinesViewModel(
+            transitRepository: context.read(),
+            savedLinesRepository: context.read(),
+            userId: user?.id,
+          )..loadLines(),
+        ),
+      ],
+      child: MainNavigationScreen(user: user, onLogout: onLogout),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    if (_isGuest) {
-      return MainNavigationScreen(
+    final viewModel = context.watch<SessionViewModel>();
+
+    if (viewModel.isGuest) {
+      return _buildMainNavigation(
         user: null,
-        onLogout: _exitGuestMode,
-        dependencies: widget.dependencies,
+        onLogout: viewModel.exitGuestMode,
       );
     }
 
-    return StreamBuilder<AppUser?>(
-      stream: _authRepository.authStateChanges,
-      initialData: _authRepository.currentUser,
-      builder: (context, snapshot) {
-        final user = snapshot.data;
+    final user = viewModel.user;
+    if (user != null) {
+      return _buildMainNavigation(user: user, onLogout: viewModel.logout);
+    }
 
-        if (user != null) {
-          return MainNavigationScreen(
-            user: user,
-            onLogout: _logout,
-            dependencies: widget.dependencies,
-          );
-        }
-
-        return AuthChoiceScreen(
-          authRepository: _authRepository,
-          onContinueAsGuest: _continueAsGuest,
-        );
-      },
-    );
+    return AuthChoiceScreen(onContinueAsGuest: viewModel.continueAsGuest);
   }
 }
