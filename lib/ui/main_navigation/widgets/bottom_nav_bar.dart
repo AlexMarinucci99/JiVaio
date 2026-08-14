@@ -61,14 +61,7 @@ class BottomNavBar extends StatelessWidget {
                     child: DecoratedBox(
                       decoration: BoxDecoration(
                         color: colors.selectedBackgroundColor,
-                        borderRadius: BorderRadius.circular(23.4),
-                        boxShadow: [
-                          BoxShadow(
-                            color: colors.selectedGlowColor,
-                            blurRadius: 16.2,
-                            offset: const Offset(0, 5.4),
-                          ),
-                        ],
+                        borderRadius: BorderRadius.circular(23.4),                       
                       ),
                     ),
                   ),
