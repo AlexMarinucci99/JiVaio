@@ -58,13 +58,6 @@ class NotificationCenterPanel extends StatelessWidget {
         color: colors.backgroundColor,
         borderRadius: BorderRadius.circular(22),
         border: Border.all(color: colors.borderColor),
-        boxShadow: [
-          BoxShadow(
-            color: colors.shadowColor,
-            blurRadius: 22,
-            offset: const Offset(0, 10),
-          ),
-        ],
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(21),

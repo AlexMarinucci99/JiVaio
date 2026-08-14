@@ -49,13 +49,6 @@ class SettingsSection extends StatelessWidget {
             color: colors.cardBackground,
             borderRadius: BorderRadius.circular(20),
             border: Border.all(color: colors.cardBorder),
-            boxShadow: [
-              BoxShadow(
-                color: colors.cardShadow.withValues(alpha: 0.05),
-                blurRadius: 20,
-                offset: const Offset(0, 7),
-              ),
-            ],
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(19),

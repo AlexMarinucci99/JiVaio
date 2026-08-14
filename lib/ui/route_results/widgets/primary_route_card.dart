@@ -29,13 +29,6 @@ class PrimaryRouteCard extends StatelessWidget {
         color: colors.surfaceColor,
         borderRadius: BorderRadius.circular(22),
         border: Border.all(color: colors.borderColor),
-        boxShadow: [
-          BoxShadow(
-            color: colors.shadowColor,
-            blurRadius: 18,
-            offset: const Offset(0, 7),
-          ),
-        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

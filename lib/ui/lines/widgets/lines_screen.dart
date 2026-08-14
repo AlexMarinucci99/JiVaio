@@ -206,13 +206,6 @@ class _LinesStateArea extends StatelessWidget {
             color: colors.stateCardBackground,
             borderRadius: BorderRadius.circular(20),
             border: Border.all(color: colors.stateCardBorder),
-            boxShadow: [
-              BoxShadow(
-                color: colors.stateCardShadow.withValues(alpha: 0.06),
-                blurRadius: 18,
-                offset: const Offset(0, 8),
-              ),
-            ],
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

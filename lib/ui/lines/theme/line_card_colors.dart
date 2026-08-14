@@ -111,13 +111,6 @@ class LineCardColors {
       color: palette.surface,
       borderRadius: BorderRadius.circular(20),
       border: Border.all(color: palette.border),
-      boxShadow: [
-        BoxShadow(
-          color: palette.shadowBase.withValues(alpha: 0.06),
-          blurRadius: 22,
-          offset: const Offset(0, 8),
-        ),
-      ],
     );
   }
 }

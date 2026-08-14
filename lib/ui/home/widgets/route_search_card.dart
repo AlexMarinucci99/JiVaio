@@ -97,13 +97,6 @@ class _RouteSearchCardState extends State<RouteSearchCard> {
       decoration: BoxDecoration(
         color: colors.cardColor,
         borderRadius: BorderRadius.circular(22 * scale),
-        boxShadow: [
-          BoxShadow(
-            color: colors.shadowColor,
-            blurRadius: 24 * scale,
-            offset: Offset(0, 10 * scale),
-          ),
-        ],
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,

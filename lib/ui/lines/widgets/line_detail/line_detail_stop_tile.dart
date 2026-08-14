@@ -72,14 +72,7 @@ class LineDetailStopTile extends StatelessWidget {
               border: Border.all(
                 color: borderColor,
                 width: isSelected ? 1.4 : 1,
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: colors.shadowBase.withValues(alpha: 0.045),
-                  blurRadius: 14,
-                  offset: const Offset(0, 6),
-                ),
-              ],
+              ),                    
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
