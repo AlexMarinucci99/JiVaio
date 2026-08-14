@@ -36,8 +36,8 @@ class BottomNavBar extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(25),
       child: Container(
-        height: 63,
-        padding: const EdgeInsets.all(7.2),
+        height: 58,
+        padding: const EdgeInsets.all(7.0),
         decoration: BoxDecoration(
           color: colors.backgroundColor,
           borderRadius: BorderRadius.circular(25.2),
