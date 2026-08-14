@@ -11,6 +11,7 @@ import '../../route_results/view_model/route_results_view_model.dart';
 import '../../route_results/widgets/route_results_screen.dart';
 import '../theme/home_colors.dart';
 import '../view_model/home_map_view_model.dart';
+import 'home_alert_dialog.dart';
 import 'home_map.dart';
 import 'locate_user_button.dart';
 import 'route_search_card.dart';
@@ -79,54 +80,34 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     _mapController.move(LatLng(location.latitude, location.longitude), 16);
   }
 
-  Future<void> _showLocationServiceDialog() => showDialog<void>(
-    context: context,
-    builder: (dialogContext) => AlertDialog(
-      title: const Text('Attiva la geolocalizzazione'),
-      content: const Text(
+  Future<void> _showLocationServiceDialog() => showHomeAlertDialog(
+    context,
+    title: 'Attiva la geolocalizzazione',
+    message:
         'Per mostrarti sulla mappa, JiVaio ha bisogno che '
         'la geolocalizzazione del dispositivo sia attiva.',
-      ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.of(dialogContext).pop(),
-          child: const Text('Non ora'),
-        ),
-        TextButton(
-          onPressed: () {
-            Navigator.of(dialogContext).pop();
-            _retryLocationWhenResumed = true;
-            unawaited(_viewModel.openLocationSettings());
-          },
-          child: const Text('Apri impostazioni'),
-        ),
-      ],
-    ),
+    dismissLabel: 'Non ora',
+    confirmLabel: 'Apri impostazioni',
+    colors: _colors.alertDialogColors,
+    onConfirm: () {
+      _retryLocationWhenResumed = true;
+      unawaited(_viewModel.openLocationSettings());
+    },
   );
 
-  Future<void> _showPermissionDeniedForeverDialog() => showDialog<void>(
-    context: context,
-    builder: (dialogContext) => AlertDialog(
-      title: const Text('Permesso necessario'),
-      content: const Text(
+  Future<void> _showPermissionDeniedForeverDialog() => showHomeAlertDialog(
+    context,
+    title: 'Permesso necessario',
+    message:
         'Il permesso di geolocalizzazione è stato bloccato. '
         'Apri le impostazioni dell’app e abilitalo manualmente.',
-      ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.of(dialogContext).pop(),
-          child: const Text('Annulla'),
-        ),
-        TextButton(
-          onPressed: () {
-            Navigator.of(dialogContext).pop();
-            _retryLocationWhenResumed = true;
-            unawaited(_viewModel.openAppSettings());
-          },
-          child: const Text('Apri impostazioni'),
-        ),
-      ],
-    ),
+    dismissLabel: 'Annulla',
+    confirmLabel: 'Apri impostazioni',
+    colors: _colors.alertDialogColors,
+    onConfirm: () {
+      _retryLocationWhenResumed = true;
+      unawaited(_viewModel.openAppSettings());
+    },
   );
 
   void _showSnackBar(String message) {
