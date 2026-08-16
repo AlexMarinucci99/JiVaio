@@ -32,9 +32,8 @@ class LocateUserButton extends StatelessWidget {
             height: 52,
             child: Center(
               child: isLoading
-                  ? SizedBox(
-                      width: 21,
-                      height: 21,
+                  ? SizedBox.square(
+                      dimension: 21,
                       child: CircularProgressIndicator(
                         strokeWidth: 2.4,
                         color: colors.progressColor,

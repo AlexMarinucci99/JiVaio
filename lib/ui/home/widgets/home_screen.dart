@@ -54,22 +54,23 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     final result = await _viewModel.locateUser();
     if (!mounted) return;
 
-    if (result == LocationAccessResult.granted) {
-      _centerMapOnUser();
-    } else if (result == LocationAccessResult.serviceDisabled) {
-      await _showLocationServiceDialog();
-    } else if (result == LocationAccessResult.permissionDeniedForever) {
-      await _showPermissionDeniedForeverDialog();
-    } else if (result == LocationAccessResult.permissionDenied) {
-      _showSnackBar(
-        'Permesso di geolocalizzazione negato. '
-        'Premi nuovamente il pulsante GPS per riprovare.',
-      );
-    } else {
-      _showSnackBar(
-        _viewModel.locationErrorMessage ??
-            'Impossibile rilevare la posizione attuale.',
-      );
+    switch (result) {
+      case LocationAccessResult.granted:
+        _centerMapOnUser();
+      case LocationAccessResult.serviceDisabled:
+        await _showLocationServiceDialog();
+      case LocationAccessResult.permissionDeniedForever:
+        await _showPermissionDeniedForeverDialog();
+      case LocationAccessResult.permissionDenied:
+        _showSnackBar(
+          'Permesso di geolocalizzazione negato. '
+          'Premi nuovamente il pulsante GPS per riprovare.',
+        );
+      case LocationAccessResult.unavailable:
+        _showSnackBar(
+          _viewModel.locationErrorMessage ??
+              'Impossibile rilevare la posizione attuale.',
+        );
     }
   }
 
@@ -89,10 +90,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     dismissLabel: 'Non ora',
     confirmLabel: 'Apri impostazioni',
     colors: _colors.alertDialogColors,
-    onConfirm: () {
-      _retryLocationWhenResumed = true;
-      unawaited(_viewModel.openLocationSettings());
-    },
+    onConfirm: () => _openSettings(_viewModel.openLocationSettings),
   );
 
   Future<void> _showPermissionDeniedForeverDialog() => showHomeAlertDialog(
@@ -104,11 +102,13 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     dismissLabel: 'Annulla',
     confirmLabel: 'Apri impostazioni',
     colors: _colors.alertDialogColors,
-    onConfirm: () {
-      _retryLocationWhenResumed = true;
-      unawaited(_viewModel.openAppSettings());
-    },
+    onConfirm: () => _openSettings(_viewModel.openAppSettings),
   );
+
+  void _openSettings(Future<bool> Function() openSettings) {
+    _retryLocationWhenResumed = true;
+    unawaited(openSettings());
+  }
 
   void _showSnackBar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -160,11 +160,12 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     return Stack(
       children: [
         Positioned.fill(
-          child: Consumer<HomeMapViewModel>(
-            builder: (context, viewModel, child) => HomeMap(
+          child: Selector<HomeMapViewModel, HomeMapData>(
+            selector: (_, viewModel) => viewModel.mapData,
+            builder: (_, mapData, _) => HomeMap(
               mapController: _mapController,
-              stops: viewModel.stops,
-              userLocation: viewModel.userLocation,
+              stops: mapData.stops,
+              userLocation: mapData.userLocation,
               colors: _colors.mapColors,
               onMapReady: () {
                 _isMapReady = true;
@@ -209,9 +210,10 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
           bottom: 104,
           child: SafeArea(
             top: false,
-            child: Consumer<HomeMapViewModel>(
-              builder: (context, viewModel, child) => LocateUserButton(
-                isLoading: viewModel.isLocating,
+            child: Selector<HomeMapViewModel, bool>(
+              selector: (_, viewModel) => viewModel.isLocating,
+              builder: (_, isLocating, _) => LocateUserButton(
+                isLoading: isLocating,
                 colors: _colors.locateUserButtonColors,
                 onPressed: () => unawaited(_locateUser()),
               ),

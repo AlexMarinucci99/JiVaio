@@ -62,7 +62,6 @@ class RouteSearchCardColors {
     this.iconColor = const Color(0xFF59609A),
     this.swapIconColor = const Color(0xFF59609A),
     this.hintColor = const Color(0xFF777986),
-    this.shadowColor = const Color(0x1F000000),
   });
 
   final Color cardColor;
@@ -80,8 +79,6 @@ class RouteSearchCardColors {
   final Color iconColor;
   final Color swapIconColor;
   final Color hintColor;
-
-  final Color shadowColor;
 }
 
 /// Palette dei dialog mostrati dalla Home.

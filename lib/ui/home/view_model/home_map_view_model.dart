@@ -6,6 +6,8 @@ import '../../../domain/models/location_access_result.dart';
 import '../../../domain/models/transit_stop.dart';
 import '../../../domain/models/user_location.dart';
 
+typedef HomeMapData = ({List<TransitStop> stops, UserLocation? userLocation});
+
 /// Gestisce stato e dati della mappa nella schermata Home.
 ///
 /// Il ViewModel carica le fermate dal repository del trasporto,
@@ -31,7 +33,7 @@ class HomeMapViewModel extends ChangeNotifier {
   String? _errorMessage;
   String? _locationErrorMessage;
 
-  List<TransitStop> get stops => _stops;
+  HomeMapData get mapData => (stops: _stops, userLocation: _userLocation);
 
   UserLocation? get userLocation => _userLocation;
 
@@ -48,9 +50,7 @@ class HomeMapViewModel extends ChangeNotifier {
   /// Evita richieste duplicate se il caricamento è già in corso
   /// o se le fermate sono già state recuperate.
   Future<void> loadStops() async {
-    if (_isLoading || _stops.isNotEmpty) {
-      return;
-    }
+    if (_isLoading || _stops.isNotEmpty) return;
 
     _isLoading = true;
     _errorMessage = null;

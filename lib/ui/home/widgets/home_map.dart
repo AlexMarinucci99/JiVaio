@@ -53,7 +53,7 @@ class HomeMap extends StatelessWidget {
         ? null
         : LatLng(currentUserLocation.latitude, currentUserLocation.longitude);
     return LayoutBuilder(
-      builder: (context, constraints) {
+      builder: (_, constraints) {
         final size = constraints.biggest;
 
         if (!size.isFinite || size.isEmpty) {

@@ -45,31 +45,23 @@ class _RouteSearchCardState extends State<RouteSearchCard> {
       _toController.text.trim().isNotEmpty;
 
   @override
-  void initState() {
-    super.initState();
-    _fromController.addListener(_refreshCard);
-    _toController.addListener(_refreshCard);
-  }
-
-  @override
   void dispose() {
     _fromController.dispose();
     _toController.dispose();
     super.dispose();
   }
 
-  void _refreshCard() => setState(() {});
+  void _refreshCard(String _) => setState(() {});
 
   void _swapFields() {
-    final oldFrom = _fromController.text;
-    final oldTo = _toController.text;
+    final (from, to) = (_fromController.text, _toController.text);
 
-    if (oldFrom.trim().isEmpty && oldTo.trim().isEmpty) {
-      return;
-    }
+    if (from.trim().isEmpty && to.trim().isEmpty) return;
 
-    _fromController.text = oldTo;
-    _toController.text = oldFrom;
+    setState(() {
+      _fromController.text = to;
+      _toController.text = from;
+    });
   }
 
   void _searchRoute() {
@@ -86,6 +78,9 @@ class _RouteSearchCardState extends State<RouteSearchCard> {
     final scale = widget.contentScale;
     final colors = widget.colors;
     final canSearch = _canSearch;
+    final buttonTextColor = canSearch
+        ? colors.activeButtonTextColor
+        : colors.inactiveTextColor;
 
     return Container(
       width: widget.width,
@@ -111,6 +106,7 @@ class _RouteSearchCardState extends State<RouteSearchCard> {
               hintText: 'Da dove vuoi partire?',
               scale: scale,
               colors: colors,
+              onChanged: _refreshCard,
             ),
           ),
           Padding(
@@ -148,6 +144,7 @@ class _RouteSearchCardState extends State<RouteSearchCard> {
             hintText: 'Dove vuoi andare?',
             scale: scale,
             colors: colors,
+            onChanged: _refreshCard,
           ),
           SizedBox(height: 12 * scale),
           SizedBox(
@@ -170,18 +167,14 @@ class _RouteSearchCardState extends State<RouteSearchCard> {
               icon: Icon(
                 Icons.navigation_rounded,
                 size: 18 * scale,
-                color: canSearch
-                    ? colors.activeButtonTextColor
-                    : colors.inactiveTextColor,
+                color: buttonTextColor,
               ),
               label: Text(
                 'Cerca percorso',
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   fontSize: 14 * scale,
                   fontWeight: FontWeight.w700,
-                  color: canSearch
-                      ? colors.activeButtonTextColor
-                      : colors.inactiveTextColor,
+                  color: buttonTextColor,
                 ),
               ),
             ),
@@ -201,6 +194,7 @@ class _SearchTextField extends StatelessWidget {
     required this.hintText,
     required this.scale,
     required this.colors,
+    required this.onChanged,
   });
 
   final Key fieldKey;
@@ -210,9 +204,12 @@ class _SearchTextField extends StatelessWidget {
   final String hintText;
   final double scale;
   final RouteSearchCardColors colors;
+  final ValueChanged<String> onChanged;
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
     return Row(
       children: [
         Container(
@@ -231,7 +228,7 @@ class _SearchTextField extends StatelessWidget {
             children: [
               Text(
                 label,
-                style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                style: textTheme.labelMedium?.copyWith(
                   color: colors.labelColor,
                   fontSize: 12 * scale,
                   fontWeight: FontWeight.w700,
@@ -240,14 +237,15 @@ class _SearchTextField extends StatelessWidget {
               TextField(
                 key: fieldKey,
                 controller: controller,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                onChanged: onChanged,
+                style: textTheme.titleMedium?.copyWith(
                   color: colors.textColor,
                   fontSize: 16 * scale,
                   fontWeight: FontWeight.w500,
                 ),
                 decoration: InputDecoration(
                   hintText: hintText,
-                  hintStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  hintStyle: textTheme.titleMedium?.copyWith(
                     color: colors.hintColor,
                     fontSize: 16 * scale,
                     fontWeight: FontWeight.w400,
