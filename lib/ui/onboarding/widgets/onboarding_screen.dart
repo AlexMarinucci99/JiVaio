@@ -26,8 +26,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   bool _isCompleting = false;
 
-  static const OnboardingColors _colors = OnboardingColors();
-
   static const List<_OnboardingVisualData> _visuals = [
     _OnboardingVisualData(
       icon: Icons.place_rounded,
@@ -80,9 +78,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       }
     }
 
-    if (!mounted) return;
-
-    _openAuth();
+    if (mounted) _openAuth();
   }
 
   void _goBack() {
@@ -94,9 +90,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
   }
 
-  void _openAuth() {
-    Navigator.pushReplacementNamed(context, AppRoutes.authChoice);
-  }
+  void _openAuth() =>
+      Navigator.pushReplacementNamed(context, AppRoutes.authChoice);
 
   @override
   void dispose() {
@@ -106,99 +101,86 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<OnboardingViewModel>(
-      builder: (context, viewModel, child) {
-        final items = viewModel.items;
-        final isLastPage = viewModel.isLastPage;
-        return Scaffold(
-          backgroundColor: _colors.backgroundColor,
-          body: SafeArea(
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 12, 20, 4),
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: Visibility(
-                      visible: !isLastPage,
-                      maintainSize: true,
-                      maintainAnimation: true,
-                      maintainState: true,
-                      child: TextButton(
-                        onPressed: _openAuth,
-                        style: TextButton.styleFrom(
-                          foregroundColor: _colors.skipButtonColor,
-                        ),
-                        child: const Text('Salta'),
-                      ),
+    final viewModel = context.watch<OnboardingViewModel>();
+    final items = viewModel.items;
+    final isLastPage = viewModel.isLastPage;
+
+    return Scaffold(
+      backgroundColor: OnboardingColors.background,
+      body: SafeArea(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 12, 20, 4),
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: Visibility(
+                  visible: !isLastPage,
+                  maintainSize: true,
+                  maintainAnimation: true,
+                  maintainState: true,
+                  child: TextButton(
+                    onPressed: _openAuth,
+                    style: TextButton.styleFrom(
+                      foregroundColor: OnboardingColors.primary,
                     ),
+                    child: const Text('Salta'),
                   ),
                 ),
-                Expanded(
-                  child: PageView.builder(
-                    controller: _pageController,
-                    itemCount: items.length,
-                    onPageChanged: viewModel.updatePage,
-                    itemBuilder: (context, index) {
-                      final item = items[index];
-                      final visual = _visuals[index];
-
-                      return OnboardingSlideCard(
-                        imagePath: item.imagePath,
-                        title: item.title,
-                        description: item.description,
-                        icon: visual.icon,
-                        accentColor: visual.accentColor,
-                        imageAlignment: visual.imageAlignment,
-                        colors: _colors.slideCardColors,
-                      );
-                    },
-                  ),
-                ),
-
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(28, 12, 28, 32),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 180),
-                        switchInCurve: Curves.easeOutCubic,
-                        switchOutCurve: Curves.easeOutCubic,
-                        child: isLastPage
-                            ? HideOnboardingPreference(
-                                key: const ValueKey(
-                                  'hide_onboarding_preference',
-                                ),
-                                value: viewModel.hideOnboardingNextTime,
-                                colors: _colors.hidePreferenceColors,
-                                onToggle:
-                                    viewModel.toggleHideOnboardingNextTime,
-                              )
-                            : const SizedBox.shrink(
-                                key: ValueKey('empty_onboarding_preference'),
-                              ),
-                      ),
-
-                      if (isLastPage) const SizedBox(height: 16),
-
-                      OnboardingBottomControls(
-                        currentIndex: viewModel.currentPage,
-                        itemCount: items.length,
-                        onBack: _goBack,
-                        onNext: _goNext,
-                        actionButtonColors: _colors.actionButtonColors,
-                        dotsColors: _colors.dotsColors,
-                        backButtonColor: _colors.backButtonColor,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+              ),
             ),
-          ),
-        );
-      },
+            Expanded(
+              child: PageView.builder(
+                controller: _pageController,
+                itemCount: items.length,
+                onPageChanged: viewModel.updatePage,
+                itemBuilder: (context, index) {
+                  final item = items[index];
+                  final visual = _visuals[index];
+
+                  return OnboardingSlideCard(
+                    imagePath: item.imagePath,
+                    title: item.title,
+                    description: item.description,
+                    icon: visual.icon,
+                    accentColor: visual.accentColor,
+                    imageAlignment: visual.imageAlignment,
+                  );
+                },
+              ),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.fromLTRB(28, 12, 28, 32),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 180),
+                    switchInCurve: Curves.easeOutCubic,
+                    switchOutCurve: Curves.easeOutCubic,
+                    child: isLastPage
+                        ? HideOnboardingPreference(
+                            value: viewModel.hideOnboardingNextTime,
+                            onToggle: viewModel.toggleHideOnboardingNextTime,
+                          )
+                        : const SizedBox.shrink(),
+                  ),
+
+                  if (isLastPage) const SizedBox(height: 16),
+
+                  OnboardingBottomControls(
+                    currentIndex: viewModel.currentPage,
+                    itemCount: items.length,
+                    onBack: _goBack,
+                    onNext: _goNext,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

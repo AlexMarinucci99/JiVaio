@@ -8,7 +8,6 @@ class OnboardingActionButton extends StatelessWidget {
     super.key,
     required this.label,
     required this.onPressed,
-    this.colors = const OnboardingActionButtonColors(),
   });
 
   /// Testo mostrato nel pulsante.
@@ -19,9 +18,6 @@ class OnboardingActionButton extends StatelessWidget {
   /// Se è null, il pulsante viene mostrato come disabilitato.
   final VoidCallback? onPressed;
 
-  /// Palette cromatica del pulsante.
-  final OnboardingActionButtonColors colors;
-
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -29,10 +25,10 @@ class OnboardingActionButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          backgroundColor: colors.backgroundColor,
-          foregroundColor: colors.foregroundColor,
-          disabledBackgroundColor: colors.disabledBackgroundColor,
-          disabledForegroundColor: colors.disabledForegroundColor,
+          backgroundColor: OnboardingColors.primary,
+          foregroundColor: OnboardingColors.surface,
+          disabledBackgroundColor: OnboardingColors.actionDisabledBackground,
+          disabledForegroundColor: OnboardingColors.actionDisabledForeground,
           elevation: 0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),

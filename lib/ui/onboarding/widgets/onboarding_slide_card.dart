@@ -15,7 +15,6 @@ class OnboardingSlideCard extends StatelessWidget {
     required this.icon,
     required this.accentColor,
     this.imageAlignment = Alignment.center,
-    this.colors = const OnboardingSlideCardColors(),
   });
 
   final String imagePath;
@@ -33,9 +32,6 @@ class OnboardingSlideCard extends StatelessWidget {
   /// Allineamento dell'immagine dentro la card.
   final Alignment imageAlignment;
 
-  // Palette colori propria della slide.
-  final OnboardingSlideCardColors colors;
-
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
@@ -50,7 +46,7 @@ class OnboardingSlideCard extends StatelessWidget {
             aspectRatio: 1.55,
             child: Container(
               decoration: BoxDecoration(
-                color: colors.imageCardBackgroundColor,
+                color: OnboardingColors.surface,
                 borderRadius: BorderRadius.circular(28),
               ),
               clipBehavior: Clip.antiAlias,
@@ -73,7 +69,7 @@ class OnboardingSlideCard extends StatelessWidget {
                       height: 58,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: colors.iconBackgroundColor,
+                        color: OnboardingColors.slideIconBackground,
                       ),
                       child: Icon(icon, color: accentColor, size: 28),
                     ),
@@ -91,7 +87,7 @@ class OnboardingSlideCard extends StatelessWidget {
             style: textTheme.headlineSmall?.copyWith(
               fontWeight: FontWeight.w800,
               height: 1.12,
-              color: colors.titleColor,
+              color: OnboardingColors.title,
             ),
           ),
 
@@ -102,7 +98,7 @@ class OnboardingSlideCard extends StatelessWidget {
             textAlign: TextAlign.left,
             style: textTheme.bodyLarge?.copyWith(
               height: 1.65,
-              color: colors.descriptionColor,
+              color: OnboardingColors.description,
               fontWeight: FontWeight.w400,
             ),
           ),

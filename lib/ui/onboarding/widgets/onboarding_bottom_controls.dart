@@ -15,9 +15,6 @@ class OnboardingBottomControls extends StatelessWidget {
     required this.itemCount,
     required this.onBack,
     required this.onNext,
-    this.actionButtonColors = const OnboardingActionButtonColors(),
-    this.dotsColors = const OnboardingDotsIndicatorColors(),
-    this.backButtonColor = const Color(0xFF191970),
   });
 
   /// Indice della pagina attualmente visibile.
@@ -32,19 +29,8 @@ class OnboardingBottomControls extends StatelessWidget {
   /// Callback invocata dal bottone "Avanti" o "Inizia".
   final VoidCallback onNext;
 
-  /// Palette del bottone principale.
-  final OnboardingActionButtonColors actionButtonColors;
-
-  /// Palette dell'indicatore delle pagine.
-  final OnboardingDotsIndicatorColors dotsColors;
-
-  /// Colore del bottone testuale "Indietro".
-  final Color backButtonColor;
-
   @override
   Widget build(BuildContext context) {
-    final isLastPage = currentIndex == itemCount - 1;
-
     return SizedBox(
       height: 52,
       child: Stack(
@@ -53,14 +39,20 @@ class OnboardingBottomControls extends StatelessWidget {
           OnboardingDotsIndicator(
             currentIndex: currentIndex,
             itemCount: itemCount,
-            colors: dotsColors,
           ),
           if (currentIndex > 0)
             Align(
               alignment: Alignment.centerLeft,
-              child: _OnboardingBackButton(
+              child: TextButton.icon(
                 onPressed: onBack,
-                color: backButtonColor,
+                icon: const Icon(Icons.chevron_left_rounded, size: 18),
+                label: const Text('Indietro'),
+                style: TextButton.styleFrom(
+                  foregroundColor: OnboardingColors.primary,
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  minimumSize: const Size(48, 48),
+                  tapTargetSize: MaterialTapTargetSize.padded,
+                ),
               ),
             ),
           Align(
@@ -68,35 +60,12 @@ class OnboardingBottomControls extends StatelessWidget {
             child: SizedBox(
               width: 112,
               child: OnboardingActionButton(
-                label: isLastPage ? 'Inizia' : 'Avanti',
+                label: currentIndex == itemCount - 1 ? 'Inizia' : 'Avanti',
                 onPressed: onNext,
-                colors: actionButtonColors,
               ),
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _OnboardingBackButton extends StatelessWidget {
-  const _OnboardingBackButton({required this.onPressed, required this.color});
-
-  final VoidCallback onPressed;
-  final Color color;
-
-  @override
-  Widget build(BuildContext context) {
-    return TextButton.icon(
-      onPressed: onPressed,
-      icon: const Icon(Icons.chevron_left_rounded, size: 18),
-      label: const Text('Indietro'),
-      style: TextButton.styleFrom(
-        foregroundColor: color,
-        padding: const EdgeInsets.symmetric(horizontal: 12),
-        minimumSize: const Size(48, 48),
-        tapTargetSize: MaterialTapTargetSize.padded,
       ),
     );
   }

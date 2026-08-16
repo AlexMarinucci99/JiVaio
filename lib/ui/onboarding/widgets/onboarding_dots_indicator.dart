@@ -8,7 +8,6 @@ class OnboardingDotsIndicator extends StatelessWidget {
     super.key,
     required this.currentIndex,
     required this.itemCount,
-    this.colors = const OnboardingDotsIndicatorColors(),
   });
 
   /// Indice della pagina attualmente visibile.
@@ -16,9 +15,6 @@ class OnboardingDotsIndicator extends StatelessWidget {
 
   /// Numero totale di pagine dell'onboarding.
   final int itemCount;
-
-  /// Palette colori propria dei dots.
-  final OnboardingDotsIndicatorColors colors;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +30,9 @@ class OnboardingDotsIndicator extends StatelessWidget {
           width: isActive ? 26 : 9,
           height: 9,
           decoration: BoxDecoration(
-            color: isActive ? colors.activeColor : colors.inactiveColor,
+            color: isActive
+                ? OnboardingColors.primary
+                : OnboardingColors.inactiveDot,
             borderRadius: BorderRadius.circular(99),
           ),
         );

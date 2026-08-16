@@ -8,7 +8,6 @@ class HideOnboardingPreference extends StatelessWidget {
     super.key,
     required this.value,
     required this.onToggle,
-    this.colors = const HideOnboardingPreferenceColors(),
   });
 
   /// Indica se la preferenza è selezionata.
@@ -16,9 +15,6 @@ class HideOnboardingPreference extends StatelessWidget {
 
   /// Callback invocata per alternare la preferenza.
   final VoidCallback onToggle;
-
-  /// Palette colori propria del widget.
-  final HideOnboardingPreferenceColors colors;
 
   @override
   Widget build(BuildContext context) {
@@ -37,13 +33,13 @@ class HideOnboardingPreference extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
           decoration: BoxDecoration(
             color: value
-                ? colors.selectedBackgroundColor
-                : colors.unselectedBackgroundColor,
+                ? OnboardingColors.preferenceSelectedBackground
+                : OnboardingColors.preferenceUnselectedBackground,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
               color: value
-                  ? colors.selectedBorderColor
-                  : colors.unselectedBorderColor,
+                  ? OnboardingColors.preferenceSelectedBorder
+                  : OnboardingColors.preferenceUnselectedBorder,
               width: 1.4,
             ),
           ),
@@ -55,12 +51,12 @@ class HideOnboardingPreference extends StatelessWidget {
                 width: 26,
                 height: 26,
                 decoration: BoxDecoration(
-                  color: value ? colors.selectedColor : Colors.transparent,
+                  color: value ? OnboardingColors.primary : Colors.transparent,
                   borderRadius: BorderRadius.circular(7),
                   border: Border.all(
                     color: value
-                        ? colors.selectedColor
-                        : colors.unselectedCheckBorderColor,
+                        ? OnboardingColors.primary
+                        : OnboardingColors.preferenceUnselectedCheckBorder,
                     width: 2,
                   ),
                 ),
@@ -69,7 +65,7 @@ class HideOnboardingPreference extends StatelessWidget {
                     ? Icon(
                         Icons.check_rounded,
                         size: 17,
-                        color: colors.checkIconColor,
+                        color: OnboardingColors.surface,
                       )
                     : null,
               ),
@@ -83,7 +79,7 @@ class HideOnboardingPreference extends StatelessWidget {
                       style: textTheme.titleMedium?.copyWith(
                         fontSize: 15,
                         fontWeight: FontWeight.w800,
-                        color: colors.titleColor,
+                        color: OnboardingColors.title,
                       ),
                     ),
                     const SizedBox(height: 3),
@@ -92,7 +88,7 @@ class HideOnboardingPreference extends StatelessWidget {
                       style: textTheme.bodySmall?.copyWith(
                         fontSize: 12,
                         height: 1.2,
-                        color: colors.subtitleColor,
+                        color: OnboardingColors.description,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
