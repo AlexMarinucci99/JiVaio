@@ -4,6 +4,13 @@ const _timeOptionAnimationDuration = Duration(milliseconds: 160);
 const _timeOptionBorderRadius = BorderRadius.all(Radius.circular(18));
 const _timeFilterAccentColor = LineDetailColors.timeFilterAccent;
 
+Color _timeOptionBackground(bool isSelected) => isSelected
+    ? _timeFilterAccentColor.withValues(alpha: 0.08)
+    : LineDetailColors.softSurface;
+
+Color _timeOptionBorder(bool isSelected, LineCardPalette colors) =>
+    isSelected ? _timeFilterAccentColor.withValues(alpha: 0.3) : colors.border;
+
 class _AutomaticTimeOption extends StatelessWidget {
   const _AutomaticTimeOption({
     required this.colors,
@@ -30,18 +37,15 @@ class _AutomaticTimeOption extends StatelessWidget {
           duration: _timeOptionAnimationDuration,
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
-            color: isSelected
-                ? _timeFilterAccentColor.withValues(alpha: 0.08)
-                : LineDetailColors.softSurface,
+            color: _timeOptionBackground(isSelected),
             borderRadius: _timeOptionBorderRadius,
             border: Border.all(
-              color: isSelected
-                  ? _timeFilterAccentColor.withValues(alpha: 0.3)
-                  : colors.border,
+              color: _timeOptionBorder(isSelected, colors),
               width: isSelected ? 1.4 : 1,
             ),
           ),
           child: Row(
+            spacing: 10,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
@@ -70,7 +74,6 @@ class _AutomaticTimeOption extends StatelessWidget {
                   ],
                 ),
               ),
-              const SizedBox(width: 10),
               _SelectionIndicator(isSelected: isSelected, colors: colors),
             ],
           ),
@@ -95,14 +98,6 @@ class _ManualTimeOption extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final borderColor = isSelected
-        ? _timeFilterAccentColor.withValues(alpha: 0.3)
-        : colors.border;
-
-    final backgroundColor = isSelected
-        ? _timeFilterAccentColor.withValues(alpha: 0.08)
-        : LineDetailColors.softSurface;
-
     return Material(
       color: LineDetailColors.transparent,
       child: InkWell(
@@ -113,11 +108,15 @@ class _ManualTimeOption extends StatelessWidget {
           curve: Curves.easeOutCubic,
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
-            color: backgroundColor,
+            color: _timeOptionBackground(isSelected),
             borderRadius: _timeOptionBorderRadius,
-            border: Border.all(color: borderColor, width: isSelected ? 1.4 : 1),
+            border: Border.all(
+              color: _timeOptionBorder(isSelected, colors),
+              width: isSelected ? 1.4 : 1,
+            ),
           ),
           child: Row(
+            spacing: 10,
             children: [
               Expanded(
                 child: Text(
@@ -129,7 +128,6 @@ class _ManualTimeOption extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(width: 10),
               _SelectionIndicator(isSelected: isSelected, colors: colors),
             ],
           ),
@@ -198,6 +196,7 @@ class _SheetActionBar extends StatelessWidget {
         border: Border(top: BorderSide(color: colors.border)),
       ),
       child: Row(
+        spacing: 16,
         children: [
           Expanded(
             child: OutlinedButton(
@@ -214,7 +213,6 @@ class _SheetActionBar extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(width: 16),
           Expanded(
             child: FilledButton(
               onPressed: onConfirm,

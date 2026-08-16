@@ -9,11 +9,11 @@ import '../view_model/lines_view_model.dart';
 import 'line_card/line_card.dart';
 import 'line_detail/line_detail_screen.dart';
 
+const _colors = LinesScreenColors();
+
 /// Mostra tutte le linee e quelle salvate dall'utente.
 class LinesScreen extends StatelessWidget {
   const LinesScreen({super.key});
-
-  static const LinesScreenColors _colors = LinesScreenColors();
 
   void _openLineDetails(BuildContext context, TransitLine line) {
     Navigator.of(context).push(
@@ -135,7 +135,6 @@ class LinesScreen extends StatelessWidget {
         key: const ValueKey('lines-error-state'),
         title: 'Errore caricamento linee',
         message: viewModel.errorMessage!,
-        colors: _colors,
         action: FilledButton(
           onPressed: viewModel.loadLines,
           child: const Text('Riprova'),
@@ -154,7 +153,6 @@ class LinesScreen extends StatelessWidget {
         message: isGuest
             ? 'Accedi o registrati per salvare le linee che usi più spesso.'
             : 'Tocca il cuore su una linea nella tab Tutte per ritrovarla qui.',
-        colors: _colors,
       );
     }
 
@@ -183,13 +181,11 @@ class _LinesStateArea extends StatelessWidget {
     super.key,
     required this.title,
     required this.message,
-    required this.colors,
     this.action,
   });
 
   final String title;
   final String message;
-  final LinesScreenColors colors;
   final Widget? action;
 
   @override
@@ -203,9 +199,9 @@ class _LinesStateArea extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(18),
           decoration: BoxDecoration(
-            color: colors.stateCardBackground,
+            color: _colors.stateCardBackground,
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: colors.stateCardBorder),
+            border: Border.all(color: _colors.stateCardBorder),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -213,7 +209,7 @@ class _LinesStateArea extends StatelessWidget {
               Text(
                 title,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: colors.primaryText,
+                  color: _colors.primaryText,
                   fontSize: 14,
                   fontWeight: FontWeight.w800,
                 ),
@@ -222,7 +218,7 @@ class _LinesStateArea extends StatelessWidget {
               Text(
                 message,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: colors.secondaryText,
+                  color: _colors.secondaryText,
                   fontSize: 12.5,
                   height: 1.5,
                 ),

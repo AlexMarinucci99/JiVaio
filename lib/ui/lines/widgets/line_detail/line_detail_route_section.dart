@@ -4,6 +4,7 @@ import '../../../../domain/models/transit_line.dart';
 import '../../theme/line_card_colors.dart';
 import '../../theme/line_detail_colors.dart';
 import 'line_detail_stop_tile.dart';
+import 'line_detail_trip_empty.dart';
 
 /// Sezione che mostra le fermate della direzione selezionata.
 ///
@@ -45,26 +46,18 @@ class LineDetailRouteSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'Elenco fermate',
-            style: textTheme.titleMedium?.copyWith(
-              color: colors.primaryText,
-              fontSize: 13,
-              fontWeight: FontWeight.w800,
-            ),
-          ),
+          Text('Elenco fermate', style: textTheme.lineDetailCardTitle(colors)),
           const SizedBox(height: 5),
           Text(
             'Fermate ordinate della tratta selezionata.',
-            style: textTheme.bodySmall?.copyWith(
-              color: colors.secondaryText,
-              fontSize: 12,
-              height: 1.35,
-              fontWeight: FontWeight.w500,
-            ),
+            style: textTheme.lineDetailCardDescription(colors),
           ),
           const SizedBox(height: 14),
-          if (stops.isEmpty) const _EmptyRouteBox(),
+          if (stops.isEmpty)
+            const LineDetailTripEmpty(
+              message: 'Fermate non disponibili per questa direzione.',
+              textColor: LineDetailColors.emptyRouteText,
+            ),
           for (final (index, stop) in stops.indexed)
             LineDetailStopTile(
               key: ValueKey('route-stop-$index-${stop.stopId}'),
@@ -78,31 +71,6 @@ class LineDetailRouteSection extends StatelessWidget {
               colors: colors,
             ),
         ],
-      ),
-    );
-  }
-}
-
-class _EmptyRouteBox extends StatelessWidget {
-  const _EmptyRouteBox();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 11),
-      decoration: BoxDecoration(
-        color: LineDetailColors.warningSurface,
-        borderRadius: BorderRadius.circular(14),
-      ),
-      child: Text(
-        'Fermate non disponibili per questa direzione.',
-        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-          color: LineDetailColors.emptyRouteText,
-          fontSize: 12,
-          height: 1.35,
-          fontWeight: FontWeight.w600,
-        ),
       ),
     );
   }

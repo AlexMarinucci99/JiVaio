@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 
 import '../../../data/repositories/transit_repository.dart';
 import '../../../domain/models/transit_line.dart';
+import '../line_time_range_formatter.dart';
 
 /// Posizione dichiarata dall'utente durante una segnalazione.
 enum LineDetailReportLocation { onBus, atStop }
@@ -64,15 +65,11 @@ class LineDetailViewModel extends ChangeNotifier {
   TransitLineDirection? get selectedDirection {
     final directions = line.directions;
 
-    if (directions.isEmpty) {
-      return null;
-    }
-
-    if (_selectedDirectionIndex >= directions.length) {
-      return directions.first;
-    }
-
-    return directions[_selectedDirectionIndex];
+    if (directions.isEmpty) return null;
+    final index = _selectedDirectionIndex < directions.length
+        ? _selectedDirectionIndex
+        : 0;
+    return directions[index];
   }
 
   List<TransitLineDeparture> get departures =>
@@ -84,7 +81,7 @@ class LineDetailViewModel extends ChangeNotifier {
   String? get selectedTripId => _schedule?.selectedTripId;
 
   /// Etichetta della fascia oraria mostrata.
-  String get timeRangeLabel => _formatHourRange(_selectedMoment());
+  String get timeRangeLabel => formatLineTimeRange(_selectedMoment().hour);
 
   /// Messaggio mostrato quando non sono disponibili partenze.
   String get emptyDeparturesMessage {
@@ -98,20 +95,16 @@ class LineDetailViewModel extends ChangeNotifier {
   bool get requiresStopSelection => _reportLocation != null;
 
   bool get canSendReport =>
-      _reportLocation != null && _selectedReportStopId != null;
+      requiresStopSelection && _selectedReportStopId != null;
 
   /// Nome della fermata selezionata per la segnalazione.
   String? get selectedReportStopName {
     final selectedStopId = _selectedReportStopId;
 
-    if (selectedStopId == null) {
-      return null;
-    }
+    if (selectedStopId == null) return null;
 
     for (final stop in stops) {
-      if (stop.stopId == selectedStopId) {
-        return stop.name;
-      }
+      if (stop.stopId == selectedStopId) return stop.name;
     }
 
     return null;
@@ -148,9 +141,7 @@ class LineDetailViewModel extends ChangeNotifier {
 
   /// Cambia direzione e ricarica gli orari disponibili.
   Future<void> toggleDirection() async {
-    if (!canSwapDirection) {
-      return;
-    }
+    if (!canSwapDirection) return;
 
     _selectedDirectionIndex =
         (_selectedDirectionIndex + 1) % line.directions.length;
@@ -167,18 +158,16 @@ class LineDetailViewModel extends ChangeNotifier {
   /// Seleziona manualmente [hour] e ricarica gli orari.
   Future<void> selectManualHour(int hour) => _selectTime(hour);
 
-  Future<void> _selectTime([int? hour]) async {
+  Future<void> _selectTime([int? hour]) {
     _selectedManualHour = hour;
     _lastReportMessage = null;
 
-    await loadSchedule();
+    return loadSchedule();
   }
 
   /// Seleziona la posizione da cui l'utente sta segnalando un problema.
   void selectReportLocation(LineDetailReportLocation location) {
-    if (_reportLocation == location) {
-      return;
-    }
+    if (_reportLocation == location) return;
 
     _reportLocation = location;
     _lastReportMessage = null;
@@ -188,9 +177,7 @@ class LineDetailViewModel extends ChangeNotifier {
 
   /// Seleziona la fermata associata alla segnalazione.
   void selectReportStop(String stopId) {
-    if (!requiresStopSelection) {
-      return;
-    }
+    if (!requiresStopSelection) return;
 
     _selectedReportStopId = stopId;
     _lastReportMessage = null;
@@ -203,9 +190,7 @@ class LineDetailViewModel extends ChangeNotifier {
   /// In questa fase non invia dati a una sorgente esterna: aggiorna soltanto
   /// il messaggio mostrato dalla UI.
   void sendFakeReport(LineDetailReportType type) {
-    if (!canSendReport) {
-      return;
-    }
+    if (!canSendReport) return;
 
     final reportLabel = switch (type) {
       LineDetailReportType.delay => 'Ritardo',
@@ -227,18 +212,7 @@ class LineDetailViewModel extends ChangeNotifier {
     final now = DateTime.now();
     final selectedHour = _selectedManualHour;
 
-    if (selectedHour == null) {
-      return now;
-    }
-
+    if (selectedHour == null) return now;
     return DateTime(now.year, now.month, now.day, selectedHour);
-  }
-
-  static String _formatHourRange(DateTime hourStart) {
-    final startHour = hourStart.hour;
-    final endHour = startHour + 1;
-
-    return '${startHour.toString().padLeft(2, '0')}:00 - '
-        '${endHour.toString().padLeft(2, '0')}:00';
   }
 }

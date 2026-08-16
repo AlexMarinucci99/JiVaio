@@ -6,6 +6,32 @@ import '../../view_model/line_detail_view_model.dart';
 
 part 'line_detail_report_controls.dart';
 
+const _reportLocationOptions = [
+  (
+    location: LineDetailReportLocation.onBus,
+    label: 'Sì',
+    icon: Icons.directions_bus_rounded,
+  ),
+  (
+    location: LineDetailReportLocation.atStop,
+    label: 'No',
+    icon: Icons.location_on_rounded,
+  ),
+];
+
+const _reportActionOptions = [
+  (
+    type: LineDetailReportType.delay,
+    label: 'Segnala ritardo',
+    icon: Icons.schedule_rounded,
+  ),
+  (
+    type: LineDetailReportType.crowding,
+    label: 'Bus pieno',
+    icon: Icons.groups_rounded,
+  ),
+];
+
 /// Card per inviare segnalazioni dalla schermata dettaglio linea.
 ///
 /// Gestisce la sola presentazione della sezione demo: posizione dell'utente,
@@ -60,23 +86,11 @@ class LineDetailReportCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'Segnalazioni',
-            style: textTheme.titleMedium?.copyWith(
-              color: colors.primaryText,
-              fontSize: 13,
-              fontWeight: FontWeight.w800,
-            ),
-          ),
+          Text('Segnalazioni', style: textTheme.lineDetailCardTitle(colors)),
           const SizedBox(height: 5),
           Text(
             'Aiuta le altre persone con una segnalazione. Per ora la funzione è in modalità demo.',
-            style: textTheme.bodySmall?.copyWith(
-              color: colors.secondaryText,
-              fontSize: 12,
-              height: 1.35,
-              fontWeight: FontWeight.w500,
-            ),
+            style: textTheme.lineDetailCardDescription(colors),
           ),
           const SizedBox(height: 14),
           Text(
@@ -90,30 +104,19 @@ class LineDetailReportCard extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Row(
+            spacing: 10,
             children: [
-              Expanded(
-                child: _LocationChoiceButton(
-                  label: 'Sì',
-                  icon: Icons.directions_bus_rounded,
-                  isSelected: reportLocation == LineDetailReportLocation.onBus,
-                  lineColor: lineColor,
-                  colors: colors,
-                  onTap: () =>
-                      onLocationChanged(LineDetailReportLocation.onBus),
+              for (final option in _reportLocationOptions)
+                Expanded(
+                  child: _LocationChoiceButton(
+                    label: option.label,
+                    icon: option.icon,
+                    isSelected: reportLocation == option.location,
+                    lineColor: lineColor,
+                    colors: colors,
+                    onTap: () => onLocationChanged(option.location),
+                  ),
                 ),
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: _LocationChoiceButton(
-                  label: 'No',
-                  icon: Icons.location_on_rounded,
-                  isSelected: reportLocation == LineDetailReportLocation.atStop,
-                  lineColor: lineColor,
-                  colors: colors,
-                  onTap: () =>
-                      onLocationChanged(LineDetailReportLocation.atStop),
-                ),
-              ),
             ],
           ),
           const SizedBox(height: 12),
@@ -124,28 +127,19 @@ class LineDetailReportCard extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Row(
+            spacing: 10,
             children: [
-              Expanded(
-                child: _ReportActionButton(
-                  label: 'Segnala ritardo',
-                  icon: Icons.schedule_rounded,
-                  isEnabled: canSendReport,
-                  lineColor: lineColor,
-                  colors: colors,
-                  onTap: () => onReportPressed(LineDetailReportType.delay),
+              for (final option in _reportActionOptions)
+                Expanded(
+                  child: _ReportActionButton(
+                    label: option.label,
+                    icon: option.icon,
+                    isEnabled: canSendReport,
+                    lineColor: lineColor,
+                    colors: colors,
+                    onTap: () => onReportPressed(option.type),
+                  ),
                 ),
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: _ReportActionButton(
-                  label: 'Bus pieno',
-                  icon: Icons.groups_rounded,
-                  isEnabled: canSendReport,
-                  lineColor: lineColor,
-                  colors: colors,
-                  onTap: () => onReportPressed(LineDetailReportType.crowding),
-                ),
-              ),
             ],
           ),
           if (lastReportMessage != null) ...[

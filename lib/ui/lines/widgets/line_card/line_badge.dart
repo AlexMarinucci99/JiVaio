@@ -1,20 +1,15 @@
 import 'package:flutter/material.dart';
 
+import '../../theme/line_card_colors.dart';
+
 /// Badge visivo che identifica una linea urbana.
 ///
-/// Mostra il nome breve della linea usando colori ricevuti dall'esterno,
-/// così può essere riutilizzato in card, dettagli e liste.
+/// Mostra il nome breve della linea usando la palette condivisa.
 class LineBadge extends StatelessWidget {
-  const LineBadge({
-    super.key,
-    required this.shortName,
-    required this.backgroundColor,
-    required this.textColor,
-  });
+  const LineBadge({super.key, required this.shortName, required this.colors});
 
   final String shortName;
-  final Color backgroundColor;
-  final Color textColor;
+  final LineCardPalette colors;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +17,7 @@ class LineBadge extends StatelessWidget {
       width: 48,
       height: 48,
       decoration: BoxDecoration(
-        color: backgroundColor,
+        color: colors.listAccent,
         borderRadius: BorderRadius.circular(16),
       ),
       alignment: Alignment.center,
@@ -33,7 +28,7 @@ class LineBadge extends StatelessWidget {
           child: Text(
             shortName,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              color: textColor,
+              color: LineCardColors.textOn(colors.listAccent, colors: colors),
               fontWeight: FontWeight.w900,
               fontSize: 16,
             ),

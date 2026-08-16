@@ -54,9 +54,10 @@ class LineDetailScreen extends StatelessWidget {
                   child: ListView(
                     padding: const EdgeInsets.fromLTRB(22, 8, 22, 120),
                     children: [
-                      if (viewModel.errorMessage != null) ...[
+                      if (viewModel.errorMessage
+                          case final String errorMessage) ...[
                         _LineDetailErrorCard(
-                          message: viewModel.errorMessage!,
+                          message: errorMessage,
                           onRetry: viewModel.loadSchedule,
                         ),
                         const SizedBox(height: 14),
@@ -118,22 +119,10 @@ class _LineDetailErrorCard extends StatelessWidget {
         children: [
           Text(
             'Errore caricamento dettaglio',
-            style: textTheme.titleMedium?.copyWith(
-              color: colors.primaryText,
-              fontSize: 13,
-              fontWeight: FontWeight.w800,
-            ),
+            style: textTheme.lineDetailCardTitle(colors),
           ),
           const SizedBox(height: 6),
-          Text(
-            message,
-            style: textTheme.bodySmall?.copyWith(
-              color: colors.secondaryText,
-              fontSize: 12,
-              height: 1.35,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
+          Text(message, style: textTheme.lineDetailCardDescription(colors)),
           const SizedBox(height: 12),
           FilledButton(onPressed: onRetry, child: const Text('Riprova')),
         ],

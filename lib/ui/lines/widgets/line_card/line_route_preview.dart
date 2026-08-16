@@ -14,7 +14,6 @@ class LineRoutePreview extends StatelessWidget {
     super.key,
     required this.line,
     required this.direction,
-    required this.canSwapDirection,
     required this.onSwapDirection,
     required this.onOpenDetails,
     this.colors = LineCardColors.defaultPalette,
@@ -25,8 +24,6 @@ class LineRoutePreview extends StatelessWidget {
 
   ///Direzione attualemnte visualizzata nella card.
   final TransitLineDirection direction;
-
-  final bool canSwapDirection;
 
   /// Callback eseguita quando l'utente inverte la direzione.
   final VoidCallback onSwapDirection;
@@ -69,7 +66,7 @@ class LineRoutePreview extends StatelessWidget {
 
               LineDirectionButton(
                 isUnidirectional: line.isUnidirectional,
-                canSwapDirection: canSwapDirection,
+                canSwapDirection: line.directions.length > 1,
                 onSwapDirection: onSwapDirection,
                 colors: colors,
               ),

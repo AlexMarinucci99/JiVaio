@@ -31,7 +31,7 @@ class LineDirectionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final isSwapEnabled = canSwapDirection && !isUnidirectional;
 
-    final foregroundColor = isSwapEnabled || isUnidirectional
+    final foregroundColor = canSwapDirection || isUnidirectional
         ? colors.directionButtonForeground
         : colors.directionButtonDisabledForeground;
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../line_time_range_formatter.dart';
 import '../../theme/line_card_colors.dart';
 import '../../theme/line_detail_colors.dart';
 
@@ -81,11 +82,7 @@ class _LineDetailTimeFilterSheetState extends State<LineDetailTimeFilterSheet> {
     _selectedManualHour = widget.selectedManualHour;
   }
 
-  void _selectHour(int? hour) {
-    setState(() {
-      _selectedManualHour = hour;
-    });
-  }
+  void _selectHour(int? hour) => setState(() => _selectedManualHour = hour);
 
   void _confirm() {
     final selectedHour = _selectedManualHour;
@@ -169,7 +166,7 @@ class _LineDetailTimeFilterSheetState extends State<LineDetailTimeFilterSheet> {
                       padding: const EdgeInsets.only(bottom: 10),
                       child: _ManualTimeOption(
                         colors: colors,
-                        label: _rangeLabelFromHour(hour),
+                        label: formatLineTimeRange(hour),
                         isSelected: _selectedManualHour == hour,
                         onTap: () => _selectHour(hour),
                       ),
@@ -186,12 +183,5 @@ class _LineDetailTimeFilterSheetState extends State<LineDetailTimeFilterSheet> {
         ),
       ),
     );
-  }
-
-  static String _rangeLabelFromHour(int hour) {
-    final endHour = hour + 1;
-
-    return '${hour.toString().padLeft(2, '0')}:00 - '
-        '${endHour.toString().padLeft(2, '0')}:00';
   }
 }

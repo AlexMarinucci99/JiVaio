@@ -44,9 +44,7 @@ class _LineCardState extends State<LineCard> {
       widget.line.directions[_selectedDirectionIndex];
 
   void _toggleDirection() {
-    if (widget.line.directions.length < 2) {
-      return;
-    }
+    if (widget.line.directions.length < 2) return;
 
     setState(() {
       _selectedDirectionIndex = _selectedDirectionIndex == 0 ? 1 : 0;
@@ -65,31 +63,26 @@ class _LineCardState extends State<LineCard> {
 
   @override
   Widget build(BuildContext context) {
-    final direction = _selectedDirection;
-
     return Container(
       decoration: LineCardColors.cardDecoration(colors: widget.colors),
-      child: Padding(
-        padding: const EdgeInsets.all(14),
-        child: Column(
-          spacing: 14,
-          children: [
-            LineCardHeader(
-              line: widget.line,
-              isSaved: widget.isSaved,
-              onToggleSaved: widget.onToggleSaved,
-              colors: widget.colors,
-            ),
-            LineRoutePreview(
-              line: widget.line,
-              direction: direction,
-              canSwapDirection: widget.line.directions.length > 1,
-              onSwapDirection: _toggleDirection,
-              onOpenDetails: widget.onOpenDetails,
-              colors: widget.colors,
-            ),
-          ],
-        ),
+      padding: const EdgeInsets.all(14),
+      child: Column(
+        spacing: 14,
+        children: [
+          LineCardHeader(
+            line: widget.line,
+            isSaved: widget.isSaved,
+            onToggleSaved: widget.onToggleSaved,
+            colors: widget.colors,
+          ),
+          LineRoutePreview(
+            line: widget.line,
+            direction: _selectedDirection,
+            onSwapDirection: _toggleDirection,
+            onOpenDetails: widget.onOpenDetails,
+            colors: widget.colors,
+          ),
+        ],
       ),
     );
   }

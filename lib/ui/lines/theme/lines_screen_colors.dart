@@ -18,7 +18,6 @@ class LinesScreenColors {
     this.secondaryText = const Color(0xFF5D6675),
     this.stateCardBackground = Colors.white,
     this.stateCardBorder = const Color(0xFFE5EAF2),
-    this.stateCardShadow = const Color(0xFF0F172A),
     this.segmentedControlColors = const AppSegmentedControlColors(),
   });
 
@@ -36,7 +35,6 @@ class LinesScreenColors {
   /// Colori delle card mostrate negli stati vuoto o di errore.
   final Color stateCardBackground;
   final Color stateCardBorder;
-  final Color stateCardShadow;
 
   /// Palette del selettore tra tutte le linee e quelle salvate.
   final AppSegmentedControlColors segmentedControlColors;

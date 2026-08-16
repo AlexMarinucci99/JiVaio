@@ -72,15 +72,15 @@ class LinesViewModel extends ChangeNotifier {
       return 'Non è stato possibile caricare le linee.';
     }
 
-    if (_scope == LinesScope.saved) {
-      return switch (savedLinesCount) {
+    return switch (_scope) {
+      LinesScope.all =>
+        'Consulta tutte le linee disponibili e scopri ogni dettaglio.',
+      LinesScope.saved => switch (savedLinesCount) {
         0 => 'Salva le linee che usi di più per ritrovarle qui.',
         1 => '1 linea salvata',
         final count => '$count linee salvate',
-      };
-    }
-
-    return 'Consulta tutte le linee disponibili e scopri ogni dettaglio.';
+      },
+    };
   }
 
   /// Indica se la linea [routeId] è salvata dall'utente.
@@ -88,9 +88,7 @@ class LinesViewModel extends ChangeNotifier {
 
   /// Carica l'elenco delle linee disponibili.
   Future<void> loadLines() async {
-    if (_isLoading) {
-      return;
-    }
+    if (_isLoading) return;
 
     _isLoading = true;
     _errorMessage = null;
@@ -108,9 +106,7 @@ class LinesViewModel extends ChangeNotifier {
 
   /// Cambia l'ambito di visualizzazione dell'elenco linee.
   void setScope(LinesScope scope) {
-    if (_scope == scope) {
-      return;
-    }
+    if (_scope == scope) return;
 
     _scope = scope;
     notifyListeners();
@@ -123,13 +119,9 @@ class LinesViewModel extends ChangeNotifier {
   Future<bool> toggleSavedLine(String routeId) async {
     final currentUserId = userId;
 
-    if (currentUserId == null) {
-      return false;
-    }
+    if (currentUserId == null) return false;
 
-    if (!_pendingSavedLineIds.add(routeId)) {
-      return true;
-    }
+    if (!_pendingSavedLineIds.add(routeId)) return true;
 
     final wasSaved = _savedLineIds.contains(routeId);
     final shouldSave = !wasSaved;
@@ -156,9 +148,7 @@ class LinesViewModel extends ChangeNotifier {
   void _listenToSavedLines() {
     final currentUserId = userId;
 
-    if (currentUserId == null) {
-      return;
-    }
+    if (currentUserId == null) return;
 
     _savedLinesSubscription = _savedLinesRepository
         .watchSavedLineIds(userId: currentUserId)

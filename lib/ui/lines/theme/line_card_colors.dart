@@ -18,7 +18,6 @@ class LineCardPalette {
     this.pillBackground = const Color(0xFFF5F7FB),
     this.savedHeart = const Color(0xFFEF4444),
     this.labelAccent = const Color(0xFF2F80ED),
-    this.shadowBase = const Color(0xFF0F172A),
   });
 
   /// Colore uniforme degli elementi principali nelle card dell'elenco linee.
@@ -56,9 +55,6 @@ class LineCardPalette {
 
   /// Colore label "Partenza" / "Capolinea".
   final Color labelAccent;
-
-  /// Colore base ombra.
-  final Color shadowBase;
 }
 
 /// Utility cromatiche condivise dai widget della feature linee.
@@ -72,22 +68,21 @@ class LineCardColors {
   static const LineCardPalette defaultPalette = LineCardPalette();
 
   /// Restituisce un colore di testo leggibile su [backgroundColor].
-  static Color textOn(Color backgroundColor, {LineCardPalette? colors}) {
-    final palette = colors ?? defaultPalette;
-
+  static Color textOn(
+    Color backgroundColor, {
+    required LineCardPalette colors,
+  }) {
     return backgroundColor.computeLuminance() > 0.58
-        ? palette.primaryText
+        ? colors.primaryText
         : Colors.white;
   }
 
   /// Restituisce la decorazione standard della card linea.
-  static BoxDecoration cardDecoration({LineCardPalette? colors}) {
-    final palette = colors ?? defaultPalette;
-
+  static BoxDecoration cardDecoration({required LineCardPalette colors}) {
     return BoxDecoration(
-      color: palette.surface,
+      color: colors.surface,
       borderRadius: BorderRadius.circular(20),
-      border: Border.all(color: palette.border),
+      border: Border.all(color: colors.border),
     );
   }
 }

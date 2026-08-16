@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../domain/models/transit_line.dart';
 import '../../theme/line_card_colors.dart';
 import '../../theme/line_detail_colors.dart';
+import 'line_detail_trip_empty.dart';
 
 /// Card che mostra le partenze disponibili nel dettaglio linea.
 ///
@@ -52,11 +53,6 @@ class LineDetailDeparturesCard extends StatelessWidget {
       letterSpacing: 0.5,
     );
 
-    final selectedDepartureTextColor = LineCardColors.textOn(
-      colors.listAccent,
-      colors: colors,
-    );
-
     return Container(
       decoration: LineCardColors.cardDecoration(colors: colors),
       padding: const EdgeInsets.all(14),
@@ -65,11 +61,7 @@ class LineDetailDeparturesCard extends StatelessWidget {
         children: [
           Text(
             'Prossime partenze',
-            style: textTheme.titleMedium?.copyWith(
-              color: colors.primaryText,
-              fontSize: 13,
-              fontWeight: FontWeight.w800,
-            ),
+            style: textTheme.lineDetailCardTitle(colors),
           ),
           const SizedBox(height: 12),
           Text('Fascia oraria', style: sectionLabelStyle),
@@ -85,7 +77,10 @@ class LineDetailDeparturesCard extends StatelessWidget {
           if (isLoading)
             _departuresLoadingBox
           else if (departures.isEmpty)
-            _EmptyDeparturesBox(message: emptyMessage)
+            LineDetailTripEmpty(
+              message: emptyMessage,
+              textColor: LineDetailColors.emptyDeparturesText,
+            )
           else
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
@@ -97,7 +92,6 @@ class LineDetailDeparturesCard extends StatelessWidget {
                       child: _DepartureChip(
                         label: departure.departureTime,
                         isSelected: departure.tripId == selectedTripId,
-                        selectedTextColor: selectedDepartureTextColor,
                         colors: colors,
                       ),
                     ),
@@ -172,40 +166,32 @@ class _DepartureChip extends StatelessWidget {
   const _DepartureChip({
     required this.label,
     required this.isSelected,
-    required this.selectedTextColor,
     required this.colors,
   });
 
   final String label;
   final bool isSelected;
-  final Color selectedTextColor;
   final LineCardPalette colors;
 
   @override
   Widget build(BuildContext context) {
     final accentColor = colors.listAccent;
 
-    final backgroundColor = isSelected
-        ? accentColor
-        : accentColor.withValues(alpha: 0.08);
-
-    final borderColor = isSelected
-        ? accentColor
-        : accentColor.withValues(alpha: 0.18);
-
-    final textColor = isSelected ? selectedTextColor : accentColor;
-
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
       decoration: BoxDecoration(
-        color: backgroundColor,
+        color: isSelected ? accentColor : accentColor.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: borderColor),
+        border: Border.all(
+          color: isSelected ? accentColor : accentColor.withValues(alpha: 0.18),
+        ),
       ),
       child: Text(
         label,
         style: Theme.of(context).textTheme.labelMedium?.copyWith(
-          color: textColor,
+          color: isSelected
+              ? LineCardColors.textOn(accentColor, colors: colors)
+              : accentColor,
           fontSize: 12.5,
           fontWeight: FontWeight.w800,
         ),
@@ -225,30 +211,3 @@ const _departuresLoadingBox = SizedBox(
     ),
   ),
 );
-
-class _EmptyDeparturesBox extends StatelessWidget {
-  const _EmptyDeparturesBox({required this.message});
-
-  final String message;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 11),
-      decoration: BoxDecoration(
-        color: LineDetailColors.warningSurface,
-        borderRadius: BorderRadius.circular(14),
-      ),
-      child: Text(
-        message,
-        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-          color: LineDetailColors.emptyDeparturesText,
-          fontSize: 12,
-          height: 1.35,
-          fontWeight: FontWeight.w600,
-        ),
-      ),
-    );
-  }
-}

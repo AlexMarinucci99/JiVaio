@@ -72,7 +72,7 @@ class LineDetailStopTile extends StatelessWidget {
               border: Border.all(
                 color: borderColor,
                 width: isSelected ? 1.4 : 1,
-              ),                    
+              ),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -185,10 +185,10 @@ class _OfficialTimeLine extends StatelessWidget {
     );
 
     return Row(
+      spacing: 12,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(child: Text('Orario ufficiale', style: labelStyle)),
-        const SizedBox(width: 12),
         Text(
           stop.hasOfficialTime ? stop.officialTime! : '--:--',
           style: valueStyle,

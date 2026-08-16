@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'line_card_colors.dart';
+
 /// Definisce i colori specifici della schermata di dettaglio linea.
 class LineDetailColors {
   const LineDetailColors._();
@@ -24,4 +26,21 @@ class LineDetailColors {
   static const Color reportAccent = Color(0xFF2F7DF6);
   static const Color routeAccent = Color(0xFF2F7DF6);
   static const Color onAccent = Colors.white;
+}
+
+extension LineDetailTextStyles on TextTheme {
+  TextStyle? lineDetailCardTitle(LineCardPalette colors) =>
+      titleMedium?.copyWith(
+        color: colors.primaryText,
+        fontSize: 13,
+        fontWeight: FontWeight.w800,
+      );
+
+  TextStyle? lineDetailCardDescription(LineCardPalette colors) =>
+      bodySmall?.copyWith(
+        color: colors.secondaryText,
+        fontSize: 12,
+        height: 1.35,
+        fontWeight: FontWeight.w500,
+      );
 }

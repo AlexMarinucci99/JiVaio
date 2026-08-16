@@ -30,17 +30,10 @@ class LineCardHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final badgeColor = colors.listAccent;
-
-    final badgeTextColor = LineCardColors.textOn(badgeColor, colors: colors);
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        LineBadge(
-          shortName: line.shortName,
-          backgroundColor: badgeColor,
-          textColor: badgeTextColor,
-        ),
+        LineBadge(shortName: line.shortName, colors: colors),
 
         const SizedBox(width: 12),
 

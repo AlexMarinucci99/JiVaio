@@ -44,10 +44,10 @@ class _LocationChoiceButton extends StatelessWidget {
             border: Border.all(color: borderColor),
           ),
           child: Row(
+            spacing: 8,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(icon, color: foregroundColor, size: 18),
-              const SizedBox(width: 8),
               Text(
                 label,
                 style: Theme.of(context).textTheme.labelLarge?.copyWith(
@@ -88,30 +88,17 @@ class _ReportInstructionBox extends StatelessWidget {
     );
   }
 
-  String _message() {
-    final location = reportLocation;
-    final stopName = selectedStopName;
-
-    if (location == null) {
-      return 'Seleziona Sì o No per continuare.';
-    }
-
-    if (stopName == null) {
-      return switch (location) {
-        LineDetailReportLocation.onBus =>
-          'Seleziona dall’elenco fermate, la fermata in cui sei salito sul bus.',
-        LineDetailReportLocation.atStop =>
-          'Seleziona dall’elenco fermate, la fermata in cui ti trovi.',
-      };
-    }
-
-    return switch (location) {
-      LineDetailReportLocation.onBus =>
-        'Fermata di salita selezionata: $stopName.',
-      LineDetailReportLocation.atStop =>
-        'Fermata attuale selezionata: $stopName.',
-    };
-  }
+  String _message() => switch ((reportLocation, selectedStopName)) {
+    (null, _) => 'Seleziona Sì o No per continuare.',
+    (LineDetailReportLocation.onBus, null) =>
+      'Seleziona dall’elenco fermate, la fermata in cui sei salito sul bus.',
+    (LineDetailReportLocation.atStop, null) =>
+      'Seleziona dall’elenco fermate, la fermata in cui ti trovi.',
+    (LineDetailReportLocation.onBus, final String stopName) =>
+      'Fermata di salita selezionata: $stopName.',
+    (LineDetailReportLocation.atStop, final String stopName) =>
+      'Fermata attuale selezionata: $stopName.',
+  };
 }
 
 class _ReportActionButton extends StatelessWidget {
