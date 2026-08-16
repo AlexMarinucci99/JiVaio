@@ -8,21 +8,14 @@ const String _safeResetPasswordMessage =
 
 /// Risultato dell'invio del link di recupero password.
 class ResetPasswordSubmitResult {
-  const ResetPasswordSubmitResult._({
-    required this.isSuccess,
-    required this.message,
-  });
-
   final bool isSuccess;
   final String message;
 
   /// Crea un risultato positivo con [message].
-  const ResetPasswordSubmitResult.success(String message)
-    : this._(isSuccess: true, message: message);
+  const ResetPasswordSubmitResult.success(this.message) : isSuccess = true;
 
   /// Crea un risultato negativo con [message].
-  const ResetPasswordSubmitResult.failure(String message)
-    : this._(isSuccess: false, message: message);
+  const ResetPasswordSubmitResult.failure(this.message) : isSuccess = false;
 }
 
 /// Gestisce stato, validazione e invio del recupero password.

@@ -55,7 +55,6 @@ class AuthChoiceColors {
   final Color helperTextColor = AppColors.textMuted;
   final Color dividerColor = const Color(0xFFD1D5DB);
   final Color separatorTextColor = AppColors.textMuted;
-  final Color backButtonColor = AppColors.textMuted;
 
   final AppSegmentedControlColors segmentedControlColors =
       const AppSegmentedControlColors(

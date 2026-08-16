@@ -44,14 +44,8 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
     super.dispose();
   }
 
-  void _openResetPassword() {
-    Navigator.pushNamed(context, AppRoutes.resetPassword);
-  }
-
   Future<void> _submit() async {
-    if (_viewModel.isSubmitting) {
-      return;
-    }
+    if (_viewModel.isSubmitting) return;
 
     final result = await _viewModel.submit(
       name: _nameController.text.trim(),
@@ -60,9 +54,7 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
       confirmPassword: _confirmPasswordController.text.trim(),
     );
 
-    if (!mounted) {
-      return;
-    }
+    if (!mounted) return;
 
     if (!result.isValid) {
       _showMessage(result.message ?? 'Dati non validi');
@@ -73,31 +65,23 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
   }
 
   void _continueAsGuest() {
-    if (_viewModel.isSubmitting) {
-      return;
-    }
+    if (_viewModel.isSubmitting) return;
 
     widget.onContinueAsGuest();
   }
 
   void _setMode(AuthMode mode) {
-    if (_viewModel.isSubmitting) {
-      return;
-    }
+    if (_viewModel.isSubmitting) return;
 
     _viewModel.setMode(mode);
   }
 
   Future<void> _signInWithGoogle() async {
-    if (_viewModel.isSubmitting) {
-      return;
-    }
+    if (_viewModel.isSubmitting) return;
 
     final result = await _viewModel.signInWithGoogle();
 
-    if (!mounted) {
-      return;
-    }
+    if (!mounted) return;
 
     if (!result.isValid) {
       _showMessage(result.message ?? 'Accesso con Google non riuscito.');
@@ -108,174 +92,163 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
   }
 
   void _fakeSocialLogin(String provider) {
-    if (_viewModel.isSubmitting) {
-      return;
-    }
+    if (_viewModel.isSubmitting) return;
 
     _showMessage(_viewModel.socialLoginMessage(provider));
   }
 
-  void _showMessage(String message) {
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text(message)));
-  }
+  void _showMessage(String message) => ScaffoldMessenger.of(
+    context,
+  ).showSnackBar(SnackBar(content: Text(message)));
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<AuthViewModel>(
-      builder: (context, viewModel, child) {
-        return Scaffold(
-          backgroundColor: _colors.backgroundColor,
-          body: SafeArea(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const SizedBox(height: 28),
+    final viewModel = context.watch<AuthViewModel>();
 
-                  Text(
-                    'Come vuoi continuare?',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                      color: _colors.screenTitleColor,
-                    ),
+    return Scaffold(
+      backgroundColor: _colors.backgroundColor,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const SizedBox(height: 28),
+
+              Text(
+                'Come vuoi continuare?',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  color: _colors.screenTitleColor,
+                ),
+              ),
+
+              const SizedBox(height: 32),
+
+              AppSegmentedControl<AuthMode>(
+                selectedValue: viewModel.selectedMode,
+                onChanged: _setMode,
+                colors: _colors.segmentedControlColors,
+                items: const [
+                  AppSegmentedControlItem(
+                    value: AuthMode.login,
+                    label: 'Accedi',
                   ),
-
-                  const SizedBox(height: 32),
-
-                  AppSegmentedControl<AuthMode>(
-                    selectedValue: viewModel.selectedMode,
-                    onChanged: _setMode,
-                    colors: _colors.segmentedControlColors,
-                    items: const [
-                      AppSegmentedControlItem(
-                        value: AuthMode.login,
-                        label: 'Accedi',
-                      ),
-                      AppSegmentedControlItem(
-                        value: AuthMode.register,
-                        label: 'Registrati',
-                      ),
-                    ],
+                  AppSegmentedControlItem(
+                    value: AuthMode.register,
+                    label: 'Registrati',
                   ),
-
-                  const SizedBox(height: 36),
-
-                  Text(
-                    viewModel.formTitle,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                      color: _colors.primaryColor,
-                    ),
-                  ),
-
-                  const SizedBox(height: 10),
-
-                  Text(
-                    viewModel.formSubtitle,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: _colors.subtitleColor,
-                      fontSize: 15,
-                    ),
-                  ),
-
-                  const SizedBox(height: 30),
-
-                  if (viewModel.isLogin)
-                    AuthLoginForm(
-                      emailController: _emailController,
-                      passwordController: _passwordController,
-                      obscurePassword: viewModel.obscurePassword,
-                      onTogglePasswordVisibility:
-                          viewModel.togglePasswordVisibility,
-                      onForgotPassword: _openResetPassword,
-                      textFieldColors: _colors.textFieldColors,
-                      linkColor: _colors.primaryColor,
-                    )
-                  else
-                    AuthRegisterForm(
-                      nameController: _nameController,
-                      emailController: _emailController,
-                      passwordController: _passwordController,
-                      confirmPasswordController: _confirmPasswordController,
-                      obscurePassword: viewModel.obscurePassword,
-                      obscureConfirmPassword: viewModel.obscureConfirmPassword,
-                      onTogglePasswordVisibility:
-                          viewModel.togglePasswordVisibility,
-                      onToggleConfirmPasswordVisibility:
-                          viewModel.toggleConfirmPasswordVisibility,
-                      textFieldColors: _colors.textFieldColors,
-                    ),
-
-                  const SizedBox(height: 18),
-
-                  AuthActionButton(
-                    label: viewModel.primaryButtonText,
-                    onPressed: viewModel.isSubmitting ? null : _submit,
-                    colors: _colors.actionButtonColors,
-                  ),
-
-                  const SizedBox(height: 30),
-
-                  Row(
-                    children: [
-                      Expanded(child: Divider(color: _colors.dividerColor)),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 12),
-                        child: Text(
-                          'oppure',
-                          style: TextStyle(color: _colors.separatorTextColor),
-                        ),
-                      ),
-                      Expanded(child: Divider(color: _colors.dividerColor)),
-                    ],
-                  ),
-
-                  const SizedBox(height: 20),
-
-                  AuthSocialButtons(
-                    colors: _colors.socialButtonsColors,
-                    onGooglePressed: _signInWithGoogle,
-                    onApplePressed: () => _fakeSocialLogin('Apple'),
-                    onFacebookPressed: () => _fakeSocialLogin('Facebook'),
-                  ),
-
-                  const SizedBox(height: 26),
-
-                  AuthActionButton(
-                    label: 'Continua come ospite',
-                    onPressed: viewModel.isSubmitting ? null : _continueAsGuest,
-                    height: 54,
-                    fontSize: 17,
-                    borderRadius: 26,
-                    colors: _colors.actionButtonColors,
-                  ),
-
-                  const SizedBox(height: 10),
-
-                  Text(
-                    'Senza salvataggi e notifiche personalizzate',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: _colors.helperTextColor,
-                      fontSize: 13,
-                    ),
-                  ),
-
-                  const SizedBox(height: 24),
                 ],
               ),
-            ),
+
+              const SizedBox(height: 36),
+
+              Text(
+                viewModel.formTitle,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                  color: _colors.primaryColor,
+                ),
+              ),
+
+              const SizedBox(height: 10),
+
+              Text(
+                viewModel.formSubtitle,
+                textAlign: TextAlign.center,
+                style: TextStyle(color: _colors.subtitleColor, fontSize: 15),
+              ),
+
+              const SizedBox(height: 30),
+
+              if (viewModel.isLogin)
+                AuthLoginForm(
+                  emailController: _emailController,
+                  passwordController: _passwordController,
+                  obscurePassword: viewModel.obscurePassword,
+                  onTogglePasswordVisibility:
+                      viewModel.togglePasswordVisibility,
+                  onForgotPassword: () =>
+                      Navigator.pushNamed(context, AppRoutes.resetPassword),
+                  textFieldColors: _colors.textFieldColors,
+                  linkColor: _colors.primaryColor,
+                )
+              else
+                AuthRegisterForm(
+                  nameController: _nameController,
+                  emailController: _emailController,
+                  passwordController: _passwordController,
+                  confirmPasswordController: _confirmPasswordController,
+                  obscurePassword: viewModel.obscurePassword,
+                  obscureConfirmPassword: viewModel.obscureConfirmPassword,
+                  onTogglePasswordVisibility:
+                      viewModel.togglePasswordVisibility,
+                  onToggleConfirmPasswordVisibility:
+                      viewModel.toggleConfirmPasswordVisibility,
+                  textFieldColors: _colors.textFieldColors,
+                ),
+
+              const SizedBox(height: 18),
+
+              AuthActionButton(
+                label: viewModel.primaryButtonText,
+                onPressed: viewModel.isSubmitting ? null : _submit,
+                colors: _colors.actionButtonColors,
+              ),
+
+              const SizedBox(height: 30),
+
+              Row(
+                children: [
+                  Expanded(child: Divider(color: _colors.dividerColor)),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    child: Text(
+                      'oppure',
+                      style: TextStyle(color: _colors.separatorTextColor),
+                    ),
+                  ),
+                  Expanded(child: Divider(color: _colors.dividerColor)),
+                ],
+              ),
+
+              const SizedBox(height: 20),
+
+              AuthSocialButtons(
+                colors: _colors.socialButtonsColors,
+                onGooglePressed: _signInWithGoogle,
+                onApplePressed: () => _fakeSocialLogin('Apple'),
+                onFacebookPressed: () => _fakeSocialLogin('Facebook'),
+              ),
+
+              const SizedBox(height: 26),
+
+              AuthActionButton(
+                label: 'Continua come ospite',
+                onPressed: viewModel.isSubmitting ? null : _continueAsGuest,
+                height: 54,
+                fontSize: 17,
+                borderRadius: 26,
+                colors: _colors.actionButtonColors,
+              ),
+
+              const SizedBox(height: 10),
+
+              Text(
+                'Senza salvataggi e notifiche personalizzate',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: _colors.helperTextColor, fontSize: 13),
+              ),
+
+              const SizedBox(height: 24),
+            ],
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 }
