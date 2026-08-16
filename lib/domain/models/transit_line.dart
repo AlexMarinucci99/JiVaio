@@ -5,7 +5,6 @@ class TransitLine {
     required this.shortName,
     required this.displayName,
     required this.routeLongName,
-    required this.routeColor,
     required this.directions,
   });
 
@@ -20,9 +19,6 @@ class TransitLine {
 
   /// Descrizione estesa della linea.
   final String routeLongName;
-
-  /// Colore associato alla linea in formato esadecimale.
-  final String routeColor;
 
   /// Direzioni disponibili per la linea.
   final List<TransitLineDirection> directions;

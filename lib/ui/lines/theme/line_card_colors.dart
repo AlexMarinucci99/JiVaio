@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 /// definiscano direttamente valori cromatici nel layout.
 class LineCardPalette {
   const LineCardPalette({
-    this.defaultLineColor = const Color(0xFF2F80ED),
     this.listAccent = const Color.fromARGB(255, 7, 74, 197),
     this.surface = Colors.white,
     this.border = const Color(0xFFE5EAF2),
@@ -21,9 +20,6 @@ class LineCardPalette {
     this.labelAccent = const Color(0xFF2F80ED),
     this.shadowBase = const Color(0xFF0F172A),
   });
-
-  /// Colore linea di fallback quando il valore GTFS non è valido.
-  final Color defaultLineColor;
 
   /// Colore uniforme degli elementi principali nelle card dell'elenco linee.
   final Color listAccent;
@@ -74,25 +70,6 @@ class LineCardColors {
 
   /// Palette predefinita condivisa dalla feature linee.
   static const LineCardPalette defaultPalette = LineCardPalette();
-
-  /// Converte un colore GTFS esadecimale in un [Color] Flutter.
-  ///
-  /// Se il valore non è valido, restituisce il colore di fallback
-  /// definito nella palette.
-  static Color parseLineColor(String value, {LineCardPalette? colors}) {
-    final palette = colors ?? defaultPalette;
-    final normalized = value.replaceAll('#', '').trim();
-
-    if (normalized.length != 6) {
-      return palette.defaultLineColor;
-    }
-
-    try {
-      return Color(int.parse('FF$normalized', radix: 16));
-    } catch (_) {
-      return palette.defaultLineColor;
-    }
-  }
 
   /// Restituisce un colore di testo leggibile su [backgroundColor].
   static Color textOn(Color backgroundColor, {LineCardPalette? colors}) {

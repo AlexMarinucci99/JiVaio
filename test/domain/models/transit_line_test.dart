@@ -18,7 +18,6 @@ void main() {
         shortName: entry.key,
         displayName: 'Linea ${entry.key.trim()}',
         routeLongName: 'Linea di test',
-        routeColor: '0B7A55',
         directions: const [],
       );
 

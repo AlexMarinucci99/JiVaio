@@ -14,7 +14,6 @@ class LineRoutePreview extends StatelessWidget {
     super.key,
     required this.line,
     required this.direction,
-    required this.lineColor,
     required this.canSwapDirection,
     required this.onSwapDirection,
     required this.onOpenDetails,
@@ -26,8 +25,6 @@ class LineRoutePreview extends StatelessWidget {
 
   ///Direzione attualemnte visualizzata nella card.
   final TransitLineDirection direction;
-
-  final Color lineColor;
 
   final bool canSwapDirection;
 
@@ -134,9 +131,9 @@ class LineRoutePreview extends StatelessWidget {
             width: double.infinity,
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
             decoration: BoxDecoration(
-              color: lineColor.withValues(alpha: 0.08),
+              color: colors.pillBackground,
               borderRadius: BorderRadius.circular(14),
-              border: Border.all(color: lineColor.withValues(alpha: 0.16)),
+              border: Border.all(color: colors.border),
             ),
             child: Text(
               _emptyStateMessage,

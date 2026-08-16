@@ -130,7 +130,6 @@ class TransitRepository {
             shortName: shortName,
             routeDescription: routeDescription,
           ),
-          routeColor: gtfsRouteColor(route),
           directions: directions,
         ),
       );

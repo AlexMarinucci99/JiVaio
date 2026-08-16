@@ -65,10 +65,6 @@ class _LineCardState extends State<LineCard> {
 
   @override
   Widget build(BuildContext context) {
-    final lineColor = LineCardColors.parseLineColor(
-      widget.line.routeColor,
-      colors: widget.colors,
-    );
     final direction = _selectedDirection;
 
     return Container(
@@ -87,7 +83,6 @@ class _LineCardState extends State<LineCard> {
             LineRoutePreview(
               line: widget.line,
               direction: direction,
-              lineColor: lineColor,
               canSwapDirection: widget.line.directions.length > 1,
               onSwapDirection: _toggleDirection,
               onOpenDetails: widget.onOpenDetails,

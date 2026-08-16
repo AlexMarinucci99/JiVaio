@@ -80,7 +80,7 @@ class LinesViewModel extends ChangeNotifier {
       };
     }
 
-    return 'Consulta tutte le linee disponibili e apri dettaglio completo';
+    return 'Consulta tutte le linee disponibili e scopri ogni dettaglio.';
   }
 
   /// Indica se la linea [routeId] è salvata dall'utente.

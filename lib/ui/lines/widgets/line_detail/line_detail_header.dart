@@ -96,8 +96,6 @@ class LineDetailHeader extends StatelessWidget {
             ),
           ),
 
-          Container(height: 1, color: colors.border),
-
           Padding(
             padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
             child: selectedDirection == null

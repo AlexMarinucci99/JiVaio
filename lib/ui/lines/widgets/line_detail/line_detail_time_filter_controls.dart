@@ -119,25 +119,6 @@ class _ManualTimeOption extends StatelessWidget {
           ),
           child: Row(
             children: [
-              Container(
-                width: 38,
-                height: 38,
-                decoration: BoxDecoration(
-                  color: isSelected
-                      ? _timeFilterAccentColor.withValues(alpha: 0.12)
-                      : LineDetailColors.surface,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                alignment: Alignment.center,
-                child: Icon(
-                  Icons.access_time_rounded,
-                  color: isSelected
-                      ? _timeFilterAccentColor
-                      : colors.secondaryText,
-                  size: 18,
-                ),
-              ),
-              const SizedBox(width: 12),
               Expanded(
                 child: Text(
                   label,
