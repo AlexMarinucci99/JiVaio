@@ -13,7 +13,6 @@ class SettingsColors {
     this.sectionLabel = const Color(0xFF7A8494),
     this.cardBackground = AppColors.surface,
     this.cardBorder = const Color(0xFFE5EAF2),
-    this.cardShadow = const Color(0xFF0F172A),
     this.primaryAction = AppColors.primary,
     this.dangerAction = AppColors.error,
     this.iconBackground = const Color(0xFFEAF0FA),
@@ -30,7 +29,6 @@ class SettingsColors {
 
   final Color cardBackground;
   final Color cardBorder;
-  final Color cardShadow;
 
   final Color primaryAction;
   final Color dangerAction;

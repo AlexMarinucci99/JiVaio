@@ -58,17 +58,14 @@ class SettingsTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
     final disabledColor = colors.secondaryText.withValues(alpha: 0.55);
-    final effectiveIconColor = !enabled
+    final stateColor = !enabled
         ? disabledColor
         : isDestructive
         ? colors.dangerAction
-        : iconColor;
-    final effectiveTitleColor = !enabled
-        ? disabledColor
-        : isDestructive
-        ? colors.dangerAction
-        : colors.titleText;
+        : null;
+    final effectiveIconColor = stateColor ?? iconColor;
 
     return Semantics(
       button: onTap != null,
@@ -97,8 +94,8 @@ class SettingsTile extends StatelessWidget {
                   children: [
                     Text(
                       title,
-                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: effectiveTitleColor,
+                      style: textTheme.bodyLarge?.copyWith(
+                        color: stateColor ?? colors.titleText,
                         fontSize: 14,
                         fontWeight: FontWeight.w700,
                       ),
@@ -106,7 +103,7 @@ class SettingsTile extends StatelessWidget {
                     const SizedBox(height: 3),
                     Text(
                       subtitle,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      style: textTheme.bodySmall?.copyWith(
                         color: enabled ? colors.secondaryText : disabledColor,
                         fontSize: 11.5,
                         height: 1.3,

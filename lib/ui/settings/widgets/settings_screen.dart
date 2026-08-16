@@ -75,69 +75,48 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildAccountSection(SettingsViewModel viewModel) {
-    if (viewModel.isGuest) {
-      return SettingsSection(
-        title: 'Account',
-        colors: _colors,
-        children: [
-          SettingsTile(
-            icon: Icons.login_rounded,
-            title: 'Accedi o registrati',
-            subtitle: 'Salva le preferenze e personalizza JiVaio',
-            iconColor: _colors.primaryAction,
-            colors: _colors,
-            onTap: onLogout,
-          ),
-        ],
-      );
-    }
-
-    return SettingsSection(
-      title: 'Account',
-      colors: _colors,
-      children: [
-        SettingsTile(
+  Widget _buildAccountSection(SettingsViewModel viewModel) => SettingsSection(
+    title: 'Account',
+    colors: _colors,
+    children: [
+      if (viewModel.isGuest)
+        _buildTile(
+          icon: Icons.login_rounded,
+          title: 'Accedi o registrati',
+          subtitle: 'Salva le preferenze e personalizza JiVaio',
+          showChevron: true,
+          onTap: onLogout,
+        )
+      else ...[
+        _buildTile(
           icon: Icons.person_outline_rounded,
           title: 'Profilo e account',
           subtitle: 'Gestisci le informazioni del tuo account',
-          iconColor: _colors.primaryAction,
-          colors: _colors,
-          showChevron: false,
         ),
-        SettingsTile(
+        _buildTile(
           icon: Icons.lock_outline_rounded,
           title: 'Cambia password',
           subtitle: 'Aggiorna la password del tuo account',
-          iconColor: _colors.primaryAction,
-          colors: _colors,
-          showChevron: false,
         ),
-        SettingsTile(
+        _buildTile(
           icon: Icons.logout_rounded,
           title: "Esci dall'account",
           subtitle: 'Termina la sessione corrente',
-          iconColor: _colors.dangerAction,
-          colors: _colors,
           isDestructive: true,
-          showChevron: false,
           onTap: onLogout,
         ),
       ],
-    );
-  }
+    ],
+  );
 
   Widget _buildNotificationsSection() => SettingsSection(
     title: 'Notifiche',
     colors: _colors,
     children: [
-      SettingsTile(
+      _buildTile(
         icon: Icons.notifications_none_rounded,
         title: 'Preferenze notifiche',
         subtitle: 'Gestisci gli avvisi relativi a linee, viabilità e viaggio',
-        iconColor: _colors.primaryAction,
-        colors: _colors,
-        showChevron: false,
       ),
     ],
   );
@@ -146,37 +125,25 @@ class SettingsScreen extends StatelessWidget {
     title: 'Privacy e assistenza',
     colors: _colors,
     children: [
-      SettingsTile(
+      _buildTile(
         icon: Icons.shield_outlined,
         title: 'Privacy e gestione dei dati',
         subtitle: 'Scopri come vengono trattati i tuoi dati',
-        iconColor: _colors.primaryAction,
-        colors: _colors,
-        showChevron: false,
       ),
-      SettingsTile(
+      _buildTile(
         icon: Icons.admin_panel_settings_outlined,
         title: "Permessi dell'app",
         subtitle: 'Posizione, notifiche e accessi autorizzati',
-        iconColor: _colors.primaryAction,
-        colors: _colors,
-        showChevron: false,
       ),
-      SettingsTile(
+      _buildTile(
         icon: Icons.support_agent_rounded,
         title: 'Assistenza',
         subtitle: 'FAQ, supporto e contatti',
-        iconColor: _colors.primaryAction,
-        colors: _colors,
-        showChevron: false,
       ),
-      SettingsTile(
+      _buildTile(
         icon: Icons.report_problem_outlined,
         title: 'Segnala un problema',
         subtitle: "Comunica malfunzionamenti dell'app",
-        iconColor: _colors.primaryAction,
-        colors: _colors,
-        showChevron: false,
       ),
     ],
   );
@@ -185,38 +152,44 @@ class SettingsScreen extends StatelessWidget {
     title: 'Informazioni',
     colors: _colors,
     children: [
-      SettingsTile(
+      _buildTile(
         icon: Icons.info_outline_rounded,
         title: 'Informazioni su JiVaio',
         subtitle: 'Scopri il progetto e i suoi obiettivi',
-        iconColor: _colors.primaryAction,
-        colors: _colors,
-        showChevron: false,
       ),
-      SettingsTile(
+      _buildTile(
         icon: Icons.groups_outlined,
         title: 'Team di sviluppo',
         subtitle: 'Master Mobile Devs',
-        iconColor: _colors.primaryAction,
-        colors: _colors,
-        showChevron: false,
       ),
-      SettingsTile(
+      _buildTile(
         icon: Icons.description_outlined,
         title: 'Licenze software',
         subtitle: 'Pacchetti e componenti utilizzati',
-        iconColor: _colors.primaryAction,
-        colors: _colors,
-        showChevron: false,
       ),
-      SettingsTile(
+      _buildTile(
         icon: Icons.code_rounded,
         title: 'Versione app',
         subtitle: '1.0.0',
-        iconColor: _colors.primaryAction,
-        colors: _colors,
-        showChevron: false,
       ),
     ],
+  );
+
+  SettingsTile _buildTile({
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    VoidCallback? onTap,
+    bool showChevron = false,
+    bool isDestructive = false,
+  }) => SettingsTile(
+    icon: icon,
+    title: title,
+    subtitle: subtitle,
+    iconColor: isDestructive ? _colors.dangerAction : _colors.primaryAction,
+    colors: _colors,
+    onTap: onTap,
+    showChevron: showChevron,
+    isDestructive: isDestructive,
   );
 }
