@@ -15,13 +15,8 @@ class NotificationItem extends StatelessWidget {
     this.colors = const NotificationItemColors(),
   });
 
-  /// Notifica da rappresentare nella riga.
   final AppNotification notification;
-
-  /// Callback invocata quando l'utente seleziona la notifica.
   final VoidCallback onTap;
-
-  /// Palette cromatica usata dalla riga.
   final NotificationItemColors colors;
 
   @override
@@ -50,60 +45,34 @@ class NotificationItem extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _NotificationIcon(icon: icon, colors: iconColors),
+              _buildIcon(icon, iconColors),
               const SizedBox(width: 12),
-              Expanded(
-                child: _NotificationContent(
-                  notification: notification,
-                  colors: colors,
-                ),
-              ),
+              Expanded(child: _buildContent(context)),
               const SizedBox(width: 10),
-              _UnreadIndicator(
-                isVisible: !notification.isRead,
-                color: colors.unreadDotColor,
-              ),
+              _buildUnreadIndicator(),
             ],
           ),
         ),
       ),
     );
   }
-}
 
-class _NotificationIcon extends StatelessWidget {
-  const _NotificationIcon({required this.icon, required this.colors});
+  Widget _buildIcon(IconData icon, NotificationTypeColors iconColors) =>
+      Container(
+        width: 40,
+        height: 40,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: iconColors.iconBackgroundColor,
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(color: iconColors.iconBorderColor),
+        ),
+        child: Icon(icon, color: iconColors.iconColor, size: 19),
+      );
 
-  final IconData icon;
-  final NotificationTypeColors colors;
+  Widget _buildContent(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 40,
-      height: 40,
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        color: colors.iconBackgroundColor,
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: colors.iconBorderColor),
-      ),
-      child: Icon(icon, color: colors.iconColor, size: 19),
-    );
-  }
-}
-
-class _NotificationContent extends StatelessWidget {
-  const _NotificationContent({
-    required this.notification,
-    required this.colors,
-  });
-
-  final AppNotification notification;
-  final NotificationItemColors colors;
-
-  @override
-  Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -113,7 +82,7 @@ class _NotificationContent extends StatelessWidget {
             Expanded(
               child: Text(
                 notification.title,
-                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                style: textTheme.bodyLarge?.copyWith(
                   color: notification.isRead
                       ? colors.readTitleColor
                       : colors.titleColor,
@@ -127,7 +96,7 @@ class _NotificationContent extends StatelessWidget {
             const SizedBox(width: 10),
             Text(
               _relativeTimeLabel(notification.createdAt),
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              style: textTheme.bodySmall?.copyWith(
                 color: colors.timeColor,
                 fontSize: 10.5,
               ),
@@ -137,7 +106,7 @@ class _NotificationContent extends StatelessWidget {
         const SizedBox(height: 4),
         Text(
           notification.message,
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+          style: textTheme.bodySmall?.copyWith(
             color: colors.messageColor,
             fontSize: 11.5,
             height: 1.4,
@@ -167,25 +136,18 @@ class _NotificationContent extends StatelessWidget {
     final days = difference.inDays;
     return days == 1 ? 'Ieri' : '$days gg fa';
   }
-}
 
-class _UnreadIndicator extends StatelessWidget {
-  const _UnreadIndicator({required this.isVisible, required this.color});
-
-  final bool isVisible;
-  final Color color;
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedOpacity(
-      duration: const Duration(milliseconds: 180),
-      opacity: isVisible ? 1 : 0,
-      child: Container(
-        width: 9,
-        height: 9,
-        margin: const EdgeInsets.only(top: 4),
-        decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+  Widget _buildUnreadIndicator() => AnimatedOpacity(
+    duration: const Duration(milliseconds: 180),
+    opacity: notification.isRead ? 0 : 1,
+    child: Container(
+      width: 9,
+      height: 9,
+      margin: const EdgeInsets.only(top: 4),
+      decoration: BoxDecoration(
+        color: colors.unreadDotColor,
+        shape: BoxShape.circle,
       ),
-    );
-  }
+    ),
+  );
 }

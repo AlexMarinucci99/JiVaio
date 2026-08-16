@@ -3,9 +3,6 @@ import 'package:flutter/material.dart';
 import '../theme/notification_colors.dart';
 
 /// Pulsante circolare per aprire e chiudere il centro notifiche.
-///
-/// È uno StatelessWidget perché non conserva stato interno:
-/// riceve il conteggio, lo stato di apertura e la callback dall'esterno.
 class NotificationBellButton extends StatelessWidget {
   const NotificationBellButton({
     super.key,
@@ -15,28 +12,22 @@ class NotificationBellButton extends StatelessWidget {
     this.colors = const NotificationBellButtonColors(),
   });
 
-  // Numero di notifiche non ancora lette.
   final int unreadCount;
-
-  // Indica se il pannello notifiche è aperto.
   final bool isPanelOpen;
-
-  // Callback invocata quando l'utente preme la campanella.
   final VoidCallback onPressed;
-
-  // Palette grafica usata dal pulsante.
   final NotificationBellButtonColors colors;
 
   @override
   Widget build(BuildContext context) {
+    final hasUnreadNotifications = unreadCount > 0;
     final visibleUnreadCount = unreadCount > 9 ? '9+' : '$unreadCount';
 
     return Semantics(
       button: true,
       toggled: isPanelOpen,
-      label: unreadCount == 0
-          ? 'Notifiche'
-          : 'Notifiche, $unreadCount non lette',
+      label: hasUnreadNotifications
+          ? 'Notifiche, $unreadCount non lette'
+          : 'Notifiche',
       child: Stack(
         clipBehavior: Clip.none,
         children: [
@@ -61,8 +52,7 @@ class NotificationBellButton extends StatelessWidget {
             ),
           ),
 
-          // Il badge compare soltanto quando ci sono notifiche non lette.
-          if (unreadCount > 0)
+          if (hasUnreadNotifications)
             Positioned(
               right: -3,
               top: -3,

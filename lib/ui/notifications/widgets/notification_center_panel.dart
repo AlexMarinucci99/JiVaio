@@ -22,31 +22,14 @@ class NotificationCenterPanel extends StatelessWidget {
     this.itemColors = const NotificationItemColors(),
   });
 
-  /// Elenco delle notifiche già ordinato dal ViewModel.
   final List<AppNotification> notifications;
-
-  /// Numero di notifiche non ancora lette.
   final int unreadCount;
-
-  /// Indica se il caricamento iniziale è in corso.
   final bool isLoading;
-
-  /// Messaggio di errore esposto dal ViewModel, se presente.
   final String? errorMessage;
-
-  /// Callback invocata per chiudere il pannello.
   final VoidCallback onClose;
-
-  /// Callback invocata per segnare tutte le notifiche come lette.
   final VoidCallback onMarkAllAsRead;
-
-  /// Callback invocata quando l'utente seleziona una notifica.
   final ValueChanged<String> onNotificationTap;
-
-  /// Palette del pannello.
   final NotificationCenterPanelColors colors;
-
-  /// Palette delle righe interne.
   final NotificationItemColors itemColors;
 
   @override
@@ -64,46 +47,18 @@ class NotificationCenterPanel extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            _NotificationPanelHeader(
-              unreadCount: unreadCount,
-              onClose: onClose,
-              onMarkAllAsRead: onMarkAllAsRead,
-              colors: colors,
-            ),
+            _buildHeader(context),
             Divider(height: 1, thickness: 1, color: colors.dividerColor),
-            Flexible(
-              child: _NotificationPanelBody(
-                notifications: notifications,
-                isLoading: isLoading,
-                errorMessage: errorMessage,
-                onNotificationTap: onNotificationTap,
-                colors: colors,
-                itemColors: itemColors,
-              ),
-            ),
+            Flexible(child: _buildBody(context)),
           ],
         ),
       ),
     );
   }
-}
 
-class _NotificationPanelHeader extends StatelessWidget {
-  const _NotificationPanelHeader({
-    required this.unreadCount,
-    required this.onClose,
-    required this.onMarkAllAsRead,
-    required this.colors,
-  });
-
-  final int unreadCount;
-  final VoidCallback onClose;
-  final VoidCallback onMarkAllAsRead;
-  final NotificationCenterPanelColors colors;
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildHeader(BuildContext context) {
     final hasUnreadNotifications = unreadCount > 0;
+    final textTheme = Theme.of(context).textTheme;
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(18, 15, 10, 12),
@@ -116,7 +71,7 @@ class _NotificationPanelHeader extends StatelessWidget {
               children: [
                 Text(
                   'Notifiche',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  style: textTheme.titleMedium?.copyWith(
                     color: colors.titleColor,
                     fontSize: 17,
                     fontWeight: FontWeight.w800,
@@ -124,8 +79,8 @@ class _NotificationPanelHeader extends StatelessWidget {
                 ),
                 const SizedBox(height: 3),
                 Text(
-                  _unreadLabel(unreadCount),
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  _unreadLabel,
+                  style: textTheme.bodySmall?.copyWith(
                     color: colors.subtitleColor,
                     fontSize: 11.5,
                   ),
@@ -133,7 +88,7 @@ class _NotificationPanelHeader extends StatelessWidget {
                 const SizedBox(height: 3),
                 Text(
                   'Dati dimostrativi del prototipo',
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  style: textTheme.bodySmall?.copyWith(
                     color: colors.subtitleColor,
                     fontSize: 10.5,
                     fontWeight: FontWeight.w500,
@@ -176,42 +131,41 @@ class _NotificationPanelHeader extends StatelessWidget {
     );
   }
 
-  String _unreadLabel(int unreadCount) => switch (unreadCount) {
+  String get _unreadLabel => switch (unreadCount) {
     0 => 'Nessuna notifica non letta',
     1 => '1 notifica non letta',
     _ => '$unreadCount notifiche non lette',
   };
-}
 
-class _NotificationPanelBody extends StatelessWidget {
-  const _NotificationPanelBody({
-    required this.notifications,
-    required this.isLoading,
-    required this.errorMessage,
-    required this.onNotificationTap,
-    required this.colors,
-    required this.itemColors,
-  });
-
-  final List<AppNotification> notifications;
-  final bool isLoading;
-  final String? errorMessage;
-  final ValueChanged<String> onNotificationTap;
-  final NotificationCenterPanelColors colors;
-  final NotificationItemColors itemColors;
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildBody(BuildContext context) {
     if (isLoading) {
-      return _NotificationLoadingState(colors: colors);
+      return _buildLoadingState();
     }
 
-    if (errorMessage != null) {
-      return _NotificationErrorState(message: errorMessage!, colors: colors);
+    final error = errorMessage;
+    if (error != null) {
+      return _buildMessageState(
+        context,
+        height: 160,
+        icon: Icons.error_outline_rounded,
+        iconSize: 32,
+        iconColor: colors.errorIconColor,
+        message: error,
+        messageColor: colors.errorTextColor,
+      );
     }
 
     if (notifications.isEmpty) {
-      return _NotificationEmptyState(colors: colors);
+      return _buildMessageState(
+        context,
+        height: 180,
+        icon: Icons.notifications_none_rounded,
+        iconSize: 34,
+        iconColor: colors.emptyIconColor,
+        title: 'Nessuna notifica',
+        message: 'Gli aggiornamenti sul servizio compariranno qui.',
+        messageColor: colors.emptyMessageColor,
+      );
     }
 
     return ListView.separated(
@@ -232,103 +186,58 @@ class _NotificationPanelBody extends StatelessWidget {
       },
     );
   }
-}
 
-class _NotificationLoadingState extends StatelessWidget {
-  const _NotificationLoadingState({required this.colors});
-
-  final NotificationCenterPanelColors colors;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: 150,
-      child: Center(
-        child: SizedBox.square(
-          dimension: 24,
-          child: CircularProgressIndicator(
-            strokeWidth: 2.4,
-            color: colors.loadingIndicatorColor,
-          ),
+  Widget _buildLoadingState() => SizedBox(
+    height: 150,
+    child: Center(
+      child: SizedBox.square(
+        dimension: 24,
+        child: CircularProgressIndicator(
+          strokeWidth: 2.4,
+          color: colors.loadingIndicatorColor,
         ),
       ),
-    );
-  }
-}
+    ),
+  );
 
-class _NotificationEmptyState extends StatelessWidget {
-  const _NotificationEmptyState({required this.colors});
+  Widget _buildMessageState(
+    BuildContext context, {
+    required double height,
+    required IconData icon,
+    required double iconSize,
+    required Color iconColor,
+    required String message,
+    required Color messageColor,
+    String? title,
+  }) {
+    final textTheme = Theme.of(context).textTheme;
 
-  final NotificationCenterPanelColors colors;
-
-  @override
-  Widget build(BuildContext context) {
     return SizedBox(
-      height: 180,
+      height: height,
       child: Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(
-                Icons.notifications_none_rounded,
-                size: 34,
-                color: colors.emptyIconColor,
-              ),
+              Icon(icon, size: iconSize, color: iconColor),
               const SizedBox(height: 10),
-              Text(
-                'Nessuna notifica',
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: colors.emptyTitleColor,
-                  fontWeight: FontWeight.w700,
+              if (title != null) ...[
+                Text(
+                  title,
+                  textAlign: TextAlign.center,
+                  style: textTheme.bodyMedium?.copyWith(
+                    color: colors.emptyTitleColor,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 5),
-              Text(
-                'Gli aggiornamenti sul servizio compariranno qui.',
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: colors.emptyMessageColor,
-                  height: 1.35,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _NotificationErrorState extends StatelessWidget {
-  const _NotificationErrorState({required this.message, required this.colors});
-
-  final String message;
-  final NotificationCenterPanelColors colors;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: 160,
-      child: Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(
-                Icons.error_outline_rounded,
-                size: 32,
-                color: colors.errorIconColor,
-              ),
-              const SizedBox(height: 10),
+                const SizedBox(height: 5),
+              ],
               Text(
                 message,
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: colors.errorTextColor,
+                style: textTheme.bodySmall?.copyWith(
+                  color: messageColor,
                   height: 1.35,
                 ),
               ),
