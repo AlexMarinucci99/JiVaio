@@ -6,7 +6,6 @@ import '../../theme/line_detail_colors.dart';
 import '../line_card/line_badge.dart';
 import '../line_card/line_central_label.dart';
 import '../line_card/line_direction_button.dart';
-import '../line_card/line_info_pill.dart';
 
 /// Header della schermata dettaglio linea.
 ///
@@ -81,43 +80,16 @@ class LineDetailHeader extends StatelessWidget {
                 const SizedBox(width: 12),
 
                 Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        line.displayName,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          color: colors.primaryText,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w800,
-                          height: 1.15,
-                        ),
-                      ),
-
-                      const SizedBox(height: 5),
-
-                      Text(
-                        line.routeLongName,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: colors.secondaryText,
-                          fontSize: 11.5,
-                        ),
-                      ),
-
-                      if (selectedDirection != null) ...[
-                        const SizedBox(height: 10),
-
-                        LineInfoPill(
-                          icon: Icons.place_rounded,
-                          label: _stopCountLabel(selectedDirection.stopCount),
-                          colors: colors,
-                        ),
-                      ],
-                    ],
+                  child: Text(
+                    line.displayName,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      color: colors.primaryText,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w800,
+                      height: 1.15,
+                    ),
                   ),
                 ),
               ],
@@ -141,14 +113,6 @@ class LineDetailHeader extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  String _stopCountLabel(int count) {
-    if (count == 1) {
-      return '1 fermata';
-    }
-
-    return '$count fermate';
   }
 }
 

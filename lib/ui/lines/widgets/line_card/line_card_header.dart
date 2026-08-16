@@ -3,18 +3,15 @@ import 'package:flutter/material.dart';
 import '../../../../domain/models/transit_line.dart';
 import 'line_badge.dart';
 import '../../theme/line_card_colors.dart';
-import 'line_info_pill.dart';
 import 'line_save_button.dart';
 
 /// Header della card che sintetizza le informazioni principali di una linea.
 ///
-/// Mostra badge, nome, descrizione, numero di fermate della direzione
-/// selezionata e azione di salvataggio.
+/// Mostra badge, nome e azione di salvataggio.
 class LineCardHeader extends StatelessWidget {
   const LineCardHeader({
     super.key,
     required this.line,
-    required this.direction,
     required this.isSaved,
     required this.onToggleSaved,
     this.colors = LineCardColors.defaultPalette,
@@ -22,9 +19,6 @@ class LineCardHeader extends StatelessWidget {
 
   ///linea rappresentata
   final TransitLine line;
-
-  ///direzione rappresentata usata per visualizzare il numero di fermate.
-  final TransitLineDirection direction;
 
   final bool isSaved;
 
@@ -51,40 +45,15 @@ class LineCardHeader extends StatelessWidget {
         const SizedBox(width: 12),
 
         Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                line.displayName,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: colors.primaryText,
-                  fontSize: 14.5,
-                  fontWeight: FontWeight.w800,
-                ),
-              ),
-
-              const SizedBox(height: 4),
-
-              Text(
-                line.routeLongName,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: colors.secondaryText,
-                  fontSize: 11.5,
-                ),
-              ),
-
-              const SizedBox(height: 10),
-
-              LineInfoPill(
-                icon: Icons.place_rounded,
-                label: _stopCountLabel(direction.stopCount),
-                colors: colors,
-              ),
-            ],
+          child: Text(
+            line.displayName,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+              color: colors.primaryText,
+              fontSize: 14.5,
+              fontWeight: FontWeight.w800,
+            ),
           ),
         ),
 
@@ -96,7 +65,4 @@ class LineCardHeader extends StatelessWidget {
       ],
     );
   }
-
-  String _stopCountLabel(int count) =>
-      count == 1 ? '1 fermata' : '$count fermate';
 }

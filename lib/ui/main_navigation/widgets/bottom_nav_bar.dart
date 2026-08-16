@@ -31,8 +31,6 @@ class BottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final activeIndex = _safeSelectedIndex(selectedIndex);
-
     return ClipRRect(
       borderRadius: BorderRadius.circular(25),
       child: Container(
@@ -52,7 +50,7 @@ class BottomNavBar extends StatelessWidget {
                 AnimatedPositioned(
                   duration: const Duration(milliseconds: 260),
                   curve: Curves.easeOutCubic,
-                  left: itemWidth * activeIndex,
+                  left: itemWidth * selectedIndex,
                   top: 0,
                   bottom: 0,
                   width: itemWidth,
@@ -69,7 +67,7 @@ class BottomNavBar extends StatelessWidget {
                 Row(
                   children: List.generate(_items.length, (index) {
                     final item = _items[index];
-                    final isSelected = activeIndex == index;
+                    final isSelected = selectedIndex == index;
 
                     return Expanded(
                       child: _BottomNavTile(
@@ -87,12 +85,6 @@ class BottomNavBar extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  int _safeSelectedIndex(int index) {
-    if (index < 0) return 0;
-    if (index >= _items.length) return _items.length - 1;
-    return index;
   }
 }
 
