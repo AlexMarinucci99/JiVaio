@@ -4,35 +4,23 @@ import '../../../data/repositories/notification_repository.dart';
 import '../../../domain/models/app_notification.dart';
 
 /// Gestisce lo stato e le azioni del centro notifiche.
-///
-/// La UI legge i dati esposti da questa classe e richiama i suoi metodi
-/// quando l'utente apre il pannello oppure segna gli avvisi come letti.
-/// Con il repository mock, lo stato di lettura resta locale alla sessione.
 class NotificationCenterViewModel extends ChangeNotifier {
   NotificationCenterViewModel({required NotificationRepository repository})
     : _repository = repository;
 
   final NotificationRepository _repository;
-
   List<AppNotification> _notifications = const [];
-
   bool _isLoading = false;
   bool _isPanelOpen = false;
   bool _isDisposed = false;
-
   String? _errorMessage;
 
   List<AppNotification> get notifications => _notifications;
-
   bool get isLoading => _isLoading;
-
   bool get isPanelOpen => _isPanelOpen;
-
   String? get errorMessage => _errorMessage;
-
   int get unreadCount =>
       _notifications.where((notification) => !notification.isRead).length;
-
   bool get hasUnreadNotifications => unreadCount > 0;
 
   /// Carica le notifiche disponibili e le ordina dalla più recente.
@@ -46,13 +34,11 @@ class NotificationCenterViewModel extends ChangeNotifier {
     _notifyListenersSafely();
 
     try {
-      final notifications = await _repository.getNotifications();
-
-      notifications.sort(
-        (first, second) => second.createdAt.compareTo(first.createdAt),
+      _notifications = List<AppNotification>.unmodifiable(
+        (await _repository.getNotifications())..sort(
+          (first, second) => second.createdAt.compareTo(first.createdAt),
+        ),
       );
-
-      _notifications = List<AppNotification>.unmodifiable(notifications);
     } catch (_) {
       _errorMessage = 'Impossibile caricare le notifiche.';
     } finally {
@@ -87,12 +73,12 @@ class NotificationCenterViewModel extends ChangeNotifier {
       return;
     }
 
-    final updatedNotifications = List<AppNotification>.of(_notifications);
-
-    updatedNotifications[notificationIndex] =
-        updatedNotifications[notificationIndex].copyWith(isRead: true);
-
-    _notifications = List<AppNotification>.unmodifiable(updatedNotifications);
+    _notifications = List<AppNotification>.unmodifiable(
+      List<AppNotification>.of(_notifications)
+        ..[notificationIndex] = _notifications[notificationIndex].copyWith(
+          isRead: true,
+        ),
+    );
 
     _notifyListenersSafely();
   }

@@ -23,6 +23,8 @@ class PrimaryRouteCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
@@ -37,7 +39,7 @@ class PrimaryRouteCard extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(18, 18, 18, 16),
             child: Text(
               'Percorso consigliato',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+              style: textTheme.titleMedium?.copyWith(
                 color: colors.textPrimaryColor,
                 fontWeight: FontWeight.w800,
               ),
@@ -49,30 +51,30 @@ class PrimaryRouteCard extends StatelessWidget {
             child: Column(
               spacing: 12,
               children: [
-                _PrimaryRouteSection(
+                _buildSection(
+                  textTheme,
                   title: 'Partenza',
                   description: departureDescription,
-                  colors: colors,
                 ),
-                _PrimaryRouteSection(
+                _buildSection(
+                  textTheme,
                   title: 'Fermata iniziale',
                   description: boardingStopDescription,
-                  colors: colors,
                 ),
-                _PrimaryRouteSection(
+                _buildSection(
+                  textTheme,
                   title: 'Linea consigliata',
                   description: recommendedLineDescription,
-                  colors: colors,
                 ),
-                _PrimaryRouteSection(
+                _buildSection(
+                  textTheme,
                   title: 'Durata stimata',
                   description: durationDescription,
-                  colors: colors,
                 ),
-                _PrimaryRouteSection(
+                _buildSection(
+                  textTheme,
                   title: 'Arrivo',
                   description: arrivalDescription,
-                  colors: colors,
                 ),
               ],
             ),
@@ -81,21 +83,12 @@ class PrimaryRouteCard extends StatelessWidget {
       ),
     );
   }
-}
 
-class _PrimaryRouteSection extends StatelessWidget {
-  const _PrimaryRouteSection({
-    required this.title,
-    required this.description,
-    required this.colors,
-  });
-
-  final String title;
-  final String description;
-  final RouteResultsColors colors;
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildSection(
+    TextTheme textTheme, {
+    required String title,
+    required String description,
+  }) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(14),
@@ -109,7 +102,7 @@ class _PrimaryRouteSection extends StatelessWidget {
         children: [
           Text(
             title,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            style: textTheme.bodyMedium?.copyWith(
               color: colors.textPrimaryColor,
               fontWeight: FontWeight.w800,
             ),
@@ -117,7 +110,7 @@ class _PrimaryRouteSection extends StatelessWidget {
           const SizedBox(height: 6),
           Text(
             description,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            style: textTheme.bodyMedium?.copyWith(
               color: colors.textSecondaryColor,
               height: 1.4,
               fontWeight: FontWeight.w500,

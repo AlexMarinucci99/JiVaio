@@ -27,60 +27,40 @@ class RouteResultsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<RouteResultsViewModel>(
-      builder: (context, viewModel, child) {
-        return Scaffold(
-          backgroundColor: _colors.backgroundColor,
-          body: _buildBody(context, viewModel),
-        );
-      },
+      builder: (context, viewModel, _) => Scaffold(
+        backgroundColor: _colors.backgroundColor,
+        body: _buildBody(context, viewModel),
+      ),
     );
   }
 
   Widget _buildBody(BuildContext context, RouteResultsViewModel viewModel) {
     if (viewModel.isLoading) {
-      return const _LoadingRouteResultsView(colors: _colors);
+      return _buildLoadingView(context);
     }
 
     final result = viewModel.result;
     if (viewModel.errorMessage != null || result == null) {
-      return _ErrorRouteResultsView(
-        colors: _colors,
+      return _buildErrorView(
+        context,
         message: viewModel.errorMessage ?? 'Nessun percorso disponibile.',
-        onBack: () => Navigator.of(context).pop(),
         onRetry: viewModel.loadRoute,
       );
     }
 
-    return _LoadedRouteResultsView(
-      viewModel: viewModel,
-      colors: _colors,
-      onBack: () => Navigator.of(context).pop(),
-      onStartNavigation: () => _showFeatureNotReadyMessage(context),
-    );
+    return _buildLoadedView(context, viewModel);
   }
-}
 
-class _LoadedRouteResultsView extends StatelessWidget {
-  const _LoadedRouteResultsView({
-    required this.viewModel,
-    required this.colors,
-    required this.onBack,
-    required this.onStartNavigation,
-  });
-
-  final RouteResultsViewModel viewModel;
-  final RouteResultsColors colors;
-  final VoidCallback onBack;
-  final VoidCallback onStartNavigation;
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildLoadedView(
+    BuildContext context,
+    RouteResultsViewModel viewModel,
+  ) {
     return Column(
       children: [
         RouteResultsHeader(
           result: viewModel.result!,
-          colors: colors,
-          onBack: onBack,
+          colors: _colors,
+          onBack: () => Navigator.of(context).pop(),
         ),
         Expanded(
           child: ListView(
@@ -93,7 +73,7 @@ class _LoadedRouteResultsView extends StatelessWidget {
                     viewModel.recommendedLineDescription,
                 durationDescription: viewModel.durationDescription,
                 arrivalDescription: viewModel.arrivalDescription,
-                colors: colors,
+                colors: _colors,
               ),
             ],
           ),
@@ -103,34 +83,27 @@ class _LoadedRouteResultsView extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.fromLTRB(20, 8, 20, 16),
             child: RouteNavigationButton(
-              colors: colors,
-              onPressed: onStartNavigation,
+              colors: _colors,
+              onPressed: () => _showFeatureNotReadyMessage(context),
             ),
           ),
         ),
       ],
     );
   }
-}
 
-class _LoadingRouteResultsView extends StatelessWidget {
-  const _LoadingRouteResultsView({required this.colors});
-
-  final RouteResultsColors colors;
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildLoadingView(BuildContext context) {
     return SafeArea(
       child: Center(
         child: Column(
           spacing: 18,
           mainAxisSize: MainAxisSize.min,
           children: [
-            CircularProgressIndicator(color: colors.accentColor),
+            CircularProgressIndicator(color: _colors.accentColor),
             Text(
               'Caricamento percorso...',
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: colors.textSecondaryColor,
+                color: _colors.textSecondaryColor,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -139,23 +112,14 @@ class _LoadingRouteResultsView extends StatelessWidget {
       ),
     );
   }
-}
 
-class _ErrorRouteResultsView extends StatelessWidget {
-  const _ErrorRouteResultsView({
-    required this.colors,
-    required this.message,
-    required this.onBack,
-    required this.onRetry,
-  });
+  Widget _buildErrorView(
+    BuildContext context, {
+    required String message,
+    required VoidCallback onRetry,
+  }) {
+    final textTheme = Theme.of(context).textTheme;
 
-  final RouteResultsColors colors;
-  final String message;
-  final VoidCallback onBack;
-  final VoidCallback onRetry;
-
-  @override
-  Widget build(BuildContext context) {
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.all(24),
@@ -164,26 +128,26 @@ class _ErrorRouteResultsView extends StatelessWidget {
             Align(
               alignment: Alignment.centerLeft,
               child: Material(
-                color: colors.surfaceColor,
+                color: _colors.surfaceColor,
                 shape: const CircleBorder(),
                 child: IconButton(
-                  onPressed: onBack,
+                  onPressed: () => Navigator.of(context).pop(),
                   tooltip: 'Torna indietro',
                   icon: Icon(
                     Icons.arrow_back_rounded,
-                    color: colors.textPrimaryColor,
+                    color: _colors.textPrimaryColor,
                   ),
                 ),
               ),
             ),
             const Spacer(),
-            Icon(Icons.route_rounded, size: 52, color: colors.accentColor),
+            Icon(Icons.route_rounded, size: 52, color: _colors.accentColor),
             const SizedBox(height: 18),
             Text(
               message,
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                color: colors.textPrimaryColor,
+              style: textTheme.titleMedium?.copyWith(
+                color: _colors.textPrimaryColor,
                 fontWeight: FontWeight.w800,
               ),
             ),
@@ -191,8 +155,8 @@ class _ErrorRouteResultsView extends StatelessWidget {
             Text(
               'La schermata è predisposta, ma i dati reali del percorso saranno collegati in una fase successiva.',
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: colors.textSecondaryColor,
+              style: textTheme.bodyMedium?.copyWith(
+                color: _colors.textSecondaryColor,
                 height: 1.35,
               ),
             ),
@@ -200,7 +164,7 @@ class _ErrorRouteResultsView extends StatelessWidget {
             FilledButton(
               onPressed: onRetry,
               style: FilledButton.styleFrom(
-                backgroundColor: colors.accentColor,
+                backgroundColor: Color.fromARGB(255, 6, 27, 59),
                 foregroundColor: Colors.white,
               ),
               child: const Text('Riprova'),

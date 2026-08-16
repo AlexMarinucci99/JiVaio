@@ -16,7 +16,6 @@ class RouteResultsHeader extends StatelessWidget {
   });
 
   final RouteResult result;
-
   final RouteResultsColors colors;
 
   /// Callback eseguita quando l'utente torna alla schermata precedente.
@@ -24,6 +23,8 @@ class RouteResultsHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
     return DecoratedBox(
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -61,7 +62,7 @@ class RouteResultsHeader extends StatelessWidget {
                   Expanded(
                     child: Text(
                       'Risultati percorso',
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      style: textTheme.titleLarge?.copyWith(
                         color: colors.headerTextColor,
                         fontWeight: FontWeight.w800,
                       ),
@@ -69,23 +70,15 @@ class RouteResultsHeader extends StatelessWidget {
                   ),
                 ],
               ),
-              _RouteSummaryCard(result: result, colors: colors),
+              _buildSummaryCard(textTheme),
             ],
           ),
         ),
       ),
     );
   }
-}
 
-class _RouteSummaryCard extends StatelessWidget {
-  const _RouteSummaryCard({required this.result, required this.colors});
-
-  final RouteResult result;
-  final RouteResultsColors colors;
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildSummaryCard(TextTheme textTheme) {
     return LayoutBuilder(
       builder: (context, constraints) {
         final isCompact = constraints.maxWidth < 360;
@@ -106,7 +99,22 @@ class _RouteSummaryCard extends StatelessWidget {
           child: Row(
             children: [
               Expanded(
-                child: _SummaryLocations(result: result, colors: colors),
+                child: Column(
+                  spacing: 14,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildLocationText(
+                      textTheme,
+                      label: 'Partenza',
+                      value: result.origin,
+                    ),
+                    _buildLocationText(
+                      textTheme,
+                      label: 'Destinazione',
+                      value: result.destination,
+                    ),
+                  ],
+                ),
               ),
               Container(
                 width: 1,
@@ -116,7 +124,16 @@ class _RouteSummaryCard extends StatelessWidget {
               ),
               SizedBox(
                 width: isCompact ? 92 : 116,
-                child: _EstimatedDurationLabel(colors: colors),
+                child: Text(
+                  'MINUTI STIMATI\nDI PERCORRENZA',
+                  textAlign: TextAlign.center,
+                  style: textTheme.labelSmall?.copyWith(
+                    color: colors.headerMutedTextColor,
+                    fontWeight: FontWeight.w800,
+                    height: 1.35,
+                    letterSpacing: 0.7,
+                  ),
+                ),
               ),
             ],
           ),
@@ -124,55 +141,19 @@ class _RouteSummaryCard extends StatelessWidget {
       },
     );
   }
-}
 
-class _SummaryLocations extends StatelessWidget {
-  const _SummaryLocations({required this.result, required this.colors});
-
-  final RouteResult result;
-  final RouteResultsColors colors;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      spacing: 14,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _SummaryLocationText(
-          label: 'Partenza',
-          value: result.origin,
-          colors: colors,
-        ),
-        _SummaryLocationText(
-          label: 'Destinazione',
-          value: result.destination,
-          colors: colors,
-        ),
-      ],
-    );
-  }
-}
-
-class _SummaryLocationText extends StatelessWidget {
-  const _SummaryLocationText({
-    required this.label,
-    required this.value,
-    required this.colors,
-  });
-
-  final String label;
-  final String value;
-  final RouteResultsColors colors;
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildLocationText(
+    TextTheme textTheme, {
+    required String label,
+    required String value,
+  }) {
     return Column(
       spacing: 3,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           label,
-          style: Theme.of(context).textTheme.labelMedium?.copyWith(
+          style: textTheme.labelMedium?.copyWith(
             color: colors.headerMutedTextColor,
             fontWeight: FontWeight.w600,
           ),
@@ -181,32 +162,12 @@ class _SummaryLocationText extends StatelessWidget {
           value,
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+          style: textTheme.titleMedium?.copyWith(
             color: colors.headerTextColor,
             fontWeight: FontWeight.w700,
           ),
         ),
       ],
-    );
-  }
-}
-
-class _EstimatedDurationLabel extends StatelessWidget {
-  const _EstimatedDurationLabel({required this.colors});
-
-  final RouteResultsColors colors;
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      'MINUTI STIMATI\nDI PERCORRENZA',
-      textAlign: TextAlign.center,
-      style: Theme.of(context).textTheme.labelSmall?.copyWith(
-        color: colors.headerMutedTextColor,
-        fontWeight: FontWeight.w800,
-        height: 1.35,
-        letterSpacing: 0.7,
-      ),
     );
   }
 }
