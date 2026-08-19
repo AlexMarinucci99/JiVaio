@@ -12,6 +12,7 @@ class AppColors {
   static const Color surface = Color(0xFFFFFFFF);
   static const Color surfaceMuted = Color(0xFFEAF0FA);
   static const Color fieldBackground = Color(0xFFF1F4FA);
+  static const Color backButtonBackground = Color(0xFFF5F7FB);
 
   static const Color textPrimary = Color(0xFF111827);
   static const Color textSecondary = Color(0xFF5D6675);

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../domain/models/transit_line.dart';
+import '../../../core/widgets/back_button.dart';
 import '../../theme/line_card_colors.dart';
 import '../../theme/line_detail_colors.dart';
 import '../line_card/line_badge.dart';
@@ -55,16 +56,7 @@ class LineDetailHeader extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Material(
-                  color: colors.pillBackground,
-                  shape: const CircleBorder(),
-                  child: IconButton(
-                    tooltip: 'Torna alle linee',
-                    icon: const Icon(Icons.arrow_back_rounded, size: 20),
-                    color: colors.primaryText,
-                    onPressed: onClose,
-                  ),
-                ),
+                AppBackButton(onPressed: onClose, tooltip: 'Torna alle linee'),
 
                 const SizedBox(width: 10),
                 LineBadge(shortName: line.shortName, colors: colors),

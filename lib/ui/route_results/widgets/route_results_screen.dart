@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../core/widgets/back_button.dart';
 import '../theme/route_results_colors.dart';
 import '../view_model/route_results_view_model.dart';
 import 'primary_route_card.dart';
@@ -127,17 +128,8 @@ class RouteResultsScreen extends StatelessWidget {
           children: [
             Align(
               alignment: Alignment.centerLeft,
-              child: Material(
-                color: _colors.surfaceColor,
-                shape: const CircleBorder(),
-                child: IconButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  tooltip: 'Torna indietro',
-                  icon: Icon(
-                    Icons.arrow_back_rounded,
-                    color: _colors.textPrimaryColor,
-                  ),
-                ),
+              child: AppBackButton(
+                onPressed: () => Navigator.of(context).pop(),
               ),
             ),
             const Spacer(),

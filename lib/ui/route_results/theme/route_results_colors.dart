@@ -19,7 +19,6 @@ class RouteResultsColors {
     this.headerGradientEndColor = AppColors.primary,
     this.headerTextColor = Colors.white,
     this.headerMutedTextColor = const Color(0xFFBEC7E8),
-    this.backButtonBackgroundColor = const Color(0x26FFFFFF),
     this.summaryCardBackgroundColor = const Color(0x1FFFFFFF),
     this.summaryCardBorderColor = const Color(0x33FFFFFF),
     this.summaryDividerColor = const Color(0x33FFFFFF),
@@ -39,7 +38,6 @@ class RouteResultsColors {
   final Color headerGradientEndColor;
   final Color headerTextColor;
   final Color headerMutedTextColor;
-  final Color backButtonBackgroundColor;
 
   final Color summaryCardBackgroundColor;
   final Color summaryCardBorderColor;

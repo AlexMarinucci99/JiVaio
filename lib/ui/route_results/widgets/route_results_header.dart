@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../domain/models/route_result.dart';
+import '../../core/widgets/back_button.dart';
 import '../theme/route_results_colors.dart';
 
 /// Header superiore della schermata dei risultati.
@@ -47,18 +48,7 @@ class RouteResultsHeader extends StatelessWidget {
               Row(
                 spacing: 14,
                 children: [
-                  Material(
-                    color: colors.backButtonBackgroundColor,
-                    shape: const CircleBorder(),
-                    child: IconButton(
-                      onPressed: onBack,
-                      tooltip: 'Torna indietro',
-                      icon: Icon(
-                        Icons.arrow_back_rounded,
-                        color: colors.headerTextColor,
-                      ),
-                    ),
-                  ),
+                  AppBackButton(onPressed: onBack),
                   Expanded(
                     child: Text(
                       'Risultati percorso',
