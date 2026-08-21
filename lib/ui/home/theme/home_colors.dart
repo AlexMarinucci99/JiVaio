@@ -104,9 +104,6 @@ class HomeAlertDialogColors {
 /// grafica della feature in un unico file.
 class HomeColors {
   const HomeColors({
-    this.overlayColorStrong = const Color(0x8F0B0F3A),
-    this.overlayColorSoft = const Color(0x330B0F3A),
-    this.overlayColorTransparent = Colors.transparent,
     this.snackBarBackgroundColor = const Color(0xFF061A3A),
     this.snackBarTextColor = Colors.white,
     this.mapColors = const HomeMapColors(),
@@ -114,10 +111,6 @@ class HomeColors {
     this.routeSearchCardColors = const RouteSearchCardColors(),
     this.alertDialogColors = const HomeAlertDialogColors(),
   });
-
-  final Color overlayColorStrong;
-  final Color overlayColorSoft;
-  final Color overlayColorTransparent;
 
   final Color snackBarBackgroundColor;
   final Color snackBarTextColor;
