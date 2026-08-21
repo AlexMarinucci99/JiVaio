@@ -174,24 +174,6 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
             ),
           ),
         ),
-        Positioned.fill(
-          child: IgnorePointer(
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    _colors.overlayColorStrong,
-                    _colors.overlayColorSoft,
-                    _colors.overlayColorTransparent,
-                  ],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  stops: const [0, 0.38, 0.75],
-                ),
-              ),
-            ),
-          ),
-        ),
         SafeArea(
           bottom: false,
           child: Padding(

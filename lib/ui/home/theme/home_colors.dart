@@ -50,7 +50,7 @@ class LocateUserButtonColors {
 /// Palette della card utilizzata per inserire partenza e destinazione.
 class RouteSearchCardColors {
   const RouteSearchCardColors({
-    this.cardColor = Colors.white,
+    this.cardColor = const Color.fromARGB(255, 209, 208, 208),
     this.textColor = const Color(0xFF20232D),
     this.labelColor = const Color(0xFF5C5F6D),
     this.dividerColor = const Color(0xFFE7E8EE),
@@ -58,7 +58,7 @@ class RouteSearchCardColors {
     this.activeButtonTextColor = Colors.white,
     this.inactiveButtonColor = const Color(0xFFE9E7F0),
     this.inactiveTextColor = const Color(0xFF4F4D59),
-    this.iconBackgroundColor = const Color(0xFFF0F1F6),
+    this.iconBackgroundColor = const Color.fromARGB(255, 245, 245, 245),
     this.iconColor = const Color(0xFF59609A),
     this.swapIconColor = const Color(0xFF59609A),
     this.hintColor = const Color(0xFF777986),
