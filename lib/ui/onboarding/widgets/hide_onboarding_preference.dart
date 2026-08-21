@@ -32,9 +32,6 @@ class HideOnboardingPreference extends StatelessWidget {
           width: double.infinity,
           padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
           decoration: BoxDecoration(
-            color: value
-                ? OnboardingColors.preferenceSelectedBackground
-                : OnboardingColors.preferenceUnselectedBackground,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
               color: value

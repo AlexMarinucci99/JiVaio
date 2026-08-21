@@ -45,8 +45,7 @@ class OnboardingSlideCard extends StatelessWidget {
           AspectRatio(
             aspectRatio: 1.55,
             child: Container(
-              decoration: BoxDecoration(
-                color: OnboardingColors.surface,
+              decoration: BoxDecoration(             
                 borderRadius: BorderRadius.circular(28),
               ),
               clipBehavior: Clip.antiAlias,
@@ -56,8 +55,7 @@ class OnboardingSlideCard extends StatelessWidget {
                     child: Image.asset(
                       imagePath,
                       fit: BoxFit.cover,
-                      alignment: imageAlignment,
-                      filterQuality: FilterQuality.high,
+                      alignment: imageAlignment,                     
                     ),
                   ),
 
@@ -69,7 +67,7 @@ class OnboardingSlideCard extends StatelessWidget {
                       height: 58,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: OnboardingColors.slideIconBackground,
+                        color: const Color.fromARGB(255, 255, 255, 255),
                       ),
                       child: Icon(icon, color: accentColor, size: 28),
                     ),

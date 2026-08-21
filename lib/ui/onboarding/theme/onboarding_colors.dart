@@ -16,9 +16,7 @@ abstract final class OnboardingColors {
   static const actionDisabledForeground = Color(0xFF9CA3AF);
   static const inactiveDot = AppColors.borderSoft;
 
-  static const preferenceSelectedBackground = Color(0x14061A3A);
   static const preferenceSelectedBorder = Color(0x6B061A3A);
-  static const preferenceUnselectedBackground = Color(0xFFFAFBFF);
   static const preferenceUnselectedBorder = Color(0xFFE4E9F2);
   static const preferenceUnselectedCheckBorder = Color(0xFFC5CCD8);
 }

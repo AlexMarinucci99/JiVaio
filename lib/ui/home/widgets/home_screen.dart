@@ -89,7 +89,6 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
         'la geolocalizzazione del dispositivo sia attiva.',
     dismissLabel: 'Non ora',
     confirmLabel: 'Apri impostazioni',
-    colors: _colors.alertDialogColors,
     onConfirm: () => _openSettings(_viewModel.openLocationSettings),
   );
 
@@ -101,7 +100,6 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
         'Apri le impostazioni dell’app e abilitalo manualmente.',
     dismissLabel: 'Annulla',
     confirmLabel: 'Apri impostazioni',
-    colors: _colors.alertDialogColors,
     onConfirm: () => _openSettings(_viewModel.openAppSettings),
   );
 

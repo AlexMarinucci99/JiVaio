@@ -70,25 +70,7 @@ class RouteSearchCardColors {
   final Color hintColor;
 }
 
-/// Palette dei dialog mostrati dalla Home.
-class HomeAlertDialogColors {
-  const HomeAlertDialogColors({
-    this.backgroundColor = Colors.white,
-    this.primaryTextColor = const Color(0xFF20232D),
-    this.secondaryTextColor = const Color(0xFF5C5F6D),
-    this.accentColor = const Color(0xFF17226B),
-    this.barrierColor = const Color(0x52000000),
-  });
-
-  final Color backgroundColor;
-  final Color primaryTextColor;
-  final Color secondaryTextColor;
-  final Color accentColor;
-  final Color barrierColor;
-}
-
 /// Palette complessiva della schermata Home.
-
 class HomeColors {
   const HomeColors({
     this.snackBarBackgroundColor = const Color(0xFF061A3A),
@@ -96,7 +78,6 @@ class HomeColors {
     this.mapColors = const HomeMapColors(),
     this.locateUserButtonColors = const LocateUserButtonColors(),
     this.routeSearchCardColors = const RouteSearchCardColors(),
-    this.alertDialogColors = const HomeAlertDialogColors(),
   });
 
   final Color snackBarBackgroundColor;
@@ -105,5 +86,4 @@ class HomeColors {
   final HomeMapColors mapColors;
   final LocateUserButtonColors locateUserButtonColors;
   final RouteSearchCardColors routeSearchCardColors;
-  final HomeAlertDialogColors alertDialogColors;
 }
