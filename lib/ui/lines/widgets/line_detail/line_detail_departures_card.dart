@@ -82,21 +82,18 @@ class LineDetailDeparturesCard extends StatelessWidget {
               textColor: LineDetailColors.emptyDeparturesText,
             )
           else
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  for (final departure in departures)
-                    Padding(
-                      padding: const EdgeInsets.only(right: 8),
-                      child: _DepartureChip(
-                        label: departure.departureTime,
-                        isSelected: departure.tripId == selectedTripId,
-                        colors: colors,
-                      ),
+            Row(
+              children: [
+                for (final departure in departures)
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8),
+                    child: _DepartureChip(
+                      label: departure.departureTime,
+                      isSelected: departure.tripId == selectedTripId,
+                      colors: colors,
                     ),
-                ],
-              ),
+                  ),
+              ],
             ),
         ],
       ),

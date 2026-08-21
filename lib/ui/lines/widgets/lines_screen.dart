@@ -126,10 +126,7 @@ class LinesScreen extends StatelessWidget {
   }
 
   Widget _buildSelectedContent(BuildContext context, LinesViewModel viewModel) {
-    if (viewModel.isLoading && viewModel.allLines.isEmpty) {
-      return const Center(child: CircularProgressIndicator());
-    }
-
+   
     if (viewModel.errorMessage != null && viewModel.allLines.isEmpty) {
       return _LinesStateArea(
         key: const ValueKey('lines-error-state'),
@@ -164,7 +161,7 @@ class LinesScreen extends StatelessWidget {
       itemBuilder: (context, index) {
         final line = lines[index];
         return LineCard(
-          key: ValueKey(line.routeId),
+          key: ValueKey(line.routeId),  
           line: line,
           isSaved: viewModel.isLineSaved(line.routeId),
           onToggleSaved: () =>

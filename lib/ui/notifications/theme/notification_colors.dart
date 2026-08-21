@@ -28,7 +28,7 @@ class NotificationBellButtonColors {
 /// Palette grafica del pannello flottante delle notifiche.
 class NotificationCenterPanelColors {
   const NotificationCenterPanelColors({
-    this.backgroundColor = const Color.fromARGB(240, 3, 67, 83),
+    this.backgroundColor = const Color.fromARGB(255, 1, 93, 116),
     this.borderColor = const Color(0x334E6A92),
     this.shadowColor = const Color(0x4D000000),
     this.titleColor = Colors.white,
@@ -89,19 +89,19 @@ class NotificationItemColors {
     this.splashColor = const Color(0x141D6FF2),
     this.highlightColor = const Color(0x0A1D6FF2),
     this.delayColors = const NotificationTypeColors(
-      iconColor: Color(0xFFFFD37B),
-      iconBackgroundColor: Color(0x24F59E0B),
-      iconBorderColor: Color(0x3DF59E0B),
+      iconColor: Color.fromARGB(255, 243, 162, 0),
+      iconBackgroundColor: Color.fromARGB(255, 253, 253, 253),
+      iconBorderColor: Color.fromARGB(255, 240, 239, 238),
     ),
     this.tripColors = const NotificationTypeColors(
-      iconColor: Color(0xFF8CB7FF),
-      iconBackgroundColor: Color(0x292D7FF9),
-      iconBorderColor: Color(0x3D2D7FF9),
+      iconColor: Color.fromARGB(255, 28, 103, 233),
+      iconBackgroundColor: Color.fromARGB(255, 241, 241, 241),
+      iconBorderColor: Color.fromARGB(255, 238, 238, 238),
     ),
     this.serviceUpdateColors = const NotificationTypeColors(
-      iconColor: Color(0xFFFFB4A6),
-      iconBackgroundColor: Color(0x29D32F2F),
-      iconBorderColor: Color(0x3DD32F2F),
+      iconColor: Color.fromARGB(255, 241, 52, 19),
+      iconBackgroundColor: Color.fromARGB(255, 255, 255, 255),
+      iconBorderColor: Color.fromARGB(255, 255, 255, 255),
     ),
   });
 

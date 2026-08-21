@@ -49,8 +49,6 @@ class LinesViewModel extends ChangeNotifier {
 
   List<TransitLine> get allLines => _lines;
 
-  bool get isLoading => _isLoading;
-
   String? get errorMessage => _errorMessage;
 
   int get savedLinesCount => _savedLineIds.length;
@@ -64,10 +62,6 @@ class LinesViewModel extends ChangeNotifier {
 
   /// Sottotitolo descrittivo mostrato nella schermata.
   String get subtitle {
-    if (_isLoading && _lines.isEmpty) {
-      return 'Caricamento delle linee disponibili...';
-    }
-
     if (_errorMessage != null && _lines.isEmpty) {
       return 'Non è stato possibile caricare le linee.';
     }
