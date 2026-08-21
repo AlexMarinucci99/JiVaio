@@ -47,7 +47,6 @@ class RouteSearchCardColors {
     this.activeButtonTextColor = Colors.white,
     this.inactiveButtonColor = const Color(0xFFE9E7F0),
     this.inactiveTextColor = const Color(0xFF4F4D59),
-    this.iconBackgroundColor = const Color.fromARGB(255, 245, 245, 245),
     this.iconColor = const Color(0xFF59609A),
     this.swapIconColor = const Color(0xFF59609A),
     this.hintColor = const Color(0xFF777986),
@@ -64,7 +63,6 @@ class RouteSearchCardColors {
   final Color inactiveButtonColor;
   final Color inactiveTextColor;
 
-  final Color iconBackgroundColor;
   final Color iconColor;
   final Color swapIconColor;
   final Color hintColor;

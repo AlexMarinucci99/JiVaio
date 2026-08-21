@@ -9,16 +9,11 @@ import '../theme/home_colors.dart';
 class RouteSearchCard extends StatefulWidget {
   const RouteSearchCard({
     super.key,
-    this.width,
+
     this.contentScale = 0.90,
     this.onSearch,
     this.colors = const RouteSearchCardColors(),
   }) : assert(contentScale > 0);
-
-  /// Larghezza esterna della card.
-  ///
-  /// Se il valore è null, la card occupa la larghezza disponibile.
-  final double? width;
 
   /// Fattore di scala applicato agli elementi interni della card.
   final double contentScale;
@@ -78,12 +73,8 @@ class _RouteSearchCardState extends State<RouteSearchCard> {
     final scale = widget.contentScale;
     final colors = widget.colors;
     final canSearch = _canSearch;
-    final buttonTextColor = canSearch
-        ? colors.activeButtonTextColor
-        : colors.inactiveTextColor;
 
     return Container(
-      width: widget.width,
       padding: EdgeInsets.only(
         left: 14 * scale,
         right: 14 * scale,
@@ -167,14 +158,12 @@ class _RouteSearchCardState extends State<RouteSearchCard> {
               icon: Icon(
                 Icons.navigation_rounded,
                 size: 18 * scale,
-                color: buttonTextColor,
               ),
               label: Text(
                 'Cerca percorso',
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   fontSize: 14 * scale,
                   fontWeight: FontWeight.w700,
-                  color: buttonTextColor,
                 ),
               ),
             ),
@@ -212,15 +201,11 @@ class _SearchTextField extends StatelessWidget {
 
     return Row(
       children: [
-        Container(
-          width: 46 * scale,
-          height: 46 * scale,
-          decoration: BoxDecoration(
-            color: colors.iconBackgroundColor,
-            shape: BoxShape.circle,
+        Icon(
+          icon, 
+          size: 14 * scale, 
+          color: colors.iconColor
           ),
-          child: Icon(icon, size: 14 * scale, color: colors.iconColor),
-        ),
         SizedBox(width: 14 * scale),
         Expanded(
           child: Column(
