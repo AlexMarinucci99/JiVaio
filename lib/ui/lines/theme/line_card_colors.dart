@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 
 /// Palette usata dalle card della feature linee.
 ///
-/// Centralizza i colori specifici delle card, evitando che i widget
-/// definiscano direttamente valori cromatici nel layout.
+/// Centralizza i colori specifici delle card.
 class LineCardPalette {
   const LineCardPalette({
     this.listAccent = const Color.fromARGB(255, 7, 74, 197),
@@ -26,41 +25,29 @@ class LineCardPalette {
   /// Colore sfondo card.
   final Color surface;
 
-  /// Colore bordi.
   final Color border;
 
-  /// Colore testo principale.
   final Color primaryText;
 
-  /// Colore testo secondario.
   final Color secondaryText;
 
-  /// Colore testo meno importante.
   final Color mutedText;
 
-  /// Sfondo del controllo per il cambio di direzione.
   final Color directionButtonBackground;
 
-  /// Colore dell'icona quando il controllo è evidenziato.
   final Color directionButtonForeground;
 
-  /// Colore dell'icona quando lo swap non è disponibile.
   final Color directionButtonDisabledForeground;
 
-  /// Sfondo delle pill informative.
   final Color pillBackground;
 
-  /// Colore cuore quando la linea è salvata.
   final Color savedHeart;
 
-  /// Colore label "Partenza" / "Capolinea".
   final Color labelAccent;
 }
 
-/// Utility cromatiche condivise dai widget della feature linee.
-///
-/// Espone la palette predefinita e alcune funzioni per convertire
-/// i colori GTFS in valori utilizzabili dalla UI.
+/// Fornisce colori e stili condivisi per le card delle linee.
+
 class LineCardColors {
   const LineCardColors._();
 

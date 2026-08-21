@@ -3,10 +3,7 @@ import 'package:flutter/material.dart';
 import '../../core/themes/app_colors.dart';
 
 /// Palette grafica della schermata dei risultati del percorso.
-///
-/// I colori globali dell'app vengono riutilizzati da [AppColors].
-/// Rimangono definiti qui soltanto i colori specifici della feature:
-/// gradiente dell'header, riepilogo e sezioni informative.
+
 class RouteResultsColors {
   const RouteResultsColors({
     this.backgroundColor = AppColors.background,
@@ -14,7 +11,6 @@ class RouteResultsColors {
     this.textPrimaryColor = AppColors.textPrimary,
     this.textSecondaryColor = AppColors.textSecondary,
     this.borderColor = AppColors.border,
-    this.shadowColor = const Color(0x14000000),
     this.headerGradientStartColor = const Color(0xFF17226B),
     this.headerGradientEndColor = AppColors.primary,
     this.headerTextColor = Colors.white,
@@ -32,7 +28,6 @@ class RouteResultsColors {
   final Color textPrimaryColor;
   final Color textSecondaryColor;
   final Color borderColor;
-  final Color shadowColor;
 
   final Color headerGradientStartColor;
   final Color headerGradientEndColor;

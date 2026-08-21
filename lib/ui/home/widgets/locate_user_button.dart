@@ -21,8 +21,6 @@ class LocateUserButton extends StatelessWidget {
       label: 'Mostra la mia posizione',
       child: Material(
         color: colors.backgroundColor,
-        elevation: 5,
-        shadowColor: colors.shadowColor,
         shape: const CircleBorder(),
         child: InkWell(
           customBorder: const CircleBorder(),
@@ -36,7 +34,7 @@ class LocateUserButton extends StatelessWidget {
                       dimension: 21,
                       child: CircularProgressIndicator(
                         strokeWidth: 2.4,
-                        color: colors.progressColor,
+                        color: colors.iconColor,
                       ),
                     )
                   : Icon(

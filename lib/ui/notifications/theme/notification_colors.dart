@@ -9,7 +9,6 @@ class NotificationBellButtonColors {
     this.badgeBackgroundColor = const Color(0xFF2D7FF9),
     this.badgeBorderColor = Colors.white,
     this.badgeTextColor = Colors.white,
-    this.shadowColor = const Color(0x26000000),
     this.splashColor = const Color(0x1417226B),
     this.highlightColor = const Color(0x0A17226B),
   });
@@ -20,7 +19,6 @@ class NotificationBellButtonColors {
   final Color badgeBackgroundColor;
   final Color badgeBorderColor;
   final Color badgeTextColor;
-  final Color shadowColor;
   final Color splashColor;
   final Color highlightColor;
 }
@@ -30,7 +28,6 @@ class NotificationCenterPanelColors {
   const NotificationCenterPanelColors({
     this.backgroundColor = const Color.fromARGB(255, 1, 93, 116),
     this.borderColor = const Color(0x334E6A92),
-    this.shadowColor = const Color(0x4D000000),
     this.titleColor = Colors.white,
     this.subtitleColor = const Color(0xFF90A4C2),
     this.actionTextColor = const Color(0xFF8CB7FF),
@@ -48,7 +45,6 @@ class NotificationCenterPanelColors {
 
   final Color backgroundColor;
   final Color borderColor;
-  final Color shadowColor;
   final Color titleColor;
   final Color subtitleColor;
   final Color actionTextColor;

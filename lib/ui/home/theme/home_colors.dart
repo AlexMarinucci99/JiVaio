@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 
 /// Palette utilizzata dalla mappa della Home.
-///
-/// Contiene esclusivamente colori legati al rendering della mappa:
-/// sfondo di fallback, fermate e posizione dell'utente.
+
 class HomeMapColors {
   const HomeMapColors({
     this.fallbackBackgroundColor = const Color(0xFFF7F9FC),
@@ -16,19 +14,14 @@ class HomeMapColors {
 
   final Color fallbackBackgroundColor;
 
-  /// Colore interno dei marker delle fermate.
   final Color stopMarkerColor;
 
-  /// Colore del bordo dei marker delle fermate.
   final Color stopMarkerBorderColor;
 
-  /// Colore dell'alone mostrato attorno alla posizione dell'utente.
   final Color userLocationHaloColor;
 
-  /// Colore interno del marker della posizione dell'utente.
   final Color userLocationMarkerColor;
 
-  /// Colore del bordo del marker della posizione dell'utente.
   final Color userLocationMarkerBorderColor;
 }
 
@@ -37,14 +30,10 @@ class LocateUserButtonColors {
   const LocateUserButtonColors({
     this.backgroundColor = Colors.white,
     this.iconColor = const Color(0xFF17226B),
-    this.progressColor = const Color(0xFF17226B),
-    this.shadowColor = const Color(0x26000000),
   });
 
   final Color backgroundColor;
   final Color iconColor;
-  final Color progressColor;
-  final Color shadowColor;
 }
 
 /// Palette della card utilizzata per inserire partenza e destinazione.
@@ -99,9 +88,7 @@ class HomeAlertDialogColors {
 }
 
 /// Palette complessiva della schermata Home.
-///
-/// Aggrega le palette dei componenti interni, mantenendo la configurazione
-/// grafica della feature in un unico file.
+
 class HomeColors {
   const HomeColors({
     this.snackBarBackgroundColor = const Color(0xFF061A3A),
