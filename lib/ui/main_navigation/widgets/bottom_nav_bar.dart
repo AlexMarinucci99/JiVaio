@@ -59,7 +59,7 @@ class BottomNavBar extends StatelessWidget {
                     child: DecoratedBox(
                       decoration: BoxDecoration(
                         color: colors.selectedBackgroundColor,
-                        borderRadius: BorderRadius.circular(23.4),                       
+                        borderRadius: BorderRadius.circular(23.4),
                       ),
                     ),
                   ),
@@ -119,39 +119,28 @@ class _BottomNavTile extends StatelessWidget {
           splashColor: colors.splashColor,
           highlightColor: colors.highlightColor,
           onTap: onTap,
-          child: AnimatedOpacity(
-            duration: const Duration(milliseconds: 180),
-            curve: Curves.easeOut,
+          child: Opacity(
             opacity: isSelected ? 1 : 0.72,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
-                AnimatedScale(
-                  duration: const Duration(milliseconds: 180),
-                  curve: Curves.easeOut,
-                  scale: isSelected ? 1.08 : 1.0,
-                  child: Icon(
-                    item.icon,
-                    color: effectiveColor,
-                    size: isSelected ? 22.5 : 20.7,
-                  ),
+                Icon(
+                  item.icon,
+                  color: effectiveColor,
+                  size: isSelected ? 22.5 : 20.7,
                 ),
                 const SizedBox(height: 3.6),
-                AnimatedDefaultTextStyle(
-                  duration: const Duration(milliseconds: 180),
-                  curve: Curves.easeOut,
+                Text(
+                  item.label,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     color: effectiveColor,
                     fontSize: isSelected ? 10.8 : 10.35,
                     height: 1.0,
                     fontWeight: isSelected ? FontWeight.w800 : FontWeight.w600,
                     letterSpacing: 0.135,
-                  ),
-                  child: Text(
-                    item.label,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
               ],

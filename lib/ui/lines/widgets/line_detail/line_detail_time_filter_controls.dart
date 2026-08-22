@@ -1,6 +1,5 @@
 part of 'line_detail_time_filter.dart';
 
-const _timeOptionAnimationDuration = Duration(milliseconds: 160);
 const _timeOptionBorderRadius = BorderRadius.all(Radius.circular(18));
 const _timeFilterAccentColor = LineDetailColors.timeFilterAccent;
 
@@ -33,8 +32,7 @@ class _AutomaticTimeOption extends StatelessWidget {
       child: InkWell(
         onTap: onTap,
         borderRadius: _timeOptionBorderRadius,
-        child: AnimatedContainer(
-          duration: _timeOptionAnimationDuration,
+        child: Container(
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
             color: _timeOptionBackground(isSelected),
@@ -103,9 +101,7 @@ class _ManualTimeOption extends StatelessWidget {
       child: InkWell(
         borderRadius: _timeOptionBorderRadius,
         onTap: onTap,
-        child: AnimatedContainer(
-          duration: _timeOptionAnimationDuration,
-          curve: Curves.easeOutCubic,
+        child: Container(
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
             color: _timeOptionBackground(isSelected),
@@ -146,8 +142,7 @@ class _SelectionIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const selectedColor = _timeFilterAccentColor;
-    return AnimatedContainer(
-      duration: _timeOptionAnimationDuration,
+    return Container(
       width: 24,
       height: 24,
       decoration: BoxDecoration(

@@ -114,21 +114,21 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               padding: const EdgeInsets.fromLTRB(20, 12, 20, 4),
               child: Align(
                 alignment: Alignment.centerRight,
-                child: Visibility(
-                  visible: !isLastPage,
-                  maintainSize: true,
-                  maintainAnimation: true,
-                  maintainState: true,
-                  child: TextButton(
-                    onPressed: _openAuth,
-                    style: TextButton.styleFrom(
-                      foregroundColor: OnboardingColors.primary,
-                    ),
-                    child: const Text('Salta'),
-                  ),
+                child: SizedBox(
+                  height: 40,
+                  child: isLastPage
+                      ? null
+                      : TextButton(
+                          onPressed: _openAuth,
+                          style: TextButton.styleFrom(
+                            foregroundColor: OnboardingColors.primary,
+                          ),
+                          child: const Text('Salta'),
+                        ),
                 ),
               ),
             ),
+
             Expanded(
               child: PageView.builder(
                 controller: _pageController,

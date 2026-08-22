@@ -35,8 +35,7 @@ class _LocationChoiceButton extends StatelessWidget {
       child: InkWell(
         borderRadius: borderRadius,
         onTap: onTap,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 160),
+        child: Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
             color: backgroundColor,
