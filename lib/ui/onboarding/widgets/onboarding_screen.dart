@@ -155,18 +155,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 180),
-                    switchInCurve: Curves.easeOutCubic,
-                    switchOutCurve: Curves.easeOutCubic,
-                    child: isLastPage
-                        ? HideOnboardingPreference(
-                            value: viewModel.hideOnboardingNextTime,
-                            onToggle: viewModel.toggleHideOnboardingNextTime,
-                          )
-                        : const SizedBox.shrink(),
-                  ),
-
+                  if (isLastPage)
+                    HideOnboardingPreference(
+                      value: viewModel.hideOnboardingNextTime,
+                      onToggle: viewModel.toggleHideOnboardingNextTime,
+                    ),
                   if (isLastPage) const SizedBox(height: 16),
 
                   OnboardingBottomControls(
