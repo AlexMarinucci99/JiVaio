@@ -5,7 +5,6 @@ class _LocationChoiceButton extends StatelessWidget {
     required this.label,
     required this.icon,
     required this.isSelected,
-    required this.lineColor,
     required this.colors,
     required this.onTap,
   });
@@ -13,21 +12,22 @@ class _LocationChoiceButton extends StatelessWidget {
   final String label;
   final IconData icon;
   final bool isSelected;
-  final Color lineColor;
   final LineCardPalette colors;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     final backgroundColor = isSelected
-        ? lineColor.withValues(alpha: 0.1)
+        ? LineDetailColors.reportAccent.withValues(alpha: 0.1)
         : LineDetailColors.softSurface;
 
     final borderColor = isSelected
-        ? lineColor.withValues(alpha: 0.42)
+        ? LineDetailColors.reportAccent.withValues(alpha: 0.42)
         : colors.border;
 
-    final foregroundColor = isSelected ? lineColor : colors.secondaryText;
+    final foregroundColor = isSelected
+        ? LineDetailColors.reportAccent
+        : colors.secondaryText;
     const borderRadius = BorderRadius.all(Radius.circular(16));
 
     return Material(
@@ -105,7 +105,6 @@ class _ReportActionButton extends StatelessWidget {
     required this.label,
     required this.icon,
     required this.isEnabled,
-    required this.lineColor,
     required this.colors,
     required this.onTap,
   });
@@ -113,19 +112,21 @@ class _ReportActionButton extends StatelessWidget {
   final String label;
   final IconData icon;
   final bool isEnabled;
-  final Color lineColor;
   final LineCardPalette colors;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    final foregroundColor = LineCardColors.textOn(lineColor, colors: colors);
+    final foregroundColor = LineCardColors.textOn(
+      LineDetailColors.reportAccent,
+      colors: colors,
+    );
 
     return FilledButton.icon(
       onPressed: isEnabled ? onTap : null,
       style: FilledButton.styleFrom(
         minimumSize: const Size.fromHeight(46),
-        backgroundColor: lineColor,
+        backgroundColor: LineDetailColors.reportAccent,
         disabledBackgroundColor: LineDetailColors.disabledSurface,
         foregroundColor: foregroundColor,
         disabledForegroundColor: LineDetailColors.disabledText,

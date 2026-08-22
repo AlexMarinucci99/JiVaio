@@ -25,13 +25,9 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   int _selectedIndex = 0;
 
   List<Widget> get _pages => [
-    const HomeScreen(key: PageStorageKey('home-screen')),
-    const LinesScreen(key: PageStorageKey('lines-screen')),
-    SettingsScreen(
-      key: const PageStorageKey('settings-screen'),
-      user: widget.user,
-      onLogout: widget.onLogout,
-    ),
+    const HomeScreen(),
+    const LinesScreen(),
+    SettingsScreen(user: widget.user, onLogout: widget.onLogout),
   ];
 
   void _onItemSelected(int index) {

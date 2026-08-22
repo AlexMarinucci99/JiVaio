@@ -32,13 +32,11 @@ Future<LineDetailTimeSelection?> showLineDetailTimeFilterSheet(
   required String currentRangeLabel,
   required int? selectedManualHour,
   required List<int> manualHours,
-  LineCardPalette colors = LineCardColors.defaultPalette,
 }) => showModalBottomSheet<LineDetailTimeSelection>(
   context: context,
   isScrollControlled: true,
   backgroundColor: LineDetailColors.transparent,
   builder: (_) => LineDetailTimeFilterSheet(
-    colors: colors,
     currentRangeLabel: currentRangeLabel,
     selectedManualHour: selectedManualHour,
     manualHours: manualHours,
@@ -55,7 +53,6 @@ class LineDetailTimeFilterSheet extends StatefulWidget {
     required this.currentRangeLabel,
     required this.selectedManualHour,
     required this.manualHours,
-    this.colors = LineCardColors.defaultPalette,
   });
 
   /// Etichetta della fascia oraria attualmente applicata.
@@ -66,15 +63,13 @@ class LineDetailTimeFilterSheet extends StatefulWidget {
   /// Ore disponibili per la selezione manuale.
   final List<int> manualHours;
 
-  final LineCardPalette colors;
-
   @override
   State<LineDetailTimeFilterSheet> createState() =>
       _LineDetailTimeFilterSheetState();
 }
 
 class _LineDetailTimeFilterSheetState extends State<LineDetailTimeFilterSheet> {
-  late int? _selectedManualHour;
+  int? _selectedManualHour;
 
   @override
   void initState() {
@@ -96,7 +91,7 @@ class _LineDetailTimeFilterSheetState extends State<LineDetailTimeFilterSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final colors = widget.colors;
+    const colors = LineCardColors.defaultPalette;
     final textTheme = Theme.of(context).textTheme;
 
     return SafeArea(

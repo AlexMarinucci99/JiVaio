@@ -73,7 +73,6 @@ class LineDetailScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 14),
                       LineDetailReportCard(
-                        lineColor: LineDetailColors.reportAccent,
                         reportLocation: viewModel.reportLocation,
                         canSendReport: viewModel.canSendReport,
                         selectedStopName: viewModel.selectedReportStopName,

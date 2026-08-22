@@ -129,7 +129,6 @@ class LinesScreen extends StatelessWidget {
    
     if (viewModel.errorMessage != null && viewModel.allLines.isEmpty) {
       return _LinesStateArea(
-        key: const ValueKey('lines-error-state'),
         title: 'Errore caricamento linee',
         message: viewModel.errorMessage!,
         action: FilledButton(
@@ -143,7 +142,6 @@ class LinesScreen extends StatelessWidget {
     if (lines.isEmpty) {
       final isGuest = viewModel.userId == null;
       return _LinesStateArea(
-        key: const ValueKey('lines-empty-state'),
         title: isGuest
             ? 'Preferiti disponibili dopo l’accesso'
             : 'Nessuna linea salvata',
@@ -175,7 +173,6 @@ class LinesScreen extends StatelessWidget {
 
 class _LinesStateArea extends StatelessWidget {
   const _LinesStateArea({
-    super.key,
     required this.title,
     required this.message,
     this.action,

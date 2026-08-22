@@ -39,17 +39,13 @@ const _reportActionOptions = [
 class LineDetailReportCard extends StatelessWidget {
   const LineDetailReportCard({
     super.key,
-    required this.lineColor,
     required this.reportLocation,
     required this.canSendReport,
     required this.selectedStopName,
     required this.lastReportMessage,
     required this.onLocationChanged,
     required this.onReportPressed,
-    this.colors = LineCardColors.defaultPalette,
   });
-
-  final Color lineColor;
 
   /// Posizione dichiarata dall'utente per la segnalazione.
   ///
@@ -74,12 +70,10 @@ class LineDetailReportCard extends StatelessWidget {
   /// Callback eseguita quando l'utente invia una tipologia di segnalazione.
   final ValueChanged<LineDetailReportType> onReportPressed;
 
-  final LineCardPalette colors;
-
   @override
   Widget build(BuildContext context) {
+    const colors = LineCardColors.defaultPalette;
     final textTheme = Theme.of(context).textTheme;
-
     return Container(
       decoration: LineCardColors.cardDecoration(colors: colors),
       padding: const EdgeInsets.all(14),
@@ -112,7 +106,6 @@ class LineDetailReportCard extends StatelessWidget {
                     label: option.label,
                     icon: option.icon,
                     isSelected: reportLocation == option.location,
-                    lineColor: lineColor,
                     colors: colors,
                     onTap: () => onLocationChanged(option.location),
                   ),
@@ -135,7 +128,6 @@ class LineDetailReportCard extends StatelessWidget {
                     label: option.label,
                     icon: option.icon,
                     isEnabled: canSendReport,
-                    lineColor: lineColor,
                     colors: colors,
                     onTap: () => onReportPressed(option.type),
                   ),

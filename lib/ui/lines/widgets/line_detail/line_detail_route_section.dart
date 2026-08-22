@@ -60,7 +60,6 @@ class LineDetailRouteSection extends StatelessWidget {
             ),
           for (final (index, stop) in stops.indexed)
             LineDetailStopTile(
-              key: ValueKey('route-stop-$index-${stop.stopId}'),
               stop: stop,
               isFirst: index == 0,
               isLast: index == stops.length - 1,

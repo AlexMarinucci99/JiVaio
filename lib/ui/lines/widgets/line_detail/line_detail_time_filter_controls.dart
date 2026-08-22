@@ -141,16 +141,17 @@ class _SelectionIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const selectedColor = _timeFilterAccentColor;
     return Container(
       width: 24,
       height: 24,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: isSelected ? selectedColor : LineDetailColors.transparent,
+        color: isSelected
+            ? _timeFilterAccentColor
+            : LineDetailColors.transparent,
         border: Border.all(
           color: isSelected
-              ? selectedColor
+              ? _timeFilterAccentColor
               : colors.mutedText.withValues(alpha: 0.45),
           width: isSelected ? 0 : 1.6,
         ),

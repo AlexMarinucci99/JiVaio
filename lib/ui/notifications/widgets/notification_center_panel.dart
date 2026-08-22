@@ -178,7 +178,6 @@ class NotificationCenterPanel extends StatelessWidget {
         final notification = notifications[index];
 
         return NotificationItem(
-          key: ValueKey(notification.id),
           notification: notification,
           colors: itemColors,
           onTap: () => onNotificationTap(notification.id),

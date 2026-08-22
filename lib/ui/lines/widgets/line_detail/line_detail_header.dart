@@ -20,7 +20,6 @@ class LineDetailHeader extends StatelessWidget {
     required this.canSwapDirection,
     required this.onSwapDirection,
     required this.onClose,
-    this.colors = LineCardColors.defaultPalette,
   });
 
   final TransitLine line;
@@ -39,11 +38,9 @@ class LineDetailHeader extends StatelessWidget {
   /// Callback eseguita quando l'utente torna alla schermata precedente.
   final VoidCallback onClose;
 
-  // Palette condivisa della feature linee.
-  final LineCardPalette colors;
-
   @override
   Widget build(BuildContext context) {
+    const colors = LineCardColors.defaultPalette;
     final selectedDirection = direction;
 
     return Container(
@@ -81,7 +78,7 @@ class LineDetailHeader extends StatelessWidget {
           ),
 
           Padding(
-            padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
+            padding: const EdgeInsets.all(8),
             child: selectedDirection == null
                 ? _DirectionUnavailableBox(colors: colors)
                 : _DirectionSwitcherBox(
@@ -116,7 +113,7 @@ class _DirectionSwitcherBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: LineDetailColors.surface,
         borderRadius: BorderRadius.circular(16),
@@ -162,7 +159,7 @@ class _DirectionUnavailableBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: colors.pillBackground,
         borderRadius: BorderRadius.circular(16),

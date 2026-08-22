@@ -9,18 +9,12 @@ import '../theme/home_colors.dart';
 class RouteSearchCard extends StatefulWidget {
   const RouteSearchCard({
     super.key,
-
-    this.contentScale = 0.90,
     this.onSearch,
     this.colors = const RouteSearchCardColors(),
-  }) : assert(contentScale > 0);
-
-  /// Fattore di scala applicato agli elementi interni della card.
-  final double contentScale;
+  });
 
   /// Callback invocata quando l'utente richiede la ricerca del percorso.
   ///
-  /// Nel prototipo corrente la card non calcola il percorso.
   /// La ricerca viene avviata solo quando partenza e destinazione sono compilate.
   final void Function(String from, String to)? onSearch;
 
@@ -48,38 +42,27 @@ class _RouteSearchCardState extends State<RouteSearchCard> {
 
   void _refreshCard(String _) => setState(() {});
 
-  void _swapFields() {
-    final (from, to) = (_fromController.text, _toController.text);
+void _swapFields() {
+  final (from, to) = (_fromController.text, _toController.text);
+  _fromController.text = to;
+  _toController.text = from;
+}
 
-    if (from.trim().isEmpty && to.trim().isEmpty) return;
-
-    setState(() {
-      _fromController.text = to;
-      _toController.text = from;
-    });
-  }
-
-  void _searchRoute() {
-    final from = _fromController.text.trim();
-    final to = _toController.text.trim();
-
-    if (from.isEmpty || to.isEmpty) return;
-
-    widget.onSearch?.call(from, to);
-  }
-
+void _searchRoute() {
+  widget.onSearch?.call(
+    _fromController.text.trim(),
+    _toController.text.trim(),
+  );
+}
   @override
   Widget build(BuildContext context) {
-    final scale = widget.contentScale;
+    const scale = 0.90;
     final colors = widget.colors;
     final canSearch = _canSearch;
 
     return Container(
-      padding: EdgeInsets.only(
-        left: 14 * scale,
-        right: 14 * scale,
-        bottom: 13 * scale,
-      ),
+      padding: EdgeInsets.all(14 * scale),
+
       decoration: BoxDecoration(
         color: colors.cardColor,
         borderRadius: BorderRadius.circular(22 * scale),
@@ -87,48 +70,36 @@ class _RouteSearchCardState extends State<RouteSearchCard> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Transform.translate(
-            offset: Offset(0, 10 * scale),
-            child: _SearchTextField(
-              fieldKey: const Key('route-search-from-field'),
-              label: 'Da',
-              controller: _fromController,
-              icon: Icons.navigation_rounded,
-              hintText: 'Da dove vuoi partire?',
-              scale: scale,
-              colors: colors,
-              onChanged: _refreshCard,
-            ),
+          _SearchTextField(
+            label: 'Da',
+            controller: _fromController,
+            icon: Icons.navigation_rounded,
+            hintText: 'Da dove vuoi partire?',
+            scale: scale,
+            colors: colors,
+            onChanged: _refreshCard,
           ),
-          Padding(
-            padding: EdgeInsets.only(top: 5 * scale),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Divider(
-                    height: 28 * scale,
-                    color: colors.dividerColor,
-                  ),
+          Row(
+            children: [
+              Expanded(
+                child: Divider(height: 28 * scale, color: colors.dividerColor),
+              ),
+              IconButton(
+                onPressed: _swapFields,
+                padding: EdgeInsets.zero,
+                constraints: BoxConstraints.tightFor(
+                  width: 40 * scale,
+                  height: 40 * scale,
                 ),
-                IconButton(
-                  key: const Key('route-search-swap-button'),
-                  onPressed: _swapFields,
-                  padding: EdgeInsets.zero,
-                  constraints: BoxConstraints.tightFor(
-                    width: 40 * scale,
-                    height: 40 * scale,
-                  ),
-                  icon: Icon(
-                    Icons.swap_vert_rounded,
-                    size: 20 * scale,
-                    color: colors.swapIconColor,
-                  ),
+                icon: Icon(
+                  Icons.swap_vert_rounded,
+                  size: 20 * scale,
+                  color: colors.swapIconColor,
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
           _SearchTextField(
-            fieldKey: const Key('route-search-to-field'),
             label: 'A',
             controller: _toController,
             icon: Icons.place_rounded,
@@ -142,7 +113,6 @@ class _RouteSearchCardState extends State<RouteSearchCard> {
             width: double.infinity,
             height: 50 * scale,
             child: FilledButton.icon(
-              key: const Key('route-search-submit-button'),
               onPressed: canSearch ? _searchRoute : null,
               style: FilledButton.styleFrom(
                 backgroundColor: colors.activeButtonColor,
@@ -176,7 +146,6 @@ class _RouteSearchCardState extends State<RouteSearchCard> {
 
 class _SearchTextField extends StatelessWidget {
   const _SearchTextField({
-    required this.fieldKey,
     required this.label,
     required this.controller,
     required this.icon,
@@ -186,7 +155,6 @@ class _SearchTextField extends StatelessWidget {
     required this.onChanged,
   });
 
-  final Key fieldKey;
   final String label;
   final TextEditingController controller;
   final IconData icon;
@@ -216,7 +184,6 @@ class _SearchTextField extends StatelessWidget {
                 ),
               ),
               TextField(
-                key: fieldKey,
                 controller: controller,
                 onChanged: onChanged,
                 style: textTheme.titleMedium?.copyWith(

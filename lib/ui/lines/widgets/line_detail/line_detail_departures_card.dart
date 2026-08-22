@@ -18,7 +18,6 @@ class LineDetailDeparturesCard extends StatelessWidget {
     required this.isLoading,
     required this.emptyMessage,
     required this.onSelectTimeRange,
-    this.colors = LineCardColors.defaultPalette,
   });
 
   final String selectedTimeRange;
@@ -40,10 +39,9 @@ class LineDetailDeparturesCard extends StatelessWidget {
   /// Callback eseguita quando l'utente seleziona una nuova fascia oraria.
   final VoidCallback onSelectTimeRange;
 
-  final LineCardPalette colors;
-
   @override
   Widget build(BuildContext context) {
+    const colors = LineCardColors.defaultPalette;
     final textTheme = Theme.of(context).textTheme;
 
     final sectionLabelStyle = textTheme.labelLarge?.copyWith(
@@ -82,19 +80,17 @@ class LineDetailDeparturesCard extends StatelessWidget {
               textColor: LineDetailColors.emptyDeparturesText,
             )
           else
-            Row(
-              children: [
-                for (final departure in departures)
-                  Padding(
-                    padding: const EdgeInsets.only(right: 8),
-                    child: _DepartureChip(
-                      label: departure.departureTime,
-                      isSelected: departure.tripId == selectedTripId,
-                      colors: colors,
-                    ),
-                  ),
-              ],
-            ),
+Row(
+  spacing: 8,
+  children: [
+    for (final departure in departures)
+      _DepartureChip(
+        label: departure.departureTime,
+        isSelected: departure.tripId == selectedTripId,
+        colors: colors,
+      ),
+  ],
+),
         ],
       ),
     );
