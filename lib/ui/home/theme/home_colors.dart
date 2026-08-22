@@ -40,11 +40,11 @@ class LocateUserButtonColors {
 class RouteSearchCardColors {
   const RouteSearchCardColors({
     this.cardColor = const Color.fromARGB(255, 209, 208, 208),
-    this.textColor = const Color(0xFF20232D),
+    this.textColor = const Color.fromARGB(255, 132, 132, 133),
     this.labelColor = const Color(0xFF5C5F6D),
     this.dividerColor = const Color(0xFFE7E8EE),
-    this.activeButtonColor = const Color(0xFF17226B),
-    this.activeButtonTextColor = Colors.white,
+    this.activeButtonColor = const Color.fromARGB(255, 40, 48, 97),
+    this.activeButtonTextColor = const Color.fromARGB(255, 146, 8, 8),
     this.inactiveButtonColor = const Color(0xFFE9E7F0),
     this.inactiveTextColor = const Color(0xFF4F4D59),
     this.iconColor = const Color(0xFF59609A),

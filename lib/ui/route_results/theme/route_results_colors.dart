@@ -8,8 +8,8 @@ class RouteResultsColors {
   const RouteResultsColors({
     this.backgroundColor = AppColors.background,
     this.surfaceColor = AppColors.surface,
-    this.textPrimaryColor = AppColors.textPrimary,
-    this.textSecondaryColor = AppColors.textSecondary,
+    this.textPrimaryColor = const Color.fromARGB(255, 132, 136, 145),
+    this.textSecondaryColor = const Color.fromARGB(255, 181, 183, 187),
     this.borderColor = AppColors.border,
     this.headerGradientStartColor = const Color(0xFF17226B),
     this.headerGradientEndColor = AppColors.primary,

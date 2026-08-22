@@ -155,13 +155,13 @@ class _RouteSearchCardState extends State<RouteSearchCard> {
                   borderRadius: BorderRadius.circular(16 * scale),
                 ),
               ),
-              icon: Icon(
-                Icons.navigation_rounded,
-                size: 18 * scale,
-              ),
+              icon: Icon(Icons.navigation_rounded, size: 18 * scale),
               label: Text(
                 'Cerca percorso',
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  color: canSearch
+                      ? colors.activeButtonTextColor
+                      : colors.inactiveTextColor,
                   fontSize: 14 * scale,
                   fontWeight: FontWeight.w700,
                 ),
@@ -201,11 +201,7 @@ class _SearchTextField extends StatelessWidget {
 
     return Row(
       children: [
-        Icon(
-          icon, 
-          size: 14 * scale, 
-          color: colors.iconColor
-          ),
+        Icon(icon, size: 14 * scale, color: colors.iconColor),
         SizedBox(width: 14 * scale),
         Expanded(
           child: Column(
