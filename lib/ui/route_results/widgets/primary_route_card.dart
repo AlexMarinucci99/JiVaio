@@ -11,7 +11,6 @@ class PrimaryRouteCard extends StatelessWidget {
     required this.recommendedLineDescription,
     required this.durationDescription,
     required this.arrivalDescription,
-    required this.colors,
   });
 
   final String departureDescription;
@@ -19,18 +18,16 @@ class PrimaryRouteCard extends StatelessWidget {
   final String recommendedLineDescription;
   final String durationDescription;
   final String arrivalDescription;
-  final RouteResultsColors colors;
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
 
     return Container(
-      width: double.infinity,
       decoration: BoxDecoration(
-        color: colors.surfaceColor,
+        color: RouteResultsColors.surfaceColor,
         borderRadius: BorderRadius.circular(22),
-        border: Border.all(color: colors.borderColor),
+        border: Border.all(color: RouteResultsColors.borderColor),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -40,12 +37,12 @@ class PrimaryRouteCard extends StatelessWidget {
             child: Text(
               'Percorso consigliato',
               style: textTheme.titleMedium?.copyWith(
-                color: colors.textPrimaryColor,
+                color: RouteResultsColors.textPrimaryColor,
                 fontWeight: FontWeight.w800,
               ),
             ),
           ),
-          Divider(height: 1, color: colors.borderColor),
+          Divider(height: 1, color: RouteResultsColors.borderColor),
           Padding(
             padding: const EdgeInsets.fromLTRB(18, 18, 18, 20),
             child: Column(
@@ -93,9 +90,9 @@ class PrimaryRouteCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: colors.accentSoftColor,
+        color: RouteResultsColors.accentSoftColor,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: colors.accentBorderColor),
+        border: Border.all(color: RouteResultsColors.accentBorderColor),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -103,7 +100,7 @@ class PrimaryRouteCard extends StatelessWidget {
           Text(
             title,
             style: textTheme.bodyMedium?.copyWith(
-              color: colors.textPrimaryColor,
+              color:RouteResultsColors.textPrimaryColor,
               fontWeight: FontWeight.w800,
             ),
           ),
@@ -111,7 +108,7 @@ class PrimaryRouteCard extends StatelessWidget {
           Text(
             description,
             style: textTheme.bodyMedium?.copyWith(
-              color: colors.textSecondaryColor,
+              color: RouteResultsColors.textSecondaryColor,
               height: 1.4,
               fontWeight: FontWeight.w500,
             ),

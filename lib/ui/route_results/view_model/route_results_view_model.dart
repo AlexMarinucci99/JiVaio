@@ -69,7 +69,7 @@ class RouteResultsViewModel extends ChangeNotifier {
     _isLoading = true;
     _result = null;
     _errorMessage = null;
-    _notifyListenersSafely();
+    notifyListeners();
 
     try {
       _result = await _repository.planRoute(
@@ -81,12 +81,11 @@ class RouteResultsViewModel extends ChangeNotifier {
           'Impossibile caricare il percorso. Riprova tra qualche secondo.';
     } finally {
       _isLoading = false;
-      _notifyListenersSafely();
-    }
-  }
 
-  void _notifyListenersSafely() {
-    if (!_isDisposed) notifyListeners();
+      if (!_isDisposed) {
+        notifyListeners();
+      }
+    }
   }
 
   @override

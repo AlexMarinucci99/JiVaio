@@ -12,8 +12,6 @@ import 'route_results_header.dart';
 class RouteResultsScreen extends StatelessWidget {
   const RouteResultsScreen({super.key});
 
-  static const RouteResultsColors _colors = RouteResultsColors();
-
   void _showFeatureNotReadyMessage(BuildContext context) {
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
@@ -25,15 +23,15 @@ class RouteResultsScreen extends StatelessWidget {
       );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Consumer<RouteResultsViewModel>(
-      builder: (context, viewModel, _) => Scaffold(
-        backgroundColor: _colors.backgroundColor,
-        body: _buildBody(context, viewModel),
-      ),
-    );
-  }
+@override
+Widget build(BuildContext context) {
+  final viewModel = context.watch<RouteResultsViewModel>();
+
+  return Scaffold(
+    backgroundColor: RouteResultsColors.backgroundColor,
+    body: _buildBody(context, viewModel),
+  );
+}
 
   Widget _buildBody(BuildContext context, RouteResultsViewModel viewModel) {
     if (viewModel.isLoading) {
@@ -60,7 +58,6 @@ class RouteResultsScreen extends StatelessWidget {
       children: [
         RouteResultsHeader(
           result: viewModel.result!,
-          colors: _colors,
           onBack: () => Navigator.of(context).pop(),
         ),
         Expanded(
@@ -74,7 +71,6 @@ class RouteResultsScreen extends StatelessWidget {
                     viewModel.recommendedLineDescription,
                 durationDescription: viewModel.durationDescription,
                 arrivalDescription: viewModel.arrivalDescription,
-                colors: _colors,
               ),
             ],
           ),
@@ -84,7 +80,6 @@ class RouteResultsScreen extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.fromLTRB(20, 8, 20, 16),
             child: RouteNavigationButton(
-              colors: _colors,
               onPressed: () => _showFeatureNotReadyMessage(context),
             ),
           ),
@@ -100,11 +95,11 @@ class RouteResultsScreen extends StatelessWidget {
           spacing: 18,
           mainAxisSize: MainAxisSize.min,
           children: [
-            CircularProgressIndicator(color: _colors.accentColor),
+            CircularProgressIndicator(color: RouteResultsColors.accentColor),
             Text(
               'Caricamento percorso...',
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: _colors.textSecondaryColor,
+                color: RouteResultsColors.textSecondaryColor,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -133,13 +128,13 @@ class RouteResultsScreen extends StatelessWidget {
               ),
             ),
             const Spacer(),
-            Icon(Icons.route_rounded, size: 52, color: _colors.accentColor),
+            Icon(Icons.route_rounded, size: 52, color: RouteResultsColors.accentColor),
             const SizedBox(height: 18),
             Text(
               message,
               textAlign: TextAlign.center,
               style: textTheme.titleMedium?.copyWith(
-                color: _colors.textPrimaryColor,
+                color: RouteResultsColors.textPrimaryColor,
                 fontWeight: FontWeight.w800,
               ),
             ),
@@ -148,7 +143,7 @@ class RouteResultsScreen extends StatelessWidget {
               'La schermata è predisposta, ma i dati reali del percorso saranno collegati in una fase successiva.',
               textAlign: TextAlign.center,
               style: textTheme.bodyMedium?.copyWith(
-                color: _colors.textSecondaryColor,
+                color: RouteResultsColors.textSecondaryColor,
                 height: 1.35,
               ),
             ),

@@ -4,16 +4,12 @@ import '../theme/route_results_colors.dart';
 
 /// Pulsante inferiore della schermata dei risultati.
 ///
-/// In questa fase non avvia ancora una navigazione reale.
-/// La callback verrà usata dalla schermata per mostrare un feedback provvisorio.
+/// Attualmente mock.
 class RouteNavigationButton extends StatelessWidget {
   const RouteNavigationButton({
     super.key,
-    required this.colors,
     required this.onPressed,
   });
-
-  final RouteResultsColors colors;
 
   /// Callback eseguita quando l'utente preme il pulsante.
   final VoidCallback onPressed;
@@ -23,7 +19,7 @@ class RouteNavigationButton extends StatelessWidget {
     return FilledButton.icon(
       onPressed: onPressed,
       style: FilledButton.styleFrom(
-        backgroundColor: colors.accentColor,
+        backgroundColor: RouteResultsColors.accentColor,
         foregroundColor: Colors.white,
         minimumSize: const Size.fromHeight(58),
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),

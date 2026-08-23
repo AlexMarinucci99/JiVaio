@@ -4,41 +4,26 @@ import '../../core/themes/app_colors.dart';
 
 /// Palette grafica della schermata dei risultati del percorso.
 
+/// Definisce i colori della schermata dei risultati del percorso.
 class RouteResultsColors {
-  const RouteResultsColors({
-    this.backgroundColor = AppColors.background,
-    this.surfaceColor = AppColors.surface,
-    this.textPrimaryColor = const Color.fromARGB(255, 132, 136, 145),
-    this.textSecondaryColor = const Color.fromARGB(255, 181, 183, 187),
-    this.borderColor = AppColors.border,
-    this.headerGradientStartColor = const Color(0xFF17226B),
-    this.headerGradientEndColor = AppColors.primary,
-    this.headerTextColor = Colors.white,
-    this.headerMutedTextColor = const Color(0xFFBEC7E8),
-    this.summaryCardBackgroundColor = const Color(0x1FFFFFFF),
-    this.summaryCardBorderColor = const Color(0x33FFFFFF),
-    this.summaryDividerColor = const Color(0x33FFFFFF),
-    this.accentColor = const Color(0xFF2D7FF9),
-    this.accentSoftColor = const Color(0xFFEAF2FF),
-    this.accentBorderColor = const Color(0xFFD6E4FC),
-  });
+  const RouteResultsColors._();
 
-  final Color backgroundColor;
-  final Color surfaceColor;
-  final Color textPrimaryColor;
-  final Color textSecondaryColor;
-  final Color borderColor;
+  static const Color backgroundColor = AppColors.background;
+  static const Color surfaceColor = AppColors.surface;
+  static const Color textPrimaryColor = Color.fromARGB(255, 132, 136, 145);
+  static const Color textSecondaryColor = Color.fromARGB(255, 181, 183, 187);
+  static const Color borderColor = AppColors.border;
 
-  final Color headerGradientStartColor;
-  final Color headerGradientEndColor;
-  final Color headerTextColor;
-  final Color headerMutedTextColor;
+  static const Color headerGradientStartColor = Color(0xFF17226B);
+  static const Color headerGradientEndColor = AppColors.primary;
+  static const Color headerTextColor = Colors.white;
+  static const Color headerMutedTextColor = Color(0xFFBEC7E8);
 
-  final Color summaryCardBackgroundColor;
-  final Color summaryCardBorderColor;
-  final Color summaryDividerColor;
+  static const Color summaryCardBackgroundColor = Color(0x1FFFFFFF);
+  static const Color summaryCardBorderColor = Color(0x33FFFFFF);
+  static const Color summaryDividerColor = Color(0x33FFFFFF);
 
-  final Color accentColor;
-  final Color accentSoftColor;
-  final Color accentBorderColor;
+  static const Color accentColor = Color(0xFF2D7FF9);
+  static const Color accentSoftColor = Color(0xFFEAF2FF);
+  static const Color accentBorderColor = Color(0xFFD6E4FC);
 }

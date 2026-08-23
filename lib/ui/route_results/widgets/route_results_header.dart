@@ -12,12 +12,10 @@ class RouteResultsHeader extends StatelessWidget {
   const RouteResultsHeader({
     super.key,
     required this.result,
-    required this.colors,
     required this.onBack,
   });
 
   final RouteResult result;
-  final RouteResultsColors colors;
 
   /// Callback eseguita quando l'utente torna alla schermata precedente.
   final VoidCallback onBack;
@@ -32,8 +30,8 @@ class RouteResultsHeader extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            colors.headerGradientStartColor,
-            colors.headerGradientEndColor,
+            RouteResultsColors.headerGradientStartColor,
+            RouteResultsColors.headerGradientEndColor,
           ],
         ),
       ),
@@ -53,7 +51,7 @@ class RouteResultsHeader extends StatelessWidget {
                     child: Text(
                       'Risultati percorso',
                       style: textTheme.titleLarge?.copyWith(
-                        color: colors.headerTextColor,
+                        color: RouteResultsColors.headerTextColor,
                         fontWeight: FontWeight.w800,
                       ),
                     ),
@@ -68,69 +66,60 @@ class RouteResultsHeader extends StatelessWidget {
     );
   }
 
-  Widget _buildSummaryCard(TextTheme textTheme) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final isCompact = constraints.maxWidth < 360;
-
-        return Container(
-          width: double.infinity,
-          padding: EdgeInsets.fromLTRB(
-            isCompact ? 16 : 20,
-            18,
-            isCompact ? 14 : 18,
-            18,
-          ),
-          decoration: BoxDecoration(
-            color: colors.summaryCardBackgroundColor,
-            borderRadius: BorderRadius.circular(22),
-            border: Border.all(color: colors.summaryCardBorderColor),
-          ),
-          child: Row(
+Widget _buildSummaryCard(TextTheme textTheme) {
+  return Container(
+    width: double.infinity,
+    padding: const EdgeInsets.fromLTRB(16, 18, 14, 18),
+    decoration: BoxDecoration(
+      color: RouteResultsColors.summaryCardBackgroundColor,
+      borderRadius: BorderRadius.circular(22),
+      border: Border.all(
+        color: RouteResultsColors.summaryCardBorderColor,
+      ),
+    ),
+    child: Row(
+      children: [
+        Expanded(
+          child: Column(
+            spacing: 14,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(
-                child: Column(
-                  spacing: 14,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildLocationText(
-                      textTheme,
-                      label: 'Partenza',
-                      value: result.origin,
-                    ),
-                    _buildLocationText(
-                      textTheme,
-                      label: 'Destinazione',
-                      value: result.destination,
-                    ),
-                  ],
-                ),
+              _buildLocationText(
+                textTheme,
+                label: 'Partenza',
+                value: result.origin,
               ),
-              Container(
-                width: 1,
-                height: 108,
-                margin: EdgeInsets.symmetric(horizontal: isCompact ? 12 : 16),
-                color: colors.summaryDividerColor,
-              ),
-              SizedBox(
-                width: isCompact ? 92 : 116,
-                child: Text(
-                  'MINUTI STIMATI\nDI PERCORRENZA',
-                  textAlign: TextAlign.center,
-                  style: textTheme.labelSmall?.copyWith(
-                    color: colors.headerMutedTextColor,
-                    fontWeight: FontWeight.w800,
-                    height: 1.35,
-                    letterSpacing: 0.7,
-                  ),
-                ),
+              _buildLocationText(
+                textTheme,
+                label: 'Destinazione',
+                value: result.destination,
               ),
             ],
           ),
-        );
-      },
-    );
-  }
+        ),
+        Container(
+          width: 1,
+          height: 108,
+          margin: const EdgeInsets.symmetric(horizontal: 12),
+          color: RouteResultsColors.summaryDividerColor,
+        ),
+        SizedBox(
+          width: 92,
+          child: Text(
+            'MINUTI STIMATI\nDI PERCORRENZA',
+            textAlign: TextAlign.center,
+            style: textTheme.labelSmall?.copyWith(
+              color: RouteResultsColors.headerMutedTextColor,
+              fontWeight: FontWeight.w800,
+              height: 1.35,
+              letterSpacing: 0.7,
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
+}
 
   Widget _buildLocationText(
     TextTheme textTheme, {
@@ -144,7 +133,7 @@ class RouteResultsHeader extends StatelessWidget {
         Text(
           label,
           style: textTheme.labelMedium?.copyWith(
-            color: colors.headerMutedTextColor,
+            color: RouteResultsColors.headerMutedTextColor,
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -153,7 +142,7 @@ class RouteResultsHeader extends StatelessWidget {
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
           style: textTheme.titleMedium?.copyWith(
-            color: colors.headerTextColor,
+            color: RouteResultsColors.headerTextColor,
             fontWeight: FontWeight.w700,
           ),
         ),
