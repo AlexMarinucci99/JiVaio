@@ -27,19 +27,12 @@ class AppNotification {
   final DateTime createdAt;
   final bool isRead;
 
-  AppNotification copyWith({
-    String? id,
-    AppNotificationType? type,
-    String? title,
-    String? message,
-    DateTime? createdAt,
-    bool? isRead,
-  }) => AppNotification(
-    id: id ?? this.id,
-    type: type ?? this.type,
-    title: title ?? this.title,
-    message: message ?? this.message,
-    createdAt: createdAt ?? this.createdAt,
-    isRead: isRead ?? this.isRead,
-  );
+AppNotification copyWith({bool? isRead}) => AppNotification(
+  id: id,
+  type: type,
+  title: title,
+  message: message,
+  createdAt: createdAt,
+  isRead: isRead ?? this.isRead,
+);
 }

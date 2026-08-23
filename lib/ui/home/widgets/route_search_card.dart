@@ -9,14 +9,14 @@ import '../theme/home_colors.dart';
 class RouteSearchCard extends StatefulWidget {
   const RouteSearchCard({
     super.key,
-    this.onSearch,
+    required this.onSearch,
     this.colors = const RouteSearchCardColors(),
   });
 
   /// Callback invocata quando l'utente richiede la ricerca del percorso.
   ///
   /// La ricerca viene avviata solo quando partenza e destinazione sono compilate.
-  final void Function(String from, String to)? onSearch;
+  final void Function(String from, String to) onSearch;
 
   /// Palette cromatica usata dalla card.
   final RouteSearchCardColors colors;
@@ -49,7 +49,7 @@ void _swapFields() {
 }
 
 void _searchRoute() {
-  widget.onSearch?.call(
+  widget.onSearch(
     _fromController.text.trim(),
     _toController.text.trim(),
   );

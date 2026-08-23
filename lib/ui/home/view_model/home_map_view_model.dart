@@ -37,8 +37,6 @@ class HomeMapViewModel extends ChangeNotifier {
 
   UserLocation? get userLocation => _userLocation;
 
-  bool get isLoading => _isLoading;
-
   bool get isLocating => _isLocating;
 
   String? get errorMessage => _errorMessage;

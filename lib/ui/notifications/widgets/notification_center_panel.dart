@@ -19,7 +19,6 @@ class NotificationCenterPanel extends StatelessWidget {
     required this.onMarkAllAsRead,
     required this.onNotificationTap,
     this.colors = const NotificationCenterPanelColors(),
-    this.itemColors = const NotificationItemColors(),
   });
 
   final List<AppNotification> notifications;
@@ -30,7 +29,6 @@ class NotificationCenterPanel extends StatelessWidget {
   final VoidCallback onMarkAllAsRead;
   final ValueChanged<String> onNotificationTap;
   final NotificationCenterPanelColors colors;
-  final NotificationItemColors itemColors;
 
   @override
   Widget build(BuildContext context) {
@@ -179,7 +177,6 @@ class NotificationCenterPanel extends StatelessWidget {
 
         return NotificationItem(
           notification: notification,
-          colors: itemColors,
           onTap: () => onNotificationTap(notification.id),
         );
       },

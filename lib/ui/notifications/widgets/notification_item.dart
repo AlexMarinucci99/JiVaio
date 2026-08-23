@@ -48,8 +48,7 @@ class NotificationItem extends StatelessWidget {
               _buildIcon(icon, iconColors),
               const SizedBox(width: 12),
               Expanded(child: _buildContent(context)),
-              const SizedBox(width: 10),
-              _buildUnreadIndicator(),
+              const SizedBox(width: 19),
             ],
           ),
         ),
@@ -136,16 +135,4 @@ class NotificationItem extends StatelessWidget {
     final days = difference.inDays;
     return days == 1 ? 'Ieri' : '$days gg fa';
   }
-
-  Widget _buildUnreadIndicator() => Container(
-    width: 9,
-    height: 9,
-    margin: const EdgeInsets.only(top: 4),
-    decoration: BoxDecoration(
-      color: notification.isRead
-          ? colors.transparentColor
-          : colors.unreadDotColor,
-      shape: BoxShape.circle,
-    ),
-  );
 }

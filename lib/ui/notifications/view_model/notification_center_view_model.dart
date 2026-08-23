@@ -21,7 +21,6 @@ class NotificationCenterViewModel extends ChangeNotifier {
   String? get errorMessage => _errorMessage;
   int get unreadCount =>
       _notifications.where((notification) => !notification.isRead).length;
-  bool get hasUnreadNotifications => unreadCount > 0;
 
   /// Carica le notifiche disponibili e le ordina dalla più recente.
   Future<void> loadNotifications() async {
@@ -85,7 +84,7 @@ class NotificationCenterViewModel extends ChangeNotifier {
 
   /// Segna come lette tutte le notifiche non ancora lette.
   void markAllAsRead() {
-    if (!hasUnreadNotifications) {
+    if (unreadCount == 0) {
       return;
     }
 

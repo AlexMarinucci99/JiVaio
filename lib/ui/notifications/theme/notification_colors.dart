@@ -81,7 +81,6 @@ class NotificationItemColors {
     this.readTitleColor = const Color(0xFFD7E0EF),
     this.messageColor = const Color(0xFF90A4C2),
     this.timeColor = const Color(0xFF7084A2),
-    this.unreadDotColor = const Color(0xFF2D7FF9),
     this.splashColor = const Color(0x141D6FF2),
     this.highlightColor = const Color(0x0A1D6FF2),
     this.delayColors = const NotificationTypeColors(
@@ -106,7 +105,6 @@ class NotificationItemColors {
   final Color readTitleColor;
   final Color messageColor;
   final Color timeColor;
-  final Color unreadDotColor;
   final Color splashColor;
   final Color highlightColor;
   final NotificationTypeColors delayColors;
