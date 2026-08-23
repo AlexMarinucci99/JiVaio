@@ -3,32 +3,27 @@ import 'package:flutter/material.dart';
 import '../theme/settings_colors.dart';
 
 /// Card che mostra le informazioni principali dell'utente.
-///
-/// Non contiene logica di autenticazione: riceve dalla schermata
-/// soltanto i dati già preparati dal SettingsViewModel.
+/// 
 class SettingsProfileCard extends StatelessWidget {
-  const SettingsProfileCard({
-    super.key,
-    required this.title,
-    required this.subtitle,
-    required this.isGuest,
-    this.colors = const SettingsColors(),
-  });
+ const SettingsProfileCard({
+  super.key,
+  required this.title,
+  required this.subtitle,
+  required this.isGuest,
+});
 
   final String title;
   final String subtitle;
   final bool isGuest;
-  final SettingsColors colors;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.infinity,
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: colors.cardBackground,
+        color: SettingsColors.cardBackground,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: colors.cardBorder),
+        border: Border.all(color: SettingsColors.cardBorder),
       ),
       child: Row(
         children: [
@@ -37,13 +32,13 @@ class SettingsProfileCard extends StatelessWidget {
             height: 58,
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              color: colors.iconBackground,
+              color: SettingsColors.iconBackground,
               borderRadius: BorderRadius.circular(18),
             ),
             child: Icon(
               isGuest ? Icons.person_outline_rounded : Icons.person_rounded,
               size: 31,
-              color: colors.primaryAction,
+              color: SettingsColors.primaryAction,
             ),
           ),
           const SizedBox(width: 16),
@@ -56,7 +51,7 @@ class SettingsProfileCard extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: colors.titleText,
+                    color: SettingsColors.titleText,
                     fontSize: 17,
                     fontWeight: FontWeight.w800,
                   ),
@@ -67,7 +62,7 @@ class SettingsProfileCard extends StatelessWidget {
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: colors.secondaryText,
+                    color: SettingsColors.secondaryText,
                     fontSize: 13,
                     height: 1.3,
                     fontWeight: FontWeight.w500,

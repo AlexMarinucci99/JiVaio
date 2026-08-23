@@ -4,7 +4,6 @@ import '../../../domain/models/app_user.dart';
 class SettingsViewModel {
   const SettingsViewModel({required this.user});
 
-  /// Utente autenticato, oppure null in modalità guest.
   final AppUser? user;
 
   /// Indica se l'app è utilizzata senza autenticazione.

@@ -4,33 +4,18 @@ import '../../core/themes/app_colors.dart';
 
 /// Palette condivisa dalla feature Impostazioni.
 class SettingsColors {
-  const SettingsColors({
-    this.pageBackground = const Color(0xFFF6FAFF),
-    this.gradientStart = const Color(0xFFF6FAFF),
-    this.gradientEnd = const Color(0xFFF2F6FC),
-    this.titleText = AppColors.textPrimary,
-    this.secondaryText = AppColors.textSecondary,
-    this.sectionLabel = const Color(0xFF7A8494),
-    this.cardBackground = AppColors.surface,
-    this.cardBorder = const Color(0xFFE5EAF2),
-    this.primaryAction = AppColors.primary,
-    this.dangerAction = AppColors.error,
-    this.iconBackground = const Color(0xFFEAF0FA),
-  });
+  static const Color pageBackground = Color(0xFFF6FAFF);
+  static const Color gradientStart = Color(0xFFF6FAFF);
+  static const Color gradientEnd = Color(0xFFF2F6FC);
 
-  final Color pageBackground;
+  static const Color titleText = AppColors.textPrimary;
+  static const Color secondaryText = AppColors.textSecondary;
+  static const Color sectionLabel = Color(0xFF7A8494);
 
-  final Color gradientStart;
-  final Color gradientEnd;
+  static const Color cardBackground = AppColors.surface;
+  static const Color cardBorder = Color(0xFFE5EAF2);
 
-  final Color titleText;
-  final Color secondaryText;
-  final Color sectionLabel;
-
-  final Color cardBackground;
-  final Color cardBorder;
-
-  final Color primaryAction;
-  final Color dangerAction;
-  final Color iconBackground;
+  static const Color primaryAction = AppColors.primary;
+  static const Color dangerAction = AppColors.error;
+  static const Color iconBackground = Color(0xFFEAF0FA);
 }
