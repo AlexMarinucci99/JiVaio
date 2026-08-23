@@ -17,7 +17,6 @@ class LineDetailRouteSection extends StatelessWidget {
     required this.selectedStopId,
     required this.isStopSelectionEnabled,
     required this.onStopSelected,
-    this.colors = LineCardColors.defaultPalette,
   });
 
   /// Fermate ordinate della direzione visualizzata.
@@ -34,10 +33,9 @@ class LineDetailRouteSection extends StatelessWidget {
   /// Callback eseguita quando l'utente seleziona una fermata.
   final ValueChanged<String> onStopSelected;
 
-  final LineCardPalette colors;
-
   @override
   Widget build(BuildContext context) {
+    const colors = LineCardColors.defaultPalette;
     final textTheme = Theme.of(context).textTheme;
 
     return Container(
@@ -67,7 +65,6 @@ class LineDetailRouteSection extends StatelessWidget {
               onTap: isStopSelectionEnabled
                   ? () => onStopSelected(stop.stopId)
                   : null,
-              colors: colors,
             ),
         ],
       ),

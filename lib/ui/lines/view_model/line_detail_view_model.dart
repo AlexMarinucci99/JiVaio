@@ -192,10 +192,9 @@ class LineDetailViewModel extends ChangeNotifier {
   void sendFakeReport(LineDetailReportType type) {
     if (!canSendReport) return;
 
-    final reportLabel = switch (type) {
-      LineDetailReportType.delay => 'Ritardo',
-      LineDetailReportType.crowding => 'Bus pieno',
-    };
+    final reportLabel = type == LineDetailReportType.delay
+        ? 'Ritardo'
+        : 'Bus pieno';
 
     if (_reportLocation == LineDetailReportLocation.onBus) {
       _lastReportMessage =

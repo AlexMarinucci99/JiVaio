@@ -5,18 +5,18 @@ class _LocationChoiceButton extends StatelessWidget {
     required this.label,
     required this.icon,
     required this.isSelected,
-    required this.colors,
     required this.onTap,
   });
 
   final String label;
   final IconData icon;
   final bool isSelected;
-  final LineCardPalette colors;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
+    const colors = LineCardColors.defaultPalette;
+
     final backgroundColor = isSelected
         ? LineDetailColors.reportAccent.withValues(alpha: 0.1)
         : LineDetailColors.softSurface;
@@ -87,17 +87,23 @@ class _ReportInstructionBox extends StatelessWidget {
     );
   }
 
-  String _message() => switch ((reportLocation, selectedStopName)) {
-    (null, _) => 'Seleziona Sì o No per continuare.',
-    (LineDetailReportLocation.onBus, null) =>
-      'Seleziona dall’elenco fermate, la fermata in cui sei salito sul bus.',
-    (LineDetailReportLocation.atStop, null) =>
-      'Seleziona dall’elenco fermate, la fermata in cui ti trovi.',
-    (LineDetailReportLocation.onBus, final String stopName) =>
-      'Fermata di salita selezionata: $stopName.',
-    (LineDetailReportLocation.atStop, final String stopName) =>
-      'Fermata attuale selezionata: $stopName.',
-  };
+  String _message() {
+    if (reportLocation == null) {
+      return 'Seleziona Sì o No per continuare.';
+    }
+
+    final stopName = selectedStopName;
+
+    if (stopName == null) {
+      return reportLocation == LineDetailReportLocation.onBus
+          ? 'Seleziona dall’elenco fermate, la fermata in cui sei salito sul bus.'
+          : 'Seleziona dall’elenco fermate, la fermata in cui ti trovi.';
+    }
+
+    return reportLocation == LineDetailReportLocation.onBus
+        ? 'Fermata di salita selezionata: $stopName.'
+        : 'Fermata attuale selezionata: $stopName.';
+  }
 }
 
 class _ReportActionButton extends StatelessWidget {
@@ -105,18 +111,17 @@ class _ReportActionButton extends StatelessWidget {
     required this.label,
     required this.icon,
     required this.isEnabled,
-    required this.colors,
     required this.onTap,
   });
 
   final String label;
   final IconData icon;
   final bool isEnabled;
-  final LineCardPalette colors;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
+    const colors = LineCardColors.defaultPalette;
     final foregroundColor = LineCardColors.textOn(
       LineDetailColors.reportAccent,
       colors: colors,

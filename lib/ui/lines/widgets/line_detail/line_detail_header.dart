@@ -29,13 +29,8 @@ class LineDetailHeader extends StatelessWidget {
   /// È null quando la linea non ha una direzione disponibile.
   final TransitLineDirection? direction;
 
-  /// Indica se l'utente può invertire la direzione visualizzata.
   final bool canSwapDirection;
-
-  /// Callback eseguita quando l'utente inverte la direzione.
   final VoidCallback onSwapDirection;
-
-  /// Callback eseguita quando l'utente torna alla schermata precedente.
   final VoidCallback onClose;
 
   @override
@@ -80,13 +75,12 @@ class LineDetailHeader extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8),
             child: selectedDirection == null
-                ? _DirectionUnavailableBox(colors: colors)
+                ? const _DirectionUnavailableBox()
                 : _DirectionSwitcherBox(
                     direction: selectedDirection,
                     isUnidirectional: line.isUnidirectional,
                     canSwapDirection: canSwapDirection,
                     onSwapDirection: onSwapDirection,
-                    colors: colors,
                   ),
           ),
         ],
@@ -101,17 +95,17 @@ class _DirectionSwitcherBox extends StatelessWidget {
     required this.isUnidirectional,
     required this.canSwapDirection,
     required this.onSwapDirection,
-    required this.colors,
   });
 
   final TransitLineDirection direction;
   final bool isUnidirectional;
   final bool canSwapDirection;
   final VoidCallback onSwapDirection;
-  final LineCardPalette colors;
 
   @override
   Widget build(BuildContext context) {
+    const colors = LineCardColors.defaultPalette;
+
     return Container(
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
@@ -151,12 +145,12 @@ class _DirectionSwitcherBox extends StatelessWidget {
 }
 
 class _DirectionUnavailableBox extends StatelessWidget {
-  const _DirectionUnavailableBox({required this.colors});
-
-  final LineCardPalette colors;
+ const _DirectionUnavailableBox();
 
   @override
   Widget build(BuildContext context) {
+    const colors = LineCardColors.defaultPalette;
+    
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(12),

@@ -18,7 +18,6 @@ class LineDetailStopTile extends StatelessWidget {
     required this.isLast,
     required this.isSelected,
     required this.onTap,
-    this.colors = LineCardColors.defaultPalette,
   });
 
   /// Fermata mostrata nella tile.
@@ -36,11 +35,10 @@ class LineDetailStopTile extends StatelessWidget {
   /// Callback eseguita quando la fermata può essere selezionata.
   final VoidCallback? onTap;
 
-  final LineCardPalette colors;
-
   @override
   Widget build(BuildContext context) {
-    final isTerminal = isFirst || isLast;
+    const colors = LineCardColors.defaultPalette;
+  final isTerminal = isFirst || isLast;
 
     final borderColor = isSelected
         ? _routeAccentColor.withValues(alpha: 0.42)
@@ -80,10 +78,9 @@ class LineDetailStopTile extends StatelessWidget {
                   isFirst: isFirst,
                   isLast: isLast,
                   isSelected: isSelected,
-                  colors: colors,
                 ),
                 const SizedBox(height: 12),
-                _OfficialTimeLine(stop: stop, colors: colors),
+                _OfficialTimeLine(stop: stop),
                 const SizedBox(height: 6),
                 Text(
                   'Orario stimato non disponibile',
@@ -109,17 +106,16 @@ class _StopHeader extends StatelessWidget {
     required this.isFirst,
     required this.isLast,
     required this.isSelected,
-    required this.colors,
   });
 
   final String stopName;
   final bool isFirst;
   final bool isLast;
   final bool isSelected;
-  final LineCardPalette colors;
 
   @override
   Widget build(BuildContext context) {
+    const colors = LineCardColors.defaultPalette;
     final isTerminal = isFirst || isLast;
     final badgeLabel = isFirst
         ? 'Partenza'
@@ -159,13 +155,12 @@ class _StopHeader extends StatelessWidget {
 }
 
 class _OfficialTimeLine extends StatelessWidget {
-  const _OfficialTimeLine({required this.stop, required this.colors});
+const _OfficialTimeLine({required this.stop});
 
-  final TransitLineStop stop;
-  final LineCardPalette colors;
-
+final TransitLineStop stop;
   @override
   Widget build(BuildContext context) {
+    const colors = LineCardColors.defaultPalette;
     final textTheme = Theme.of(context).textTheme;
 
     final labelStyle = textTheme.bodySmall?.copyWith(

@@ -7,24 +7,27 @@ Color _timeOptionBackground(bool isSelected) => isSelected
     ? _timeFilterAccentColor.withValues(alpha: 0.08)
     : LineDetailColors.softSurface;
 
-Color _timeOptionBorder(bool isSelected, LineCardPalette colors) =>
-    isSelected ? _timeFilterAccentColor.withValues(alpha: 0.3) : colors.border;
+Color _timeOptionBorder(bool isSelected) => isSelected
+    ? _timeFilterAccentColor.withValues(alpha: 0.3)
+    : LineCardColors.defaultPalette.border;
 
-class _AutomaticTimeOption extends StatelessWidget {
-  const _AutomaticTimeOption({
-    required this.colors,
-    required this.currentRangeLabel,
+class _TimeOption extends StatelessWidget {
+  const _TimeOption({
+    required this.label,
+    this.description,
     required this.isSelected,
     required this.onTap,
   });
 
-  final LineCardPalette colors;
-  final String currentRangeLabel;
+  final String label;
+  final String? description;
   final bool isSelected;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
+    const colors = LineCardColors.defaultPalette;
+    final description = this.description;
     final textTheme = Theme.of(context).textTheme;
 
     return Material(
@@ -38,93 +41,47 @@ class _AutomaticTimeOption extends StatelessWidget {
             color: _timeOptionBackground(isSelected),
             borderRadius: _timeOptionBorderRadius,
             border: Border.all(
-              color: _timeOptionBorder(isSelected, colors),
+              color: _timeOptionBorder(isSelected),
               width: isSelected ? 1.4 : 1,
             ),
           ),
           child: Row(
             spacing: 10,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: description == null
+                ? CrossAxisAlignment.center
+                : CrossAxisAlignment.start,
             children: [
               Expanded(
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Automatico',
+                      label,
                       style: textTheme.titleMedium?.copyWith(
                         color: colors.primaryText,
                         fontSize: 13.5,
-                        fontWeight: FontWeight.w800,
+                        fontWeight: description != null || isSelected
+                            ? FontWeight.w800
+                            : FontWeight.w700,
                       ),
                     ),
-                    const SizedBox(height: 4),
-                    Text(
-                      "Usa l'ora locale del dispositivo. "
-                      'Fascia attuale: $currentRangeLabel',
-                      style: textTheme.bodySmall?.copyWith(
-                        color: colors.secondaryText,
-                        fontSize: 12,
-                        height: 1.4,
-                        fontWeight: FontWeight.w500,
+                    if (description != null) ...[
+                      const SizedBox(height: 4),
+                      Text(
+                        description,
+                        style: textTheme.bodySmall?.copyWith(
+                          color: colors.secondaryText,
+                          fontSize: 12,
+                          height: 1.4,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
-                    ),
+                    ],
                   ],
                 ),
               ),
-              _SelectionIndicator(isSelected: isSelected, colors: colors),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _ManualTimeOption extends StatelessWidget {
-  const _ManualTimeOption({
-    required this.colors,
-    required this.label,
-    required this.isSelected,
-    required this.onTap,
-  });
-
-  final LineCardPalette colors;
-  final String label;
-  final bool isSelected;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: LineDetailColors.transparent,
-      child: InkWell(
-        borderRadius: _timeOptionBorderRadius,
-        onTap: onTap,
-        child: Container(
-          padding: const EdgeInsets.all(14),
-          decoration: BoxDecoration(
-            color: _timeOptionBackground(isSelected),
-            borderRadius: _timeOptionBorderRadius,
-            border: Border.all(
-              color: _timeOptionBorder(isSelected, colors),
-              width: isSelected ? 1.4 : 1,
-            ),
-          ),
-          child: Row(
-            spacing: 10,
-            children: [
-              Expanded(
-                child: Text(
-                  label,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: colors.primaryText,
-                    fontSize: 13.5,
-                    fontWeight: isSelected ? FontWeight.w800 : FontWeight.w700,
-                  ),
-                ),
-              ),
-              _SelectionIndicator(isSelected: isSelected, colors: colors),
+              _SelectionIndicator(isSelected: isSelected),
             ],
           ),
         ),
@@ -134,13 +91,14 @@ class _ManualTimeOption extends StatelessWidget {
 }
 
 class _SelectionIndicator extends StatelessWidget {
-  const _SelectionIndicator({required this.isSelected, required this.colors});
+  const _SelectionIndicator({required this.isSelected});
 
   final bool isSelected;
-  final LineCardPalette colors;
 
   @override
   Widget build(BuildContext context) {
+    const colors = LineCardColors.defaultPalette;
+
     return Container(
       width: 24,
       height: 24,
@@ -169,18 +127,14 @@ class _SelectionIndicator extends StatelessWidget {
 }
 
 class _SheetActionBar extends StatelessWidget {
-  const _SheetActionBar({
-    required this.colors,
-    required this.onCancel,
-    required this.onConfirm,
-  });
+  const _SheetActionBar({required this.onCancel, required this.onConfirm});
 
-  final LineCardPalette colors;
   final VoidCallback onCancel;
   final VoidCallback onConfirm;
 
   @override
   Widget build(BuildContext context) {
+    const colors = LineCardColors.defaultPalette;
     const buttonShape = RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(16)),
     );

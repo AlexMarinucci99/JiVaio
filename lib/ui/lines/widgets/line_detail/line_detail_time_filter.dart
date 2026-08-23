@@ -139,9 +139,11 @@ class _LineDetailTimeFilterSheetState extends State<LineDetailTimeFilterSheet> {
                     ),
                   ),
                   const SizedBox(height: 24),
-                  _AutomaticTimeOption(
-                    colors: colors,
-                    currentRangeLabel: widget.currentRangeLabel,
+                  _TimeOption(
+                    label: 'Automatico',
+                    description:
+                        "Usa l'ora locale del dispositivo. "
+                        'Fascia attuale: ${widget.currentRangeLabel}',
                     isSelected: _selectedManualHour == null,
                     onTap: () => _selectHour(null),
                   ),
@@ -159,8 +161,7 @@ class _LineDetailTimeFilterSheetState extends State<LineDetailTimeFilterSheet> {
                   for (final hour in widget.manualHours)
                     Padding(
                       padding: const EdgeInsets.only(bottom: 10),
-                      child: _ManualTimeOption(
-                        colors: colors,
+                      child: _TimeOption(
                         label: formatLineTimeRange(hour),
                         isSelected: _selectedManualHour == hour,
                         onTap: () => _selectHour(hour),
@@ -170,7 +171,6 @@ class _LineDetailTimeFilterSheetState extends State<LineDetailTimeFilterSheet> {
               ),
             ),
             _SheetActionBar(
-              colors: colors,
               onCancel: () => Navigator.of(context).pop(),
               onConfirm: _confirm,
             ),

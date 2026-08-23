@@ -32,11 +32,7 @@ class LineDetailDeparturesCard extends StatelessWidget {
 
   /// Indica se il caricamento delle partenze è ancora in corso.
   final bool isLoading;
-
-  /// Messaggio mostrato quando non sono disponibili partenze.
   final String emptyMessage;
-
-  /// Callback eseguita quando l'utente seleziona una nuova fascia oraria.
   final VoidCallback onSelectTimeRange;
 
   @override
@@ -65,7 +61,6 @@ class LineDetailDeparturesCard extends StatelessWidget {
           Text('Fascia oraria', style: sectionLabelStyle),
           const SizedBox(height: 6),
           _TimeRangeSelector(
-            colors: colors,
             selectedTimeRange: selectedTimeRange,
             onTap: onSelectTimeRange,
           ),
@@ -80,17 +75,16 @@ class LineDetailDeparturesCard extends StatelessWidget {
               textColor: LineDetailColors.emptyDeparturesText,
             )
           else
-Row(
-  spacing: 8,
-  children: [
-    for (final departure in departures)
-      _DepartureChip(
-        label: departure.departureTime,
-        isSelected: departure.tripId == selectedTripId,
-        colors: colors,
-      ),
-  ],
-),
+            Row(
+              spacing: 8,
+              children: [
+                for (final departure in departures)
+                  _DepartureChip(
+                    label: departure.departureTime,
+                    isSelected: departure.tripId == selectedTripId,
+                  ),
+              ],
+            ),
         ],
       ),
     );
@@ -99,18 +93,18 @@ Row(
 
 class _TimeRangeSelector extends StatelessWidget {
   const _TimeRangeSelector({
-    required this.colors,
     required this.selectedTimeRange,
     required this.onTap,
   });
 
-  final LineCardPalette colors;
   final String selectedTimeRange;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
+    const colors = LineCardColors.defaultPalette;
     const borderRadius = BorderRadius.all(Radius.circular(16));
+
     return Material(
       color: LineDetailColors.softSurface,
       borderRadius: borderRadius,
@@ -156,18 +150,14 @@ class _TimeRangeSelector extends StatelessWidget {
 }
 
 class _DepartureChip extends StatelessWidget {
-  const _DepartureChip({
-    required this.label,
-    required this.isSelected,
-    required this.colors,
-  });
+  const _DepartureChip({required this.label, required this.isSelected});
 
   final String label;
   final bool isSelected;
-  final LineCardPalette colors;
 
   @override
   Widget build(BuildContext context) {
+    const colors = LineCardColors.defaultPalette;
     final accentColor = colors.listAccent;
 
     return Container(

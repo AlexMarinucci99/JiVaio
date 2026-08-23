@@ -6,36 +6,9 @@ import '../../view_model/line_detail_view_model.dart';
 
 part 'line_detail_report_controls.dart';
 
-const _reportLocationOptions = [
-  (
-    location: LineDetailReportLocation.onBus,
-    label: 'Sì',
-    icon: Icons.directions_bus_rounded,
-  ),
-  (
-    location: LineDetailReportLocation.atStop,
-    label: 'No',
-    icon: Icons.location_on_rounded,
-  ),
-];
-
-const _reportActionOptions = [
-  (
-    type: LineDetailReportType.delay,
-    label: 'Segnala ritardo',
-    icon: Icons.schedule_rounded,
-  ),
-  (
-    type: LineDetailReportType.crowding,
-    label: 'Bus pieno',
-    icon: Icons.groups_rounded,
-  ),
-];
-
 /// Card per inviare segnalazioni dalla schermata dettaglio linea.
 ///
-/// Gestisce la sola presentazione della sezione demo: posizione dell'utente,
-/// istruzioni operative, pulsanti di segnalazione e feedback dell'ultima azione.
+/// Gestisce la sola presentazione della sezione demo.
 class LineDetailReportCard extends StatelessWidget {
   const LineDetailReportCard({
     super.key,
@@ -52,8 +25,6 @@ class LineDetailReportCard extends StatelessWidget {
   /// È null finché l'utente non sceglie se si trova sulla navetta
   /// oppure alla fermata
   final LineDetailReportLocation? reportLocation;
-
-  /// Indica se i pulsanti di segnalazione possono essere attivati.
   final bool canSendReport;
 
   /// Nome della fermata selezionata per la segnalazione.
@@ -100,16 +71,24 @@ class LineDetailReportCard extends StatelessWidget {
           Row(
             spacing: 10,
             children: [
-              for (final option in _reportLocationOptions)
-                Expanded(
-                  child: _LocationChoiceButton(
-                    label: option.label,
-                    icon: option.icon,
-                    isSelected: reportLocation == option.location,
-                    colors: colors,
-                    onTap: () => onLocationChanged(option.location),
-                  ),
+              Expanded(
+                child: _LocationChoiceButton(
+                  label: 'Sì',
+                  icon: Icons.directions_bus_rounded,
+                  isSelected: reportLocation == LineDetailReportLocation.onBus,
+                  onTap: () =>
+                      onLocationChanged(LineDetailReportLocation.onBus),
                 ),
+              ),
+              Expanded(
+                child: _LocationChoiceButton(
+                  label: 'No',
+                  icon: Icons.location_on_rounded,
+                  isSelected: reportLocation == LineDetailReportLocation.atStop,
+                  onTap: () =>
+                      onLocationChanged(LineDetailReportLocation.atStop),
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 12),
@@ -122,16 +101,22 @@ class LineDetailReportCard extends StatelessWidget {
           Row(
             spacing: 10,
             children: [
-              for (final option in _reportActionOptions)
-                Expanded(
-                  child: _ReportActionButton(
-                    label: option.label,
-                    icon: option.icon,
-                    isEnabled: canSendReport,
-                    colors: colors,
-                    onTap: () => onReportPressed(option.type),
-                  ),
+              Expanded(
+                child: _ReportActionButton(
+                  label: 'Segnala ritardo',
+                  icon: Icons.schedule_rounded,
+                  isEnabled: canSendReport,
+                  onTap: () => onReportPressed(LineDetailReportType.delay),
                 ),
+              ),
+              Expanded(
+                child: _ReportActionButton(
+                  label: 'Bus pieno',
+                  icon: Icons.groups_rounded,
+                  isEnabled: canSendReport,
+                  onTap: () => onReportPressed(LineDetailReportType.crowding),
+                ),
+              ),
             ],
           ),
           if (lastReportMessage != null) ...[

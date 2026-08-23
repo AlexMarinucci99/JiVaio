@@ -34,8 +34,9 @@ class LineDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<LineDetailViewModel>(
-      builder: (context, viewModel, child) {
+    final viewModel = context.watch<LineDetailViewModel>();
+  final errorMessage = viewModel.errorMessage;
+    
         return Scaffold(
           backgroundColor: LineDetailColors.pageBackground,
           body: SafeArea(
@@ -54,8 +55,7 @@ class LineDetailScreen extends StatelessWidget {
                   child: ListView(
                     padding: const EdgeInsets.fromLTRB(22, 8, 22, 120),
                     children: [
-                      if (viewModel.errorMessage
-                          case final String errorMessage) ...[
+                      if (errorMessage != null) ...[
                         _LineDetailErrorCard(
                           message: errorMessage,
                           onRetry: viewModel.loadSchedule,
@@ -94,10 +94,9 @@ class LineDetailScreen extends StatelessWidget {
             ),
           ),
         );
-      },
-    );
+      }
   }
-}
+
 
 class _LineDetailErrorCard extends StatelessWidget {
   const _LineDetailErrorCard({required this.message, required this.onRetry});
