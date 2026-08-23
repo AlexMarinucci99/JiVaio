@@ -13,7 +13,8 @@ class AuthActionButton extends StatelessWidget {
     this.height = 58,
     this.fontSize = 18,
     this.borderRadius = 28,
-    this.colors = const AuthActionButtonColors(),
+    this.backgroundColor = AuthColors.actionButtonBackgroundColor,
+    this.foregroundColor = AuthColors.actionButtonForegroundColor,
   });
 
   final String label;
@@ -21,7 +22,8 @@ class AuthActionButton extends StatelessWidget {
   final double height;
   final double fontSize;
   final double borderRadius;
-  final AuthActionButtonColors colors;
+  final Color backgroundColor;
+  final Color foregroundColor;
 
   @override
   Widget build(BuildContext context) {
@@ -30,10 +32,10 @@ class AuthActionButton extends StatelessWidget {
       child: TextButton(
         onPressed: onPressed,
         style: TextButton.styleFrom(
-          backgroundColor: colors.backgroundColor,
-          foregroundColor: colors.foregroundColor,
-          disabledBackgroundColor: colors.disabledBackgroundColor,
-          disabledForegroundColor: colors.disabledForegroundColor,
+          backgroundColor: backgroundColor,
+          foregroundColor: foregroundColor,
+          disabledBackgroundColor: AuthColors.disabledButtonBackgroundColor,
+          disabledForegroundColor: AuthColors.disabledButtonForegroundColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(borderRadius),
           ),

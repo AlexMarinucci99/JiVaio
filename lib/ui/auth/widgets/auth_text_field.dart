@@ -6,23 +6,21 @@ import '../theme/auth_colors.dart';
 class AuthTextField extends StatelessWidget {
   const AuthTextField({
     super.key,
-    required this.controller,
+    this.controller,
     required this.label,
     required this.icon,
     this.keyboardType,
     this.obscureText = false,
     this.onChanged,
     this.onToggleObscureText,
-    this.colors = const AuthTextFieldColors(),
   });
 
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final String label;
   final IconData icon;
   final TextInputType? keyboardType;
   final bool obscureText;
   final VoidCallback? onToggleObscureText;
-  final AuthTextFieldColors colors;
   final ValueChanged<String>? onChanged;
 
   @override
@@ -32,11 +30,11 @@ class AuthTextField extends StatelessWidget {
       onChanged: onChanged,
       keyboardType: keyboardType,
       obscureText: obscureText,
-      cursorColor: colors.primaryColor,
+      cursorColor: AuthColors.primaryColor,
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: TextStyle(color: colors.labelColor),
-        prefixIcon: Icon(icon, color: colors.iconColor),
+        labelStyle: TextStyle(color: AuthColors.secondaryTextColor),
+        prefixIcon: Icon(icon, color: AuthColors.textFieldIconColor),
         suffixIcon: onToggleObscureText == null
             ? null
             : IconButton(
@@ -48,16 +46,16 @@ class AuthTextField extends StatelessWidget {
                       : Icons.visibility_off_outlined,
                 ),
               ),
-        suffixIconColor: colors.iconColor,
+        suffixIconColor: AuthColors.textFieldIconColor,
         filled: true,
-        fillColor: colors.backgroundColor,
+        fillColor: AuthColors.textFieldBackgroundColor,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(18),
           borderSide: BorderSide.none,
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(18),
-          borderSide: BorderSide(color: colors.primaryColor, width: 1.2),
+          borderSide: BorderSide(color: AuthColors.primaryColor, width: 1.2),
         ),
       ),
     );

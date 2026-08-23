@@ -6,39 +6,22 @@ import '../view_model/reset_password_view_model.dart';
 import 'auth_action_button.dart';
 import 'auth_text_field.dart';
 
-/// Schermata per il recupero della password.
-///
-/// Gestisce l'inserimento dell'email e delega validazione e invio
-/// del link di recupero a [ResetPasswordViewModel].
-class ResetPasswordScreen extends StatefulWidget {
+class ResetPasswordScreen extends StatelessWidget {
   const ResetPasswordScreen({super.key});
 
-  @override
-  State<ResetPasswordScreen> createState() => _ResetPasswordScreenState();
-}
+  Future<void> _sendResetLink(BuildContext context) async {
+    final message = await context
+        .read<ResetPasswordViewModel>()
+        .sendResetLink();
 
-class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
-  final TextEditingController _emailController = TextEditingController();
-
-  static const ResetPasswordColors _colors = ResetPasswordColors();
-
-  @override
-  void dispose() {
-    _emailController.dispose();
-    super.dispose();
-  }
-
-  Future<void> _sendResetLink() async {
-    final result = await context.read<ResetPasswordViewModel>().sendResetLink();
-
-    if (!mounted) return;
+    if (!context.mounted) return;
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        backgroundColor: _colors.snackBarBackgroundColor,
+        backgroundColor: AuthColors.snackBarBackgroundColor,
         content: Text(
-          result.message,
-          style: TextStyle(color: _colors.snackBarTextColor),
+          message,
+          style: TextStyle(color: AuthColors.snackBarTextColor),
         ),
       ),
     );
@@ -49,7 +32,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     final viewModel = context.watch<ResetPasswordViewModel>();
 
     return Scaffold(
-      backgroundColor: _colors.backgroundColor,
+      backgroundColor: AuthColors.backgroundColor,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -64,7 +47,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 style: TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.bold,
-                  color: _colors.primaryColor,
+                  color: AuthColors.primaryColor,
                 ),
               ),
 
@@ -77,19 +60,17 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 style: TextStyle(
                   fontSize: 16,
                   height: 1.5,
-                  color: _colors.descriptionColor,
+                  color: AuthColors.secondaryTextColor,
                 ),
               ),
 
               const SizedBox(height: 40),
 
               AuthTextField(
-                controller: _emailController,
                 onChanged: viewModel.updateEmail,
                 label: 'La tua email',
                 icon: Icons.email_outlined,
                 keyboardType: TextInputType.emailAddress,
-                colors: _colors.textFieldColors,
               ),
 
               const SizedBox(height: 24),
@@ -98,11 +79,14 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 label: viewModel.isSubmitting
                     ? 'Invio in corso...'
                     : 'Invia link di recupero',
-                onPressed: viewModel.canSubmit ? _sendResetLink : null,
+                onPressed: viewModel.canSubmit
+                    ? () => _sendResetLink(context)
+                    : null,
                 height: 56,
                 fontSize: 17,
                 borderRadius: 18,
-                colors: _colors.actionButtonColors,
+                backgroundColor: AuthColors.primaryColor,
+                foregroundColor: AuthColors.backgroundColor,
               ),
 
               const SizedBox(height: 32),
@@ -110,7 +94,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
               TextButton.icon(
                 onPressed: () => Navigator.pop(context),
                 style: TextButton.styleFrom(
-                  foregroundColor: _colors.primaryColor,
+                  foregroundColor: AuthColors.primaryColor,
                 ),
                 icon: const Icon(Icons.arrow_back),
                 label: const Text(

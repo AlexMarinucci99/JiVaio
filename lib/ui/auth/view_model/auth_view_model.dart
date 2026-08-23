@@ -6,21 +6,6 @@ import '../../../domain/exceptions/auth_failure.dart';
 /// Modalità disponibili nel form di autenticazione.
 enum AuthMode { login, register }
 
-/// Risultato prodotto dalla validazione o dall'invio del form auth.
-class AuthSubmitResult {
-  const AuthSubmitResult._({required this.isValid, this.message});
-
-  final bool isValid;
-  final String? message;
-
-  /// Crea un risultato valido.
-  const AuthSubmitResult.valid() : this._(isValid: true);
-
-  /// Crea un risultato non valido con [message].
-  const AuthSubmitResult.invalid(String message)
-    : this._(isValid: false, message: message);
-}
-
 /// Gestisce stato, validazione e invio dei form di autenticazione.
 ///
 /// Il ViewModel mantiene la logica fuori dalla View e comunica
@@ -80,20 +65,20 @@ class AuthViewModel extends ChangeNotifier {
   }
 
   /// Valida i dati del form ed esegue login o registrazione.
-  Future<AuthSubmitResult> submit({
+  Future<String?> submit({
     required String name,
     required String email,
     required String password,
     required String confirmPassword,
   }) async {
-    final validationResult = validateSubmit(
+    final validationMessage = _validateSubmit(
       name: name,
       email: email,
       password: password,
       confirmPassword: confirmPassword,
     );
 
-    if (!validationResult.isValid) return validationResult;
+    if (validationMessage != null) return validationMessage;
 
     return _runSubmission(
       () => isLogin
@@ -104,20 +89,18 @@ class AuthViewModel extends ChangeNotifier {
   }
 
   /// Esegue l'accesso tramite account Google.
-  Future<AuthSubmitResult> signInWithGoogle() => _runSubmission(
+  Future<String?> signInWithGoogle() => _runSubmission(
     _repository.loginWithGoogle,
     unexpectedError: 'Accesso con Google non riuscito. Riprova.',
   );
 
   /// Esegue una richiesta auth gestendo caricamento ed errori comuni.
-  Future<AuthSubmitResult> _runSubmission(
+  Future<String?> _runSubmission(
     Future<void> Function() action, {
     required String unexpectedError,
   }) async {
     if (_isSubmitting) {
-      return const AuthSubmitResult.invalid(
-        'Attendi il completamento dell’operazione in corso.',
-      );
+      return 'Attendi il completamento dell’operazione in corso.';
     }
 
     _isSubmitting = true;
@@ -125,11 +108,11 @@ class AuthViewModel extends ChangeNotifier {
 
     try {
       await action();
-      return const AuthSubmitResult.valid();
+      return null;
     } on AuthFailure catch (error) {
-      return AuthSubmitResult.invalid(_mapAuthFailure(error.code));
+      return _mapAuthFailure(error.code);
     } catch (_) {
-      return AuthSubmitResult.invalid(unexpectedError);
+      return unexpectedError;
     } finally {
       _isSubmitting = false;
       if (hasListeners) notifyListeners();
@@ -137,7 +120,7 @@ class AuthViewModel extends ChangeNotifier {
   }
 
   /// Valida i dati richiesti dalla modalità auth corrente.
-  AuthSubmitResult validateSubmit({
+  String? _validateSubmit({
     required String name,
     required String email,
     required String password,
@@ -151,28 +134,19 @@ class AuthViewModel extends ChangeNotifier {
           confirmPassword: confirmPassword,
         );
 
-  /// Restituisce il messaggio temporaneo per i provider social non implementati.
-  String socialLoginMessage(String provider) =>
-      'Accesso con $provider non ancora implementato';
-
-  AuthSubmitResult _validateLogin({
-    required String email,
-    required String password,
-  }) {
+  String? _validateLogin({required String email, required String password}) {
     if (email.trim().isEmpty || password.isEmpty) {
-      return const AuthSubmitResult.invalid('Inserisci email e password');
+      return 'Inserisci email e password';
     }
 
     if (!_isValidEmail(email)) {
-      return const AuthSubmitResult.invalid(
-        'Inserisci un indirizzo email valido',
-      );
+      return 'Inserisci un indirizzo email valido';
     }
 
-    return const AuthSubmitResult.valid();
+    return null;
   }
 
-  AuthSubmitResult _validateRegister({
+  String? _validateRegister({
     required String name,
     required String email,
     required String password,
@@ -182,26 +156,22 @@ class AuthViewModel extends ChangeNotifier {
         email.trim().isEmpty ||
         password.isEmpty ||
         confirmPassword.isEmpty) {
-      return const AuthSubmitResult.invalid('Compila tutti i campi');
+      return 'Compila tutti i campi';
     }
 
     if (!_isValidEmail(email)) {
-      return const AuthSubmitResult.invalid(
-        'Inserisci un indirizzo email valido',
-      );
+      return 'Inserisci un indirizzo email valido';
     }
 
     if (password.length < 6) {
-      return const AuthSubmitResult.invalid(
-        'La password deve contenere almeno 6 caratteri',
-      );
+      return 'La password deve contenere almeno 6 caratteri';
     }
 
     if (password != confirmPassword) {
-      return const AuthSubmitResult.invalid('Le password non coincidono');
+      return 'Le password non coincidono';
     }
 
-    return const AuthSubmitResult.valid();
+    return null;
   }
 
   bool _isValidEmail(String value) =>

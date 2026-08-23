@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../theme/auth_colors.dart';
 import 'auth_text_field.dart';
 
 /// Form di registrazione della feature auth.
@@ -15,7 +14,6 @@ class AuthRegisterForm extends StatelessWidget {
     required this.obscureConfirmPassword,
     required this.onTogglePasswordVisibility,
     required this.onToggleConfirmPasswordVisibility,
-    this.textFieldColors = const AuthTextFieldColors(),
   });
 
   final TextEditingController nameController;
@@ -26,7 +24,6 @@ class AuthRegisterForm extends StatelessWidget {
   final bool obscureConfirmPassword;
   final VoidCallback onTogglePasswordVisibility;
   final VoidCallback onToggleConfirmPasswordVisibility;
-  final AuthTextFieldColors textFieldColors;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +33,6 @@ class AuthRegisterForm extends StatelessWidget {
           controller: nameController,
           label: 'Nome',
           icon: Icons.person_outline,
-          colors: textFieldColors,
         ),
 
         const SizedBox(height: 16),
@@ -46,7 +42,6 @@ class AuthRegisterForm extends StatelessWidget {
           label: 'Email',
           icon: Icons.email_outlined,
           keyboardType: TextInputType.emailAddress,
-          colors: textFieldColors,
         ),
 
         const SizedBox(height: 16),
@@ -56,7 +51,6 @@ class AuthRegisterForm extends StatelessWidget {
           label: 'Password',
           icon: Icons.lock_outline,
           obscureText: obscurePassword,
-          colors: textFieldColors,
           onToggleObscureText: onTogglePasswordVisibility,
         ),
 
@@ -67,7 +61,6 @@ class AuthRegisterForm extends StatelessWidget {
           label: 'Conferma password',
           icon: Icons.lock_outline,
           obscureText: obscureConfirmPassword,
-          colors: textFieldColors,
           onToggleObscureText: onToggleConfirmPasswordVisibility,
         ),
       ],

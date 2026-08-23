@@ -62,7 +62,6 @@ class JiVaioApp extends StatelessWidget {
                 child: const OnboardingScreen(),
               ),
           AppRoutes.authChoice: _buildAuthGate,
-          AppRoutes.home: _buildAuthGate,
           AppRoutes.resetPassword: (context) =>
               ChangeNotifierProvider<ResetPasswordViewModel>(
                 create: (context) => ResetPasswordViewModel(context.read()),

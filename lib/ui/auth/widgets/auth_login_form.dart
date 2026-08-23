@@ -12,8 +12,6 @@ class AuthLoginForm extends StatelessWidget {
     required this.obscurePassword,
     required this.onTogglePasswordVisibility,
     required this.onForgotPassword,
-    required this.linkColor,
-    this.textFieldColors = const AuthTextFieldColors(),
   });
 
   final TextEditingController emailController;
@@ -21,8 +19,6 @@ class AuthLoginForm extends StatelessWidget {
   final bool obscurePassword;
   final VoidCallback onTogglePasswordVisibility;
   final VoidCallback onForgotPassword;
-  final AuthTextFieldColors textFieldColors;
-  final Color linkColor;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +29,6 @@ class AuthLoginForm extends StatelessWidget {
           label: 'Email',
           icon: Icons.email_outlined,
           keyboardType: TextInputType.emailAddress,
-          colors: textFieldColors,
         ),
 
         const SizedBox(height: 16),
@@ -43,7 +38,6 @@ class AuthLoginForm extends StatelessWidget {
           label: 'Password',
           icon: Icons.lock_outline,
           obscureText: obscurePassword,
-          colors: textFieldColors,
           onToggleObscureText: onTogglePasswordVisibility,
         ),
 
@@ -53,7 +47,9 @@ class AuthLoginForm extends StatelessWidget {
           alignment: Alignment.centerRight,
           child: TextButton(
             onPressed: onForgotPassword,
-            style: TextButton.styleFrom(foregroundColor: linkColor),
+            style: TextButton.styleFrom(
+              foregroundColor: AuthColors.primaryColor,
+            ),
             child: const Text('Password dimenticata?'),
           ),
         ),

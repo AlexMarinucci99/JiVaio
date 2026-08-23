@@ -2,6 +2,5 @@
 abstract final class AppRoutes {
   static const onboarding = '/onboarding';
   static const authChoice = '/auth-choice';
-  static const home = '/home';
   static const resetPassword = '/reset-password';
 }

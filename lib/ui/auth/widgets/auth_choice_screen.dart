@@ -33,8 +33,6 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
   final TextEditingController _confirmPasswordController =
       TextEditingController();
 
-  static const AuthChoiceColors _colors = AuthChoiceColors();
-
   @override
   void dispose() {
     _nameController.dispose();
@@ -47,7 +45,7 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
   Future<void> _submit() async {
     if (_viewModel.isSubmitting) return;
 
-    final result = await _viewModel.submit(
+    final message = await _viewModel.submit(
       name: _nameController.text.trim(),
       email: _emailController.text.trim(),
       password: _passwordController.text.trim(),
@@ -56,8 +54,8 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
 
     if (!mounted) return;
 
-    if (!result.isValid) {
-      _showMessage(result.message ?? 'Dati non validi');
+    if (message != null) {
+      _showMessage(message);
     }
 
     // La navigazione alla Home resta responsabilità di AuthGate.
@@ -70,21 +68,15 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
     widget.onContinueAsGuest();
   }
 
-  void _setMode(AuthMode mode) {
-    if (_viewModel.isSubmitting) return;
-
-    _viewModel.setMode(mode);
-  }
-
   Future<void> _signInWithGoogle() async {
     if (_viewModel.isSubmitting) return;
 
-    final result = await _viewModel.signInWithGoogle();
+    final message = await _viewModel.signInWithGoogle();
 
     if (!mounted) return;
 
-    if (!result.isValid) {
-      _showMessage(result.message ?? 'Accesso con Google non riuscito.');
+    if (message != null) {
+      _showMessage(message);
     }
 
     // La navigazione alla Home resta responsabilità di AuthGate.
@@ -94,7 +86,7 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
   void _fakeSocialLogin(String provider) {
     if (_viewModel.isSubmitting) return;
 
-    _showMessage(_viewModel.socialLoginMessage(provider));
+    _showMessage('Accesso con $provider non ancora implementato');
   }
 
   void _showMessage(String message) => ScaffoldMessenger.of(
@@ -106,7 +98,7 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
     final viewModel = context.watch<AuthViewModel>();
 
     return Scaffold(
-      backgroundColor: _colors.backgroundColor,
+      backgroundColor: AuthColors.backgroundColor,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -121,7 +113,7 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
                 style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
-                  color: _colors.screenTitleColor,
+                  color: AuthColors.screenTitleColor,
                 ),
               ),
 
@@ -129,8 +121,8 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
 
               AppSegmentedControl<AuthMode>(
                 selectedValue: viewModel.selectedMode,
-                onChanged: _setMode,
-                colors: _colors.segmentedControlColors,
+                onChanged: viewModel.setMode,
+                colors: AuthColors.segmentedControlColors,
                 items: const [
                   AppSegmentedControlItem(
                     value: AuthMode.login,
@@ -151,7 +143,7 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
                 style: TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.bold,
-                  color: _colors.primaryColor,
+                  color: AuthColors.primaryColor,
                 ),
               ),
 
@@ -160,7 +152,10 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
               Text(
                 viewModel.formSubtitle,
                 textAlign: TextAlign.center,
-                style: TextStyle(color: _colors.subtitleColor, fontSize: 15),
+                style: TextStyle(
+                  color: AuthColors.secondaryTextColor,
+                  fontSize: 15,
+                ),
               ),
 
               const SizedBox(height: 30),
@@ -174,8 +169,6 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
                       viewModel.togglePasswordVisibility,
                   onForgotPassword: () =>
                       Navigator.pushNamed(context, AppRoutes.resetPassword),
-                  textFieldColors: _colors.textFieldColors,
-                  linkColor: _colors.primaryColor,
                 )
               else
                 AuthRegisterForm(
@@ -189,7 +182,6 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
                       viewModel.togglePasswordVisibility,
                   onToggleConfirmPasswordVisibility:
                       viewModel.toggleConfirmPasswordVisibility,
-                  textFieldColors: _colors.textFieldColors,
                 ),
 
               const SizedBox(height: 18),
@@ -197,29 +189,27 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
               AuthActionButton(
                 label: viewModel.primaryButtonText,
                 onPressed: viewModel.isSubmitting ? null : _submit,
-                colors: _colors.actionButtonColors,
               ),
 
               const SizedBox(height: 30),
 
               Row(
                 children: [
-                  Expanded(child: Divider(color: _colors.dividerColor)),
+                  Expanded(child: Divider(color: AuthColors.dividerColor)),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 12),
                     child: Text(
                       'oppure',
-                      style: TextStyle(color: _colors.separatorTextColor),
+                      style: TextStyle(color: AuthColors.mutedTextColor),
                     ),
                   ),
-                  Expanded(child: Divider(color: _colors.dividerColor)),
+                  Expanded(child: Divider(color: AuthColors.dividerColor)),
                 ],
               ),
 
               const SizedBox(height: 20),
 
               AuthSocialButtons(
-                colors: _colors.socialButtonsColors,
                 onGooglePressed: _signInWithGoogle,
                 onApplePressed: () => _fakeSocialLogin('Apple'),
                 onFacebookPressed: () => _fakeSocialLogin('Facebook'),
@@ -233,7 +223,6 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
                 height: 54,
                 fontSize: 17,
                 borderRadius: 26,
-                colors: _colors.actionButtonColors,
               ),
 
               const SizedBox(height: 10),
@@ -241,7 +230,10 @@ class _AuthChoiceScreenState extends State<AuthChoiceScreen> {
               Text(
                 'Senza salvataggi e notifiche personalizzate',
                 textAlign: TextAlign.center,
-                style: TextStyle(color: _colors.helperTextColor, fontSize: 13),
+                style: TextStyle(
+                  color: AuthColors.mutedTextColor,
+                  fontSize: 13,
+                ),
               ),
 
               const SizedBox(height: 24),

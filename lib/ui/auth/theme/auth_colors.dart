@@ -3,92 +3,35 @@ import 'package:flutter/material.dart';
 import '../../core/themes/app_colors.dart';
 import '../../core/themes/app_segmented_control_colors.dart';
 
-/// Palette dei campi di testo della feature auth.
-class AuthTextFieldColors {
-  const AuthTextFieldColors({
-    this.primaryColor = AppColors.primary,
-    this.backgroundColor = AppColors.fieldBackground,
-    this.labelColor = const Color(0xFF4B5563),
-    this.iconColor = AppColors.textSecondary,
-  });
+/// Raccoglie i colori condivisi dalla feature auth.
+abstract final class AuthColors {
+  static const Color backgroundColor = AppColors.surface;
+  static const Color primaryColor = AppColors.primary;
+  static const Color screenTitleColor = AppColors.textPrimary;
+  static const Color secondaryTextColor = Color(0xFF4B5563);
+  static const Color mutedTextColor = AppColors.textMuted;
+  static const Color dividerColor = Color(0xFFD1D5DB);
 
-  final Color primaryColor;
-  final Color backgroundColor;
-  final Color labelColor;
-  final Color iconColor;
-}
+  static const Color textFieldBackgroundColor = AppColors.fieldBackground;
+  static const Color textFieldIconColor = AppColors.textSecondary;
 
-/// Palette dei bottoni principali della feature auth.
-class AuthActionButtonColors {
-  const AuthActionButtonColors({
-    this.backgroundColor = AppColors.background,
-    this.foregroundColor = AppColors.primary,
-    this.disabledBackgroundColor = const Color(0xFFE5E7EB),
-    this.disabledForegroundColor = const Color(0xFF9CA3AF),
-  });
+  static const Color actionButtonBackgroundColor = AppColors.background;
+  static const Color actionButtonForegroundColor = AppColors.primary;
+  static const Color disabledButtonBackgroundColor = Color(0xFFE5E7EB);
+  static const Color disabledButtonForegroundColor = Color(0xFF9CA3AF);
 
-  final Color backgroundColor;
-  final Color foregroundColor;
-  final Color disabledBackgroundColor;
-  final Color disabledForegroundColor;
-}
+  static const Color socialButtonForegroundColor = AppColors.primary;
+  static const Color socialButtonBorderColor = Color(0xFF9CA3AF);
 
-/// Palette dei bottoni social della feature auth.
-class AuthSocialButtonsColors {
-  const AuthSocialButtonsColors({
-    this.foregroundColor = AppColors.primary,
-    this.borderColor = const Color(0xFF9CA3AF),
-  });
+  static const Color snackBarBackgroundColor = AppColors.primaryDark;
+  static const Color snackBarTextColor = AppColors.surface;
 
-  final Color foregroundColor;
-  final Color borderColor;
-}
-
-/// Palette della schermata principale di autenticazione.
-class AuthChoiceColors {
-  const AuthChoiceColors();
-
-  final Color backgroundColor = AppColors.surface;
-  final Color primaryColor = AppColors.primary;
-  final Color screenTitleColor = AppColors.textPrimary;
-  final Color subtitleColor = const Color(0xFF4B5563);
-  final Color helperTextColor = AppColors.textMuted;
-  final Color dividerColor = const Color(0xFFD1D5DB);
-  final Color separatorTextColor = AppColors.textMuted;
-
-  final AppSegmentedControlColors segmentedControlColors =
-      const AppSegmentedControlColors(
+  static const AppSegmentedControlColors segmentedControlColors =
+      AppSegmentedControlColors(
         backgroundColor: AppColors.fieldBackground,
         selectedColor: AppColors.surface,
         borderColor: AppColors.borderSoft,
         selectedTextColor: AppColors.primary,
         selectedBadgeTextColor: AppColors.primary,
-      );
-
-  final AuthTextFieldColors textFieldColors = const AuthTextFieldColors();
-
-  final AuthActionButtonColors actionButtonColors =
-      const AuthActionButtonColors();
-
-  final AuthSocialButtonsColors socialButtonsColors =
-      const AuthSocialButtonsColors();
-}
-
-/// Palette della schermata di recupero password.
-class ResetPasswordColors {
-  const ResetPasswordColors();
-
-  final Color backgroundColor = AppColors.surface;
-  final Color primaryColor = AppColors.primary;
-  final Color descriptionColor = const Color(0xFF4B5563);
-  final Color snackBarBackgroundColor = AppColors.primaryDark;
-  final Color snackBarTextColor = AppColors.surface;
-
-  final AuthTextFieldColors textFieldColors = const AuthTextFieldColors();
-
-  final AuthActionButtonColors actionButtonColors =
-      const AuthActionButtonColors(
-        backgroundColor: AppColors.primary,
-        foregroundColor: AppColors.surface,
       );
 }

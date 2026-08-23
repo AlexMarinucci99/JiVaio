@@ -2,81 +2,31 @@ import 'package:flutter/material.dart';
 
 import '../theme/auth_colors.dart';
 
-/// Riga dei bottoni social della schermata auth.
+/// Mostra i pulsanti per l'accesso tramite provider social.
 class AuthSocialButtons extends StatelessWidget {
   const AuthSocialButtons({
     super.key,
     required this.onGooglePressed,
     required this.onApplePressed,
     required this.onFacebookPressed,
-    this.colors = const AuthSocialButtonsColors(),
   });
 
   final VoidCallback onGooglePressed;
   final VoidCallback onApplePressed;
   final VoidCallback onFacebookPressed;
-  final AuthSocialButtonsColors colors;
 
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: _AuthSocialButton(
-            label: 'Google',
-            iconWidget: const Text(
-              'G',
-              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-            ),
-            colors: colors,
-            onPressed: onGooglePressed,
-          ),
-        ),
-        const SizedBox(width: 8),
-        Expanded(
-          child: _AuthSocialButton(
-            label: 'Apple',
-            iconWidget: const Icon(Icons.apple_rounded, size: 18),
-            colors: colors,
-            onPressed: onApplePressed,
-          ),
-        ),
-        const SizedBox(width: 8),
-        Expanded(
-          child: _AuthSocialButton(
-            label: 'Facebook',
-            iconWidget: const Icon(Icons.facebook_rounded, size: 18),
-            colors: colors,
-            onPressed: onFacebookPressed,
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class _AuthSocialButton extends StatelessWidget {
-  const _AuthSocialButton({
-    required this.label,
-    required this.iconWidget,
-    required this.colors,
-    required this.onPressed,
-  });
-
-  final String label;
-  final Widget iconWidget;
-  final AuthSocialButtonsColors colors;
-  final VoidCallback onPressed;
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildButton({
+    required String label,
+    required Widget iconWidget,
+    required VoidCallback onPressed,
+  }) {
     return SizedBox(
       height: 48,
       child: OutlinedButton(
         onPressed: onPressed,
         style: OutlinedButton.styleFrom(
-          foregroundColor: colors.foregroundColor,
-          side: BorderSide(color: colors.borderColor),
+          foregroundColor: AuthColors.socialButtonForegroundColor,
+          side: const BorderSide(color: AuthColors.socialButtonBorderColor),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(24),
           ),
@@ -100,6 +50,40 @@ class _AuthSocialButton extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: _buildButton(
+            label: 'Google',
+            iconWidget: const Text(
+              'G',
+              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+            ),
+            onPressed: onGooglePressed,
+          ),
+        ),
+        const SizedBox(width: 8),
+        Expanded(
+          child: _buildButton(
+            label: 'Apple',
+            iconWidget: const Icon(Icons.apple_rounded, size: 18),
+            onPressed: onApplePressed,
+          ),
+        ),
+        const SizedBox(width: 8),
+        Expanded(
+          child: _buildButton(
+            label: 'Facebook',
+            iconWidget: const Icon(Icons.facebook_rounded, size: 18),
+            onPressed: onFacebookPressed,
+          ),
+        ),
+      ],
     );
   }
 }
