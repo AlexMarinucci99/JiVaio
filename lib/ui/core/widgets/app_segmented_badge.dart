@@ -9,13 +9,8 @@ class AppSegmentedBadge extends StatelessWidget {
     required this.textColor,
   });
 
-  /// Testo mostrato nel badge.
   final String label;
-
-  /// Colore dello sfondo.
   final Color backgroundColor;
-
-  /// Colore del testo.
   final Color textColor;
 
   @override

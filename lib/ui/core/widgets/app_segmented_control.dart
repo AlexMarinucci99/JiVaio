@@ -11,20 +11,16 @@ class AppSegmentedControlItem<T> {
     this.badgeLabel,
   });
 
-  /// Valore associato all'opzione.
   final T value;
 
   /// Testo mostrato nel segmento.
   final String label;
 
-  /// Testo opzionale mostrato nel badge del segmento.
+  /// Testo opzionale mostrato nel badge.
   final String? badgeLabel;
 }
 
 /// Controllo segmentato riutilizzabile dell'app.
-///
-/// Supporta da due a quattro opzioni e può essere personalizzato
-/// tramite una palette [AppSegmentedControlColors].
 class AppSegmentedControl<T> extends StatelessWidget {
   const AppSegmentedControl({
     super.key,
@@ -34,7 +30,6 @@ class AppSegmentedControl<T> extends StatelessWidget {
     this.colors = const AppSegmentedControlColors(),
   }) : assert(items.length >= 2 && items.length <= 4);
 
-  /// Opzioni mostrate nel controllo.
   final List<AppSegmentedControlItem<T>> items;
 
   /// Valore attualmente selezionato.
@@ -43,7 +38,6 @@ class AppSegmentedControl<T> extends StatelessWidget {
   /// Callback invocata quando l'utente seleziona una nuova opzione.
   final ValueChanged<T> onChanged;
 
-  /// Palette cromatica del controllo.
   final AppSegmentedControlColors colors;
 
   @override
@@ -112,7 +106,7 @@ class AppSegmentedControl<T> extends StatelessWidget {
                 ),
               );
             })
-            .toList(growable: false),
+            .toList(),
       ),
     );
   }
