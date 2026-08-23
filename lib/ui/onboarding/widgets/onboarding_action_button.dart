@@ -10,13 +10,9 @@ class OnboardingActionButton extends StatelessWidget {
     required this.onPressed,
   });
 
-  /// Testo mostrato nel pulsante.
   final String label;
 
-  /// Callback invocata alla pressione.
-  ///
-  /// Se è null, il pulsante viene mostrato come disabilitato.
-  final VoidCallback? onPressed;
+  final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +23,6 @@ class OnboardingActionButton extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           backgroundColor: OnboardingColors.primary,
           foregroundColor: OnboardingColors.surface,
-          disabledBackgroundColor: OnboardingColors.actionDisabledBackground,
-          disabledForegroundColor: OnboardingColors.actionDisabledForeground,
           elevation: 0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),

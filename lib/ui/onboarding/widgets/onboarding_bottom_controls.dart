@@ -7,7 +7,7 @@ import 'onboarding_dots_indicator.dart';
 /// Controlli inferiori della schermata onboarding.
 ///
 /// Coordina il bottone "Indietro", l'indicatore delle pagine
-/// e il bottone principale "Avanti" o "Inizia".
+/// e il bottone principale "Avanti/Inizia".
 class OnboardingBottomControls extends StatelessWidget {
   const OnboardingBottomControls({
     super.key,

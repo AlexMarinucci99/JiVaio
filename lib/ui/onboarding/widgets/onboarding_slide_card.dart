@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import '../theme/onboarding_colors.dart';
 
 /// Card che mostra il contenuto di una singola slide dell'onboarding.
-///
-/// Riceve dati e configurazione grafica dall'esterno, senza gestire
-/// stato, navigazione o avanzamento delle pagine.
+
 class OnboardingSlideCard extends StatelessWidget {
   const OnboardingSlideCard({
     super.key,
@@ -67,7 +65,7 @@ class OnboardingSlideCard extends StatelessWidget {
                       height: 58,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: const Color.fromARGB(255, 255, 255, 255),
+                        color: OnboardingColors.surface,
                       ),
                       child: Icon(icon, color: accentColor, size: 28),
                     ),
@@ -81,7 +79,6 @@ class OnboardingSlideCard extends StatelessWidget {
 
           Text(
             title,
-            textAlign: TextAlign.left,
             style: textTheme.headlineSmall?.copyWith(
               fontWeight: FontWeight.w800,
               height: 1.12,
@@ -93,7 +90,6 @@ class OnboardingSlideCard extends StatelessWidget {
 
           Text(
             description,
-            textAlign: TextAlign.left,
             style: textTheme.bodyLarge?.copyWith(
               height: 1.65,
               color: OnboardingColors.description,
