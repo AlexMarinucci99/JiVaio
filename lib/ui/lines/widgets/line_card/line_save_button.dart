@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import '../../theme/line_card_colors.dart';
 
 /// Bottone per salvare o rimuovere una linea dai preferiti.
-///
-/// Mostra l'icona piena quando la linea è salvata e l'icona vuota
-/// quando può essere aggiunta ai preferiti.
+
 class LineSaveButton extends StatelessWidget {
   const LineSaveButton({
     super.key,
@@ -15,11 +13,7 @@ class LineSaveButton extends StatelessWidget {
   });
 
   final bool isSaved;
-
-  /// Callback eseguita quando l'utente preme il bottone.
   final VoidCallback onPressed;
-
-  /// Palette propria del bottone salva.
   final LineCardPalette colors;
 
   @override

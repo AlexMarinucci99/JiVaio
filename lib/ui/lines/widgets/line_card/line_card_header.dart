@@ -5,7 +5,7 @@ import 'line_badge.dart';
 import '../../theme/line_card_colors.dart';
 import 'line_save_button.dart';
 
-/// Header della card che sintetizza le informazioni principali di una linea.
+/// Header della card.
 ///
 /// Mostra badge, nome e azione di salvataggio.
 class LineCardHeader extends StatelessWidget {
@@ -14,22 +14,16 @@ class LineCardHeader extends StatelessWidget {
     required this.line,
     required this.isSaved,
     required this.onToggleSaved,
-    this.colors = LineCardColors.defaultPalette,
   });
 
-  ///linea rappresentata
   final TransitLine line;
-
   final bool isSaved;
-
-  /// Callback eseguita quando l'utente aggiorna lo stato di salvataggio.
   final VoidCallback onToggleSaved;
-
-  // Palette propria dell'header della card.
-  final LineCardPalette colors;
 
   @override
   Widget build(BuildContext context) {
+    const colors = LineCardColors.defaultPalette;
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

@@ -66,15 +66,19 @@ class LinesViewModel extends ChangeNotifier {
       return 'Non è stato possibile caricare le linee.';
     }
 
-    return switch (_scope) {
-      LinesScope.all =>
-        'Consulta tutte le linee disponibili e scopri ogni dettaglio.',
-      LinesScope.saved => switch (savedLinesCount) {
-        0 => 'Salva le linee che usi di più per ritrovarle qui.',
-        1 => '1 linea salvata',
-        final count => '$count linee salvate',
-      },
-    };
+    if (_scope == LinesScope.all) {
+      return 'Consulta tutte le linee disponibili e scopri ogni dettaglio.';
+    }
+
+    if (savedLinesCount == 0) {
+      return 'Salva le linee che usi di più per ritrovarle qui.';
+    }
+
+    if (savedLinesCount == 1) {
+      return '1 linea salvata';
+    }
+
+    return '$savedLinesCount linee salvate';
   }
 
   /// Indica se la linea [routeId] è salvata dall'utente.

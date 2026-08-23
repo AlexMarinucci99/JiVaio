@@ -52,81 +52,76 @@ class LinesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<LinesViewModel>(
-      builder: (context, viewModel, child) {
-        return Scaffold(
-          backgroundColor: _colors.pageBackground,
-          body: DecoratedBox(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [_colors.gradientStart, _colors.gradientEnd],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              ),
-            ),
-            child: SafeArea(
-              bottom: false,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(22, 18, 22, 10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Elenco Linee',
-                          style: Theme.of(context).textTheme.headlineSmall
-                              ?.copyWith(
-                                color: _colors.primaryText,
-                                fontSize: 22,
-                                fontWeight: FontWeight.w800,
-                              ),
+    final viewModel = context.watch<LinesViewModel>();
+
+    return Scaffold(
+      body: DecoratedBox(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [_colors.gradientStart, _colors.gradientEnd],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: SafeArea(
+          bottom: false,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(22, 18, 22, 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Elenco Linee',
+                      style: Theme.of(context).textTheme.headlineSmall
+                          ?.copyWith(
+                            color: _colors.primaryText,
+                            fontSize: 22,
+                            fontWeight: FontWeight.w800,
+                          ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      viewModel.subtitle,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: _colors.secondaryText,
+                        fontSize: 12,
+                        height: 1.25,
+                      ),
+                    ),
+                    const SizedBox(height: 18),
+                    AppSegmentedControl<LinesScope>(
+                      selectedValue: viewModel.scope,
+                      onChanged: viewModel.setScope,
+                      colors: _colors.segmentedControlColors,
+                      items: [
+                        const AppSegmentedControlItem(
+                          value: LinesScope.all,
+                          label: 'Tutte',
                         ),
-                        const SizedBox(height: 4),
-                        Text(
-                          viewModel.subtitle,
-                          style: Theme.of(context).textTheme.bodyMedium
-                              ?.copyWith(
-                                color: _colors.secondaryText,
-                                fontSize: 12,
-                                height: 1.25,
-                              ),
-                        ),
-                        const SizedBox(height: 18),
-                        AppSegmentedControl<LinesScope>(
-                          selectedValue: viewModel.scope,
-                          onChanged: viewModel.setScope,
-                          colors: _colors.segmentedControlColors,
-                          items: [
-                            const AppSegmentedControlItem(
-                              value: LinesScope.all,
-                              label: 'Tutte',
-                            ),
-                            AppSegmentedControlItem(
-                              value: LinesScope.saved,
-                              label: 'Salvate',
-                              badgeLabel: viewModel.savedLinesCount > 0
-                                  ? '${viewModel.savedLinesCount}'
-                                  : null,
-                            ),
-                          ],
+                        AppSegmentedControlItem(
+                          value: LinesScope.saved,
+                          label: 'Salvate',
+                          badgeLabel: viewModel.savedLinesCount > 0
+                              ? '${viewModel.savedLinesCount}'
+                              : null,
                         ),
                       ],
                     ),
-                  ),
-                  Expanded(child: _buildSelectedContent(context, viewModel)),
-                ],
+                  ],
+                ),
               ),
-            ),
+              Expanded(child: _buildSelectedContent(context, viewModel)),
+            ],
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 
   Widget _buildSelectedContent(BuildContext context, LinesViewModel viewModel) {
-   
     if (viewModel.errorMessage != null && viewModel.allLines.isEmpty) {
       return _LinesStateArea(
         title: 'Errore caricamento linee',
@@ -159,7 +154,7 @@ class LinesScreen extends StatelessWidget {
       itemBuilder: (context, index) {
         final line = lines[index];
         return LineCard(
-          key: ValueKey(line.routeId),  
+          key: ValueKey(line.routeId),
           line: line,
           isSaved: viewModel.isLineSaved(line.routeId),
           onToggleSaved: () =>

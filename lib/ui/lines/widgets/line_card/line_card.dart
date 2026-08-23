@@ -16,22 +16,15 @@ class LineCard extends StatefulWidget {
     required this.isSaved,
     required this.onToggleSaved,
     required this.onOpenDetails,
-    this.colors = LineCardColors.defaultPalette,
   });
 
   /// Linea da mostrare nella card.
   final TransitLine line;
-
   final bool isSaved;
 
   /// Callback eseguita quando l'utente aggiorna lo stato di salvataggio.
   final VoidCallback onToggleSaved;
-
-  /// Callback eseguita quando l'utente apre i dettagli della linea.
   final VoidCallback onOpenDetails;
-
-  /// Palette propria della card linea.
-  final LineCardPalette colors;
 
   @override
   State<LineCard> createState() => _LineCardState();
@@ -52,19 +45,11 @@ class _LineCardState extends State<LineCard> {
   }
 
   @override
-  void didUpdateWidget(covariant LineCard oldWidget) {
-    super.didUpdateWidget(oldWidget);
-
-    if (oldWidget.line.routeId != widget.line.routeId ||
-        _selectedDirectionIndex >= widget.line.directions.length) {
-      _selectedDirectionIndex = 0;
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: LineCardColors.cardDecoration(colors: widget.colors),
+      decoration: LineCardColors.cardDecoration(
+        colors: LineCardColors.defaultPalette,
+      ),
       padding: const EdgeInsets.all(14),
       child: Column(
         spacing: 14,
@@ -73,14 +58,12 @@ class _LineCardState extends State<LineCard> {
             line: widget.line,
             isSaved: widget.isSaved,
             onToggleSaved: widget.onToggleSaved,
-            colors: widget.colors,
           ),
           LineRoutePreview(
             line: widget.line,
             direction: _selectedDirection,
             onSwapDirection: _toggleDirection,
             onOpenDetails: widget.onOpenDetails,
-            colors: widget.colors,
           ),
         ],
       ),

@@ -11,7 +11,6 @@ import '../../core/themes/app_segmented_control_colors.dart';
 /// separatamente in `line_card_colors.dart`.
 class LinesScreenColors {
   const LinesScreenColors({
-    this.pageBackground = const Color(0xFFF6FAFF),
     this.gradientStart = const Color(0xFFF6FAFF),
     this.gradientEnd = const Color(0xFFF2F6FC),
     this.primaryText = const Color(0xFF111827),
@@ -20,9 +19,6 @@ class LinesScreenColors {
     this.stateCardBorder = const Color(0xFFE5EAF2),
     this.segmentedControlColors = const AppSegmentedControlColors(),
   });
-
-  /// Colore di base dello Scaffold.
-  final Color pageBackground;
 
   /// Colori del gradiente verticale della pagina.
   final Color gradientStart;

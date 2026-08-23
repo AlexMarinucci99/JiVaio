@@ -18,13 +18,8 @@ class LineDirectionButton extends StatelessWidget {
 
   final bool isUnidirectional;
   final bool canSwapDirection;
-
-  /// Callback eseguita quando l’utente inverte la direzione.
   final VoidCallback onSwapDirection;
-
-  /// Dimensione dell’icona, personalizzabile nei diversi contesti.
   final double iconSize;
-
   final LineCardPalette colors;
 
   @override

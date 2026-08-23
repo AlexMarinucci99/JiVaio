@@ -16,23 +16,13 @@ class LineRoutePreview extends StatelessWidget {
     required this.direction,
     required this.onSwapDirection,
     required this.onOpenDetails,
-    this.colors = LineCardColors.defaultPalette,
   });
 
   ///Linea rappresentata.
   final TransitLine line;
-
-  ///Direzione attualemnte visualizzata nella card.
   final TransitLineDirection direction;
-
-  /// Callback eseguita quando l'utente inverte la direzione.
   final VoidCallback onSwapDirection;
-
-  /// Callback eseguita quando l'utente apre i dettagli completi della linea.
   final VoidCallback onOpenDetails;
-
-  // Palette propria della preview percorso.
-  final LineCardPalette colors;
 
   String get _emptyStateMessage => direction.hasServiceToday
       ? 'Nessuna altra partenza disponibile per oggi.'
@@ -40,6 +30,7 @@ class LineRoutePreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const colors = LineCardColors.defaultPalette;
     final actionColor = colors.listAccent;
     final actionTextColor = LineCardColors.textOn(actionColor, colors: colors);
 
