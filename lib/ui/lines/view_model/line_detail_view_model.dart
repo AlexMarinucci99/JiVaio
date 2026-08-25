@@ -7,7 +7,7 @@ import '../line_time_range_formatter.dart';
 /// Posizione dichiarata dall'utente durante una segnalazione.
 enum LineDetailReportLocation { onBus, atStop }
 
-/// Tipo di segnalazione.
+/// Tipo di segnalazione.//affollamento.
 enum LineDetailReportType { delay, crowding }
 
 /// Gestisce stato e azioni della schermata di dettaglio linea.
@@ -28,7 +28,6 @@ class LineDetailViewModel extends ChangeNotifier {
   TransitLineDirectionSchedule? _schedule;
 
   bool _isLoadingSchedule = false;
-  String? _errorMessage;
 
   int? _selectedManualHour;
 
@@ -37,8 +36,6 @@ class LineDetailViewModel extends ChangeNotifier {
   String? _lastReportMessage;
 
   bool get isLoadingSchedule => _isLoadingSchedule;
-
-  String? get errorMessage => _errorMessage;
 
   int? get selectedManualHour => _selectedManualHour;
 
@@ -116,13 +113,11 @@ class LineDetailViewModel extends ChangeNotifier {
 
     if (direction == null) {
       _schedule = null;
-      _errorMessage = 'Direzione non disponibile.';
       notifyListeners();
       return;
     }
 
     _isLoadingSchedule = true;
-    _errorMessage = null;
     notifyListeners();
 
     try {
@@ -132,7 +127,7 @@ class LineDetailViewModel extends ChangeNotifier {
         moment: _selectedMoment(),
       );
     } catch (_) {
-      _errorMessage = 'Impossibile caricare partenze e fermate.';
+      _schedule = null;
     } finally {
       _isLoadingSchedule = false;
       if (hasListeners) notifyListeners();

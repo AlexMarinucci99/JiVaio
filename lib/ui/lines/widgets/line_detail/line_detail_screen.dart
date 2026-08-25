@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../theme/line_card_colors.dart';
 import '../../theme/line_detail_colors.dart';
 import '../../view_model/line_detail_view_model.dart';
 import 'line_detail_departures_card.dart';
@@ -35,7 +34,6 @@ class LineDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<LineDetailViewModel>();
-  final errorMessage = viewModel.errorMessage;
     
         return Scaffold(
           backgroundColor: LineDetailColors.pageBackground,
@@ -55,13 +53,6 @@ class LineDetailScreen extends StatelessWidget {
                   child: ListView(
                     padding: const EdgeInsets.fromLTRB(22, 8, 22, 120),
                     children: [
-                      if (errorMessage != null) ...[
-                        _LineDetailErrorCard(
-                          message: errorMessage,
-                          onRetry: viewModel.loadSchedule,
-                        ),
-                        const SizedBox(height: 14),
-                      ],
                       LineDetailDeparturesCard(
                         selectedTimeRange: viewModel.timeRangeLabel,
                         departures: viewModel.departures,
@@ -97,34 +88,3 @@ class LineDetailScreen extends StatelessWidget {
       }
   }
 
-
-class _LineDetailErrorCard extends StatelessWidget {
-  const _LineDetailErrorCard({required this.message, required this.onRetry});
-
-  final String message;
-  final Future<void> Function() onRetry;
-
-  @override
-  Widget build(BuildContext context) {
-    const colors = LineCardColors.defaultPalette;
-    final textTheme = Theme.of(context).textTheme;
-
-    return Container(
-      decoration: LineCardColors.cardDecoration(colors: colors),
-      padding: const EdgeInsets.all(14),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Errore caricamento dettaglio',
-            style: textTheme.lineDetailCardTitle(colors),
-          ),
-          const SizedBox(height: 6),
-          Text(message, style: textTheme.lineDetailCardDescription(colors)),
-          const SizedBox(height: 12),
-          FilledButton(onPressed: onRetry, child: const Text('Riprova')),
-        ],
-      ),
-    );
-  }
-}

@@ -15,7 +15,7 @@ import '../data/services/onboarding_preferences_service.dart';
 /// Contenitore delle dipendenze principali dell'app.
 ///
 /// Centralizza la creazione di repository e service, così le schermate
-/// ricevono dipendenze già pronte senza conoscere i dettagli di costruzione.
+/// ricevono dipendenze già pronte senza conoscere i dettagli.
 class AppDependencies {
   const AppDependencies({
     required this.authRepository,
