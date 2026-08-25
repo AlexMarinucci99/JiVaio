@@ -39,8 +39,6 @@ class NotificationCenterPanelColors {
     this.emptyIconColor = const Color(0xFF7084A2),
     this.emptyTitleColor = const Color(0xFFD7E0EF),
     this.emptyMessageColor = const Color(0xFF90A4C2),
-    this.errorIconColor = const Color(0xFFFFB4A6),
-    this.errorTextColor = const Color(0xFFFFD2CA),
   });
 
   final Color backgroundColor;
@@ -56,8 +54,6 @@ class NotificationCenterPanelColors {
   final Color emptyIconColor;
   final Color emptyTitleColor;
   final Color emptyMessageColor;
-  final Color errorIconColor;
-  final Color errorTextColor;
 }
 
 /// Palette specifica associata a una categoria di notifica.

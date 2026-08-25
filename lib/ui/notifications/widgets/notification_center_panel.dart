@@ -14,7 +14,6 @@ class NotificationCenterPanel extends StatelessWidget {
     required this.notifications,
     required this.unreadCount,
     required this.isLoading,
-    required this.errorMessage,
     required this.onClose,
     required this.onMarkAllAsRead,
     required this.onNotificationTap,
@@ -24,7 +23,6 @@ class NotificationCenterPanel extends StatelessWidget {
   final List<AppNotification> notifications;
   final int unreadCount;
   final bool isLoading;
-  final String? errorMessage;
   final VoidCallback onClose;
   final VoidCallback onMarkAllAsRead;
   final ValueChanged<String> onNotificationTap;
@@ -138,19 +136,6 @@ class NotificationCenterPanel extends StatelessWidget {
   Widget _buildBody(BuildContext context) {
     if (isLoading) {
       return _buildLoadingState();
-    }
-
-    final error = errorMessage;
-    if (error != null) {
-      return _buildMessageState(
-        context,
-        height: 160,
-        icon: Icons.error_outline_rounded,
-        iconSize: 32,
-        iconColor: colors.errorIconColor,
-        message: error,
-        messageColor: colors.errorTextColor,
-      );
     }
 
     if (notifications.isEmpty) {

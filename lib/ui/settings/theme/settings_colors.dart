@@ -16,6 +16,6 @@ class SettingsColors {
   static const Color cardBorder = Color(0xFFE5EAF2);
 
   static const Color primaryAction = AppColors.primary;
-  static const Color dangerAction = AppColors.error;
+  static const Color dangerAction = AppColors.dangerAction;
   static const Color iconBackground = Color(0xFFEAF0FA);
 }

@@ -13,12 +13,10 @@ class NotificationCenterViewModel extends ChangeNotifier {
   bool _isLoading = false;
   bool _isPanelOpen = false;
   bool _isDisposed = false;
-  String? _errorMessage;
 
   List<AppNotification> get notifications => _notifications;
   bool get isLoading => _isLoading;
   bool get isPanelOpen => _isPanelOpen;
-  String? get errorMessage => _errorMessage;
   int get unreadCount =>
       _notifications.where((notification) => !notification.isRead).length;
 
@@ -29,7 +27,6 @@ class NotificationCenterViewModel extends ChangeNotifier {
     }
 
     _isLoading = true;
-    _errorMessage = null;
     _notifyListenersSafely();
 
     try {
@@ -38,9 +35,9 @@ class NotificationCenterViewModel extends ChangeNotifier {
           (first, second) => second.createdAt.compareTo(first.createdAt),
         ),
       );
-    } catch (_) {
-      _errorMessage = 'Impossibile caricare le notifiche.';
-    } finally {
+} catch (_) {
+  _notifications = const [];
+} finally {
       _isLoading = false;
       _notifyListenersSafely();
     }

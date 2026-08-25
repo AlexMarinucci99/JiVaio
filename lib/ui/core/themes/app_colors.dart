@@ -20,5 +20,5 @@ class AppColors {
   static const Color border = Color(0xFFDCE5F2);
   static const Color borderSoft = Color(0xFFE1E7F0);
 
-  static const Color error = Color(0xFFD32F2F);
+  static const Color dangerAction = Color(0xFFD32F2F);
 }
