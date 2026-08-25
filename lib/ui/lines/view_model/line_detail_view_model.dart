@@ -27,15 +27,11 @@ class LineDetailViewModel extends ChangeNotifier {
 
   TransitLineDirectionSchedule? _schedule;
 
-  bool _isLoadingSchedule = false;
-
   int? _selectedManualHour;
 
   LineDetailReportLocation? _reportLocation;
   String? _selectedReportStopId;
   String? _lastReportMessage;
-
-  bool get isLoadingSchedule => _isLoadingSchedule;
 
   int? get selectedManualHour => _selectedManualHour;
 
@@ -75,8 +71,6 @@ class LineDetailViewModel extends ChangeNotifier {
   List<TransitLineStop> get stops =>
       _schedule?.stops ?? const <TransitLineStop>[];
 
-  String? get selectedTripId => _schedule?.selectedTripId;
-
   /// Etichetta della fascia oraria mostrata.
   String get timeRangeLabel => formatLineTimeRange(_selectedMoment().hour);
 
@@ -108,9 +102,6 @@ class LineDetailViewModel extends ChangeNotifier {
       return;
     }
 
-    _isLoadingSchedule = true;
-    notifyListeners();
-
     try {
       _schedule = await _repository.getLineDirectionSchedule(
         line: line,
@@ -120,7 +111,6 @@ class LineDetailViewModel extends ChangeNotifier {
     } catch (_) {
       _schedule = null;
     } finally {
-      _isLoadingSchedule = false;
       if (hasListeners) notifyListeners();
     }
   }

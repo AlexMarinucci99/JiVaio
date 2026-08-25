@@ -66,7 +66,6 @@ class TransitLineDirectionSchedule {
     required this.departures,
     required this.stops,
     this.selectedTripId,
-    this.hasServiceToday = true,
   });
 
   /// Corse disponibili nella fascia oraria.
@@ -77,9 +76,6 @@ class TransitLineDirectionSchedule {
 
   /// Identificativo della corsa selezionata, se disponibile.
   final String? selectedTripId;
-
-  /// Indica se la linea ha servizio nella giornata corrente.
-  final bool hasServiceToday;
 }
 
 /// Descrive una corsa disponibile per una linea.

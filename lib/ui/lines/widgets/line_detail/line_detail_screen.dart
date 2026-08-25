@@ -34,56 +34,53 @@ class LineDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<LineDetailViewModel>();
-    
-        return Scaffold(
-          backgroundColor: LineDetailColors.pageBackground,
-          body: SafeArea(
-            bottom: false,
-            child: Column(
-              children: [
-                LineDetailHeader(
-                  line: viewModel.line,
-                  direction: viewModel.selectedDirection,
-                  canSwapDirection: viewModel.canSwapDirection,
-                  onSwapDirection: viewModel.toggleDirection,
-                  onClose: () => Navigator.of(context).pop(),
-                ),
-                const SizedBox(height: 12),
-                Expanded(
-                  child: ListView(
-                    padding: const EdgeInsets.fromLTRB(22, 8, 22, 120),
-                    children: [
-                      LineDetailDeparturesCard(
-                        selectedTimeRange: viewModel.timeRangeLabel,
-                        departures: viewModel.departures,
-                        selectedTripId: viewModel.selectedTripId,
-                        isLoading: viewModel.isLoadingSchedule,
-                        onSelectTimeRange: () =>
-                            _openTimeFilterSheet(context, viewModel),
-                      ),
-                      const SizedBox(height: 14),
-                      LineDetailReportCard(
-                        reportLocation: viewModel.reportLocation,
-                        canSendReport: viewModel.canSendReport,
-                        selectedStopName: viewModel.selectedReportStopName,
-                        lastReportMessage: viewModel.lastReportMessage,
-                        onLocationChanged: viewModel.selectReportLocation,
-                        onReportPressed: viewModel.sendFakeReport,
-                      ),
-                      const SizedBox(height: 14),
-                      LineDetailRouteSection(
-                        stops: viewModel.stops,
-                        selectedStopId: viewModel.selectedReportStopId,
-                        isStopSelectionEnabled: viewModel.requiresStopSelection,
-                        onStopSelected: viewModel.selectReportStop,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      }
-  }
 
+    return Scaffold(
+      backgroundColor: LineDetailColors.pageBackground,
+      body: SafeArea(
+        bottom: false,
+        child: Column(
+          children: [
+            LineDetailHeader(
+              line: viewModel.line,
+              direction: viewModel.selectedDirection,
+              canSwapDirection: viewModel.canSwapDirection,
+              onSwapDirection: viewModel.toggleDirection,
+              onClose: () => Navigator.of(context).pop(),
+            ),
+            const SizedBox(height: 12),
+            Expanded(
+              child: ListView(
+                padding: const EdgeInsets.fromLTRB(22, 8, 22, 120),
+                children: [
+                  LineDetailDeparturesCard(
+                    selectedTimeRange: viewModel.timeRangeLabel,
+                    departures: viewModel.departures,
+                    onSelectTimeRange: () =>
+                        _openTimeFilterSheet(context, viewModel),
+                  ),
+                  const SizedBox(height: 14),
+                  LineDetailReportCard(
+                    reportLocation: viewModel.reportLocation,
+                    canSendReport: viewModel.canSendReport,
+                    selectedStopName: viewModel.selectedReportStopName,
+                    lastReportMessage: viewModel.lastReportMessage,
+                    onLocationChanged: viewModel.selectReportLocation,
+                    onReportPressed: viewModel.sendFakeReport,
+                  ),
+                  const SizedBox(height: 14),
+                  LineDetailRouteSection(
+                    stops: viewModel.stops,
+                    selectedStopId: viewModel.selectedReportStopId,
+                    isStopSelectionEnabled: viewModel.requiresStopSelection,
+                    onStopSelected: viewModel.selectReportStop,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

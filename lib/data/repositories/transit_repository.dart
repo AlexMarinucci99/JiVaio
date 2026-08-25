@@ -212,12 +212,7 @@ class TransitRepository {
             includeOfficialTimes: selectedTripId != null,
           );
 
-    return TransitLineDirectionSchedule(
-      departures: departures,
-      stops: stops,
-      selectedTripId: selectedTripId,
-      hasServiceToday: activeTrips.isNotEmpty,
-    );
+    return TransitLineDirectionSchedule(departures: departures, stops: stops);
   }
 
   Future<TransitRawBundle> _loadBundle() async {

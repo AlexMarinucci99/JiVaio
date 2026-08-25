@@ -2,6 +2,6 @@
     "cmake.ignoreCMakeListsMissing": true,
     "java.configuration.updateBuildConfiguration": "interactive",
     
-    "editor.formatOnSave": false,
-    "dart.closingLabels": true
+    "editor.formatOnSave": true,
+    "dart.closingLabels": false
 }

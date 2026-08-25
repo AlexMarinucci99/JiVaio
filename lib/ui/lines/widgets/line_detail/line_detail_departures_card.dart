@@ -13,8 +13,6 @@ class LineDetailDeparturesCard extends StatelessWidget {
     super.key,
     required this.selectedTimeRange,
     required this.departures,
-    required this.selectedTripId,
-    required this.isLoading,
     required this.onSelectTimeRange,
   });
 
@@ -22,14 +20,6 @@ class LineDetailDeparturesCard extends StatelessWidget {
 
   /// Partenze disponibili per la direzione e la fascia selezionate.
   final List<TransitLineDeparture> departures;
-
-  /// Identificativo della corsa selezionata.
-  ///
-  /// È null quando non è ancora stata selezionata una corsa.
-  final String? selectedTripId;
-
-  /// Indica se il caricamento delle partenze è ancora in corso.
-  final bool isLoading;
   final VoidCallback onSelectTimeRange;
 
   @override
@@ -64,11 +54,8 @@ class LineDetailDeparturesCard extends StatelessWidget {
           const SizedBox(height: 12),
           Text('Corse disponibili', style: sectionLabelStyle),
           const SizedBox(height: 8),
-          if (isLoading)
-            _departuresLoadingBox
-          else if (departures.isEmpty)
-           const Text('Nessuna corsa disponibile.')
-                           
+          if (departures.isEmpty)
+            const Text('Nessuna corsa disponibile.')
           else
             Row(
               spacing: 8,
@@ -76,7 +63,7 @@ class LineDetailDeparturesCard extends StatelessWidget {
                 for (final departure in departures)
                   _DepartureChip(
                     label: departure.departureTime,
-                    isSelected: departure.tripId == selectedTripId,
+                    isSelected: departure.tripId == departures.first.tripId,
                   ),
               ],
             ),
@@ -177,15 +164,3 @@ class _DepartureChip extends StatelessWidget {
     );
   }
 }
-
-const _departuresLoadingBox = SizedBox(
-  height: 38,
-  child: Align(
-    alignment: Alignment.centerLeft,
-    child: SizedBox(
-      width: 22,
-      height: 22,
-      child: CircularProgressIndicator(strokeWidth: 2.4),
-    ),
-  ),
-);
