@@ -4,7 +4,6 @@ import '../../../../domain/models/transit_line.dart';
 import '../../theme/line_card_colors.dart';
 import '../../theme/line_detail_colors.dart';
 import 'line_detail_stop_tile.dart';
-import 'line_detail_trip_empty.dart';
 
 /// Sezione che mostra le fermate della direzione selezionata.
 ///
@@ -51,11 +50,6 @@ class LineDetailRouteSection extends StatelessWidget {
             style: textTheme.lineDetailCardDescription(colors),
           ),
           const SizedBox(height: 14),
-          if (stops.isEmpty)
-            const LineDetailTripEmpty(
-              message: 'Fermate non disponibili per questa direzione.',
-              textColor: LineDetailColors.emptyRouteText,
-            ),
           for (final (index, stop) in stops.indexed)
             LineDetailStopTile(
               stop: stop,

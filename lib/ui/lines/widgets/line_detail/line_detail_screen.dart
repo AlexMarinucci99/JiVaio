@@ -58,7 +58,6 @@ class LineDetailScreen extends StatelessWidget {
                         departures: viewModel.departures,
                         selectedTripId: viewModel.selectedTripId,
                         isLoading: viewModel.isLoadingSchedule,
-                        emptyMessage: viewModel.emptyDeparturesMessage,
                         onSelectTimeRange: () =>
                             _openTimeFilterSheet(context, viewModel),
                       ),

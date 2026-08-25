@@ -80,15 +80,6 @@ class LineDetailViewModel extends ChangeNotifier {
   /// Etichetta della fascia oraria mostrata.
   String get timeRangeLabel => formatLineTimeRange(_selectedMoment().hour);
 
-  /// Messaggio mostrato quando non sono disponibili partenze.
-  String get emptyDeparturesMessage {
-    final schedule = _schedule;
-    if (schedule == null) return 'Partenze non ancora caricate.';
-    return schedule.hasServiceToday
-        ? 'Non ci sono bus in questa fascia oraria.'
-        : 'Nessuna corsa attiva per oggi.';
-  }
-
   bool get requiresStopSelection => _reportLocation != null;
 
   bool get canSendReport =>

@@ -15,8 +15,6 @@ class LineDetailColors {
   static const Color successText = Color(0xFF047857);
 
   static const Color warningSurface = Color(0xFFFFF7ED);
-  static const Color emptyDeparturesText = Color.fromARGB(255, 56, 4, 139);
-  static const Color emptyRouteText = Color.fromARGB(255, 4, 11, 117);
   static const Color reportInstructionWarningText = Color(0xFF2B0681);
 
   static const Color disabledSurface = Color(0xFFF4F6FA);

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../../../../domain/models/transit_line.dart';
 import '../../theme/line_card_colors.dart';
 import '../../theme/line_detail_colors.dart';
-import 'line_detail_trip_empty.dart';
 
 /// Card che mostra le partenze disponibili nel dettaglio linea.
 ///
@@ -16,7 +15,6 @@ class LineDetailDeparturesCard extends StatelessWidget {
     required this.departures,
     required this.selectedTripId,
     required this.isLoading,
-    required this.emptyMessage,
     required this.onSelectTimeRange,
   });
 
@@ -32,7 +30,6 @@ class LineDetailDeparturesCard extends StatelessWidget {
 
   /// Indica se il caricamento delle partenze è ancora in corso.
   final bool isLoading;
-  final String emptyMessage;
   final VoidCallback onSelectTimeRange;
 
   @override
@@ -70,10 +67,8 @@ class LineDetailDeparturesCard extends StatelessWidget {
           if (isLoading)
             _departuresLoadingBox
           else if (departures.isEmpty)
-            LineDetailTripEmpty(
-              message: emptyMessage,
-              textColor: LineDetailColors.emptyDeparturesText,
-            )
+           const Text('Nessuna corsa disponibile.')
+                           
           else
             Row(
               spacing: 8,
