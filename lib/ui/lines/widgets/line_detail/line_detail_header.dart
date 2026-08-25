@@ -48,7 +48,7 @@ class LineDetailHeader extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                AppBackButton(onPressed: onClose, tooltip: 'Torna alle linee'),
+                AppBackButton(onPressed: onClose),
 
                 const SizedBox(width: 10),
                 LineBadge(shortName: line.shortName, colors: colors),

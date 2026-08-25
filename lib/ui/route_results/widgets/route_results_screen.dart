@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../core/widgets/back_button.dart';
 import '../theme/route_results_colors.dart';
 import '../view_model/route_results_view_model.dart';
 import 'primary_route_card.dart';
@@ -33,22 +32,13 @@ Widget build(BuildContext context) {
   );
 }
 
-  Widget _buildBody(BuildContext context, RouteResultsViewModel viewModel) {
-    if (viewModel.isLoading) {
-      return _buildLoadingView(context);
-    }
-
-    final result = viewModel.result;
-    if (viewModel.errorMessage != null || result == null) {
-      return _buildErrorView(
-        context,
-        message: viewModel.errorMessage ?? 'Nessun percorso disponibile.',
-        onRetry: viewModel.loadRoute,
-      );
-    }
-
-    return _buildLoadedView(context, viewModel);
+Widget _buildBody(BuildContext context, RouteResultsViewModel viewModel) {
+  if (viewModel.isLoading) {
+    return _buildLoadingView(context);
   }
+
+  return _buildLoadedView(context, viewModel);
+}
 
   Widget _buildLoadedView(
     BuildContext context,
@@ -103,60 +93,6 @@ Widget build(BuildContext context) {
                 fontWeight: FontWeight.w600,
               ),
             ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildErrorView(
-    BuildContext context, {
-    required String message,
-    required VoidCallback onRetry,
-  }) {
-    final textTheme = Theme.of(context).textTheme;
-
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          children: [
-            Align(
-              alignment: Alignment.centerLeft,
-              child: AppBackButton(
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-            ),
-            const Spacer(),
-            Icon(Icons.route_rounded, size: 52, color: RouteResultsColors.accentColor),
-            const SizedBox(height: 18),
-            Text(
-              message,
-              textAlign: TextAlign.center,
-              style: textTheme.titleMedium?.copyWith(
-                color: RouteResultsColors.textPrimaryColor,
-                fontWeight: FontWeight.w800,
-              ),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              'La schermata è predisposta, ma i dati reali del percorso saranno collegati in una fase successiva.',
-              textAlign: TextAlign.center,
-              style: textTheme.bodyMedium?.copyWith(
-                color: RouteResultsColors.textSecondaryColor,
-                height: 1.35,
-              ),
-            ),
-            const SizedBox(height: 22),
-            FilledButton(
-              onPressed: onRetry,
-              style: FilledButton.styleFrom(
-                backgroundColor: Color.fromARGB(255, 6, 27, 59),
-                foregroundColor: Colors.white,
-              ),
-              child: const Text('Riprova'),
-            ),
-            const Spacer(),
           ],
         ),
       ),
