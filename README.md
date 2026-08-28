@@ -318,8 +318,6 @@ Generare il report di copertura:
 flutter test --coverage
 ```
 
-Nell’ultima esecuzione sono stati completati con successo 202 casi di test automatici. Il comando flutter test --coverage ha generato un report LCOV con 1.854 righe coperte su 2.385, corrispondenti a una copertura delle righe pari al 77,74%.
-
 <p align="right">(<a href="#readme-top">torna su</a>)</p>
 
 ---
