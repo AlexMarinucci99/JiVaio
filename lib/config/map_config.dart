@@ -9,9 +9,12 @@ class MapConfig {
   static const double minZoom = 5;
   static const double maxZoom = 19;
 
+  static const String cartoApiKey = String.fromEnvironment('CARTO_API_KEY');
+
   /// URL del tema Carto light usato per una resa più pulita di OpenStreetMap.
   static const String lightTileUrl =
-      'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png';
+      'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png'
+      '?key=$cartoApiKey';
 
   static const List<String> cartoSubdomains = ['a', 'b', 'c', 'd'];
 
