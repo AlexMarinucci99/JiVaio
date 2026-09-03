@@ -10,7 +10,7 @@ class MockRoutePlanningService implements RoutePlanningService {
     required String origin,
     required String destination,
   }) async {
-    await Future<void>.delayed(const Duration(milliseconds: 350));
+    await Future<void>.delayed(const Duration(milliseconds: 1));
 
     return RouteResult(
       origin: origin,

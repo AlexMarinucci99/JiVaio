@@ -20,12 +20,9 @@ class RouteResultsViewModel extends ChangeNotifier {
   final String _destination;
 
   RouteResult? _result;
-  bool _isLoading = false;
   bool _isDisposed = false;
 
   RouteResult? get result => _result;
-  bool get isLoading => _isLoading;
-
   RouteResult get _loadedResult => _result!;
 
   String get departureDescription {
@@ -61,24 +58,24 @@ class RouteResultsViewModel extends ChangeNotifier {
         : '${_loadedResult.destination}\nArrivo previsto: $time';
   }
 
-Future<void> loadRoute() async {
-  if (_isDisposed || _isLoading) return;
+  /// Carica il percorso richiesto.
+  Future<void> loadRoute() async {
+    if (_isDisposed || _result != null) {
+      return;
+    }
 
-  _isLoading = true;
-  _result = null;
-  notifyListeners();
+    final result = await _repository.planRoute(
+      origin: _origin,
+      destination: _destination,
+    );
 
-  _result = await _repository.planRoute(
-    origin: _origin,
-    destination: _destination,
-  );
+    if (_isDisposed) {
+      return;
+    }
 
-  _isLoading = false;
-
-  if (!_isDisposed) {
+    _result = result;
     notifyListeners();
   }
-}
 
   @override
   void dispose() {

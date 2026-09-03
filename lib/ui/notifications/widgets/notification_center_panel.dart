@@ -13,7 +13,6 @@ class NotificationCenterPanel extends StatelessWidget {
     super.key,
     required this.notifications,
     required this.unreadCount,
-    required this.isLoading,
     required this.onClose,
     required this.onMarkAllAsRead,
     required this.onNotificationTap,
@@ -22,7 +21,6 @@ class NotificationCenterPanel extends StatelessWidget {
 
   final List<AppNotification> notifications;
   final int unreadCount;
-  final bool isLoading;
   final VoidCallback onClose;
   final VoidCallback onMarkAllAsRead;
   final ValueChanged<String> onNotificationTap;
@@ -134,10 +132,6 @@ class NotificationCenterPanel extends StatelessWidget {
   };
 
   Widget _buildBody(BuildContext context) {
-    if (isLoading) {
-      return _buildLoadingState();
-    }
-
     if (notifications.isEmpty) {
       return _buildMessageState(
         context,
@@ -167,19 +161,6 @@ class NotificationCenterPanel extends StatelessWidget {
       },
     );
   }
-
-  Widget _buildLoadingState() => SizedBox(
-    height: 150,
-    child: Center(
-      child: SizedBox.square(
-        dimension: 24,
-        child: CircularProgressIndicator(
-          strokeWidth: 2.4,
-          color: colors.loadingIndicatorColor,
-        ),
-      ),
-    ),
-  );
 
   Widget _buildMessageState(
     BuildContext context, {

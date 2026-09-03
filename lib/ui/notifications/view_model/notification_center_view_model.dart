@@ -10,24 +10,19 @@ class NotificationCenterViewModel extends ChangeNotifier {
 
   final NotificationRepository _repository;
   List<AppNotification> _notifications = const [];
-  bool _isLoading = false;
   bool _isPanelOpen = false;
   bool _isDisposed = false;
 
   List<AppNotification> get notifications => _notifications;
-  bool get isLoading => _isLoading;
   bool get isPanelOpen => _isPanelOpen;
   int get unreadCount =>
       _notifications.where((notification) => !notification.isRead).length;
 
   /// Carica le notifiche disponibili e le ordina dalla più recente.
   Future<void> loadNotifications() async {
-    if (_isLoading || _notifications.isNotEmpty) {
+    if (_notifications.isNotEmpty) {
       return;
     }
-
-    _isLoading = true;
-    _notifyListenersSafely();
 
     try {
       _notifications = List<AppNotification>.unmodifiable(
@@ -35,12 +30,11 @@ class NotificationCenterViewModel extends ChangeNotifier {
           (first, second) => second.createdAt.compareTo(first.createdAt),
         ),
       );
-} catch (_) {
-  _notifications = const [];
-} finally {
-      _isLoading = false;
-      _notifyListenersSafely();
+    } catch (_) {
+      _notifications = const [];
     }
+
+    _notifyListenersSafely();
   }
 
   /// Apre o chiude il pannello delle notifiche.

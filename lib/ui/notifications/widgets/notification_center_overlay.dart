@@ -56,7 +56,6 @@ class NotificationCenterOverlay extends StatelessWidget {
                               child: NotificationCenterPanel(
                                 notifications: viewModel.notifications,
                                 unreadCount: viewModel.unreadCount,
-                                isLoading: viewModel.isLoading,
                                 onClose: viewModel.closePanel,
                                 onMarkAllAsRead: viewModel.markAllAsRead,
                                 onNotificationTap: viewModel.markAsRead,

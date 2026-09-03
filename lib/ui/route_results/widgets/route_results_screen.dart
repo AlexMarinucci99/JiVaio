@@ -22,23 +22,17 @@ class RouteResultsScreen extends StatelessWidget {
       );
   }
 
-@override
-Widget build(BuildContext context) {
-  final viewModel = context.watch<RouteResultsViewModel>();
+  @override
+  Widget build(BuildContext context) {
+    final viewModel = context.watch<RouteResultsViewModel>();
 
-  return Scaffold(
-    backgroundColor: RouteResultsColors.backgroundColor,
-    body: _buildBody(context, viewModel),
-  );
-}
-
-Widget _buildBody(BuildContext context, RouteResultsViewModel viewModel) {
-  if (viewModel.isLoading) {
-    return _buildLoadingView(context);
+    return Scaffold(
+      backgroundColor: RouteResultsColors.backgroundColor,
+      body: viewModel.result == null
+          ? const SizedBox.shrink()
+          : _buildLoadedView(context, viewModel),
+    );
   }
-
-  return _buildLoadedView(context, viewModel);
-}
 
   Widget _buildLoadedView(
     BuildContext context,
@@ -75,27 +69,6 @@ Widget _buildBody(BuildContext context, RouteResultsViewModel viewModel) {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildLoadingView(BuildContext context) {
-    return SafeArea(
-      child: Center(
-        child: Column(
-          spacing: 18,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            CircularProgressIndicator(color: RouteResultsColors.accentColor),
-            Text(
-              'Caricamento percorso...',
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: RouteResultsColors.textSecondaryColor,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }

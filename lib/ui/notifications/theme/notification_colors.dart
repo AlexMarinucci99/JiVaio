@@ -35,7 +35,6 @@ class NotificationCenterPanelColors {
     this.closeIconColor = const Color(0xFFD7E0EF),
     this.closeSplashColor = const Color(0x14FFFFFF),
     this.dividerColor = const Color(0x244E6A92),
-    this.loadingIndicatorColor = const Color(0xFF8CB7FF),
     this.emptyIconColor = const Color(0xFF7084A2),
     this.emptyTitleColor = const Color(0xFFD7E0EF),
     this.emptyMessageColor = const Color(0xFF90A4C2),
@@ -50,7 +49,6 @@ class NotificationCenterPanelColors {
   final Color closeIconColor;
   final Color closeSplashColor;
   final Color dividerColor;
-  final Color loadingIndicatorColor;
   final Color emptyIconColor;
   final Color emptyTitleColor;
   final Color emptyMessageColor;
