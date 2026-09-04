@@ -8,7 +8,6 @@ class TransitLine {
     required this.directions,
   });
 
-  /// Identificativo della linea nella sorgente dati.
   final String routeId;
 
   /// Nome breve mostrato nei badge e nelle card.
@@ -19,8 +18,6 @@ class TransitLine {
 
   /// Descrizione estesa della linea.
   final String routeLongName;
-
-  /// Direzioni disponibili per la linea.
   final List<TransitLineDirection> directions;
 
   /// Indica se la linea viene trattata come monodirezionale nel prototipo.

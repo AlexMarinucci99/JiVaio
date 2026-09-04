@@ -1,7 +1,4 @@
-/// Tipologie di errore applicative legate all'autenticazione.
-///
-/// I livelli superiori non devono conoscere i codici specifici
-/// restituiti dal provider esterno.
+/// Tipologie di errore legate all'autenticazione.
 enum AuthFailureCode {
   invalidEmail,
   userNotFound,
