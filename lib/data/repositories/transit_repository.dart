@@ -3,13 +3,10 @@ import '../../domain/models/transit_stop.dart';
 import '../gtfs/gtfs_calendar_utils.dart';
 import '../gtfs/gtfs_collection_utils.dart';
 import '../gtfs/gtfs_departure_utils.dart';
-import '../gtfs/gtfs_route_utils.dart';
 import '../gtfs/gtfs_stop_utils.dart';
 import '../gtfs/gtfs_trip_utils.dart';
 import '../gtfs/gtfs_utils.dart';
 import '../services/transit_raw_service.dart';
-
-typedef _RawMap = GtfsRawMap;
 
 /// Traduce i dati GTFS grezzi nei model di dominio del trasporto urbano.
 ///
@@ -93,7 +90,7 @@ class TransitRepository {
 
     for (final route in bundle.routes) {
       final routeId = gtfsStringValue(route, 'route_id');
-      final routeTrips = tripsByRoute[routeId] ?? const <_RawMap>[];
+      final routeTrips = tripsByRoute[routeId] ?? const <GtfsRawMap>[];
 
       if (routeTrips.isEmpty) {
         continue;
@@ -119,17 +116,12 @@ class TransitRepository {
       }
 
       final longName = gtfsStringValue(route, 'route_long_name');
-      final routeDescription = gtfsStringValue(route, 'route_desc');
 
       lines.add(
         TransitLine(
           routeId: routeId,
           shortName: shortName.isEmpty ? routeId : shortName,
           displayName: longName.isEmpty ? 'Linea $shortName' : longName,
-          routeLongName: gtfsRouteSubtitle(
-            shortName: shortName,
-            routeDescription: routeDescription,
-          ),
           directions: directions,
         ),
       );
@@ -262,10 +254,10 @@ class TransitRepository {
   }
 
   List<TransitLineDirection> _buildDirections({
-    required List<_RawMap> routeTrips,
+    required List<GtfsRawMap> routeTrips,
     required TransitRawBundle bundle,
-    required Map<String, List<_RawMap>> stopTimesByTrip,
-    required Map<String, _RawMap> stopsById,
+    required Map<String, List<GtfsRawMap>> stopTimesByTrip,
+    required Map<String, GtfsRawMap> stopsById,
     required DateTime moment,
   }) {
     final directionKeys =
@@ -305,7 +297,7 @@ class TransitRepository {
 
       final representativeStopTimes =
           stopTimesByTrip[gtfsStringValue(representativeTrip, 'trip_id')] ??
-          const <_RawMap>[];
+          const <GtfsRawMap>[];
 
       if (representativeStopTimes.isEmpty) {
         continue;
@@ -342,13 +334,13 @@ class TransitRepository {
   }
 
   List<TransitLineStop> _buildStopsForTrip({
-    required _RawMap trip,
-    required Map<String, List<_RawMap>> stopTimesByTrip,
-    required Map<String, _RawMap> stopsById,
+    required GtfsRawMap trip,
+    required Map<String, List<GtfsRawMap>> stopTimesByTrip,
+    required Map<String, GtfsRawMap> stopsById,
     required bool includeOfficialTimes,
   }) {
     final tripId = gtfsStringValue(trip, 'trip_id');
-    final stopTimes = stopTimesByTrip[tripId] ?? const <_RawMap>[];
+    final stopTimes = stopTimesByTrip[tripId] ?? const <GtfsRawMap>[];
 
     return stopTimes
         .map((stopTime) {

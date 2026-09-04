@@ -4,7 +4,6 @@ class TransitLine {
     required this.routeId,
     required this.shortName,
     required this.displayName,
-    required this.routeLongName,
     required this.directions,
   });
 
@@ -16,8 +15,6 @@ class TransitLine {
   /// Nome principale mostrato all'utente.
   final String displayName;
 
-  /// Descrizione estesa della linea.
-  final String routeLongName;
   final List<TransitLineDirection> directions;
 
   /// Indica se la linea viene trattata come monodirezionale nel prototipo.
@@ -62,7 +59,6 @@ class TransitLineDirectionSchedule {
   const TransitLineDirectionSchedule({
     required this.departures,
     required this.stops,
-    this.selectedTripId,
   });
 
   /// Corse disponibili nella fascia oraria.
@@ -70,9 +66,6 @@ class TransitLineDirectionSchedule {
 
   /// Fermate ordinate della direzione.
   final List<TransitLineStop> stops;
-
-  /// Identificativo della corsa selezionata, se disponibile.
-  final String? selectedTripId;
 }
 
 /// Descrive una corsa disponibile per una linea.

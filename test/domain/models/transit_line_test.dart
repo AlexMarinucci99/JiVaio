@@ -17,7 +17,6 @@ void main() {
         routeId: 'line-${entry.key.trim()}',
         shortName: entry.key,
         displayName: 'Linea ${entry.key.trim()}',
-        routeLongName: 'Linea di test',
         directions: const [],
       );
 
