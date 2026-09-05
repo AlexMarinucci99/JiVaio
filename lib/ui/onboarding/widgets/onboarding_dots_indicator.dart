@@ -10,10 +10,7 @@ class OnboardingDotsIndicator extends StatelessWidget {
     required this.itemCount,
   });
 
-  /// Indice della pagina attualmente visibile.
   final int currentIndex;
-
-  /// Numero totale di pagine dell'onboarding.
   final int itemCount;
 
   @override

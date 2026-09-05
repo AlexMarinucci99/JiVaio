@@ -7,7 +7,7 @@ import 'primary_route_card.dart';
 import 'route_navigation_button.dart';
 import 'route_results_header.dart';
 
-/// Mostra il risultato di percorso esposto dal ViewModel scoped alla route.
+/// Mostra il risultato di percorso.
 class RouteResultsScreen extends StatelessWidget {
   const RouteResultsScreen({super.key});
 

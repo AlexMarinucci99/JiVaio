@@ -14,13 +14,8 @@ class BottomNavBar extends StatelessWidget {
     this.colors = const BottomNavBarColors(),
   });
 
-  /// Indice del tab attualmente selezionato.
   final int selectedIndex;
-
-  /// Callback invocata quando l'utente seleziona un tab.
   final ValueChanged<int> onItemSelected;
-
-  /// Palette cromatica usata dalla barra.
   final BottomNavBarColors colors;
 
   static const List<_BottomNavItem> _items = [

@@ -9,8 +9,7 @@ import '../theme/home_colors.dart';
 
 /// Mappa principale della schermata Home.
 ///
-/// Riceve fermate e posizione utente già pronte e si occupa
-/// del rendering tramite Flutter Map.
+/// Riceve fermate e posizione utente.
 class HomeMap extends StatelessWidget {
   const HomeMap({
     super.key,
@@ -21,19 +20,10 @@ class HomeMap extends StatelessWidget {
     this.colors = const HomeMapColors(),
   });
 
-  /// Controller usato dalla schermata padre per muovere la mappa.
   final MapController mapController;
-
-  /// Fermate del trasporto urbano da visualizzare sulla mappa.
   final List<TransitStop> stops;
-
-  /// Posizione corrente dell'utente.
   final UserLocation? userLocation;
-
-  /// Callback invocata quando la mappa è pronta.
   final VoidCallback onMapReady;
-
-  /// Palette cromatica usata per marker.
   final HomeMapColors colors;
 
   static const LatLng _initialCenter = LatLng(

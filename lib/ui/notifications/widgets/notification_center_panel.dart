@@ -4,10 +4,7 @@ import '../../../domain/models/app_notification.dart';
 import '../theme/notification_colors.dart';
 import 'notification_item.dart';
 
-/// Pannello flottante che visualizza il centro notifiche.
-///
-/// Riceve stato e callback dall'esterno, senza contenere business logic
-/// o modificare direttamente i dati delle notifiche.
+/// Pannello che visualizza il centro notifiche.
 class NotificationCenterPanel extends StatelessWidget {
   const NotificationCenterPanel({
     super.key,

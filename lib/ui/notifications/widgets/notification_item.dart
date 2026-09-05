@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../domain/models/app_notification.dart';
 import '../theme/notification_colors.dart';
 
-/// Riga riutilizzabile che visualizza una singola notifica.
+/// Singola notifica.
 ///
 /// Riceve il modello da rappresentare e inoltra il tap
 /// al componente padre tramite [onTap].

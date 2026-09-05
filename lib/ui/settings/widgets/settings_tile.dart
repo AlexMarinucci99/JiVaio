@@ -19,13 +19,9 @@ class SettingsTile extends StatelessWidget {
   });
 
   final IconData icon;
-
   final String title;
-
   final String subtitle;
 
-  /// Azione comunicata dal widget padre.
-  ///
   /// Se è null, la riga rimane soltanto informativa.
   final VoidCallback? onTap;
 

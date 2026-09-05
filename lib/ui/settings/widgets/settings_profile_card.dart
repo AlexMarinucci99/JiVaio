@@ -3,14 +3,13 @@ import 'package:flutter/material.dart';
 import '../theme/settings_colors.dart';
 
 /// Card che mostra le informazioni principali dell'utente.
-/// 
 class SettingsProfileCard extends StatelessWidget {
- const SettingsProfileCard({
-  super.key,
-  required this.title,
-  required this.subtitle,
-  required this.isGuest,
-});
+  const SettingsProfileCard({
+    super.key,
+    required this.title,
+    required this.subtitle,
+    required this.isGuest,
+  });
 
   final String title;
   final String subtitle;

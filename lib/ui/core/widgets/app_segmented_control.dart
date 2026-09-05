@@ -31,13 +31,10 @@ class AppSegmentedControl<T> extends StatelessWidget {
   }) : assert(items.length >= 2 && items.length <= 4);
 
   final List<AppSegmentedControlItem<T>> items;
-
-  /// Valore attualmente selezionato.
   final T selectedValue;
 
   /// Callback invocata quando l'utente seleziona una nuova opzione.
   final ValueChanged<T> onChanged;
-
   final AppSegmentedControlColors colors;
 
   @override
@@ -50,63 +47,60 @@ class AppSegmentedControl<T> extends StatelessWidget {
         border: Border.all(color: colors.borderColor),
       ),
       child: Row(
-        children: items
-            .map((item) {
-              final isSelected = item.value == selectedValue;
-              final textColor = isSelected
-                  ? colors.selectedTextColor
-                  : colors.unselectedTextColor;
-              final badgeLabel = item.badgeLabel;
+        children: items.map((item) {
+          final isSelected = item.value == selectedValue;
+          final textColor = isSelected
+              ? colors.selectedTextColor
+              : colors.unselectedTextColor;
+          final badgeLabel = item.badgeLabel;
 
-              return Expanded(
-                child: TextButton(
-                  onPressed: () {
-                    if (!isSelected) {
-                      onChanged(item.value);
-                    }
-                  },
-                  style: TextButton.styleFrom(
-                    backgroundColor: isSelected
-                        ? colors.selectedColor
-                        : Colors.transparent,
-                    foregroundColor: textColor,
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(11),
+          return Expanded(
+            child: TextButton(
+              onPressed: () {
+                if (!isSelected) {
+                  onChanged(item.value);
+                }
+              },
+              style: TextButton.styleFrom(
+                backgroundColor: isSelected
+                    ? colors.selectedColor
+                    : Colors.transparent,
+                foregroundColor: textColor,
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(11),
+                ),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    item.label,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      color: textColor,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        item.label,
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.titleMedium
-                            ?.copyWith(
-                              color: textColor,
-                              fontSize: 13,
-                              fontWeight: FontWeight.w700,
-                            ),
-                      ),
-                      if (badgeLabel != null && badgeLabel.isNotEmpty) ...[
-                        const SizedBox(width: 8),
-                        AppSegmentedBadge(
-                          label: badgeLabel,
-                          backgroundColor: isSelected
-                              ? colors.selectedBadgeBackgroundColor
-                              : colors.badgeBackgroundColor,
-                          textColor: isSelected
-                              ? colors.selectedBadgeTextColor
-                              : colors.badgeTextColor,
-                        ),
-                      ],
-                    ],
-                  ),
-                ),
-              );
-            })
-            .toList(),
+                  if (badgeLabel != null && badgeLabel.isNotEmpty) ...[
+                    const SizedBox(width: 8),
+                    AppSegmentedBadge(
+                      label: badgeLabel,
+                      backgroundColor: isSelected
+                          ? colors.selectedBadgeBackgroundColor
+                          : colors.badgeBackgroundColor,
+                      textColor: isSelected
+                          ? colors.selectedBadgeTextColor
+                          : colors.badgeTextColor,
+                    ),
+                  ],
+                ],
+              ),
+            ),
+          );
+        }).toList(),
       ),
     );
   }

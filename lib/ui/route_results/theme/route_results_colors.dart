@@ -4,7 +4,6 @@ import '../../core/themes/app_colors.dart';
 
 /// Palette grafica della schermata dei risultati del percorso.
 
-/// Definisce i colori della schermata dei risultati del percorso.
 class RouteResultsColors {
   const RouteResultsColors._();
 

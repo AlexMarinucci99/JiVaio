@@ -5,7 +5,7 @@ import '../../../data/repositories/onboarding_repository.dart';
 /// Gestisce stato e azioni della schermata di onboarding.
 ///
 /// Il ViewModel espone le slide da mostrare, tiene traccia della pagina
-/// corrente e salva la preferenza scelta dall'utente tramite repository.
+/// corrente e salva la preferenza scelta dall'utente.
 class OnboardingViewModel extends ChangeNotifier {
   OnboardingViewModel({required OnboardingRepository onboardingRepository})
     : _repository = onboardingRepository;
@@ -43,7 +43,6 @@ class OnboardingViewModel extends ChangeNotifier {
 
   bool get hideOnboardingNextTime => _hideOnboardingNextTime;
 
-  ///Aggiorna la pagina corrente dell'onboarding.
   void updatePage(int index) {
     if (_currentPage == index) return;
 
@@ -57,7 +56,6 @@ class OnboardingViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Completa l'onboarding e salva la preferenza selezionata.
   Future<void> completeOnboarding() =>
       _repository.setSkipOnboarding(_hideOnboardingNextTime);
 }

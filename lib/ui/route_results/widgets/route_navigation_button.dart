@@ -6,12 +6,8 @@ import '../theme/route_results_colors.dart';
 ///
 /// Attualmente mock.
 class RouteNavigationButton extends StatelessWidget {
-  const RouteNavigationButton({
-    super.key,
-    required this.onPressed,
-  });
+  const RouteNavigationButton({super.key, required this.onPressed});
 
-  /// Callback eseguita quando l'utente preme il pulsante.
   final VoidCallback onPressed;
 
   @override

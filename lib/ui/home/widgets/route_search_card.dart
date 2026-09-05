@@ -14,11 +14,7 @@ class RouteSearchCard extends StatefulWidget {
   });
 
   /// Callback invocata quando l'utente richiede la ricerca del percorso.
-  ///
-  /// La ricerca viene avviata solo quando partenza e destinazione sono compilate.
   final void Function(String from, String to) onSearch;
-
-  /// Palette cromatica usata dalla card.
   final RouteSearchCardColors colors;
 
   @override
@@ -42,18 +38,16 @@ class _RouteSearchCardState extends State<RouteSearchCard> {
 
   void _refreshCard(String _) => setState(() {});
 
-void _swapFields() {
-  final (from, to) = (_fromController.text, _toController.text);
-  _fromController.text = to;
-  _toController.text = from;
-}
+  void _swapFields() {
+    final (from, to) = (_fromController.text, _toController.text);
+    _fromController.text = to;
+    _toController.text = from;
+  }
 
-void _searchRoute() {
-  widget.onSearch(
-    _fromController.text.trim(),
-    _toController.text.trim(),
-  );
-}
+  void _searchRoute() {
+    widget.onSearch(_fromController.text.trim(), _toController.text.trim());
+  }
+
   @override
   Widget build(BuildContext context) {
     const scale = 0.90;

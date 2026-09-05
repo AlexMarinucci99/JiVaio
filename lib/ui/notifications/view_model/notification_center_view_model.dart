@@ -18,7 +18,7 @@ class NotificationCenterViewModel extends ChangeNotifier {
   int get unreadCount =>
       _notifications.where((notification) => !notification.isRead).length;
 
-  /// Carica le notifiche disponibili e le ordina dalla più recente.
+  /// Carica le notifiche e le ordina.
   Future<void> loadNotifications() async {
     if (_notifications.isNotEmpty) {
       return;
@@ -43,7 +43,6 @@ class NotificationCenterViewModel extends ChangeNotifier {
     _notifyListenersSafely();
   }
 
-  /// Chiude il pannello delle notifiche, se aperto.
   void closePanel() {
     if (!_isPanelOpen) {
       return;
@@ -53,7 +52,6 @@ class NotificationCenterViewModel extends ChangeNotifier {
     _notifyListenersSafely();
   }
 
-  /// Segna come letta la notifica identificata da [notificationId].
   void markAsRead(String notificationId) {
     final notificationIndex = _notifications.indexWhere(
       (notification) => notification.id == notificationId,
@@ -73,7 +71,6 @@ class NotificationCenterViewModel extends ChangeNotifier {
     _notifyListenersSafely();
   }
 
-  /// Segna come lette tutte le notifiche non ancora lette.
   void markAllAsRead() {
     if (unreadCount == 0) {
       return;

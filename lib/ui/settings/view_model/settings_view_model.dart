@@ -6,7 +6,6 @@ class SettingsViewModel {
 
   final AppUser? user;
 
-  /// Indica se l'app è utilizzata senza autenticazione.
   bool get isGuest => user == null;
 
   /// Titolo mostrato nella card superiore.
@@ -14,7 +13,6 @@ class SettingsViewModel {
       ? 'Modalità ospite'
       : _valueOrFallback(user?.displayName, 'Account personale');
 
-  /// Descrizione mostrata sotto il titolo della card.
   String get profileSubtitle => isGuest
       ? 'Accedi per personalizzare la tua esperienza.'
       : _valueOrFallback(user?.email, 'Account autenticato');

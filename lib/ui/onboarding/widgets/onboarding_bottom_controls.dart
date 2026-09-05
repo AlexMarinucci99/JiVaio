@@ -17,16 +17,9 @@ class OnboardingBottomControls extends StatelessWidget {
     required this.onNext,
   });
 
-  /// Indice della pagina attualmente visibile.
   final int currentIndex;
-
-  /// Numero totale delle pagine dell'onboarding.
   final int itemCount;
-
-  /// Callback invocata dal bottone "Indietro".
   final VoidCallback onBack;
-
-  /// Callback invocata dal bottone "Avanti" o "Inizia".
   final VoidCallback onNext;
 
   @override

@@ -16,18 +16,12 @@ class OnboardingSlideCard extends StatelessWidget {
   });
 
   final String imagePath;
-
   final String title;
-
   final String description;
-
-  /// Icona rappresentativa della slide.
   final IconData icon;
 
   /// Colore specifico dell'icona della slide.
   final Color accentColor;
-
-  /// Allineamento dell'immagine dentro la card.
   final Alignment imageAlignment;
 
   @override
@@ -43,7 +37,7 @@ class OnboardingSlideCard extends StatelessWidget {
           AspectRatio(
             aspectRatio: 1.55,
             child: Container(
-              decoration: BoxDecoration(             
+              decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(28),
               ),
               clipBehavior: Clip.antiAlias,
@@ -53,7 +47,7 @@ class OnboardingSlideCard extends StatelessWidget {
                     child: Image.asset(
                       imagePath,
                       fit: BoxFit.cover,
-                      alignment: imageAlignment,                     
+                      alignment: imageAlignment,
                     ),
                   ),
 
