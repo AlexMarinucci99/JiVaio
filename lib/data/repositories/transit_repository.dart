@@ -246,7 +246,6 @@ class TransitRepository {
         key: terminalDirection.key,
         originName: "L'aquilone",
         destinationName: 'Terminal',
-        stopCount: terminalDirection.stopCount,
         upcomingDepartures: terminalDirection.upcomingDepartures,
         hasServiceToday: terminalDirection.hasServiceToday,
       ),
@@ -318,7 +317,6 @@ class TransitRepository {
           key: directionKey,
           originName: originName,
           destinationName: destinationName,
-          stopCount: representativeStopTimes.length,
           upcomingDepartures: gtfsUpcomingDepartures(
             trips: activeDirectionTrips,
             stopTimesByTrip: stopTimesByTrip,

@@ -52,18 +52,8 @@ class LineDetailViewModel extends ChangeNotifier {
   bool get canSwapDirection =>
       line.directions.length > 1 && !line.isUnidirectional;
 
-  /// Direzione attualmente selezionata.
-  ///
-  /// Usa la prima direzione come fallback se l'indice salvato non è più valido.
-  TransitLineDirection? get selectedDirection {
-    final directions = line.directions;
-
-    if (directions.isEmpty) return null;
-    final index = _selectedDirectionIndex < directions.length
-        ? _selectedDirectionIndex
-        : 0;
-    return directions[index];
-  }
+  TransitLineDirection get selectedDirection =>
+      line.directions[_selectedDirectionIndex];
 
   List<TransitLineDeparture> get departures =>
       _schedule?.departures ?? const <TransitLineDeparture>[];
@@ -94,18 +84,10 @@ class LineDetailViewModel extends ChangeNotifier {
 
   /// Carica partenze e fermate della direzione selezionata.
   Future<void> loadSchedule() async {
-    final direction = selectedDirection;
-
-    if (direction == null) {
-      _schedule = null;
-      notifyListeners();
-      return;
-    }
-
     try {
       _schedule = await _repository.getLineDirectionSchedule(
         line: line,
-        direction: direction,
+        direction: selectedDirection,
         moment: _selectedMoment(),
       );
     } catch (_) {

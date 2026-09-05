@@ -27,7 +27,6 @@ class TransitLineDirection {
     required this.key,
     required this.originName,
     required this.destinationName,
-    required this.stopCount,
     required this.upcomingDepartures,
     this.hasServiceToday = true,
   });
@@ -35,9 +34,6 @@ class TransitLineDirection {
   final String key;
   final String originName;
   final String destinationName;
-
-  /// Numero di fermate nella direzione.
-  final int stopCount;
 
   /// Prossime partenze.
   final List<String> upcomingDepartures;

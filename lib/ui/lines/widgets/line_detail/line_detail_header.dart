@@ -25,10 +25,7 @@ class LineDetailHeader extends StatelessWidget {
   final TransitLine line;
 
   /// Direzione attualmente selezionata.
-  ///
-  /// È null quando la linea non ha una direzione disponibile.
-  final TransitLineDirection? direction;
-
+  final TransitLineDirection direction;
   final bool canSwapDirection;
   final VoidCallback onSwapDirection;
   final VoidCallback onClose;
@@ -36,7 +33,6 @@ class LineDetailHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const colors = LineCardColors.defaultPalette;
-    final selectedDirection = direction;
 
     return Container(
       margin: const EdgeInsets.fromLTRB(16, 12, 16, 0),
@@ -74,14 +70,12 @@ class LineDetailHeader extends StatelessWidget {
 
           Padding(
             padding: const EdgeInsets.all(8),
-            child: selectedDirection == null
-                ? const _DirectionUnavailableBox()
-                : _DirectionSwitcherBox(
-                    direction: selectedDirection,
-                    isUnidirectional: line.isUnidirectional,
-                    canSwapDirection: canSwapDirection,
-                    onSwapDirection: onSwapDirection,
-                  ),
+            child: _DirectionSwitcherBox(
+              direction: direction,
+              isUnidirectional: line.isUnidirectional,
+              canSwapDirection: canSwapDirection,
+              onSwapDirection: onSwapDirection,
+            ),
           ),
         ],
       ),
@@ -139,32 +133,6 @@ class _DirectionSwitcherBox extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _DirectionUnavailableBox extends StatelessWidget {
- const _DirectionUnavailableBox();
-
-  @override
-  Widget build(BuildContext context) {
-    const colors = LineCardColors.defaultPalette;
-    
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: colors.pillBackground,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: colors.border),
-      ),
-      child: Text(
-        'Direzione non disponibile',
-        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-          fontSize: 12,
-          color: colors.secondaryText,
-        ),
       ),
     );
   }
