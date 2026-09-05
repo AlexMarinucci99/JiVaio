@@ -3,7 +3,6 @@ import '../services/saved_lines_service.dart';
 /// Gestisce l'accesso ai dati delle linee preferite.
 ///
 /// Espone ai ViewModel un'API stabile e nasconde la sorgente dati concreta
-/// usata per salvare o rimuovere le linee preferite.
 class SavedLinesRepository {
   const SavedLinesRepository(this._service);
 

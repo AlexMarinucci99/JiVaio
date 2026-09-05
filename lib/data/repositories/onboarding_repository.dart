@@ -1,9 +1,6 @@
 import '../services/onboarding_preferences_service.dart';
 
 /// Gestisce l'accesso alla preferenza di visualizzazione dell'onboarding.
-///
-/// Espone al resto dell'app un'API stabile e nasconde il service
-/// responsabile della persistenza locale.
 class OnboardingRepository {
   OnboardingRepository(this._preferencesService);
 

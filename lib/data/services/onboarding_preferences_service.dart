@@ -2,8 +2,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 /// Gestisce la preferenza locale relativa alla visualizzazione dell'onboarding.
 ///
-/// Il servizio incapsula l'accesso a [SharedPreferencesAsync], così il resto
-/// dell'app non dipende direttamente dal meccanismo di persistenza locale.
+/// Il servizio incapsula l'accesso a [SharedPreferencesAsync].
 class OnboardingPreferencesService {
   static const String _skipOnboardingKey = 'skip_onboarding';
 
@@ -13,7 +12,6 @@ class OnboardingPreferencesService {
   Future<bool> shouldSkipOnboarding() async =>
       await _preferences.getBool(_skipOnboardingKey) ?? false;
 
-  /// Salva la scelta dell'utente sulla visualizzazione dell'onboarding.
   Future<void> setSkipOnboarding(bool value) =>
       _preferences.setBool(_skipOnboardingKey, value);
 }

@@ -3,9 +3,8 @@ import 'notification_service.dart';
 
 /// Sorgente dati temporanea per il centro notifiche.
 ///
-/// In questa prima versione restituisce notifiche create manualmente.
-/// In futuro potrà essere sostituita da un service collegato a Firebase,
-/// Supabase o a una API REST senza modificare UI e ViewModel.
+/// In questa versione restituisce notifiche create manualmente.
+
 class MockNotificationService implements NotificationService {
   const MockNotificationService();
 

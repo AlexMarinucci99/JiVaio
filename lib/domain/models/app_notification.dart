@@ -1,15 +1,6 @@
-enum AppNotificationType {
-  /// Ritardi delle linee o delle singole corse.
-  delay,
+enum AppNotificationType { delay, trip, serviceUpdate }
 
-  /// Informazioni utili mentre l'utente sta viaggiando.
-  trip,
-
-  /// Modifiche a orari, fermate, linee o viabilità.
-  serviceUpdate,
-}
-
-///Notifica mostrata nel centro notifiche dell'app.
+///Notifica mostrata nel centro notifiche.
 class AppNotification {
   const AppNotification({
     required this.id,
@@ -27,12 +18,12 @@ class AppNotification {
   final DateTime createdAt;
   final bool isRead;
 
-AppNotification copyWith({bool? isRead}) => AppNotification(
-  id: id,
-  type: type,
-  title: title,
-  message: message,
-  createdAt: createdAt,
-  isRead: isRead ?? this.isRead,
-);
+  AppNotification copyWith({bool? isRead}) => AppNotification(
+    id: id,
+    type: type,
+    title: title,
+    message: message,
+    createdAt: createdAt,
+    isRead: isRead ?? this.isRead,
+  );
 }

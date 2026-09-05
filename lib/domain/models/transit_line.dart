@@ -1,4 +1,4 @@
-/// Rappresenta una linea del trasporto urbano.
+///linea del trasporto urbano.
 class TransitLine {
   const TransitLine({
     required this.routeId,
@@ -14,10 +14,9 @@ class TransitLine {
 
   /// Nome principale mostrato all'utente.
   final String displayName;
-
   final List<TransitLineDirection> directions;
 
-  /// Indica se la linea viene trattata come monodirezionale nel prototipo.
+  /// Indica se la linea viene trattata come monodirezionale.
   bool get isUnidirectional =>
       const {'2U', '2UT'}.contains(shortName.trim().toUpperCase());
 }
@@ -33,19 +32,14 @@ class TransitLineDirection {
     this.hasServiceToday = true,
   });
 
-  /// Chiave interna della direzione.
   final String key;
-
-  /// Capolinea di partenza.
   final String originName;
-
-  /// Capolinea di arrivo.
   final String destinationName;
 
   /// Numero di fermate nella direzione.
   final int stopCount;
 
-  /// Prossime partenze già formattate per la UI.
+  /// Prossime partenze.
   final List<String> upcomingDepartures;
 
   /// Indica se la direzione ha servizio nella giornata corrente.
@@ -75,7 +69,6 @@ class TransitLineDeparture {
     required this.departureTime,
   });
 
-  /// Identificativo della corsa nella sorgente dati.
   final String tripId;
 
   /// Orario ufficiale di partenza dal capolinea.
@@ -90,13 +83,8 @@ class TransitLineStop {
     this.officialTime,
   });
 
-  /// Identificativo della fermata nella sorgente dati.
   final String stopId;
-
-  /// Nome della fermata mostrato nella timeline.
   final String name;
-
-  /// Orario ufficiale della fermata per la corsa selezionata.
   final String? officialTime;
 
   bool get hasOfficialTime => officialTime?.trim().isNotEmpty ?? false;

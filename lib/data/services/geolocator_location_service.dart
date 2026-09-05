@@ -76,7 +76,7 @@ class GeolocatorLocationService implements LocationService {
         rethrow;
       }
 
-      // Secondo tentativo Android tramite il Location Manager tradizionale.
+      // Secondo tentativo Android tramite il Location Manager.
       return Geolocator.getCurrentPosition(
         locationSettings: AndroidSettings(
           accuracy: LocationAccuracy.high,

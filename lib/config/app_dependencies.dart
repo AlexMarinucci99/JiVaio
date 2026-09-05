@@ -29,8 +29,7 @@ class AppDependencies {
 
   /// Costruisce il grafo delle dipendenze predefinite dell'app.
   ///
-  /// Mantiene in un solo punto l'associazione tra repository e service,
-  /// compresi i mock usati per funzionalità non ancora collegate a dati reali.
+  /// Mantiene in un solo punto l'associazione tra repository e service.
   factory AppDependencies.create() => AppDependencies(
     authRepository: AuthRepository(FirebaseAuthService()),
     transitRepository: TransitRepository(),

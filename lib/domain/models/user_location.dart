@@ -1,4 +1,4 @@
-/// Rappresenta la posizione geografica dell'utente.
+/// Rappresenta la posizione dell'utente.
 class UserLocation {
   const UserLocation({required this.latitude, required this.longitude});
 

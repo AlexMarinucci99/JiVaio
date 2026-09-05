@@ -1,7 +1,7 @@
 import '../../domain/models/route_result.dart';
 import 'route_planning_service.dart';
 
-/// Restituisce un percorso dimostrativo finché non è collegato il motore reale.
+/// Restituisce un percorso dimostrativo.
 class MockRoutePlanningService implements RoutePlanningService {
   const MockRoutePlanningService();
 
