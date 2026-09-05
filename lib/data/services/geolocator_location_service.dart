@@ -94,5 +94,5 @@ class GeolocatorLocationService implements LocationService {
   Future<bool> openLocationSettings() => Geolocator.openLocationSettings();
 
   @override
-  Future<bool> openAppSettings() => Geolocator.openAppSettings();
+  Future<bool> openAppPermissionSettings() => Geolocator.openAppSettings();
 }

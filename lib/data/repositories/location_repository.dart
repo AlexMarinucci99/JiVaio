@@ -19,5 +19,6 @@ class LocationRepository {
 
   Future<bool> openLocationSettings() => _service.openLocationSettings();
 
-  Future<bool> openAppSettings() => _service.openAppSettings();
+  Future<bool> openAppPermissionSettings() =>
+      _service.openAppPermissionSettings();
 }

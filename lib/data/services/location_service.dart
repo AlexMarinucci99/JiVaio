@@ -7,5 +7,5 @@ abstract class LocationService {
   Future<LocationAccessResult> ensureLocationAccess();
   Future<UserLocation> getCurrentLocation();
   Future<bool> openLocationSettings();
-  Future<bool> openAppSettings();
+  Future<bool> openAppPermissionSettings();
 }

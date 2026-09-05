@@ -100,12 +100,11 @@ class HomeMapViewModel extends ChangeNotifier {
     }
   }
 
-  /// Apre le impostazioni di localizzazione del dispositivo.
   Future<bool> openLocationSettings() =>
       _locationRepository.openLocationSettings();
 
-  /// Apre le impostazioni dell'app sul dispositivo.
-  Future<bool> openAppSettings() => _locationRepository.openAppSettings();
+  Future<bool> openAppPermissionSettings() =>
+      _locationRepository.openAppPermissionSettings();
 
   void _notifyListenersSafely() {
     // Evita notifiche dopo dispose durante operazioni asincrone ancora attive.

@@ -100,7 +100,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
         'Apri le impostazioni dell’app e abilitalo manualmente.',
     dismissLabel: 'Annulla',
     confirmLabel: 'Apri impostazioni',
-    onConfirm: () => _openSettings(_viewModel.openAppSettings),
+    onConfirm: () => _openSettings(_viewModel.openAppPermissionSettings),
   );
 
   void _openSettings(Future<bool> Function() openSettings) {
