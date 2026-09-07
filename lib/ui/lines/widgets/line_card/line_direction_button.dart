@@ -34,7 +34,6 @@ class LineDirectionButton extends StatelessWidget {
       color: colors.directionButtonBackground,
       shape: const CircleBorder(),
       child: IconButton(
-        visualDensity: VisualDensity.compact,
         onPressed: isSwapEnabled ? onSwapDirection : null,
         icon: Icon(
           isUnidirectional
