@@ -54,8 +54,6 @@ class LineDetailHeader extends StatelessWidget {
                 Expanded(
                   child: Text(
                     line.displayName,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       color: colors.primaryText,
                       fontSize: 16,

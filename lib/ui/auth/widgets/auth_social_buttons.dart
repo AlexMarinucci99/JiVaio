@@ -40,7 +40,6 @@ class AuthSocialButtons extends StatelessWidget {
             Flexible(
               child: Text(
                 label,
-                overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w500,

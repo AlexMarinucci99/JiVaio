@@ -140,8 +140,6 @@ class _ReportActionButton extends StatelessWidget {
       icon: Icon(icon, size: 17),
       label: Text(
         label,
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
         style: const TextStyle(fontSize: 11.5, fontWeight: FontWeight.w800),
       ),
     );

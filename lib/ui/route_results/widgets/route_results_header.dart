@@ -135,7 +135,6 @@ class RouteResultsHeader extends StatelessWidget {
         Text(
           value,
           maxLines: 2,
-          overflow: TextOverflow.ellipsis,
           style: textTheme.titleMedium?.copyWith(
             color: RouteResultsColors.headerTextColor,
             fontWeight: FontWeight.w700,

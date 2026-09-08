@@ -128,8 +128,6 @@ class _BottomNavTile extends StatelessWidget {
                 const SizedBox(height: 3.6),
                 Text(
                   item.label,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     color: effectiveColor,
                     fontSize: isSelected ? 10.8 : 10.35,

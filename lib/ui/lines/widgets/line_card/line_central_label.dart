@@ -39,8 +39,6 @@ class LineCentralLabel extends StatelessWidget {
         ),
         Text(
           value,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
           textAlign: isEnd ? TextAlign.end : TextAlign.start,
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
             color: colors.primaryText,

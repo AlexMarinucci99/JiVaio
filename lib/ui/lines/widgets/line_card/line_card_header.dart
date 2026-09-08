@@ -34,8 +34,6 @@ class LineCardHeader extends StatelessWidget {
         Expanded(
           child: Text(
             line.displayName,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
               color: colors.primaryText,
               fontSize: 14.5,

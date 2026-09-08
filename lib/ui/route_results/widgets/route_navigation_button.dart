@@ -24,8 +24,6 @@ class RouteNavigationButton extends StatelessWidget {
       icon: const Icon(Icons.navigation_rounded, size: 20),
       label: Text(
         'Inizia navigazione percorso consigliato',
-        maxLines: 2,
-        overflow: TextOverflow.ellipsis,
         textAlign: TextAlign.center,
         style: Theme.of(context).textTheme.titleMedium?.copyWith(
           color: Colors.white,

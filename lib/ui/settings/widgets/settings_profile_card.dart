@@ -47,8 +47,6 @@ class SettingsProfileCard extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     color: SettingsColors.titleText,
                     fontSize: 17,
@@ -58,8 +56,6 @@ class SettingsProfileCard extends StatelessWidget {
                 const SizedBox(height: 5),
                 Text(
                   subtitle,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: SettingsColors.secondaryText,
                     fontSize: 13,
