@@ -30,7 +30,6 @@ class AuthTextField extends StatelessWidget {
       onChanged: onChanged,
       keyboardType: keyboardType,
       obscureText: obscureText,
-      cursorColor: AuthColors.primaryColor,
       decoration: InputDecoration(
         labelText: label,
         labelStyle: TextStyle(color: AuthColors.secondaryTextColor),

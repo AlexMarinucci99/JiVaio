@@ -93,7 +93,6 @@ class NotificationCenterPanel extends StatelessWidget {
                     disabledForegroundColor: colors.disabledActionTextColor,
                     padding: EdgeInsets.zero,
                     minimumSize: const Size(0, 28),
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                     alignment: Alignment.centerLeft,
                   ),
                   child: const Text(

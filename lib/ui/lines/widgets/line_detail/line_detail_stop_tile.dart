@@ -38,7 +38,7 @@ class LineDetailStopTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const colors = LineCardColors.defaultPalette;
-  final isTerminal = isFirst || isLast;
+    final isTerminal = isFirst || isLast;
 
     final borderColor = isSelected
         ? _routeAccentColor.withValues(alpha: 0.42)
@@ -125,7 +125,6 @@ class _StopHeader extends StatelessWidget {
 
     return Wrap(
       spacing: 6,
-      runSpacing: 6,
       crossAxisAlignment: WrapCrossAlignment.center,
       children: [
         Text(
@@ -155,9 +154,9 @@ class _StopHeader extends StatelessWidget {
 }
 
 class _OfficialTimeLine extends StatelessWidget {
-const _OfficialTimeLine({required this.stop});
+  const _OfficialTimeLine({required this.stop});
 
-final TransitLineStop stop;
+  final TransitLineStop stop;
   @override
   Widget build(BuildContext context) {
     const colors = LineCardColors.defaultPalette;

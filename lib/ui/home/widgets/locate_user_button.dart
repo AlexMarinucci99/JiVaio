@@ -33,6 +33,7 @@ class LocateUserButton extends StatelessWidget {
                   ? SizedBox.square(
                       dimension: 21,
                       child: CircularProgressIndicator(
+                        ///spessore
                         strokeWidth: 2.4,
                         color: colors.iconColor,
                       ),

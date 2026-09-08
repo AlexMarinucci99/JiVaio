@@ -113,7 +113,6 @@ class _RouteSearchCardState extends State<RouteSearchCard> {
                 foregroundColor: colors.activeButtonTextColor,
                 disabledBackgroundColor: colors.inactiveButtonColor,
                 disabledForegroundColor: colors.inactiveTextColor,
-                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16 * scale),
                 ),

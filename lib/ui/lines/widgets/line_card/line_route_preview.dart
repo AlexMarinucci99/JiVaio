@@ -91,7 +91,6 @@ class LineRoutePreview extends StatelessWidget {
         if (direction.hasUpcomingDepartures)
           Wrap(
             spacing: 8,
-            runSpacing: 8,
             children: [
               for (final departure in direction.upcomingDepartures)
                 Container(
