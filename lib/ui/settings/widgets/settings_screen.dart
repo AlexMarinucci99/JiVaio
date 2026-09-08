@@ -7,8 +7,6 @@ import 'settings_profile_card.dart';
 import 'settings_section.dart';
 import 'settings_tile.dart';
 
-/// Schermata principale delle impostazioni di JiVaio.
-///
 /// Riceve l'utente autenticato, oppure null in modalità guest,
 /// e mostra le voci disponibili per il relativo profilo.
 class SettingsScreen extends StatelessWidget {
@@ -77,7 +75,6 @@ class SettingsScreen extends StatelessWidget {
           icon: Icons.login_rounded,
           title: 'Accedi o registrati',
           subtitle: 'Salva le preferenze e personalizza JiVaio',
-          showChevron: true,
           onTap: onLogout,
         )
       else ...[

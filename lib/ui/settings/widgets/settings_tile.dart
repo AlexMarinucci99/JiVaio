@@ -14,7 +14,6 @@ class SettingsTile extends StatelessWidget {
     required this.title,
     required this.subtitle,
     this.onTap,
-    this.showChevron = false,
     this.isDestructive = false,
   });
 
@@ -24,9 +23,6 @@ class SettingsTile extends StatelessWidget {
 
   /// Se è null, la riga rimane soltanto informativa.
   final VoidCallback? onTap;
-
-  /// Indica se mostrare la freccia laterale.
-  final bool showChevron;
 
   /// Indica se la voce rappresenta un'azione distruttiva.
   final bool isDestructive;
@@ -86,12 +82,6 @@ class SettingsTile extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 12),
-              if (showChevron)
-                const Icon(
-                  Icons.chevron_right_rounded,
-                  size: 22,
-                  color: SettingsColors.secondaryText,
-                ),
             ],
           ),
         ),
