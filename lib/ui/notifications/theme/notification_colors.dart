@@ -10,7 +10,6 @@ class NotificationBellButtonColors {
     this.badgeBorderColor = Colors.white,
     this.badgeTextColor = Colors.white,
     this.splashColor = const Color(0x1417226B),
-    this.highlightColor = const Color(0x0A17226B),
   });
 
   final Color backgroundColor;
@@ -20,7 +19,6 @@ class NotificationBellButtonColors {
   final Color badgeBorderColor;
   final Color badgeTextColor;
   final Color splashColor;
-  final Color highlightColor;
 }
 
 /// Palette grafica del pannello flottante delle notifiche.
@@ -76,7 +74,7 @@ class NotificationItemColors {
     this.messageColor = const Color(0xFF90A4C2),
     this.timeColor = const Color(0xFF7084A2),
     this.splashColor = const Color(0x141D6FF2),
-    this.highlightColor = const Color(0x0A1D6FF2),
+
     this.delayColors = const NotificationTypeColors(
       iconColor: Color.fromARGB(255, 243, 162, 0),
       iconBackgroundColor: Color.fromARGB(255, 253, 253, 253),
@@ -100,7 +98,6 @@ class NotificationItemColors {
   final Color messageColor;
   final Color timeColor;
   final Color splashColor;
-  final Color highlightColor;
   final NotificationTypeColors delayColors;
   final NotificationTypeColors tripColors;
   final NotificationTypeColors serviceUpdateColors;

@@ -38,7 +38,6 @@ class NotificationItem extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
         splashColor: colors.splashColor,
-        highlightColor: colors.highlightColor,
         onTap: onTap,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 10),

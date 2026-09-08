@@ -9,7 +9,6 @@ class BottomNavBarColors {
     this.unselectedColor = const Color.fromARGB(255, 198, 202, 206),
     this.selectedBackgroundColor = const Color(0xFFEAF2FF),
     this.splashColor = const Color(0x14102A6B),
-    this.highlightColor = const Color(0x0A102A6B),
   });
 
   final Color backgroundColor;
@@ -18,5 +17,4 @@ class BottomNavBarColors {
   final Color unselectedColor;
   final Color selectedBackgroundColor;
   final Color splashColor;
-  final Color highlightColor;
 }

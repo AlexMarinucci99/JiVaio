@@ -37,7 +37,6 @@ class NotificationBellButton extends StatelessWidget {
             child: InkWell(
               customBorder: const CircleBorder(),
               splashColor: colors.splashColor,
-              highlightColor: colors.highlightColor,
               onTap: onPressed,
               child: SizedBox.square(
                 dimension: 52,

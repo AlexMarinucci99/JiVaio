@@ -24,7 +24,6 @@ class SettingsTile extends StatelessWidget {
   /// Se è null, la riga rimane soltanto informativa.
   final VoidCallback? onTap;
 
-  /// Indica se la voce rappresenta un'azione distruttiva.
   final bool isDestructive;
 
   @override

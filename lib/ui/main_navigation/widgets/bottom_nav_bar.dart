@@ -112,7 +112,6 @@ class _BottomNavTile extends StatelessWidget {
         child: InkWell(
           borderRadius: BorderRadius.circular(23.4),
           splashColor: colors.splashColor,
-          highlightColor: colors.highlightColor,
           onTap: onTap,
           child: Opacity(
             opacity: isSelected ? 1 : 0.72,
