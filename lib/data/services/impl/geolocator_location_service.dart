@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:geolocator/geolocator.dart';
 
-import '../../domain/models/location_access_result.dart';
-import '../../domain/models/user_location.dart';
-import 'location_service.dart';
+import '../../../domain/models/location_access_result.dart';
+import '../../../domain/models/user_location.dart';
+import '../location_service.dart';
 
 /// Implementa [LocationService] usando il plugin Geolocator.
 ///

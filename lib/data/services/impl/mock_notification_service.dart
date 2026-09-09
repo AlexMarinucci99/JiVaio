@@ -1,5 +1,5 @@
-import '../../domain/models/app_notification.dart';
-import 'notification_service.dart';
+import '../../../domain/models/app_notification.dart';
+import '../notification_service.dart';
 
 /// Sorgente dati temporanea per il centro notifiche.
 ///

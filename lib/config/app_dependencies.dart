@@ -5,11 +5,11 @@ import '../data/repositories/onboarding_repository.dart';
 import '../data/repositories/route_planning_repository.dart';
 import '../data/repositories/saved_lines_repository.dart';
 import '../data/repositories/transit_repository.dart';
-import '../data/services/firebase_auth_service.dart';
-import '../data/services/firestore_saved_lines_service.dart';
-import '../data/services/geolocator_location_service.dart';
-import '../data/services/mock_notification_service.dart';
-import '../data/services/mock_route_planning_service.dart';
+import '../data/services/impl/firebase_auth_service.dart';
+import '../data/services/impl/firestore_saved_lines_service.dart';
+import '../data/services/impl/geolocator_location_service.dart';
+import '../data/services/impl/mock_notification_service.dart';
+import '../data/services/impl/mock_route_planning_service.dart';
 import '../data/services/onboarding_preferences_service.dart';
 
 /// Contenitore delle dipendenze principali dell'app.

@@ -1,5 +1,5 @@
-import '../../domain/models/route_result.dart';
-import 'route_planning_service.dart';
+import '../../../domain/models/route_result.dart';
+import '../route_planning_service.dart';
 
 /// Restituisce un percorso dimostrativo.
 class MockRoutePlanningService implements RoutePlanningService {

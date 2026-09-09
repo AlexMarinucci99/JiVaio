@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'saved_lines_service.dart';
+import '../saved_lines_service.dart';
 
 /// Implementa [SavedLinesService] usando Cloud Firestore.
 ///
