@@ -12,7 +12,24 @@
   <img src="https://img.shields.io/badge/Flutter-Mobile-blue?logo=flutter" alt="Flutter">
   <img src="https://img.shields.io/badge/Dart-Language-blue?logo=dart" alt="Dart">
   <img src="https://img.shields.io/badge/Status-Prototype-orange" alt="Status">
+  <img src="https://img.shields.io/badge/License-Proprietary-red" alt="Proprietary License">
 </p>
+
+<p align="center">
+  <a href="https://github.com/AlexMarinucci99/JiVaio/actions/workflows/flutter-ci.yml">
+    <img src="https://github.com/AlexMarinucci99/JiVaio/actions/workflows/flutter-ci.yml/badge.svg" alt="Flutter CI">
+  </a>
+</p>
+
+---
+
+> **Proprietary project — All Rights Reserved**
+>
+> Questo repository è reso pubblicamente consultabile esclusivamente per finalità di portfolio, valutazione tecnica e presentazione del progetto.
+>
+> La disponibilità pubblica del codice sorgente non concede il diritto di utilizzarlo, modificarlo, redistribuirlo, distribuirne versioni derivate, pubblicarlo, commercializzarlo o utilizzarlo per realizzare o distribuire applicazioni derivate.
+>
+> Per i termini completi fare riferimento al file [LICENSE](LICENSE).
 
 ---
 
@@ -32,15 +49,8 @@
     </li>
     <li><a href="#stack-tecnologico">Stack tecnologico</a></li>
     <li><a href="#architettura">Architettura</a></li>
-    <li>
-      <a href="#setup-del-progetto">Setup del progetto</a>
-      <ul>
-        <li><a href="#prerequisiti">Prerequisiti</a></li>
-        <li><a href="#installazione">Installazione</a></li>
-      </ul>
-    </li>
-    <li><a href="#configurazione-firebase">Configurazione Firebase</a></li>
-    <li><a href="#testing">Testing</a></li>
+    <li><a href="#gestione-dei-servizi-esterni">Gestione dei servizi esterni</a></li>
+    <li><a href="#testing-e-ci">Testing e CI</a></li>
     <li><a href="#dati-utilizzati">Dati utilizzati</a></li>
     <li><a href="#limitazioni-note">Limitazioni note</a></li>
     <li><a href="#roadmap-futura">Roadmap futura</a></li>
@@ -68,11 +78,11 @@ Il problema principale affrontato da JiVaio riguarda la difficoltà, spesso risc
 
 In particolare, l’app punta a ridurre l’incertezza legata a:
 
-- quale linea prendere;
-- quale fermata raggiungere;
-- in quale direzione attendere il bus;
-- quali orari e corse consultare;
-- come ritrovare rapidamente le linee usate più spesso.
+* quale linea prendere;
+* quale fermata raggiungere;
+* in quale direzione attendere il bus;
+* quali orari e corse consultare;
+* come ritrovare rapidamente le linee usate più spesso.
 
 JiVaio non nasce come alternativa generica a servizi come Google Maps o Moovit, ma come soluzione focalizzata sul contesto aquilano e sulle esigenze locali degli utenti.
 
@@ -84,7 +94,9 @@ JiVaio non nasce come alternativa generica a servizi come Google Maps o Moovit, 
 
 JiVaio è attualmente un **prototipo funzionante**, non ancora un prodotto pronto per il rilascio pubblico.
 
-Sono state implementate le funzionalità principali legate a consultazione, autenticazione, mappa, geolocalizzazione e preferiti. Alcune funzionalità più avanzate sono state predisposte a livello di interfaccia o lasciate come sviluppo futuro.
+Sono state implementate le funzionalità principali legate alla consultazione delle linee, autenticazione, mappa, geolocalizzazione e salvataggio delle linee preferite.
+
+Alcune funzionalità più avanzate sono presenti come prototipi o utilizzano sorgenti dati mock e rappresentano possibili sviluppi futuri del progetto.
 
 <p align="right">(<a href="#readme-top">torna su</a>)</p>
 
@@ -92,13 +104,11 @@ Sono state implementate le funzionalità principali legate a consultazione, aute
 
 ## Demo dell’app
 
-Il seguente video mostra una breve demo del prototipo JiVaio, evidenziando il flusso principale dell’applicazione e le funzionalità implementate.
+È stata realizzata una demo video del prototipo JiVaio che mostra il flusso principale dell’applicazione e le funzionalità implementate.
 
-<p align="center">
-  <a href="https://drive.google.com/file/d/1oUQdUdVYBfpxGdUOXvM6BLVRkSu3MaWj/view">
-    Guarda la demo dell’app
-  </a>
-</p>
+Per limitare l’esposizione pubblica di materiale e account esterni collegati al progetto, la demo non è distribuita direttamente attraverso questo repository.
+
+Il materiale dimostrativo può essere mostrato durante una presentazione o valutazione tecnica del progetto.
 
 <p align="right">(<a href="#readme-top">torna su</a>)</p>
 
@@ -106,21 +116,21 @@ Il seguente video mostra una breve demo del prototipo JiVaio, evidenziando il fl
 
 ## Funzionalità principali
 
-| Funzionalità           | Stato             | Descrizione                                                                                                                 |
-| ---------------------- | ----------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| Onboarding             | Implementata      | Schermate introduttive che presentano lo scopo dell’app.                                                                    |
-| Accesso guest          | Implementata      | Permette di entrare nell’app senza registrazione.                                                                           |
-| Registrazione e login  | Implementata      | Accesso tramite email e password e Google.                                                                                  |
-| Recupero password      | Implementata      | Invio email per reimpostare la password.                                                                                    |
-| Navigazione principale | Implementata      | Bottom navigation per spostarsi tra le sezioni principali.                                                                  |
-| Home con mappa         | Implementata      | Visualizzazione della mappa e delle fermate disponibili.                                                                    |
-| Geolocalizzazione      | Implementata      | Recupero della posizione dell’utente tramite autorizzazione.                                                                |
-| Elenco linee           | Implementata      | Lista delle linee urbane disponibili.                                                                                       |
-| Dettaglio linea        | Implementata      | Visualizzazione di fermate, direzioni, orari e informazioni della linea.                                                    |
-| Linee salvate          | Implementata      | Salvataggio persistente delle linee preferite per utenti registrati.                                                        |
-| Ricerca percorso       | Parziale / futura | Presente come flusso e schermata prototipale, ma non collegata a un algoritmo reale di calcolo percorso.                    |
-| Notifiche e avvisi     | Parziale / futura | Centro notifiche predisposto, ma non ancora sistema completo di notifiche push automatiche.                                 |
-| Segnalazioni utenti    | Parziale / futura | Funzione prevista per ritardi, bus pieni e criticità del servizio; richiede ancora controlli di affidabilità e moderazione. |
+| Funzionalità           | Stato           | Descrizione                                                                              |
+| ---------------------- | --------------- | ---------------------------------------------------------------------------------------- |
+| Onboarding             | Implementata    | Schermate introduttive che presentano lo scopo dell’app.                                 |
+| Accesso guest          | Implementata    | Permette di entrare nell’app senza registrazione.                                        |
+| Registrazione e login  | Implementata    | Accesso tramite email e password o Google Sign-In.                                       |
+| Recupero password      | Implementata    | Recupero dell’accesso tramite Firebase Authentication.                                   |
+| Navigazione principale | Implementata    | Bottom navigation per spostarsi tra le sezioni principali.                               |
+| Home con mappa         | Implementata    | Visualizzazione della mappa e delle fermate disponibili.                                 |
+| Geolocalizzazione      | Implementata    | Recupero della posizione dell’utente previa autorizzazione.                              |
+| Elenco linee           | Implementata    | Lista delle linee urbane disponibili.                                                    |
+| Dettaglio linea        | Implementata    | Visualizzazione di fermate, direzioni, orari e informazioni della linea.                 |
+| Linee salvate          | Implementata    | Salvataggio persistente delle linee preferite per utenti registrati.                     |
+| Ricerca percorso       | Prototipo       | Flusso e schermata dimostrativa basati attualmente su un servizio mock.                  |
+| Notifiche e avvisi     | Prototipo       | Centro notifiche implementato a livello di UI e architettura tramite sorgente dati mock. |
+| Segnalazioni utenti    | Sviluppo futuro | Funzionalità prevista per ritardi, criticità e informazioni condivise sul servizio.      |
 
 <p align="right">(<a href="#readme-top">torna su</a>)</p>
 
@@ -152,16 +162,29 @@ Questa modalità è pensata soprattutto per studenti, pendolari e utenti abitual
 
 ## Stack tecnologico
 
-Il progetto è stato sviluppato con:
+Il progetto è stato sviluppato utilizzando:
 
-- **Flutter** per la realizzazione dell’app mobile cross-platform;
-- **Dart** come linguaggio di programmazione;
-- **Firebase Authentication** per registrazione, login e recupero password;
-- **Cloud Firestore** per il salvataggio persistente dei dati utente, come le linee preferite;
-- **Mappe e geolocalizzazione** per mostrare fermate e posizione dell’utente;
-- **Provider / ChangeNotifier** per la gestione dello stato;
-- **Figma** per la progettazione dei mockup;
-- **Git e GitHub** per versionamento e collaborazione.
+* **Flutter** per la realizzazione dell’app mobile cross-platform;
+* **Dart** come linguaggio di programmazione;
+* **Provider** e **ChangeNotifier** per la gestione reattiva dello stato;
+* **Firebase Authentication** per registrazione, login e recupero password;
+* **Cloud Firestore** per il salvataggio persistente di dati associati agli utenti;
+* **Google Sign-In** per l’autenticazione tramite account Google;
+* **Flutter Map** per la visualizzazione della mappa;
+* **LatLong2** per la gestione delle coordinate geografiche;
+* **Geolocator** per il recupero della posizione dell’utente;
+* **SharedPreferences** per la persistenza locale di preferenze dell’app;
+* **dati GTFS elaborati localmente** per linee, fermate, corse e orari;
+* **Git e GitHub** per versionamento e collaborazione;
+* **GitHub Actions** per l’esecuzione automatizzata dei controlli CI.
+
+Tra gli strumenti utilizzati durante lo sviluppo sono inoltre presenti:
+
+* **Flutter Test**;
+* **Flutter Lints**;
+* **Flutter Native Splash**;
+* **Flutter Launcher Icons**;
+* **Figma** per la progettazione dell’interfaccia.
 
 <p align="right">(<a href="#readme-top">torna su</a>)</p>
 
@@ -173,11 +196,27 @@ Il progetto segue una struttura modulare basata sulla separazione tra interfacci
 
 L’organizzazione generale è ispirata a un approccio di tipo MVVM, con:
 
-- **View / Widget** per la parte grafica;
-- **ViewModel** per stato e logica della UI;
-- **Repository** come livello intermedio per l’accesso ai dati;
-- **Service** per interazioni con Firebase, sorgenti locali o servizi esterni;
-- **Model** per rappresentare le entità principali del dominio.
+* **View / Widget** per la parte grafica e l’interazione con l’utente;
+* **ViewModel** per la gestione dello stato e della logica relativa alla UI;
+* **Repository** come livello intermedio tra logica applicativa e accesso ai dati;
+* **Service** per interazioni con Firebase, geolocalizzazione, persistenza locale, dati mock e altre sorgenti;
+* **Model** per rappresentare le entità principali del dominio.
+
+Il flusso generale delle dipendenze può essere rappresentato come:
+
+```text
+View
+  ↓
+ViewModel
+  ↓
+Repository
+  ↓
+Service
+  ↓
+Data Source
+```
+
+Questa organizzazione permette di mantenere separate le responsabilità dei diversi componenti, ridurre l’accoppiamento tra UI e sorgenti dati e rendere il progetto più semplice da mantenere, testare ed estendere.
 
 NOTA: La struttura seguente mostra le directory più rilevanti per comprendere l’organizzazione generale del progetto. Il repository completo contiene anche altri file e cartelle di configurazione, piattaforma e supporto allo sviluppo.
 
@@ -186,11 +225,14 @@ JiVaio/
 |
 ├── lib/
 │   ├── main.dart
+│   ├── jivaio_app.dart
 │   ├── config/
 │   ├── data/
+│   │   ├── gtfs/
 │   │   ├── repositories/
 │   │   └── services/
 │   ├── domain/
+│   │   ├── exceptions/
 │   │   └── models/
 │   ├── routing/
 │   ├── ui/
@@ -206,6 +248,7 @@ JiVaio/
 │   │   ├── lines/
 │   │   │   ├── view_model/
 │   │   │   └── widgets/
+│   │   ├── main_navigation/
 │   │   ├── notifications/
 │   │   │   ├── view_model/
 │   │   │   └── widgets/
@@ -218,105 +261,48 @@ JiVaio/
 │   │       └── widgets/
 │   └── utils/
 ├── test/
-│   ├── data/
-│   ├── domain/
-│   ├── ui/
-│   └── utils/
-|
 └── README.md
-
 ```
 
 <p align="right">(<a href="#readme-top">torna su</a>)</p>
 
 ---
 
-## Setup del progetto
+## Gestione dei servizi esterni
 
-### Prerequisiti
+JiVaio utilizza alcuni servizi esterni per funzionalità specifiche dell’applicazione.
 
-Prima di avviare il progetto è necessario avere installati:
+Firebase viene utilizzato per:
 
-- Flutter SDK;
-- Dart SDK;
-- Android Studio oppure Visual Studio Code;
-- un emulatore Android/iOS oppure un dispositivo fisico;
-- Firebase configurato per le funzionalità di autenticazione e Firestore.
+* autenticazione degli utenti;
+* recupero password;
+* Google Sign-In;
+* persistenza di informazioni associate agli utenti autenticati.
 
-<p align="right">(<a href="#readme-top">torna su</a>)</p>
+La configurazione operativa degli ambienti esterni, le informazioni di deployment e gli eventuali valori sensibili non vengono documentati pubblicamente all’interno del README.
 
-### Installazione
+L’accesso ai servizi backend deve essere protetto tramite gli opportuni meccanismi di autenticazione, autorizzazione, Firebase Security Rules e ulteriori strumenti di sicurezza applicabili.
 
-Clonare il repository:
-
-```bash
-git clone https://github.com/AlexMarinucci99/JiVaio.git
-cd JiVaio
-```
-
-Installare le dipendenze:
-
-```bash
-flutter pub get
-```
-
-Avviare l’app:
-
-```bash
-flutter run
-```
+Eventuali segreti, credenziali, certificati o configurazioni private non devono essere inclusi nel repository pubblico.
 
 <p align="right">(<a href="#readme-top">torna su</a>)</p>
 
 ---
 
-## Configurazione Firebase
+## Testing e CI
 
-Le funzionalità di autenticazione, recupero password e salvataggio delle linee preferite richiedono Firebase.
+Il progetto utilizza l’infrastruttura di testing fornita da Flutter.
 
-Per eseguire correttamente l’app con queste funzionalità è necessario configurare Firebase per il progetto Flutter e assicurarsi che i file di configurazione siano presenti nelle rispettive cartelle di piattaforma.
+La suite automatizzata attualmente presente comprende test focalizzati su:
 
-Esempio:
+* comportamento del model `TransitLine`;
+* interazione del widget `BottomNavBar`.
 
-```bash
-flutterfire configure
-```
+La copertura automatizzata è attualmente limitata e rappresenta una base che può essere estesa con ulteriori unit test e widget test.
 
-I file di configurazione Firebase non devono contenere credenziali private o dati sensibili non destinati al repository pubblico.
+Il repository utilizza inoltre **GitHub Actions** per automatizzare i controlli configurati nel workflow Flutter CI.
 
-<p align="right">(<a href="#readme-top">torna su</a>)</p>
-
----
-
-## Testing
-
-Il progetto include una suite di test automatici composta da unit test e widget test.
-
-I test coprono principalmente:
-
-- modelli di dominio;
-- ViewModel;
-- autenticazione;
-- recupero password;
-- onboarding;
-- ricerca percorso a livello di UI;
-- elenco linee;
-- dettaglio linea;
-- pulsanti di salvataggio;
-- centro notifiche;
-- componenti principali dell’interfaccia.
-
-Eseguire tutti i test:
-
-```bash
-flutter test
-```
-
-Generare il report di copertura:
-
-```bash
-flutter test --coverage
-```
+[![Flutter CI](https://github.com/AlexMarinucci99/JiVaio/actions/workflows/flutter-ci.yml/badge.svg)](https://github.com/AlexMarinucci99/JiVaio/actions/workflows/flutter-ci.yml)
 
 <p align="right">(<a href="#readme-top">torna su</a>)</p>
 
@@ -324,11 +310,15 @@ flutter test --coverage
 
 ## Dati utilizzati
 
-JiVaio utilizza dati relativi a linee, fermate, direzioni e orari del trasporto urbano.
+JiVaio utilizza dati relativi a linee, fermate, direzioni, corse e orari del trasporto urbano.
+
+I dati vengono elaborati localmente attraverso una struttura derivata dal formato GTFS e sono mantenuti separati dalla UI attraverso il Data Layer.
 
 Una parte importante del lavoro progettuale ha riguardato la raccolta, il controllo e l’organizzazione di questi dati, poiché le informazioni disponibili non erano sempre già pronte in un formato direttamente utilizzabile dall’app.
 
 La qualità dei dati è un aspetto centrale del progetto: informazioni non aggiornate o incomplete possono ridurre l’affidabilità percepita dall’utente.
+
+La presenza dei dati nel repository non modifica eventuali diritti, licenze o condizioni applicabili alle relative fonti originali.
 
 <p align="right">(<a href="#readme-top">torna su</a>)</p>
 
@@ -338,12 +328,13 @@ La qualità dei dati è un aspetto centrale del progetto: informazioni non aggio
 
 JiVaio è un prototipo accademico e presenta alcune limitazioni:
 
-- la ricerca percorso non utilizza ancora un algoritmo reale di calcolo;
-- il sistema non confronta automaticamente più alternative di viaggio;
-- il centro notifiche è predisposto, ma non è ancora collegato a un sistema completo di notifiche push;
-- le segnalazioni utenti richiedono ancora meccanismi di conferma, moderazione e scadenza;
-- i dati su linee, fermate e orari richiederebbero aggiornamenti continui da fonti ufficiali;
-- la validazione con utenti reali è stata limitata a test informali.
+* la ricerca percorso utilizza attualmente un’implementazione dimostrativa basata su dati mock;
+* il sistema non confronta automaticamente più alternative di viaggio attraverso un motore di routing reale;
+* il centro notifiche utilizza attualmente una sorgente dati mock e non è ancora collegato a un sistema completo di notifiche push;
+* le segnalazioni utenti richiedono ancora meccanismi di conferma, moderazione e scadenza;
+* non è presente un’integrazione completa con dati di trasporto pubblico in tempo reale;
+* i dati su linee, fermate e orari richiederebbero aggiornamenti continui da fonti ufficiali;
+* prima di un eventuale utilizzo in produzione sarebbe necessaria una validazione più ampia del sistema.
 
 <p align="right">(<a href="#readme-top">torna su</a>)</p>
 
@@ -353,14 +344,15 @@ JiVaio è un prototipo accademico e presenta alcune limitazioni:
 
 Possibili sviluppi futuri:
 
-- implementazione di un vero algoritmo di pianificazione percorso;
-- integrazione più completa con dati ufficiali o aggiornati in tempo reale;
-- notifiche push personalizzate in base alle linee salvate;
-- avvisi su deviazioni, lavori e modifiche temporanee alla viabilità;
-- sistema di segnalazioni con conferme da parte della community;
-- moderazione e validazione delle segnalazioni;
-- estensione del progetto ad altri contesti locali;
-- miglioramento dell’accessibilità e dell’esperienza utente.
+* implementazione di un vero algoritmo di pianificazione percorso;
+* integrazione più completa con dati ufficiali o aggiornati in tempo reale;
+* notifiche push personalizzate in base alle linee salvate;
+* avvisi su deviazioni, lavori e modifiche temporanee alla viabilità;
+* sistema di segnalazioni con conferme da parte della community;
+* moderazione e validazione delle segnalazioni;
+* ampliamento della suite di test automatici;
+* estensione del progetto ad altri contesti locali;
+* miglioramento dell’accessibilità e dell’esperienza utente.
 
 <p align="right">(<a href="#readme-top">torna su</a>)</p>
 
@@ -372,11 +364,11 @@ Progetto sviluppato dal team **Master Mobile Devs**.
 
 Componenti:
 
-- Alessandro Marinucci
-- Matteo Accurti **[@MattAcc03](https://github.com/MattAcc03)**
-- Luca Salvi **[@LucaSalvi1999](https://github.com/LucaSalvi1999)**
+* Alessandro Marinucci **[@AlexMarinucci99](https://github.com/AlexMarinucci99)**
+* Matteo Accurti **[@MattAcc03](https://github.com/MattAcc03)**
+* Luca Salvi **[@LucaSalvi1999](https://github.com/LucaSalvi1999)**
 
-Corso: **Applicazioi per Dispositivi Mobili**
+Corso: **Applicazioni per Dispositivi Mobili**
 Anno accademico: **2025/2026**
 
 <p align="right">(<a href="#readme-top">torna su</a>)</p>
@@ -385,9 +377,13 @@ Anno accademico: **2025/2026**
 
 ## Licenza
 
-Progetto realizzato per finalità didattiche e accademiche.
+JiVaio è un progetto proprietario.
 
-Se il repository include un file `LICENSE`, fare riferimento a quello per i termini di utilizzo.
+Il codice sorgente e i materiali originali del progetto sono pubblicamente consultabili esclusivamente per finalità di portfolio, valutazione tecnica e presentazione del lavoro svolto.
+
+La disponibilità pubblica del repository non concede automaticamente alcun diritto di utilizzo, copia, modifica, redistribuzione, deployment, commercializzazione o creazione di opere derivate.
+
+Per i termini completi e vincolanti fare riferimento al file [LICENSE](LICENSE).
 
 <p align="right">(<a href="#readme-top">torna su</a>)</p>
 
@@ -395,8 +391,10 @@ Se il repository include un file `LICENSE`, fare riferimento a quello per i term
 
 ## Sicurezza
 
-Non pubblicare credenziali, chiavi private o file contenenti informazioni sensibili.
+Eventuali vulnerabilità di sicurezza non devono essere segnalate tramite issue, pull request, discussion o altri canali pubblici.
 
-Per eventuali problemi legati alla sicurezza o alla configurazione dei servizi esterni, contattare i maintainer del repository.
+Le segnalazioni devono essere effettuate tramite **GitHub Private Vulnerability Reporting**, secondo quanto indicato nel file [SECURITY.md](SECURITY.md).
+
+Credenziali, token, chiavi private, certificati, file di firma e altre informazioni sensibili non devono essere incluse nel repository.
 
 <p align="right">(<a href="#readme-top">torna su</a>)</p>
