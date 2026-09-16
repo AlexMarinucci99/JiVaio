@@ -1,20 +1,16 @@
-Copyright (c) 2026 JiVaio Development Team.
+Copyright © 2026 JiVaio Development Team.
 All rights reserved.
 
-This project, including its original source code, documentation, assets,
-interface designs, and related materials, is proprietary.
+JiVaio and this repository, including all original source code, documentation, application architecture, user interface designs, graphical assets, project-specific datasets, and related materials, are proprietary works.
 
-Except for the limited rights required by the GitHub Terms of Service to host,
-display, view, and fork public repositories through GitHub's platform
-features, no permission is granted to use, copy, modify, merge, publish,
-distribute, sublicense, sell, deploy, or create derivative works based on
-this project, in whole or in part.
+No license or permission is granted to use, reproduce, copy, modify, adapt, merge, publish, distribute, sublicense, sell, commercially exploit, deploy, reverse engineer, or create derivative works based on this project, in whole or in part, except with the prior written authorization of the applicable copyright holders.
 
-The repository is made publicly available exclusively for academic
-evaluation, educational review, and authorized collaboration.
+The public availability of this repository is intended solely for portfolio presentation, academic review, technical evaluation, and authorized collaboration.
 
-Any reuse of the original materials requires the prior written authorization
-of the copyright holders.
+Access to, viewing of, or forking of this repository through functionality provided by GitHub does not grant any additional rights to use, redistribute, deploy, commercialize, or create derivative works from the project beyond those rights required by GitHub's Terms of Service.
 
-Third-party libraries, frameworks, dependencies, and external assets remain
-subject to their respective licenses.
+Any reproduction, redistribution, deployment, commercialization, or reuse of original JiVaio materials outside the permissions expressly granted above is prohibited unless prior written authorization has been obtained from the applicable copyright holders.
+
+Third-party software, libraries, frameworks, dependencies, data sources, trademarks, and external assets included or referenced by the project remain subject to their respective licenses, terms, and ownership rights.
+
+For requests concerning authorized use of JiVaio materials, contact the project maintainers.
