@@ -10,24 +10,20 @@ Older commits, branches, forks, experimental versions, and third-party modificat
 
 ## Reporting a Vulnerability
 
-Please do not disclose suspected security vulnerabilities through public GitHub issues, pull requests, discussions, or other public channels.
+Please do not disclose suspected security vulnerabilities through public
+GitHub issues, pull requests, discussions, or other public channels.
 
-Security vulnerabilities should be reported privately through GitHub Private Vulnerability Reporting, when available.
-
-Alternatively, reports may be sent to:
-
-**[marinuccialessandro99@gmail.com](mailto:marinuccialessandro99@gmail.com)**
+Security vulnerabilities should be reported through GitHub Private
+Vulnerability Reporting.
 
 A vulnerability report should include, whenever possible:
 
-* a clear description of the vulnerability;
-* the affected component or feature;
-* steps required to reproduce the issue;
-* the potential security impact;
-* relevant logs, screenshots, or technical details;
-* any suggested mitigation or fix.
-
-Please avoid including unnecessary personal information or sensitive user data.
+- a clear description of the vulnerability;
+- the affected component or feature;
+- steps required to reproduce the issue;
+- the potential security impact;
+- relevant logs, screenshots, or technical details;
+- any suggested mitigation or fix.
 
 ## Responsible Disclosure
 
