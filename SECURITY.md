@@ -2,21 +2,76 @@
 
 ## Supported Versions
 
-JiVaio is currently under active development.
-Only the latest version available in the `main` branch is supported.
+JiVaio is currently maintained as a prototype project.
+
+Security support is provided only for the latest version available on the `main` branch.
+
+Older commits, branches, forks, experimental versions, and third-party modifications are not officially supported.
 
 ## Reporting a Vulnerability
 
-Please do not report security vulnerabilities through public GitHub issues.
+Please do not disclose suspected security vulnerabilities through public GitHub issues, pull requests, discussions, or other public channels.
 
-To report a potential vulnerability, contact the development team privately at:
+Security vulnerabilities should be reported privately through GitHub Private Vulnerability Reporting, when available.
 
-[marinuccialessandro99@gmail.com]
+Alternatively, reports may be sent to:
 
-Please include a description of the issue, the affected component, the steps
-to reproduce it, and any relevant logs or screenshots.
+**[marinuccialessandro99@gmail.com](mailto:marinuccialessandro99@gmail.com)**
+
+A vulnerability report should include, whenever possible:
+
+* a clear description of the vulnerability;
+* the affected component or feature;
+* steps required to reproduce the issue;
+* the potential security impact;
+* relevant logs, screenshots, or technical details;
+* any suggested mitigation or fix.
+
+Please avoid including unnecessary personal information or sensitive user data.
+
+## Responsible Disclosure
+
+Please allow the maintainers reasonable time to investigate and address a reported vulnerability before publishing technical details.
+
+Do not intentionally exploit a vulnerability beyond what is strictly necessary to demonstrate its existence.
+
+Do not attempt to:
+
+* access, modify, or delete data belonging to other users;
+* obtain credentials, authentication tokens, or private information;
+* perform denial-of-service attacks;
+* disrupt Firebase or other external services used by JiVaio;
+* perform destructive testing against production services;
+* publicly disclose an unresolved vulnerability without first contacting the maintainers.
 
 ## Sensitive Information
 
-Do not publish API keys, credentials, access tokens, private user data, or
-other sensitive information in issues, pull requests, or discussions.
+Credentials and sensitive information must never be committed to the repository.
+
+This includes, but is not limited to:
+
+* private keys;
+* service-account credentials;
+* passwords;
+* authentication tokens;
+* signing keys;
+* private certificates;
+* secrets used by CI/CD systems;
+* private user data;
+* server-side credentials.
+
+Firebase client configuration values must not be considered a substitute for proper backend authorization.
+
+Access to Firebase resources must be protected through appropriate Firebase Security Rules, authentication controls, API restrictions, and other applicable security mechanisms.
+
+## Third-Party Services
+
+JiVaio relies on third-party services and packages.
+
+Security vulnerabilities affecting Flutter, Firebase, Google Sign-In, Firestore, or other external dependencies should also be reported to the corresponding maintainers when appropriate.
+
+## Scope
+
+This policy applies to the official JiVaio repository maintained by the JiVaio Development Team.
+
+Forks, unofficial deployments, modified versions, and third-party distributions are outside the scope of this security policy.
