@@ -3,6 +3,9 @@ android/app/google-services.json
 ios/Runner/GoogleService-Info.plist
 macos/Runner/GoogleService-Info.plist
 
+# Generated Dart and Flutter files.
+.dart_tool/
+
 # Local environment files.
 .env
 .env.*
