@@ -1,0 +1,152 @@
+[
+  {
+    "service_id": "1",
+    "date": "20260325",
+    "exception_type": "1"
+  },
+  {
+    "service_id": "1",
+    "date": "20260303",
+    "exception_type": "1"
+  },
+  {
+    "service_id": "1",
+    "date": "20260304",
+    "exception_type": "1"
+  },
+  {
+    "service_id": "1",
+    "date": "20260326",
+    "exception_type": "1"
+  },
+  {
+    "service_id": "1",
+    "date": "20260313",
+    "exception_type": "1"
+  },
+  {
+    "service_id": "1",
+    "date": "20260324",
+    "exception_type": "1"
+  },
+  {
+    "service_id": "1",
+    "date": "20260302",
+    "exception_type": "1"
+  },
+  {
+    "service_id": "1",
+    "date": "20260306",
+    "exception_type": "1"
+  },
+  {
+    "service_id": "1",
+    "date": "20260317",
+    "exception_type": "1"
+  },
+  {
+    "service_id": "1",
+    "date": "20260305",
+    "exception_type": "1"
+  },
+  {
+    "service_id": "1",
+    "date": "20260316",
+    "exception_type": "1"
+  },
+  {
+    "service_id": "1",
+    "date": "20260327",
+    "exception_type": "1"
+  },
+  {
+    "service_id": "1",
+    "date": "20260320",
+    "exception_type": "1"
+  },
+  {
+    "service_id": "1",
+    "date": "20260331",
+    "exception_type": "1"
+  },
+  {
+    "service_id": "1",
+    "date": "20260309",
+    "exception_type": "1"
+  },
+  {
+    "service_id": "1",
+    "date": "20260318",
+    "exception_type": "1"
+  },
+  {
+    "service_id": "1",
+    "date": "20260330",
+    "exception_type": "1"
+  },
+  {
+    "service_id": "1",
+    "date": "20260319",
+    "exception_type": "1"
+  },
+  {
+    "service_id": "1",
+    "date": "20260311",
+    "exception_type": "1"
+  },
+  {
+    "service_id": "1",
+    "date": "20260312",
+    "exception_type": "1"
+  },
+  {
+    "service_id": "1",
+    "date": "20260323",
+    "exception_type": "1"
+  },
+  {
+    "service_id": "1",
+    "date": "20260227",
+    "exception_type": "1"
+  },
+  {
+    "service_id": "1",
+    "date": "20260310",
+    "exception_type": "1"
+  },
+  {
+    "service_id": "2",
+    "date": "20260328",
+    "exception_type": "1"
+  },
+  {
+    "service_id": "2",
+    "date": "20260314",
+    "exception_type": "1"
+  },
+  {
+    "service_id": "2",
+    "date": "20260228",
+    "exception_type": "1"
+  },
+  {
+    "service_id": "2",
+    "date": "20260321",
+    "exception_type": "1"
+  },
+  {
+    "service_id": "2",
+    "date": "20260307",
+    "exception_type": "1"
+  },
+   {
+    "service_id": "FESTIVO",
+    "date": "20261225",
+    "exception_type": "2"
+  },
+  {
+    "service_id": "FESTIVO",
+    "date": "20270101",
+    "exception_type": "2"
+  }
+]
