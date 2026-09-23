@@ -291,29 +291,33 @@ Eventuali segreti, credenziali, certificati o configurazioni private non devono 
 
 ## Testing e CI
 
-JiVaio utilizza `flutter_test` per verificare in modo automatizzato il comportamento di componenti del dominio e dell’interfaccia. I test sono organizzati nella directory `test/`, con una struttura coerente con le feature e i livelli dell’applicazione.
+JiVaio utilizza `flutter_test` per verificare il comportamento dei modelli di dominio e dei componenti dell’interfaccia. La suite è organizzata per livelli e feature nella directory [`test/`](test/README.md), in coerenza con la separazione tra UI, ViewModel e Data Layer.
 
-### Test documentati
+La suite aggiornata comprende **13 file di test**: un unit test e 12 file di widget test. Il resoconto incluso in `test/README.md` documenta **58 test superati (1 unit test e 57 widget test)**, senza fallimenti o test saltati.
 
-| Tipologia | Componente | Verifica |
+### Test automatizzati
+
+| Ambito | File di test | Comportamenti verificati |
 | --- | --- | --- |
-| Unit test | `TransitLine` | Riconoscimento delle linee monodirezionali (`2U` e `2UT`), anche con differenze di maiuscole/minuscole e spazi; distinzione rispetto a una linea non monodirezionale. |
-| Widget test | `BottomNavBar` | Selezione della voce «Linee» e invocazione della callback `onItemSelected` con l’indice atteso. |
+| Modello delle linee | `domain/models/transit_line_test.dart` | Riconoscimento e normalizzazione delle linee monodirezionali. |
+| Autenticazione | `ui/auth/auth_choice_screen_test.dart` | Passaggio tra login e registrazione, validazione, visibilità password, invio dei dati, gestione di caricamento ed errori, guest, accesso Google e recupero password. |
+| Recupero password | `ui/auth/reset_password_screen_test.dart` | Validazione e normalizzazione email, invio, stato di caricamento, conferma ed errore. |
+| Onboarding | `ui/onboarding/onboarding_screen_test.dart` | Navigazione tra slide, salto, completamento, preferenza di visualizzazione, persistenza simulata e prevenzione dei doppi invii. |
+| Ricerca dalla Home | `ui/home/route_search_card_test.dart` | Abilitazione della ricerca, inversione di partenza e destinazione, input incompleti e callback con dati normalizzati. |
+| Controlli Home | `ui/home/home_controls_test.dart` | Stato del pulsante GPS, permesso concesso o negato, blocco dei doppi tap e dialogo di conferma/annullamento. |
+| Card delle linee | `ui/lines/line_card_test.dart` | Cambio direzione, orari mostrati, callback e casi di direzione unica o assenza di partenze. |
+| Elenco linee | `ui/lines/lines_screen_test.dart` | Filtro Tutte/Salvate, salvataggio e rimozione dei preferiti, errori e retry, modalità guest e apertura del dettaglio. |
+| Dettaglio linea | `ui/lines/line_detail_screen_test.dart` | Fermate, orari, direzioni, filtri temporali, modalità automatica e segnalazioni dimostrative. |
+| Barra di navigazione | `ui/main_navigation/widgets/bottom_nav_bar_test.dart` | Callback delle voci e aggiornamento della selezione accessibile. |
+| Centro notifiche | `ui/notifications/notification_center_overlay_test.dart` | Apertura e chiusura, stati vuoto/errore, ordinamento, lettura delle notifiche e badge accessibile. |
+| Risultati percorso | `ui/route_results/route_results_screen_test.dart` | Visualizzazione dopo la risposta del servizio mock, navigazione dimostrativa e ritorno alla schermata precedente. |
+| Impostazioni | `ui/settings/settings_screen_test.dart` | Profilo guest o autenticato e callback per accesso e logout. |
 
-I relativi test si trovano in:
+I percorsi della tabella sono relativi a `test/`. Per i casi di test più dettagliati, l’isolamento delle dipendenze e i limiti della suite si rimanda a [`test/README.md`](test/README.md).
 
-```text
-test/
-├── domain/
-│   └── models/
-│       └── transit_line_test.dart
-└── ui/
-    └── main_navigation/
-        └── widgets/
-            └── bottom_nav_bar_test.dart
-```
+### Isolamento dei test
 
-Il widget test monta il componente in un ambiente Flutter minimale con `MaterialApp` e `Scaffold`, simula l’interazione dell’utente tramite `WidgetTester` e verifica il risultato con `expect`.
+I widget test esercitano i **ViewModel e Provider effettivamente utilizzati dall’app**, sostituendo le dipendenze dati con fake manuali e dati sintetici. In questo modo verificano le interazioni e gli aggiornamenti della UI senza richiedere Firebase, Firestore, Geolocator, tile della mappa o accesso alla rete. Gli helper condivisi sono raccolti in `test/helpers/`.
 
 ### Esecuzione locale
 
@@ -321,23 +325,31 @@ Dalla radice del progetto:
 
 ```bash
 flutter pub get
+flutter analyze
 flutter test
 ```
 
-Per eseguire separatamente i test documentati:
+Per eseguire un singolo file o generare un report di copertura:
 
 ```bash
-flutter test test/domain/models/transit_line_test.dart
-flutter test test/ui/main_navigation/widgets/bottom_nav_bar_test.dart
+flutter test test/ui/lines/line_detail_screen_test.dart
+flutter test --coverage
 ```
+
+Il report di copertura viene generato in `coverage/lcov.info`. Secondo il resoconto dell’ultima esecuzione incluso in `test/README.md`, i 58 test sono stati superati e la copertura delle righe **nei soli sorgenti presenti nel report LCOV** è pari all’**86,12% (2.079/2.414)**. Il valore non rappresenta la copertura dell’intera applicazione: i file non inclusi nel report non rientrano nel denominatore.
+
+### Limiti della suite
+
+I test della Home verificano componenti isolati, non il rendering completo della mappa. Non sono coperti tramite questi widget test `HomeMap`, `HomeScreen`, `MainNavigationScreen`, `AuthGate`, i servizi esterni reali o l’integrazione end-to-end dei relativi flussi. La suite non include golden test né test su una matrice di dispositivi.
 
 ### Continuous Integration
 
-Il repository utilizza **GitHub Actions** per eseguire i controlli automatizzati configurati nel workflow [Flutter CI](https://github.com/AlexMarinucci99/JiVaio/actions/workflows/flutter-ci.yml). Il badge mostra lo stato del workflow, non una percentuale di copertura dei test.
+Il repository utilizza **GitHub Actions** per eseguire i controlli automatizzati configurati nel workflow [Flutter CI](https://github.com/AlexMarinucci99/JiVaio/actions/workflows/flutter-ci.yml). Il badge indica lo stato del workflow e non la percentuale di copertura dei test.
 
 [![Flutter CI](https://github.com/AlexMarinucci99/JiVaio/actions/workflows/flutter-ci.yml/badge.svg)](https://github.com/AlexMarinucci99/JiVaio/actions/workflows/flutter-ci.yml)
 
 <p align="right">(<a href="#readme-top">torna su</a>)</p>
+
 ---
 
 ## Dati utilizzati
