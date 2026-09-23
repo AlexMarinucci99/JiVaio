@@ -291,21 +291,53 @@ Eventuali segreti, credenziali, certificati o configurazioni private non devono 
 
 ## Testing e CI
 
-Il progetto utilizza l’infrastruttura di testing fornita da Flutter.
+JiVaio utilizza `flutter_test` per verificare in modo automatizzato il comportamento di componenti del dominio e dell’interfaccia. I test sono organizzati nella directory `test/`, con una struttura coerente con le feature e i livelli dell’applicazione.
 
-La suite automatizzata attualmente presente comprende test focalizzati su:
+### Test documentati
 
-* comportamento del model `TransitLine`;
-* interazione del widget `BottomNavBar`.
+| Tipologia | Componente | Verifica |
+| --- | --- | --- |
+| Unit test | `TransitLine` | Riconoscimento delle linee monodirezionali (`2U` e `2UT`), anche con differenze di maiuscole/minuscole e spazi; distinzione rispetto a una linea non monodirezionale. |
+| Widget test | `BottomNavBar` | Selezione della voce «Linee» e invocazione della callback `onItemSelected` con l’indice atteso. |
 
-La copertura automatizzata è attualmente limitata e rappresenta una base che può essere estesa con ulteriori unit test e widget test.
+I relativi test si trovano in:
 
-Il repository utilizza inoltre **GitHub Actions** per automatizzare i controlli configurati nel workflow Flutter CI.
+```text
+test/
+├── domain/
+│   └── models/
+│       └── transit_line_test.dart
+└── ui/
+    └── main_navigation/
+        └── widgets/
+            └── bottom_nav_bar_test.dart
+```
+
+Il widget test monta il componente in un ambiente Flutter minimale con `MaterialApp` e `Scaffold`, simula l’interazione dell’utente tramite `WidgetTester` e verifica il risultato con `expect`.
+
+### Esecuzione locale
+
+Dalla radice del progetto:
+
+```bash
+flutter pub get
+flutter test
+```
+
+Per eseguire separatamente i test documentati:
+
+```bash
+flutter test test/domain/models/transit_line_test.dart
+flutter test test/ui/main_navigation/widgets/bottom_nav_bar_test.dart
+```
+
+### Continuous Integration
+
+Il repository utilizza **GitHub Actions** per eseguire i controlli automatizzati configurati nel workflow [Flutter CI](https://github.com/AlexMarinucci99/JiVaio/actions/workflows/flutter-ci.yml). Il badge mostra lo stato del workflow, non una percentuale di copertura dei test.
 
 [![Flutter CI](https://github.com/AlexMarinucci99/JiVaio/actions/workflows/flutter-ci.yml/badge.svg)](https://github.com/AlexMarinucci99/JiVaio/actions/workflows/flutter-ci.yml)
 
 <p align="right">(<a href="#readme-top">torna su</a>)</p>
-
 ---
 
 ## Dati utilizzati
